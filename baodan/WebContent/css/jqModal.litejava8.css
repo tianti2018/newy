@@ -1,0 +1,42 @@
+.jqmWindow {
+	background-color:#f0eff0;
+	color: #000;
+	border: opx solid #EAEAEB;
+	padding: 0 0px 37px;
+}
+
+button.jqmClose {
+	background: #DDD;
+	border: 0px solid #EAEAEB;
+	color: #111;
+	clear: right;
+	float: right;
+	padding: 0 5px;
+	cursor: pointer;
+	font-size: 8px;
+	height: 15px;
+	letter-spacing: 1px;
+}
+
+button.jqmClose:hover,button.jqmClose:focus {
+	background: #FFF;
+	color: #000;
+	border: 0px solid #FFF;
+}
+
+#jqmTitle {
+	text-transform: uppercase;
+	height: 15px;
+	padding: 5px;
+	background-color:#f0eff0;
+}
+
+#jqmContent {
+	width: 99%;
+	display: block;
+	clear: both;
+	margin: auto;
+	margin-top: 0px;
+	background: #FFF;
+	border: 0px solid #EAEAEB;
+}

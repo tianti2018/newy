@@ -1,0 +1,76 @@
+
+table {
+	background-color:#E2EBEF;
+	border: 0px solid #666;
+	width: 100%;
+	margin:5px auto 0px auto !important;
+}
+
+th {
+	padding: 2px 4px 2px 4px !important;
+	text-align: left;
+	vertical-align: top;
+	height:27px;
+	background-image:url(../images/core_res/img/theme/msg_bg.jpg);
+}
+
+td {
+	padding: 2px 4px 2px 4px !important;
+	text-align: left;
+	vertical-align: top;	
+}
+
+thead tr {
+	background-color: #fc0;
+}
+
+th.sorted {
+	height:27px;
+	background-image:url(../images/core_res/img/theme/msg_bg.jpg);
+}
+
+th a,th a:visited {
+	color: black;
+	height:27px;
+	background-image:url(../images/core_res/img/theme/msg_bg.jpg);
+}
+
+th a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+th.sorted a,th.sortable a {
+	background-position: right;
+	display: block;
+	width: 100%;
+}
+
+th.sortable a {
+	background-image: url(../img/arrow_off.png);
+}
+
+th.order1 a {
+	background-image: url(../img/arrow_down.png);
+}
+
+th.order2 a {
+	background-image: url(../img/arrow_up.png);
+}
+
+tr.odd {
+	background-color: #fff;
+}
+
+tr.tableRowEven,tr.even {
+	background-color: #fff;
+}
+
+h4,h5,h6,p,strong,form,acronym,label,td,span,a,hr,code,pre,hr
+	{
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+	background-repeat: no-repeat;
+	list-style-type: none;
+}

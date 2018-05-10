@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC   
+
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"   
+
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     
+  	
+    <!-- 指定Web应用的默认编码集,相当于调用HttpServletRequest的setCharacterEncoding方法 -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+       
+    <!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    
+    <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+    <constant name="struts.devMode" value="true" />
+    
+    <constant name="struts.objectFactory" value="spring" />
+        
+		
+		<package name="app-default" extends="struts-default">
+			
+			<interceptors>
+	  	
+		  	<interceptor name="checkLogin" class="CheckLogin"/>	 
+		  				  
+		  	<interceptor-stack name="appStack">					
+		       
+		       <interceptor-ref name="defaultStack" />
+		
+		       
+		       <interceptor-ref name="checkLogin" >		       	
+		       </interceptor-ref>
+		       		      		
+		   	</interceptor-stack>
+		
+		  </interceptors> 
+						
+		  <default-interceptor-ref name="appStack" />
+			
+			<global-results>    
+           <result name="login" type="redirect">logoutredirect.jsp?flag=a</result>
+           <result name="login2" type="redirect">logoutredirect.jsp?flag=b</result>    
+       </global-results>   
+			
+			<!-- 产生验证码  -->
+			<action name="rand" class="RandomAction">   
+	      <result type="stream">   
+               <param name="contentType">image/jpeg</param>   
+               <param name="inputName">inputStream</param>   
+        </result>       
+ 			</action>
+ 			
+ 			<action name="DigAction" class="DigAction">
+ 				<result name="listAll">/WEB-INF/jsp/dig/dig_condition.jsp</result>
+ 			</action>
+ 			
+ 			<action name="downLoadExcel" class="DownLoadExcelAction">   	    
+ 			</action> 
+					
+	</package>
+	
+	
+</struts>
