@@ -235,7 +235,7 @@ $(function(){
 				</c:if>
 				<a href="<%=request.getContextPath()%>/orders!listAllOrderList.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
 				
-				<a href="<%=request.getContextPath()%>/user!listAllUser.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>用户信息</span></a>
+				<a href="<%=request.getContextPath()%>/user!listAllUser.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>团队列表</span></a>
 				
 				<c:if test="${adminUser==false}">
 					<a href="<%=request.getContextPath()%>/user!initAddUser.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>我的信息</span></a>
