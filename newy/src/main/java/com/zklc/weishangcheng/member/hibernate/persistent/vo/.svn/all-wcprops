@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/newy/!svn/ver/938/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo
+END
+OrderAddressVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/newy/!svn/ver/938/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/OrderAddressVO.java
+END
+PriceForDianZhuLevel.java
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/newy/!svn/ver/130/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/PriceForDianZhuLevel.java
+END
+FhRecordDianVO.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/newy/!svn/ver/135/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/FhRecordDianVO.java
+END
+WxOpenIds.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/501/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/WxOpenIds.java
+END
+ProductCommentVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/newy/!svn/ver/923/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/ProductCommentVo.java
+END
+OrderVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/OrderVo.java
+END
+UserVo.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/212/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/vo/UserVo.java
+END

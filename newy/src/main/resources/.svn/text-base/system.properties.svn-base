@@ -1,0 +1,31 @@
+#################################jdbcUtil connection info###################################
+DBTYPE=mysql
+DBDRIVER=jdbc:mysql://rds8d5ng1ye266t5dgmk.mysql.rds.aliyuncs.com:3306/newh?useUnicode=true&characterEncoding=utf8
+DBLOGINNAME=newh
+DBPASSWORD=123456
+####################################################################
+
+####################################################################
+YUMING=http://xhcy.andortech.cn
+imgUrl=http://101.201.172.238/
+ZHIFU_YUMING=http://abc.andortech.cn
+################################weixin  info##################################
+APPID=wx29ca64461e783bfd
+APPSECRET=cd1e4c72b899aaccf4ec6f55971103fd
+MCH_ID=1291867201
+PARTNERKEY=DcEerFdERHKJHLFDSdfdsaEFDSFdfdsa
+token=weixinchaoguo
+###################################################################
+
+username=superadmin
+password=1111
+
+#################################company###########################################################
+goods=\u6C47\u4ED8\u5929\u4E0B\u84DD\u7259pos
+company=\u661F\u706B\u8349\u539F
+
+
+levelOne=0.20
+levelTwo=0.10
+levelThr=0.05
+

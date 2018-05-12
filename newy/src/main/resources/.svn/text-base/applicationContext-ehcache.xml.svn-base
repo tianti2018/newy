@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/util 
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    				http://www.springframework.org/schema/aop 
+    				http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+    				http://www.springframework.org/schema/beans 
+    				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+      			http://www.springframework.org/schema/context 
+      			http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+            http://www.springframework.org/schema/jee 
+            http://www.springframework.org/schema/jee/spring-jee-3.0.xsd          
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+	<description>ehcache缓存配置</description>
+	<bean id="cacheManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	</bean>
+	<!-- 公共方法类缓存 -->
+	<bean id="commonCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManagerFactory" />
+		<property name="cacheName">
+			<value>simCommonCache</value>
+		</property>
+	</bean>
+
+	<bean id="methodCacheInterceptor" class="com.zklc.sim.common.Interceptor.MethodCacheInterceptor">
+		<property name="cache">
+			<ref local="commonCache" />
+		</property>
+	</bean>
+
+	<bean id="methodCachePointCut"
+		class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice">
+			<ref local="methodCacheInterceptor" />
+		</property>
+		<property name="patterns">
+			<list>
+				<!--commonCacheService方法 -->	
+				<!-- <value>.*querySchoole</value>
+				<value>.*queryDistricts</value>
+				<value>.*queryGrades</value>
+				<value>.*queryClasses</value>
+				<value>.*queryDistricts</value> -->
+				
+				<!--tAreaCacheService方法 -->	
+				<value>.*findAreaByType</value>
+				<value>.*findAreaByParentCode</value>
+				<value>.*findAreaBySonCode</value>
+				<value>.*findAreaByCode</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 设置要缓存的bean -->
+	<bean id="commonCacheService" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces"><value>com.zklc.sim.common.service.CommonCacheService</value></property>
+		<property name="target">
+			<ref local="commonUtilService" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>methodCachePointCut</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 设置要缓存的bean -->
+	<bean id="tAreaCacheService" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<property name="proxyInterfaces"><value>com.zklc.sim.common.service.CommonCacheService</value></property>
+		<property name="target">
+			<ref local="tAreaService" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>methodCachePointCut</value>
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="commonUtilService" class="com.zklc.sim.common.service.impl.CommonUtilServiceImpl"/>
+	<bean id="tAreaService" class="com.zklc.sim.personnel.service.impl.TAreaServiceImpl"/>
+</beans>

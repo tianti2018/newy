@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend
+END
+SendBaseMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/SendBaseMessage.java
+END
+text.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/text.java
+END
+PicText.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/PicText.java
+END
+article.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/article.java
+END
+SendText.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/SendText.java
+END
+news.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageSend/news.java
+END

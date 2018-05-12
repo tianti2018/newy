@@ -1,0 +1,452 @@
+
+html #layui_layer_skinlayercss {
+    display: none;
+    position: absolute;
+    width: 1989px;
+}
+.layui-layer-shade, .layui-layer {
+    pointer-events: auto;
+    position: fixed;
+}
+.layui-layer-shade {
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+.layui-layer {
+    background-color: #fff;
+    box-shadow: 1px 1px 50px rgba(0, 0, 0, 0.3);
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    top: 150px;
+}
+.layui-layer-close {
+    position: absolute;
+}
+.layui-layer-content {
+    position: relative;
+}
+.layui-layer-border {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.layui-layer-moves {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 3px solid rgba(0, 0, 0, 0.5);
+    cursor: move;
+    position: absolute;
+}
+.layui-layer-load {
+    background: #fff url("default/xubox_loading0.gif") no-repeat scroll center center;
+}
+.layui-layer-ico {
+    background: rgba(0, 0, 0, 0) url("default/xubox_ico0.png") no-repeat scroll 0 0;
+}
+.layui-layer-dialog .layui-layer-ico, .layui-layer-setwin a, .layui-layer-btn a {
+    display: inline-block;
+    vertical-align: top;
+}
+.layui-layer {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+@keyframes bounceIn {
+0% {
+    opacity: 0;
+    transform: scale(0.3);
+}
+50% {
+    opacity: 1;
+    transform: scale(1.05);
+}
+70% {
+    transform: scale(0.9);
+}
+100% {
+    opacity: 1;
+    transform: scale(1);
+}
+}
+.layui-anim-01 {
+    animation-name: bounceIn;
+}
+@keyframes zoomInDown {
+0% {
+    animation-timing-function: ease-in-out;
+    opacity: 0;
+    transform: scale(0.1) translateY(-2000px);
+}
+60% {
+    animation-timing-function: ease-out;
+    opacity: 1;
+    transform: scale(0.475) translateY(60px);
+}
+}
+.layui-anim-02 {
+    animation-name: zoomInDown;
+}
+@keyframes fadeInUpBig {
+0% {
+    opacity: 0;
+    transform: translateY(2000px);
+}
+100% {
+    opacity: 1;
+    transform: translateY(0px);
+}
+}
+.layui-anim-03 {
+    animation-name: fadeInUpBig;
+}
+@keyframes zoomInLeft {
+0% {
+    animation-timing-function: ease-in-out;
+    opacity: 0;
+    transform: scale(0.1) translateX(-2000px);
+}
+60% {
+    animation-timing-function: ease-out;
+    opacity: 1;
+    transform: scale(0.475) translateX(48px);
+}
+}
+.layui-anim-04 {
+    animation-name: zoomInLeft;
+}
+@keyframes rollIn {
+0% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(-120deg);
+}
+100% {
+    opacity: 1;
+    transform: translateX(0px) rotate(0deg);
+}
+}
+.layui-anim-05 {
+    animation-name: rollIn;
+}
+@keyframes fadeIn {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}
+.layui-anim-06 {
+    animation-name: fadeIn;
+}
+@keyframes shake {
+0%, 100% {
+    transform: translateX(0px);
+}
+10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-10px);
+}
+20%, 40%, 60%, 80% {
+    transform: translateX(10px);
+}
+}
+.layui-anim-07 {
+    animation-name: shake;
+}
+.layui-layer-title {
+    background-color: #eaeaea;
+    border-bottom: 1px solid #d5d5d5;
+    color: #333;
+    font-size: 14px;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    padding: 0 80px 0 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.layui-layer-setwin {
+    font-size: 0;
+    line-height: initial;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+.layui-layer-setwin a {
+    font-size: 12px;
+    height: 14px;
+    margin-left: 10px;
+    position: relative;
+    width: 14px;
+}
+.layui-layer-setwin .layui-layer-min cite {
+    background-color: #919191;
+    cursor: pointer;
+    height: 2px;
+    left: 0;
+    margin-top: -1px;
+    position: absolute;
+    top: 50%;
+    width: 14px;
+}
+.layui-layer-setwin .layui-layer-min:hover cite {
+    background-color: #2d93ca;
+}
+.layui-layer-setwin .layui-layer-max {
+    background-position: -6px -189px;
+}
+.layui-layer-setwin .layui-layer-max:hover {
+    background-position: -6px -206px;
+}
+.layui-layer-setwin .layui-layer-maxmin {
+    background-position: -29px -189px;
+}
+.layui-layer-setwin .layui-layer-maxmin:hover {
+    background-position: -29px -206px;
+}
+.layui-layer-setwin .layui-layer-close1 {
+    background-position: -31px -7px;
+    cursor: pointer;
+    height: 14px;
+    width: 14px;
+}
+.layui-layer-setwin .layui-layer-close1:hover {
+    background-position: -51px -7px;
+}
+.layui-layer-setwin .layui-layer-close2 {
+    background-position: -60px -195px;
+    height: 30px;
+    margin-left: 0;
+    position: absolute;
+    right: -23px;
+    top: -23px;
+    width: 30px;
+}
+.layui-layer-setwin .layui-layer-close2:hover {
+    background-position: -91px -195px;
+}
+.layui-layer-btn {
+    padding: 10px 30px;
+    pointer-events: auto;
+    text-align: center;
+}
+.layui-layer-btn a {
+    background: #db2330 none repeat scroll 0 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 8px;
+    padding: 0 20px;
+}
+.layui-layer-btn a:hover {
+    opacity: 0.9;
+}
+.layui-layer-btn a:active {
+    opacity: 0.7;
+}
+.layui-layer-btn .layui-layer-btn1 {
+    background: #a6bbce none repeat scroll 0 0;
+}
+.layui-layer-dialog {
+    min-width: 240px;
+}
+.layui-layer-dialog .layui-layer-content {
+    font-size: 14px;
+    line-height: 24px;
+    overflow: auto;
+    padding: 20px;
+    position: relative;
+    word-break: break-all;
+}
+.layui-layer-dialog .layui-layer-content .layui-layer-ico {
+    height: 32px;
+    left: 15px;
+    position: absolute;
+    top: 16px;
+    width: 32px;
+}
+.layui-layer-ico0 {
+    background-position: -91px -38px;
+}
+.layui-layer-ico1 {
+    background-position: -128px -38px;
+}
+.layui-layer-ico2 {
+    background-position: -163px -38px;
+}
+.layui-layer-ico3 {
+    background-position: -91px -75px;
+}
+.layui-layer-ico4 {
+    background-position: -163px -75px;
+}
+.layui-layer-ico5 {
+    background-position: -163px -112px;
+}
+.layui-layer-ico6 {
+    background-position: -163px -148px;
+}
+.layui-layer-ico7 {
+    background-position: -128px -75px;
+}
+.layui-layer-ico8 {
+    background-position: -91px -6px;
+}
+.layui-layer-ico9 {
+    background-position: -129px -6px;
+}
+.layui-layer-ico10 {
+    background-position: -163px -6px;
+}
+.layui-layer-ico11 {
+    background-position: -206px -6px;
+}
+.layui-layer-ico12 {
+    background-position: -206px -44px;
+}
+.layui-layer-ico13 {
+    background-position: -206px -81px;
+}
+.layui-layer-ico14 {
+    background-position: -206px -122px;
+}
+.layui-layer-ico15 {
+    background-position: -206px -157px;
+}
+.layui-layer-msg {
+    border: 5px solid rgba(0, 0, 0, 0.4);
+    border-radius: 3px;
+    min-width: 150px;
+}
+.layui-layer-msg .layui-layer-content {
+    padding-bottom: 12px;
+    padding-right: 12px;
+    padding-top: 12px;
+    text-align: center;
+}
+.layui-layer-msg .layui-layer-content .layui-layer-ico {
+    top: 10px;
+}
+.layui-layer-hui {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: medium none;
+    color: #fff;
+    min-width: 100px;
+}
+.layui-layer-hui .layui-layer-content {
+    padding: 12px 25px;
+}
+.layui-layer-dialog .layui-layer-padding {
+    padding-left: 58px;
+    text-align: left;
+}
+.layui-layer-page .layui-layer-content {
+    overflow: auto;
+    position: relative;
+}
+.layui-layer-nobg {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+.layui-layer-iframe .layui-layer-content {
+    overflow: hidden;
+}
+.layui-layer-iframe iframe {
+    width: 100%;
+}
+.layui-layer-loading {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border-radius: 100%;
+    box-shadow: none;
+}
+.layui-layer-loading .layui-layer-content {
+    background: rgba(0, 0, 0, 0) url("default/xubox_loading0.gif") no-repeat scroll 0 0;
+    height: 24px;
+    width: 60px;
+}
+.layui-layer-loading .xubox_loading_1 {
+    background: rgba(0, 0, 0, 0) url("default/xubox_loading1.gif") no-repeat scroll 0 0;
+    height: 37px;
+    width: 37px;
+}
+.layui-layer-loading .xubox_loading_2, .layui-layer-ico16 {
+    background: rgba(0, 0, 0, 0) url("default/xubox_loading2.gif") no-repeat scroll 0 0;
+    height: 32px;
+    width: 32px;
+}
+.layui-layer-tips {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    box-shadow: none;
+}
+.layui-layer-tips .layui-layer-content {
+    background-color: #f90;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 12px;
+    line-height: 22px;
+    min-width: 12px;
+    padding: 5px 10px;
+    position: relative;
+}
+.layui-layer-tips .layui-layer-close {
+    right: -2px;
+    top: -1px;
+}
+.layui-layer-tips i.layui-layer-TipsG {
+    border-color: transparent;
+    border-style: dashed;
+    border-width: 8px;
+    height: 0;
+    position: absolute;
+    width: 0;
+}
+.layui-layer-tips i.layui-layer-TipsT, .layui-layer-tips i.layui-layer-TipsB {
+    border-right-color: #f90;
+    border-right-style: solid;
+    left: 5px;
+}
+.layui-layer-tips i.layui-layer-TipsT {
+    bottom: -8px;
+}
+.layui-layer-tips i.layui-layer-TipsB {
+    top: -8px;
+}
+.layui-layer-tips i.layui-layer-TipsR, .layui-layer-tips i.layui-layer-TipsL {
+    border-bottom-color: #f90;
+    border-bottom-style: solid;
+    top: 1px;
+}
+.layui-layer-tips i.layui-layer-TipsR {
+    left: -8px;
+}
+.layui-layer-tips i.layui-layer-TipsL {
+    right: -8px;
+}
+.layui-layer-lan .layui-layer-title {
+    background: #4476a7 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+}
+.layui-layer-lan .layui-layer-btn {
+    border-top: 1px solid #e9e7e7;
+}
+.layui-layer-lan .layui-layer-btn a {
+    background: #bbb5b5 none repeat scroll 0 0;
+}
+.layui-layer-lan .layui-layer-btn .layui-layer-btn1 {
+    background: #c9c5c5 none repeat scroll 0 0;
+}
+.layui-layer-molv .layui-layer-title {
+    background: #60b979 none repeat scroll 0 0;
+    border: medium none;
+    color: #fff;
+}
+.layui-layer-molv .layui-layer-btn a {
+    background: #659d94 none repeat scroll 0 0;
+}
+.layui-layer-molv .layui-layer-btn .layui-layer-btn1 {
+    background: #92b8b1 none repeat scroll 0 0;
+}

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http
+END
+HttpResultType.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/HttpResultType.java
+END
+HttpClientConnectionManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/HttpClientConnectionManager.java
+END
+HttpResponse.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/HttpResponse.java
+END
+TrustAnyTrustManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/TrustAnyTrustManager.java
+END
+HttpRequest.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/HttpRequest.java
+END
+MySSLSocketFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/MySSLSocketFactory.java
+END
+HttpConnect.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/http/HttpConnect.java
+END

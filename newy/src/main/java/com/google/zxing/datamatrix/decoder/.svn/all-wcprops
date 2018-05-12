@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder
+END
+BitMatrixParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder/BitMatrixParser.java
+END
+Version.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder/Version.java
+END
+DecodedBitStreamParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder/DecodedBitStreamParser.java
+END
+Decoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder/Decoder.java
+END
+DataBlock.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/datamatrix/decoder/DataBlock.java
+END

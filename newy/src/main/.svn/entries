@@ -1,0 +1,44 @@
+10
+
+dir
+478
+http://code.taobao.org/svn/newy/newy/src/main
+http://code.taobao.org/svn/newy
+
+
+
+2016-03-27T13:04:44.862705Z
+478
+lxp621
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+09152579-e6ce-499a-9bd1-2153cd008b8f
+
+
+
+
+
+
+0
+
+java
+dir
+
+resources
+dir
+
+webapp
+dir
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC   
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"   
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+    <!-- 指定Web应用的默认编码集,相当于调用HttpServletRequest的setCharacterEncoding方法 -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.custom.i18n.resources" value="properties/message"/>
+    <constant name="struts.action.extension" value="action"></constant>
+    <constant name="struts.multipart.saveDir" value="/tmp"/>
+    <!-- 当struts的配置文件修改后,系统是否自动重新加载该文件,默认值为false(生产环境下使用),开发阶段最好打开 -->
+    <constant name="struts.configuration.xml.reload" value="false"/>    
+    <!-- 开发模式下使用,这样可以打印出更详细的错误信息 -->
+    <constant name="struts.devMode" value="false" />   
+    <constant name="struts.objectFactory" value="spring" />   
+    <!-- 上传文件大小限制(字节)-->
+    <constant name="struts.multipart.maxSize" value="100000000"/> 
+	<package name="app-default"  extends="struts-default" namespace="/">			
+			<interceptors>
+		  	<interceptor-stack name="appStack">					
+		       <interceptor-ref name="defaultStack" >
+			       	<param name="exception.logEnabled">true</param>  
+	    			<param name="exception.logLevel">error</param>  
+		       </interceptor-ref>
+		   	</interceptor-stack>
+		  </interceptors> 		
+		  <default-interceptor-ref name="appStack" />
+		<global-results> 
+			<result name="allException" >/app_exception.jsp</result> 
+			<result name="error" >/error.jsp</result> 
+			<result name="timeOut" >/timeOut.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="allException" exception="com.bkrj.base.exception.AppRunTimeException"> </exception-mapping> 
+			<exception-mapping result="error" exception="java.lang.Exception"/>
+		</global-exception-mappings>			
+	</package>
+	<package name="json"  extends="json-default">			
+			<interceptors>
+			<interceptor name="permissionInterceptor" class="com.bkrj.base.interceptor.PermissionInterceptor"></interceptor>
+		  	<interceptor-stack name="appStack">		
+		  		<!-- <interceptor-ref name="permissionInterceptor" />		 -->	
+		       <interceptor-ref name="defaultStack" >
+		       		<param name="exception.logEnabled">true</param>  
+    				<param name="exception.logLevel">error</param>  
+		       </interceptor-ref>	       
+		   	</interceptor-stack>
+		  </interceptors> 		
+		  <default-interceptor-ref name="appStack" />
+		<global-results> 
+			<result name="allException" >/app_exception.jsp</result> 
+			<result name="error" >/error.jsp</result> 
+			<result name="timeOut">/timeOut.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="allException" exception="com.bkrj.base.exception.AppRunTimeException"> </exception-mapping> 
+			<exception-mapping result="error" exception="java.lang.Exception"/>
+		</global-exception-mappings>	
+	</package>
+</struts>

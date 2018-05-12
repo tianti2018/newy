@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/newy/!svn/ver/739/newy/src/main/java/com/utils
+END
+MD5Util.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/MD5Util.java
+END
+TenpayUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/TenpayUtil.java
+END
+RequestHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/RequestHandler.java
+END
+XMLUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/XMLUtil.java
+END
+WXRefund.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/newy/!svn/ver/739/newy/src/main/java/com/utils/WXRefund.java
+END
+GetWxOrderno.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/GetWxOrderno.java
+END
+Sha1Util.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/Sha1Util.java
+END
+HttpClientUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/newy/!svn/ver/3/newy/src/main/java/com/utils/HttpClientUtil.java
+END
+MyUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/newy/!svn/ver/257/newy/src/main/java/com/utils/MyUtils.java
+END
+CalendarUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/newy/!svn/ver/634/newy/src/main/java/com/utils/CalendarUtils.java
+END
+BCConvert.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/newy/!svn/ver/256/newy/src/main/java/com/utils/BCConvert.java
+END

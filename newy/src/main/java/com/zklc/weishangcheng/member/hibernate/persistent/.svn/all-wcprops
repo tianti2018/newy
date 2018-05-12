@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent
+END
+ProductComment.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/923/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/ProductComment.java
+END
+MiaoShaOrder.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/MiaoShaOrder.java
+END
+CompanyInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/247/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/CompanyInfo.java
+END
+OrderLiu.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/81/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/OrderLiu.java
+END
+WeixinAutosendmsg.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/WeixinAutosendmsg.java
+END
+DianZhuZigeConf.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/865/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/DianZhuZigeConf.java
+END
+TixianLiu.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/67/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/TixianLiu.java
+END
+FhRecordDian.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/132/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/FhRecordDian.java
+END
+GoodYongJin.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/774/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/GoodYongJin.java
+END
+DianForUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/158/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/DianForUser.java
+END
+HongbaoDian.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/395/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/HongbaoDian.java
+END
+JVillage.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JVillage.java
+END
+JiFenRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/938/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JiFenRecord.java
+END
+Yongjin.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/18/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Yongjin.java
+END
+OrderDian.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/128/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/OrderDian.java
+END
+JTown.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JTown.java
+END
+XingHuoQuanRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/newy/!svn/ver/858/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/XingHuoQuanRecord.java
+END
+Notice.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/871/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Notice.java
+END
+IvmCountry.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/IvmCountry.java
+END
+AccessToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/AccessToken.java
+END
+OrderLiuBlack.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/newy/!svn/ver/146/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/OrderLiuBlack.java
+END
+HongBaoLun.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/HongBaoLun.java
+END
+JCity.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JCity.java
+END
+JCounty.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JCounty.java
+END
+FhRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/774/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/FhRecord.java
+END
+FhRecordLun.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/FhRecordLun.java
+END
+Hongbao.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/395/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Hongbao.java
+END
+Card.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/newy/!svn/ver/45/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Card.java
+END
+Product.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/456/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Product.java
+END
+Order.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/newy/!svn/ver/774/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Order.java
+END
+Usery.java
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/newy/!svn/ver/774/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Usery.java
+END
+City.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/newy/!svn/ver/437/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/City.java
+END
+RefundRecord.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/821/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/RefundRecord.java
+END
+OrderAddress.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/938/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/OrderAddress.java
+END
+LiuCode.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/879/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/LiuCode.java
+END
+YongJinLun.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/YongJinLun.java
+END
+ProdImage.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/603/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/ProdImage.java
+END
+ChengFaUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/149/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/ChengFaUser.java
+END
+Problem.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/343/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/Problem.java
+END
+JifenUser.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/890/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JifenUser.java
+END
+City5d.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/City5d.java
+END
+JProvice.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/JProvice.java
+END
+OrderLun.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/234/newy/src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/OrderLun.java
+END

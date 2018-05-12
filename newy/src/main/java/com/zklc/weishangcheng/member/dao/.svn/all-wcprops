@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/292/newy/src/main/java/com/zklc/weishangcheng/member/dao
+END
+FhRecordDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/newy/!svn/ver/8/newy/src/main/java/com/zklc/weishangcheng/member/dao/FhRecordDao.java
+END
+ProdImageDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/292/newy/src/main/java/com/zklc/weishangcheng/member/dao/ProdImageDao.java
+END
+AccessTokenDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/dao/AccessTokenDao.java
+END
+FhRecordDianDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/newy/!svn/ver/130/newy/src/main/java/com/zklc/weishangcheng/member/dao/FhRecordDianDao.java
+END
+OrderAddressDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/dao/OrderAddressDao.java
+END
+JifenUserDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/dao/JifenUserDao.java
+END
+CityDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/newy/!svn/ver/253/newy/src/main/java/com/zklc/weishangcheng/member/dao/CityDao.java
+END
+OrderDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/dao/OrderDao.java
+END
+ProductDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/newy/!svn/ver/283/newy/src/main/java/com/zklc/weishangcheng/member/dao/ProductDao.java
+END
+HongBaoDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/newy/!svn/ver/4/newy/src/main/java/com/zklc/weishangcheng/member/dao/HongBaoDao.java
+END

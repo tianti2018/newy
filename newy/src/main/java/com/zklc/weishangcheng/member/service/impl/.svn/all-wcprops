@@ -1,0 +1,263 @@
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl
+END
+TixianLiuServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/63/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/TixianLiuServiceImpl.java
+END
+FhRecordDianServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/396/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/FhRecordDianServiceImpl.java
+END
+OrderAddressServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/962/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderAddressServiceImpl.java
+END
+CompanyInfoServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/245/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/CompanyInfoServiceImpl.java
+END
+OrderServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/892/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderServiceImpl.java
+END
+UseryServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/5/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/UseryServiceImpl.java
+END
+CardServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/newy/!svn/ver/71/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/CardServiceImpl.java
+END
+FhRecordLunServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/FhRecordLunServiceImpl.java
+END
+FhrecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/178/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/FhrecordServiceImpl.java
+END
+JCountyServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JCountyServiceImpl.java
+END
+IvmCountryServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/newy/!svn/ver/900/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/IvmCountryServiceImpl.java
+END
+OrderLunServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderLunServiceImpl.java
+END
+NoticeServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/1032/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/NoticeServiceImpl.java
+END
+XingHuoQuanRecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/newy/!svn/ver/806/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/XingHuoQuanRecordServiceImpl.java
+END
+JifenUserServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/923/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JifenUserServiceImpl.java
+END
+JTownServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JTownServiceImpl.java
+END
+CoreServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/CoreServiceImpl.java
+END
+ChengFaUserServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/143/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/ChengFaUserServiceImpl.java
+END
+ProblemServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/181/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/ProblemServiceImpl.java
+END
+CommentServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/1019/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/CommentServiceImpl.java
+END
+YongjinServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/18/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/YongjinServiceImpl.java
+END
+OrderDianServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/158/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderDianServiceImpl.java
+END
+DianForUserServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/193/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/DianForUserServiceImpl.java
+END
+HongbaoDianServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/128/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/HongbaoDianServiceImpl.java
+END
+JVillageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JVillageServiceImpl.java
+END
+LiuCodeServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/137/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/LiuCodeServiceImpl.java
+END
+YongJinLunServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/YongJinLunServiceImpl.java
+END
+DianZhuZigeConfServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/newy/!svn/ver/865/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/DianZhuZigeConfServiceImpl.java
+END
+WeixinAutosendmsgServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/WeixinAutosendmsgServiceImpl.java
+END
+RefundRecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/701/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/RefundRecordServiceImpl.java
+END
+OrderLiuServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/newy/!svn/ver/965/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderLiuServiceImpl.java
+END
+CityServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svn/newy/!svn/ver/466/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/CityServiceImpl.java
+END
+MiaoShaOrderServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/newy/!svn/ver/1055/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/MiaoShaOrderServiceImpl.java
+END
+ProductServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/298/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/ProductServiceImpl.java
+END
+AccessTokenServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/AccessTokenServiceImpl.java
+END
+OrderLiuBlackServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/newy/!svn/ver/144/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/OrderLiuBlackServiceImpl.java
+END
+HongBaoLunServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/newy/!svn/ver/238/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/HongBaoLunServiceImpl.java
+END
+JCityServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JCityServiceImpl.java
+END
+JProviceServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JProviceServiceImpl.java
+END
+City5dServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/City5dServiceImpl.java
+END
+JiFenRecordServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/newy/!svn/ver/939/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/JiFenRecordServiceImpl.java
+END
+GoodYongJinServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/newy/!svn/ver/1054/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/GoodYongJinServiceImpl.java
+END
+ProdImageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/293/newy/src/main/java/com/zklc/weishangcheng/member/service/impl/ProdImageServiceImpl.java
+END

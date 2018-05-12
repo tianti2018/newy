@@ -1,0 +1,155 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing
+END
+BinaryBitmap.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/BinaryBitmap.java
+END
+DecodeHintType.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/DecodeHintType.java
+END
+ChecksumException.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/ChecksumException.java
+END
+ReaderException.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/ReaderException.java
+END
+StringsResourceTranslator.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/StringsResourceTranslator.java
+END
+Dimension.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/Dimension.java
+END
+RGBLuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/RGBLuminanceSource.java
+END
+ResultMetadataType.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/ResultMetadataType.java
+END
+MultiFormatWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/MultiFormatWriter.java
+END
+Reader.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/Reader.java
+END
+NotFoundException.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/NotFoundException.java
+END
+HtmlAssetTranslator.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/HtmlAssetTranslator.java
+END
+InvertedLuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/InvertedLuminanceSource.java
+END
+Result.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/Result.java
+END
+WriterException.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/WriterException.java
+END
+FormatException.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/FormatException.java
+END
+ResultPointCallback.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/ResultPointCallback.java
+END
+BarcodeFormat.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/BarcodeFormat.java
+END
+EncodeHintType.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/EncodeHintType.java
+END
+Binarizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/Binarizer.java
+END
+LuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/LuminanceSource.java
+END
+MultiFormatReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/MultiFormatReader.java
+END
+PlanarYUVLuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/PlanarYUVLuminanceSource.java
+END
+ResultPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/ResultPoint.java
+END
+Writer.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/Writer.java
+END

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se
+END
+CommandLineRunner.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/CommandLineRunner.java
+END
+ImageReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/ImageReader.java
+END
+CommandLineEncoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/CommandLineEncoder.java
+END
+DecodeWorker.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/DecodeWorker.java
+END
+GUIRunner.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/GUIRunner.java
+END
+BufferedImageLuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/BufferedImageLuminanceSource.java
+END
+Config.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/Config.java
+END
+MatrixToImageWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/MatrixToImageWriter.java
+END
+MatrixToImageConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/client/j2se/MatrixToImageConfig.java
+END

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417
+END
+PDF417Reader.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/PDF417Reader.java
+END
+PDF417Writer.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/PDF417Writer.java
+END
+PDF417ResultMetadata.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/PDF417ResultMetadata.java
+END
+PDF417Common.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/PDF417Common.java
+END

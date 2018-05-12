@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS
+END
+VedioMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/VedioMessage.java
+END
+Video.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/Video.java
+END
+TextMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/TextMessage.java
+END
+Article.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/Article.java
+END
+BaseMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/BaseMessage.java
+END
+Music.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/Music.java
+END
+NewsMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/NewsMessage.java
+END
+MusicMessage.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weixin/messageS/MusicMessage.java
+END

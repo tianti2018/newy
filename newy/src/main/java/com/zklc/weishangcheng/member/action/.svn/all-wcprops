@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/newy/!svn/ver/954/newy/src/main/java/com/zklc/weishangcheng/member/action
+END
+PayDianAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/newy/!svn/ver/457/newy/src/main/java/com/zklc/weishangcheng/member/action/PayDianAction.java
+END
+City5dAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/newy/!svn/ver/1060/newy/src/main/java/com/zklc/weishangcheng/member/action/City5dAction.java
+END
+NoticeAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/newy/!svn/ver/1034/newy/src/main/java/com/zklc/weishangcheng/member/action/NoticeAction.java
+END
+IvmCountryAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/newy/!svn/ver/1069/newy/src/main/java/com/zklc/weishangcheng/member/action/IvmCountryAction.java
+END
+MiaoShaPay.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/77/newy/src/main/java/com/zklc/weishangcheng/member/action/MiaoShaPay.java
+END
+JiFenAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/newy/!svn/ver/985/newy/src/main/java/com/zklc/weishangcheng/member/action/JiFenAction.java
+END
+OrderAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/newy/!svn/ver/886/newy/src/main/java/com/zklc/weishangcheng/member/action/OrderAction.java
+END
+UserAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/newy/!svn/ver/1072/newy/src/main/java/com/zklc/weishangcheng/member/action/UserAction.java
+END
+CompanyInfoAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/newy/!svn/ver/245/newy/src/main/java/com/zklc/weishangcheng/member/action/CompanyInfoAction.java
+END
+CityAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/newy/!svn/ver/937/newy/src/main/java/com/zklc/weishangcheng/member/action/CityAction.java
+END
+XingHuoQuanAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/newy/!svn/ver/808/newy/src/main/java/com/zklc/weishangcheng/member/action/XingHuoQuanAction.java
+END
+PayAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/newy/!svn/ver/498/newy/src/main/java/com/zklc/weishangcheng/member/action/PayAction.java
+END
+OrderAddressAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/newy/!svn/ver/830/newy/src/main/java/com/zklc/weishangcheng/member/action/OrderAddressAction.java
+END
+PayGoodAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/newy/!svn/ver/1024/newy/src/main/java/com/zklc/weishangcheng/member/action/PayGoodAction.java
+END
+GoodYongJinAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/newy/!svn/ver/174/newy/src/main/java/com/zklc/weishangcheng/member/action/GoodYongJinAction.java
+END
+UploadAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/newy/!svn/ver/996/newy/src/main/java/com/zklc/weishangcheng/member/action/UploadAction.java
+END
+CoreAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/newy/!svn/ver/3/newy/src/main/java/com/zklc/weishangcheng/member/action/CoreAction.java
+END
+ProblemAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/newy/!svn/ver/212/newy/src/main/java/com/zklc/weishangcheng/member/action/ProblemAction.java
+END
+CommentAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/newy/!svn/ver/923/newy/src/main/java/com/zklc/weishangcheng/member/action/CommentAction.java
+END
+FileUploadAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/newy/!svn/ver/249/newy/src/main/java/com/zklc/weishangcheng/member/action/FileUploadAction.java
+END
+PayHuiYuanAction.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/newy/!svn/ver/632/newy/src/main/java/com/zklc/weishangcheng/member/action/PayHuiYuanAction.java
+END

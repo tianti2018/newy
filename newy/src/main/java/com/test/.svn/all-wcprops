@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/newy/!svn/ver/427/newy/src/main/java/com/test
+END
+TestDate.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/test/TestDate.java
+END
+fdfs_client.conf
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/newy/!svn/ver/3/newy/src/main/java/com/test/fdfs_client.conf
+END
+test.jpg
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/newy/!svn/ver/3/newy/src/main/java/com/test/test.jpg
+END
+TestQrCodeImage.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/newy/!svn/ver/1007/newy/src/main/java/com/test/TestQrCodeImage.java
+END
+RemoveRepeatData.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/97/newy/src/main/java/com/test/RemoveRepeatData.java
+END
+TestFastDFS.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/newy/!svn/ver/417/newy/src/main/java/com/test/TestFastDFS.java
+END
+TestFaHongBao.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/newy/!svn/ver/417/newy/src/main/java/com/test/TestFaHongBao.java
+END
+TestJedis.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/newy/!svn/ver/21/newy/src/main/java/com/test/TestJedis.java
+END

@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            window.logs = {
+                pagetime: {}
+            };
+            window.logs.pagetime['html_begin'] = (+new Date());
+        </script>
+        
+<script type="text/javascript"> 
+    var page_begintime = (+new Date());
+
+    var biz = "MzAwMzc2MDA1MA==";
+    var sn = "6f159d4f50dba838f3830399ef6b5367" || "";
+    var mid = "414724880" || "";
+    var idx = "1" || "" ;
+    
+    
+    var is_rumor = ""*1;
+    var norumor = ""*1;
+    if (!!is_rumor&&!norumor){
+      if (!document.referrer || document.referrer.indexOf("mp.weixin.qq.com/mp/rumor") == -1){
+        location.href = "http://mp.weixin.qq.com/mp/rumor?action=info&__biz=" + biz + "&mid=" + mid + "&idx=" + idx + "&sn=" + sn + "#wechat_redirect";
+      }
+    }
+
+    
+    
+</script>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+
+<link rel="dns-prefetch" href="//res.wx.qq.com">
+<link rel="dns-prefetch" href="//mmbiz.qpic.cn">
+<link rel="shortcut icon" type="image/x-icon" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/common/favicon22c41b.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript">
+    String.prototype.html = function(encode) {
+        var replace =["&#39;", "'", "&quot;", '"', "&nbsp;", " ", "&gt;", ">", "&lt;", "<", "&amp;", "&", "&yen;", "¥"];
+        if (encode) {
+            replace.reverse();
+        }
+        for (var i=0,str=this;i< replace.length;i+= 2) {
+             str=str.replace(new RegExp(replace[i],'g'),replace[i+1]);
+        }
+        return str;
+    };
+
+    window.isInWeixinApp = function() {
+        return /MicroMessenger/.test(navigator.userAgent);
+    };
+
+    window.getQueryFromURL = function(url) {
+        url = url || 'http://qq.com/s?a=b#rd'; // 做一层保护，保证URL是合法的
+        var query = url.split('?')[1].split('#')[0].split('&'),
+            params = {};
+        for (var i=0; i<query.length; i++) {
+            var arg = query[i].split('=');
+            params[arg[0]] = arg[1];
+        }
+        if (params['pass_ticket']) {
+        	params['pass_ticket'] = encodeURIComponent(params['pass_ticket'].html(false).html(false).replace(/\s/g,"+"));
+        }
+        return params;
+    };
+
+    (function() {
+	    var params = getQueryFromURL(location.href);
+        window.uin = params['uin'] || '';
+        window.key = params['key'] || '';
+        window.wxtoken = params['wxtoken'] || '';
+        window.pass_ticket = params['pass_ticket'] || '';
+    })();
+
+</script>
+
+        <title>星火草原协议</title>
+        
+<link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve2a7a3f.css">
+<style>
+     
+    </style>
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_pc2a7a3f.css">
+<![endif]-->
+<script type="text/javascript">
+    document.domain = "qq.com";
+</script>
+
+    </head>
+    <body id="activity-detail" class="zh_CN mm_appmsg" ontouchstart="">
+        
+    <script type="text/javascript">
+        var write_sceen_time = (+new Date());
+    </script>
+    
+    <div id="js_cmt_mine" class="discuss_container editing access" style="display:none;">
+        <div class="discuss_container_inner">
+            <h2 class="rich_media_title">星火草原协议</h2>
+            <span id="log"></span>
+            <div class="frm_textarea_box_wrp">
+                <span class="frm_textarea_box">
+                    <textarea id="js_cmt_input" class="frm_textarea" placeholder="留言将由公众号筛选后显示，对所有人可见。"></textarea>
+                    <div class="emotion_tool">
+                        <span class="emotion_switch" style="display:none;"></span>
+                        <span id="js_emotion_switch" class="pic_emotion_switch_wrp">
+                            <img class="pic_default" src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/emotion/icon_emotion_switch.2x278965.png" alt="">
+                            <img class="pic_active" src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/emotion/icon_emotion_switch_active.2x278965.png" alt="">
+                        </span>
+                        <div class="emotion_panel" id="js_emotion_panel">
+                            <span class="emotion_panel_arrow_wrp" id="js_emotion_panel_arrow_wrp">
+                                <i class="emotion_panel_arrow arrow_out"></i>
+                                <i class="emotion_panel_arrow arrow_in"></i>
+                            </span>
+                            <div class="emotion_list_wrp" id="js_slide_wrapper">
+                                
+                                
+                            </div>
+                            <ul class="emotion_navs" id="js_navbar">
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </span>
+            </div>
+            <div class="discuss_btn_wrp"><a id="js_cmt_submit" class="btn btn_primary btn_discuss btn_disabled" href="javascript:;">提交</a></div>
+            <div class="discuss_list_wrp" style="display:none">
+                <div class="rich_tips with_line title_tips discuss_title_line">
+                    <span class="tips">我的留言</span>
+                </div>
+                <ul class="discuss_list" id="js_cmt_mylist"></ul>
+            </div>
+            <div class="rich_tips tips_global loading_tips" id="js_mycmt_loading">
+                <img src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/common/icon_loading_white2805ea.gif" class="rich_icon icon_loading_white" alt="">
+                <span class="tips">加载中</span>
+            </div>
+            <div class="wx_poptips" id="js_cmt_toast" style="display:none;">
+                <img alt="" class="icon_toast" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGoAAABqCAYAAABUIcSXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3NpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoyMTUxMzkxZS1jYWVhLTRmZTMtYTY2NS0xNTRkNDJiOGQyMWIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTA3QzM2RTg3N0UwMTFFNEIzQURGMTQzNzQzMDAxQTUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTA3QzM2RTc3N0UwMTFFNEIzQURGMTQzNzQzMDAxQTUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NWMyOGVjZTMtNzllZS00ODlhLWIxZTYtYzNmM2RjNzg2YjI2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIxNTEzOTFlLWNhZWEtNGZlMy1hNjY1LTE1NGQ0MmI4ZDIxYiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pmvxj1gAAAVrSURBVHja7J15rF1TFMbXk74q1ZKHGlMkJVIhIgg1FH+YEpEQJCKmGBpThRoSs5jVVNrSQUvEEENIhGiiNf9BiERICCFIRbUiDa2qvudbOetF3Tzv7XWGffa55/uS7593977n3vO7e5+199p7v56BgQGh0tcmvAUERREUQVEERREUQVEERREUQVEERREUQVEERREUQVEERREUQVEERVAUQVEERVAUQbVYk+HdvZVG8b5F0xj4RvhouB+eCy8KrdzDJc1RtAX8ILxvx98V1GyCSkN98Cx4z/95/Wn4fj6j6tUEeN4wkFSnw1MJqj5NhBfAuwaUHREUg4lqNMmePVsHll/HFhVfe1t3FwpJI8DXCCquDrCWNN4B6Tb4M3Z98aTPmTvh0YHl18PXw29yZiKejoPvcUD6E74yFBJbVDk6Bb7K8aP/Hb4c/tRzEYIqprPhSxzlf4Uvhb/0Xoig8qnHAJ3lqPMzfDH8XZ4LEpRf2sVdA5/sqPO9Qfop70UJyn+/boaPddT5yrq7VUUvTIVJI7q74MMddXR8NB1eXcYvhBpZm0s2w72/o86HFoKvLau/pYaXzjLMdUJ6y0LwtWV9CIIaXtvA8+G9HHV03u5q+K+yH47U0NoRngPv7KjzHDwTLj0bS1BDazfJJlcnOOostC6ysnCT+q80G/sIvFVgeW09D8FPVT0uoP7VfvAD8NjA8pqmuAN+OcYAjso0RbIZ8DGB5TVNcRO8JMaHY9SXSdfa3eeANJimWBLrA7JFiZwIXye+NMUV8CcxP2SRFjXefok7NRjSGZJlWUPvw2/wtNiQirSoXWyMsR28wR7AzzYM0oXw+Y7yK+CLJGeaoqjyrJSdZJD6Ov4+z5y6NJc0Az7NUecHydIUy+v60KNyQHoM3nKI1y7YCFiq0i7uBvgER52vDdKqWn9djhY1Dn4G3n6Ecqm2rF74dvgoR53S0hQxW9RJAZAGW5bSn58QJA27dQ7uIEedjywEX5NKVxCqsY6y+qA+LxFI4+yZ6oH0trWkNan80jygtIUsc5SflgAsDXgehfdx1KkkTRE76tN+Xue2jnTU0Ru1oIbvpt30bBtKhOp5yaaRkts0lic8V1i6dPcIRx2d/l8Y8XtNNEg7OOo8bl1kmmOKnDsO88CaYzejau0hWZqiL7C83oCH4SeTHvwV2BqqsHRVztSEYOmWF80NeXZT6Hd4KflResE9vCnBOlCyGfDNAstHTVPUDWoQ1t3iW+9WNizvlhfd4aerXd+ThqiMfNR6+9LvOOro5OY5JX2H4+F7HZD+kGzlamMgldWiirQsjcwWFbjmqZJteekJLK9pisvgL6RhKvuciZiwzrWWGapfrPy30kBVcSBIrw0aD3PU0XB6cehntq7rTMf7/2iQlktDVdXJLXlg6VjmiYBn6rWSTRCH6hvJ0hQrpcGq8oidsmHpTP8t8DGO9/vcWt9qabiqPgup1yKyQwvC2tSefZ73SSpNkUJ4PlLorlHZ+446nc8f3fIyywlJhwrTuwVSjBa1ccvSxN0hjjoK5xVrYZMd9V6XbFfgBukixTwGLg8sDam3dZR/wZ6L/dJlin1en8LS+bgpFbz3Ygvzu1J1HKxYNqxGpCmaCEo12rrBorD6LRp8UbpcdR5VWhTW35KlKd6QFqjuM2XzwlpnMxTvSkuUwuG/Xlg6NtPjbT6WFimF/VG6LEvXgn8QGDjMbBukVECFwhpoS+CQatfX2Q1q6H7wENHdrfCr0lKleEB9JyxNneus+VJpsVL9TwI6W65LovWIGl3KtVJaLv7LBwYTFEERFEVQFEERFEVQFEERFEVQFEERFEVQFEERFEVQFEERFFWq/hFgADUMN4RzT6/OAAAAAElFTkSuQmCC">
+                <p class="toast_content">已留言</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="js_article" class="rich_media">
+        
+        <div id="js_top_ad_area" class="top_banner">
+ 
+        </div>
+                
+
+        <div class="rich_media_inner">
+            <div id="page-content">
+                <div id="img-content" class="rich_media_area_primary">
+                    <h2 class="rich_media_title" id="activity-name">
+                        星火草原协议 
+                    </h2>
+                    <div class="rich_media_meta_list">
+                        						                        <em id="post-date" class="rich_media_meta rich_media_meta_text">2016-02-04</em>
+
+                                                <em class="rich_media_meta rich_media_meta_text">星火草原</em>
+                                                <a class="rich_media_meta rich_media_meta_link rich_media_meta_nickname" href="javascript:void(0);" id="post-user">星火草原</a>
+                        <span class="rich_media_meta rich_media_meta_text rich_media_meta_nickname">星火草原</span>
+
+                        <div id="js_profile_qrcode" class="profile_container" style="display:none;">
+                            <div class="profile_inner">
+                                <strong class="profile_nickname">星火草原</strong>
+                                <img class="profile_avatar" id="js_profile_qrcode_img" src="" alt="">
+
+                                <p class="profile_meta">
+                                <label class="profile_meta_label">微信号</label>
+                                <span class="profile_meta_value">xinghuocaoyuan001</span>
+                                </p>
+
+                                <p class="profile_meta">
+                                <label class="profile_meta_label">功能介绍</label>
+                                <span class="profile_meta_value">星星之火可以燎原，让我们的梦想在指尖以光速放飞，有梦想谁都了不起，这里是你实现梦想的地方，来吧我可爱的小伙伴们。</span>
+                                </p>
+                                
+                            </div>
+                            <span class="profile_arrow_wrp" id="js_profile_arrow_wrp">
+                                <i class="profile_arrow arrow_out"></i>
+                                <i class="profile_arrow arrow_in"></i>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                                                            
+                                                            
+                    
+                    <div class="rich_media_content " id="js_content">
+                        
+                        <p style="text-indent:37px;line-height:150%;background:rgb(255,255,255)"><span style=";font-family:宋体;font-size:19px">本协议由您与</span><span style=";font-family:宋体;font-size:19px">北京飞鹰软航科技有限公司（以下简称本公司）</span><span style=";font-family:宋体;font-size:19px">共同缔结，具有合同效力。</span></p><p style="text-indent:28px;line-height:150%;background:rgb(255,255,255)"><span style=";font-family:宋体;font-size:19px">“星火草原”（微信号：xinghuocaoyuan001）系本公司在微信平台运行的公众服务号平台。</span></p><p style="text-indent: 37px;line-height: 150%"><span style=";font-family:宋体;font-size:19px">为保障您使用本公司开发的“星火草原”服务，您应当阅读并遵守《微信电子商务服务协议》、</span><a href="http://www.qq.com/contract.shtml" send_referrer="false"><span style=";font-family:宋体;font-size:19px">《腾讯服务协议》</span></a><span style=";font-family:宋体;font-size:19px">、</span><a href="http://zc.qq.com/chs/agreement1_chs.html" send_referrer="false"><span style=";font-family:宋体;font-size:19px">《QQ号码规则》</span></a><span style=";font-family:宋体;font-size:19px">、</span><a href="http://weixin.qq.com/agreement?lang=zh_CN" send_referrer="false"><span style=";font-family:宋体;font-size:19px">《腾讯微信软件许可及服务协议》</span></a><span style=";font-family:宋体;font-size:19px">以及</span><a href="https://mp.weixin.qq.com/cgi-bin/readtemplate?t=home/agreement_tmpl&amp;type=info&amp;lang=zh_CN"><span style=";font-family:宋体;font-size:19px">《微信公众平台服务协议》</span></a><span style=";font-family:宋体;font-size:19px">等相关协议及业务规则。请您务必审慎阅读、充分理解各条款内容，特别是限制或免除责任的相应条款，以及开通或使用某项服务的单独协议，并选择接受或不接受。限制或免除责任条款可能以加粗形式提示您注意。&nbsp;</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">一、&nbsp;协议内容及签署</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">1.本协议内容包括协议正文及所有“星火草原</span><span style=";font-family:宋体;font-size:19px">”</span><span style=";font-family:宋体;font-size:19px">已经发布的或将来可能发布的各类规则。所有规则为本协议不可分割的组成部分，与协议正文具有同等法律效力。除另行明确声明外，任何</span><span style=";font-family:宋体;font-size:19px">本公司开发的或将来开发的其他服务项目</span><span style=";font-family:宋体;font-size:19px">均受本协议约束。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">2.您应当在使用“星火草原”服务之前认真阅读全部协议内容，对于协议中以加粗字体显示的内容，您应重点阅读。如您对协议有任何疑问的，应向“星火草原”咨询。但无论您事实上是否在使用“星火草原”服务之前认真阅读了本协议内容，只要您使用“星火草原”服务，则本协议即对您产生约束，届时您不应以未阅读本协议的内容或者未获得“星火草原”对您问询的解答等理由，主张本协议无效，或要求撤销本协议。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">3.您承诺接受并遵守本协议的约定。如果您不同意本协议的约定，您应立即停止注册程序或停止使用“星火草原”服务。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">4.“星火草原”有权根据需要不时地制订、修改本协议及/或各类规则，并以“星火草原”微信服务号公示的方式进行公告，不再单独通知您。变更后的协议和规则一经在“星火草原”微信服务号公示后，立即自动生效。如您不同意相关变更，应当立即停止使用“星火草原”服务。您继续使用“星火草原”服务的，即表示您接受经修订的协议。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">二、&nbsp;注册</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">1.注册者资格</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">您确认，在您完成注册程序或以其他本公司允许的方式实际使用“星火草原”服务时，您应当是具备完全民事权利能力和完全民事行为能力的自然人、法人或其他组织。若您不具备前述主体资格，则您及您的监护人应承担因此而导致的一切后果，且本公司有权注销（永久冻结）您的“星火草原”账户，取消您在“星火草原”享有的任何权利，并保留向您及您的监护人索赔的权利。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">2.账户</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">在您签署本协议，完成会员注册程序或以其他“星火草原”允许的方式实际使用“星火草原”服务时，本公司会向您提供唯一编号的“星火草原”账户（以下亦称账户）。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">当您申请取得“星火草原”的账户后，逾期60日未登陆&nbsp;“星火草原”的，本公司有权终止向您提供”星火草原”服务，注销您的账户，取消您在“星火草原”享有的任何权利。账户注销后，本公司有权将相应的账户开放给任意第三方申请使用。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">您应对您的账户安全，以及对通过您的账户实施的行为负责。除非有法律规定或司法裁定，且征得本公司的同意，否则，账户不得以任何方式转让、赠与或继承（与账户相关的财产权益除外）。如果发现任何人不当使用您的账户或有任何其他可能危及您的账户安全的情形时，您应当立即以有效方式通知本公司，要求本公司暂停相关服务。您理解本公司对您的请求采取行动需要合理时间，本公司对在采取行动前已经产生的后果（包括但不限于您的任何损失）不承担任何责任。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">为方便您使用“星火草原”服务及本公司开发的其他项目或服务您同意并授权本公司将您在注册、使用”星火草原”服务过程中提供、形成的信息传递给本公司开发的其他项目或服务。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">3.会员</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">在您按照注册页面提示填写信息、阅读并同意本协议并完成全部注册程序后或以其他本公司允许的方式实际使用“星火草原”服务时，您即成为“星火草原”会员（亦称会员）。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">在注册时，您应当按照法律法规要求，或注册页面的提示准确提供，并及时更新您的资料，以使之真实、及时，完整和准确。如本公司有合理理由怀疑您提供的资料错误、不实、过时或不完整的，本公司有权向您发出询问及/或要求改正的通知，并有权直接做出删除相应资料的处理，直至中止、终止对您提供部分或全部“星火草原”服务。本公司对此不承担任何责任，您将承担因此产生的任何直接或间接支出。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">您应当准确填写并及时更新您提供的电子邮件地址、联系电话、联系地址、邮政编码等联系方式，以便本公司或其他会员与您进行有效联系，因通过这些联系方式无法与您取得联系，导致您在使用“星火草原”服务过程中产生任何损失或增加费用的，应由您完全独自承担。</span></p><p style="text-indent:28px;line-height:150%"><span style=";font-family:宋体;font-size:19px">您在使用“星火草原”服务过程中，所产生的应纳税赋，以及一切硬件、软件、服务及其它方面的费用，均由您独自承担。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">三、&nbsp;“星火草原”服务</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">1.通过本公司提供的“星火草原”服务和其它服务，会员可将在“星火草原”取得的流量卡主权所生成的二维码在法律、法规允许的范围内进行推广，因您的不当推广行为产生的一切不利后果均由您自行承担。给本公司造成损失的，本公司有权向您索赔。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">2.您在“星火草原”上与其他会员发生纠纷时，一旦您或其它会员任一方或双方共同提交本公司要求调处，则本公司有权根据单方判断做出调处决定，您了解并同意接受本公司的判断和调处决定。该决定将对您具有法律约束力。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">3.您了解并同意，本公司有权应政府部门（包括司法及行政部门）的要求，向其提供您在“星火草原”填写的注册信息和相关纪录等必要信息。如您涉嫌侵犯他人权益，则本公司亦有权在初步判断涉嫌侵权行为存在的情况下，向权利人提供您必要的身份信息。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">四、&nbsp;“星火草原”服务使用规范</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">1.在使用“星火草原”服务过程中，您承诺遵守以下约定：</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">a)&nbsp;在使用“星火草原”服务过程中实施的所有行为均遵守国家法律、法规等规范性文件及“星火草原”各项规则的规定和要求，不违背社会公共利益或公共道德，不损害他人的合法权益，不违反本协议及相关规则。您如果违反前述承诺，产生任何法律后果的，您应以自己的名义独立承担所有的法律责任，并确保本公司免于因此产生任何损失。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">b)&nbsp;在与其他会员推广过程中，遵守诚实信用原则，不采取不正当竞争行为，不扰乱网络的正常秩序。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">c)&nbsp;不发布国家禁止销售的或限制销售的商品或服务信息（除非取得合法且足够的许可），不发布涉嫌侵犯他人知识产权或其它合法权益的商品或服务信息，不发布违背社会公共利益或公共道德或本公司认为不适合在“星火草原”平台上销售的商品或服务信息，不发布其它涉嫌违法或违反本协议及各类规则的信息。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">d)&nbsp;不以虚构或歪曲事实的方式不当评价其他会员，不采取不正当方式制造或提高自身的信用度，不采取不正当方式制造或提高（降低）其他会员的信用度。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">e)&nbsp;不对“星火草原”上的任何数据作商业性利用，包括但不限于在未经本公司事先书面同意的情况下，以复制、传播等任何方式使用“星火草原”公众服务号上展示的资料。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">f)&nbsp;不使用任何装置、软件或例行程序干预或试图干预“星火草原”的正常运作或正在“星火草原”上进行的任何交易、活动。您不得采取任何将导致不合理的庞大数据负载加诸“星火草原”网络设备的行动。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">2.您了解并同意：</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">a)&nbsp;本公司有权对您是否违反上述承诺做出单方认定，并根据单方认定结果适用规则予以处理或终止向您提供服务，且无须征得您的同意或提前通知予您。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">b)&nbsp;经国家行政或司法机关的生效法律文书确认您存在违法或侵权行为，或者本公司根据自身的判断，认为您的行为涉嫌违反本协议和/或规则的条款或涉嫌违反法律法规的规定的，则本公司有权在“星火草原”上公示您的该等涉嫌违法或违约行为及星火草原已对您采取的措施。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">c)&nbsp;对于您在“星火草原”上发布的涉嫌违法或涉嫌侵犯他人合法权利或违反本协议和/或规则的信息，本公司有权不经通知您即予以删除，且按照规则的规定进行处罚。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">d)&nbsp;对于您在“星火草原”上实施的行为，包括您未在“星火草原”上实施但已经对“星火草原”及其其他会员产生影响的行为，本公司有权单方认定您行为的性质及是否构成对本协议和/或规则的违反，并据此作出相应处罚。您应自行保存与您行为有关的全部证据，并应对无法提供充要证据而承担的不利后果。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">e)&nbsp;对于您涉嫌违反承诺的行为对任意第三方造成损害的，您均应当以自己的名义独立承担所有的法律责任，并应确保本公司免于因此产生损失或增加费用。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">f)&nbsp;如您涉嫌违反有关法律或者本协议之规定，使本公司遭受任何损失，或受到任何第三方的索赔，或受到任何行政管理部门的处罚，您应当赔偿本公司因此造成的损失及（或）发生的费用，包括合理的律师费用。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">五、&nbsp;特别授权</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">您完全理解并不可撤销地授予本公司下列权利：</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">1.一旦您向本公司或本公司开发的其他项目或服务或本公司的关联公司作出任何形式的承诺，且前述公司已确认您违反了该承诺，则本公司有权立即按您的承诺或协议约定的方式对您的账户采取限制措施，包括中止或终止向您提供服务，并公示前述公司确认的您的违约情况。您了解并同意，本公司无须就相关确认与您核对事实，或另行征得您的同意，且本公司无须就此限制措施或公示行为向您承担任何的责任。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">2.一旦您违反本协议，或与本公司签订的其他协议的约定本公司有权以任何方式通知本公司相关关联公司或利害关系人，要求其对您的权益采取限制措施，包括但不限于要求将您账户内的款项支付给本公司指定的对象，要求关联公司或利害关系人中止、终止对您提供部分或全部服务，且在其经营或实际控制的任何平台公示您的违约情况。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">3.对于您提供的资料及数据信息，您授予本公司及关联公司独家的、全球通用的、永久的、免费的许可使用权利&nbsp;(并有权在多个层面对该权利进行再授权)。此外，本公司及关联公司有权(全部或部分地)&nbsp;使用、复制、修订、改写、发布、翻译、分发、执行和展示您的全部资料数据（包括但不限于注册资料、交易行为数据及全部展示于本公司的各类信息）或制作其派生作品，并以现在已知或日后开发的任何形式、媒体或技术，将上述信息纳入其它作品内。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">六、责任范围和责任限制</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">1.本公司负责按“现状”和“可得到”的状态向您提供“星火草原”服务。但本公司对“星火草原”服务不作任何明示或暗示的保证，包括但不限于“星火草原”服务的适用性、没有错误或疏漏、持续性、准确性、可靠性、适用于某一特定用途。同时，本公司也不对“星火草原”服务所涉及的技术及信息的有效性、准确性、正确性、可靠性、质量、稳定、完整和及时性作出任何承诺和保证。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">2.您了解“星火草原”上的信息系用户自行发布，且可能存在风险和瑕疵。“星火草原”仅作为服务平台，仅作为您取得服务的场所，您应自行谨慎判断确定相关服务的真实性、合法性和有效性，并自行承担因此产生的责任与损失。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">3.除非法律法规明确要求，或出现以下情况，否则，本公司及“星火草原”没有义务对所有用户的注册数据、服务信息、以及服务有关的其它事项进行事先审查：</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">a)&nbsp;本公司有合理的理由认为特定会员及具体服务事项可能存在重大违法或违约情形。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">b)&nbsp;本公司有合理的理由认为会员在“星火草原”的行为涉嫌违法或不当。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">4.本公司及关联公司有权受理您与其他会员因交易产生的争议，并有权单方判断与该争议相关的事实及应适用的规则，进而作出处理决定。该处理决定对您有约束力。如您未在限期内执行处理决定的，则本公司及关联公司有权利（但无义务）直接使用您账户内的款项代为支付。您应及时弥补“星火草原”其他会员的损失，否则本公司有权直接抵减您在其它合同项下的权益，并有权继续追偿。您理解并同意，本公司及关联公司并非司法机构，仅能以普通人的身份对证据进行鉴别，本公司及关联公司对争议的调处完全是基于您的委托，本公司及关联公司无法保证争议处理结果符合您的期望，也不对争议调处结论承担任何责任。如您因此遭受损失，您同意自行向其他会员或受益人索偿。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">5.您了解并同意，本公司不对因下述任一情况而导致您的任何损害赔偿承担责任，包括但不限于利润、商誉、使用、数据等方面的损失或其它无形损失的损害赔偿&nbsp;(无论“星火草原”是否已被告知该等损害赔偿的可能性)&nbsp;：</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">a)&nbsp;使用或未能使用“星火草原”服务。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">b)&nbsp;第三方未经批准的使用您的账户或更改您的数据。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">c)&nbsp;您对“星火草原”服务的误解。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">d)&nbsp;任何非因</span><span style=";font-family:宋体;font-size:19px">”</span><span style=";font-family:宋体;font-size:19px">星火草原</span><span style=";font-family:宋体;font-size:19px">”</span><span style=";font-family:宋体;font-size:19px">的原因而引起的与“星火草原”服务有关的其它损失。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">6.不论在何种情况下，本公司均不对由于互联网正常的设备维护，互联网络连接故障，电脑、通讯或其他系统的故障，电力故障，罢工，劳动争议，暴乱，起义，骚乱，生产力或生产资料不足，火灾，洪水，风暴，爆炸，战争，政府行为，司法行政机关的命令或第三方的不作为而造成的不能服务或延迟服务承担责任。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">七、&nbsp;协议终止</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">1.您同意，本公司有权自行全权决定以任何理由不经事先通知的中止、终止向您提供部分或全部“星火草原</span><span style=";font-family:宋体;font-weight:bold;font-size:19px">”</span><span style=";font-family:宋体;font-weight:bold;font-size:19px">服务，暂时冻结或永久冻结（注销）您的账户，且无须为此向您或任何第三方承担任何责任。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">2.出现以下情况时，本公司有权直接以注销账户的方式终止本协议:</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">a)&nbsp;本公司终止向您提供服务后，您涉嫌再一次直接或间接或以他人名义注册为“星火草原”会员的；</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">b)&nbsp;您提供的电子邮箱不存在或无法接收电子邮件，且没有其他方式可以与您进行联系，或本公司以其它联系方式通知您更改电子邮件信息，而您在本公司通知后三个工作日内仍未更改为有效的电子邮箱的。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">c)&nbsp;您注册信息中的主要内容不真实或不准确或不及时或不完整。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">d)&nbsp;本协议（含规则）变更时，您明示并通知本公司不愿接受新的服务协议的；</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">e)&nbsp;其它本公司认为应当终止服务的情况。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">3.您有权向本公司要求注销您的账户，经本公司审核同意的，本公司注销（永久冻结）您的账户，届时，您与本公司基于本协议的合同关系即终止。您的账户被注销（永久冻结）后，本公司没有义务为您保留或向您披露您账户中的任何信息，也没有义务向您或第三方转发任何您未曾阅读或发送过的信息。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">4.您同意，您与本公司的合同关系终止后，本公司仍享有下列权利</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">a)&nbsp;继续保存您的注册信息及您使用“星火草原”服务期间的所有交易信息。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">b)&nbsp;您在使用“星火草原”服务期间存在违法行为或违反本协议和/或规则的行为的，本公司仍可依据本协议向您主张权利。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">5.本公司中止或终止向您提供“星火草原”服务后，对于您在服务中止或终止之前的行为依下列原则处理，您应独力处理并完全承担进行以下处理所产生的任何争议、损失或增加的任何费用，并应确保本公司免于因此产生任何损失或承担任何费用。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">八、隐私权政策</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">本公司将在“星火草原”公布并不时修订隐私权政策，隐私权政策构成本协议的有效组成部分。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-weight:bold;font-size:19px">九、法律适用、管辖与其他</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">1.本协议之效力、解释、变更、执行与争议解决均适用中华人民共和国法律，如无相关法律规定的，则应参照通用国际商业惯例和（或）行业惯例。</span></p><p style="text-indent:37px;line-height:150%"><span style=";font-family:宋体;font-size:19px">2.因本协议产生之争议，应依照中华人民共和国法律予以处理，并以北京市西城区人民法院为第一审管辖法院。</span></p><p style="line-height:150%"><span style=";font-family:宋体;font-size:19px">&nbsp;</span></p><p><br  /></p>
+                    </div>
+                    <script type="text/javascript">
+                        var first_sceen__time = (+new Date());
+
+                        if ("" == 1 && document.getElementById('js_content'))
+                            document.getElementById('js_content').addEventListener("selectstart",function(e){ e.preventDefault(); });
+
+                                        (function(){
+                            if (navigator.userAgent.indexOf("WindowsWechat") != -1){
+                                var link = document.createElement('link');
+                                var head = document.getElementsByTagName('head')[0];
+                                link.rel = 'stylesheet';
+                                link.type = 'text/css';
+                                link.href = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_winwx2b1291.css";
+                                head.appendChild(link);
+                            }
+                        })();
+                    </script>
+                    <link rel="stylesheet" type="text/css" href="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_combo2a7a3f.css">
+                    
+                    
+                                        
+                                        
+                                        <div class="rich_media_tool" id="js_toobar3">
+                                                                    <div id="js_read_area3" class="media_tool_meta tips_global meta_primary" style="display:none;">阅读 <span id="readNum3"></span></div>
+
+                        <span style="display:none;" class="media_tool_meta meta_primary tips_global meta_praise" id="like3">
+                            <i class="icon_praise_gray"></i><span class="praise_num" id="likeNum3"></span>
+                        </span>
+
+                        <!-- <a id="js_report_article3" style="display:none;" class="media_tool_meta tips_global meta_extra" href="javascript:void(0);">举报</a> -->
+
+                    </div>
+                </div>
+
+                <div class="rich_media_area_extra">
+
+                    
+                                        <div class="mpda_bottom_container" id="js_bottom_ad_area">
+                        
+                    </div>
+                                        
+                    <div id="js_iframetest" style="display:none;"></div>
+
+                    
+                                    </div>
+               
+            </div>
+            <div id="js_pc_qr_code" class="qr_code_pc_outer" style="display:none;">
+                <div class="qr_code_pc_inner">
+                    <div class="qr_code_pc">
+                        <img id="js_pc_qr_code_img" class="qr_code_pc_img">
+                        <p>微信扫一扫<br>关注该公众号</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+        
+        <script>window.moon_map = {"appmsg/emotion/caret.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/caret278965.js","appmsg/emotion/map.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/map278965.js","appmsg/emotion/textarea.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/textarea27cdc5.js","appmsg/emotion/nav.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/nav278965.js","appmsg/emotion/common.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/common278965.js","appmsg/emotion/slide.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/slide2a9cd9.js","biz_wap/jsapi/cardticket.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/jsapi/cardticket275627.js","pages/report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/pages/report2a26bd.js","pages/music_player.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/pages/music_player2b674b.js","pages/loadscript.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/pages/loadscript292ed8.js","appmsg/emotion/dom.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/dom278965.js","appmsg/emotion/emotion.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/emotion/emotion2a9cd9.js","biz_wap/utils/hashrouter.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/hashrouter2805ea.js","appmsg/cmt_tpl.html.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/cmt_tpl.html2a2c13.js","a/gotoappdetail.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/gotoappdetail2a2c13.js","a/ios.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/ios275627.js","a/android.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/android275627.js","a/profile.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/profile29b1f8.js","a/card.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/a/card29b1f8.js","biz_wap/utils/position.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/position29b1f8.js","appmsg/a_report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/a_report2b6c15.js","biz_common/utils/report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/report275627.js","biz_common/utils/huatuo.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/huatuo293afc.js","biz_common/utils/cookie.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/cookie275627.js","pages/voice_component.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/pages/voice_component2b674b.js","new_video/ctl.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/new_video/ctl292ed8.js","biz_common/utils/monitor.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/monitor2a30ee.js","biz_common/utils/spin.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/spin275627.js","biz_wap/jsapi/pay.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/jsapi/pay275627.js","appmsg/reward_entry.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/reward_entry2b1291.js","appmsg/comment.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/comment2a9cd9.js","appmsg/like.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/like2b5583.js","appmsg/a.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/a2b6c8f.js","pages/version4video.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/pages/version4video2a6afa.js","biz_wap/utils/storage.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/storage2a74ac.js","biz_common/tmpl.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/tmpl2b3578.js","appmsg/img_copyright_tpl.html.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/img_copyright_tpl.html2a2c13.js","appmsg/a_tpl.html.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/a_tpl.html2a4dd8.js","biz_common/ui/imgonepx.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/ui/imgonepx275627.js","biz_common/dom/attr.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/attr275627.js","biz_wap/utils/ajax.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/ajax2b6c15.js","biz_common/utils/string/html.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/string/html29f4e9.js","appmsg/report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/report2a30ee.js","biz_common/dom/class.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/class275627.js","appmsg/report_and_source.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/report_and_source2b6c8f.js","appmsg/page_pos.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/page_pos2b6c15.js","appmsg/cdn_speed_report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/cdn_speed_report275627.js","appmsg/voice.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/voice2ab8bd.js","appmsg/qqmusic.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/qqmusic2ab8bd.js","appmsg/iframe.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/iframe2b39ee.js","appmsg/review_image.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/review_image2a5394.js","appmsg/outer_link.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/outer_link275627.js","biz_wap/jsapi/core.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/jsapi/core2b0d03.js","biz_common/dom/event.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/dom/event275627.js","appmsg/copyright_report.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/copyright_report2a2c13.js","appmsg/cache.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/cache2a74ac.js","appmsg/pay_for_reading.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/pay_for_reading28f721.js","appmsg/async.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/async2ae6ea.js","biz_wap/ui/lazyload_img.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/ui/lazyload_img2b18f6.js","biz_common/log/jserr.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/log/jserr2805ea.js","appmsg/share.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/share2b5583.js","biz_wap/utils/mmversion.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/mmversion275627.js","appmsg/cdn_img_lib.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/cdn_img_lib275627.js","biz_common/utils/url/parse.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_common/utils/url/parse275627.js","biz_wap/utils/device.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/utils/device2b3aae.js","biz_wap/jsapi/a8key.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/jsapi/a8key2a30ee.js","appmsg/index.js":"http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/appmsg/index2a9baf.js"};window.moon_crossorigin = true;</script><script type="text/javascript" src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/biz_wap/moon2b5731.js" crossorigin></script>
+    <script id="voice_tpl" type="text/html">        
+        <span id="voice_main_<#=voiceid#>_<#=posIndex#>" class="db audio_area <#if(!musicSupport){#> unsupport<#}#>">
+            <span class="tc tips_global unsupport_tips" <#if(show_not_support!==true){#>style="display:none;"<#}#>>
+            当前浏览器不支持播放音乐或语音，请在微信或其他浏览器中播放            </span>
+            <span class="audio_wrp db">
+                <span id="voice_play_<#=voiceid#>_<#=posIndex#>" class="audio_play_area">
+                    <i class="icon_audio_default"></i>
+                    <i class="icon_audio_playing"></i>
+                    <img src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/audio/icon_audio_unread26f1f1.png" alt="" class="pic_audio_default">
+                </span>
+                <span class="audio_length tips_global"><#=duration_str#></span>
+                <span class="db audio_info_area">
+                    <strong class="db audio_title"><#=title#></strong>
+                    <span class="audio_source tips_global"><#if(window.nickname){#>来自<#=window.nickname#><#}#></span>
+                </span>
+                <span id="voice_progress_<#=voiceid#>_<#=posIndex#>" class="progress_bar" style="width:0px;"></span>
+            </span>
+        </span>
+    </script>
+
+    <script id="qqmusic_tpl" type="text/html">        
+        <span id="qqmusic_main_<#=comment_id#>_<#=posIndex#>" class="db qqmusic_area <#if(!musicSupport){#> unsupport<#}#>">
+            <span class="tc tips_global unsupport_tips" <#if(show_not_support!==true){#>style="display:none;"<#}#>>
+            当前浏览器不支持播放音乐或语音，请在微信或其他浏览器中播放            </span>
+            <span class="db qqmusic_wrp">
+                <span class="db qqmusic_bd">
+                    <span id="qqmusic_play_<#=musicid#>_<#=posIndex#>" class="play_area">
+                        <i class="icon_qqmusic_switch"></i>
+                        <img src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/qqmusic/icon_qqmusic_default.2x26f1f1.png" alt="" class="pic_qqmusic_default">
+                        <img src="<#=music_img#>" data-autourl="<#=audiourl#>" data-musicid="<#=musicid#>" class="qqmusic_thumb" alt="">
+                    </span>
+                                        <a id="qqmusic_home_<#=musicid#>_<#=posIndex#>" href="javascript:void(0);" class="access_area">
+                        <span class="qqmusic_songname"><#=music_name#></span>
+                        <span class="qqmusic_singername"><#=singer#></span>
+                        <span class="qqmusic_source"><img src="http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icon/appmsg/qqmusic/icon_qqmusic_source263724.png" alt=""></span>
+                    </a>
+                </span>
+            </span>       
+        </span>
+    </script>
+  <script type="text/javascript">
+      var not_in_mm_css = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/not_in_mm2a7a3f.css";
+      var windowwx_css = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/style/page/appmsg/page_mp_article_improve_winwx2b1291.css";
+      var tid = "";
+      var aid = "";
+      var clientversion = "0";
+      var appuin = "MzAwMzc2MDA1MA==";
+
+      var source = "";
+      var scene = 75;
+      
+      var itemidx = "";
+
+      var _copyright_stat = "0";
+      var _ori_article_type = "";
+
+      var nickname = "星火草原";
+      var appmsg_type = "6";
+      var ct = "1454575345";
+      var user_name = "gh_42ca88ce1a5b";
+      var user_name_new = "";
+      var fakeid   = "";
+      var version   = "";
+      var is_limit_user   = "0";
+      var msg_title = "星火草原协议";
+      var msg_desc = "本协议由您与北京飞鹰软航科技有限公司（以下简称本公司）共同缔结，具有合同效力。“星火草原”（微信号：xing";
+      var msg_cdn_url = "http://mmbiz.qpic.cn/mmbiz/pKWIGyfSjUkEFibfz79AEibRaHokZpKrrSBlLZibt9pe04MYcic41I582lEQKk2LmmnezXeP5X6050Ru0Ia37uicwDg/0?wx_fmt=jpeg";
+      var msg_link = "http://mp.weixin.qq.com/s?__biz=MzAwMzc2MDA1MA==&amp;mid=414724880&amp;idx=1&amp;sn=6f159d4f50dba838f3830399ef6b5367#rd";
+      var user_uin = "0"*1;
+      var msg_source_url = '';
+      var img_format = 'jpeg';
+      var srcid = '';
+      var networkType;
+      var appmsgid = '' || '414724880';
+      var comment_id = "0" * 1;
+      var comment_enabled = "" * 1;
+      var is_need_reward = "0" * 1;
+      var is_https_res = ("" * 1) && (location.protocol == "https:");
+
+      var devicetype = "";
+      var source_username = "";  
+      var profile_ext_signature = "" || "";
+      var reprint_ticket = "";
+      var source_mid = "";
+      var source_idx = "";
+
+      var show_comment = "";
+      var __appmsgCgiData = {
+            can_use_page : "0"*1,
+            is_wxg_stuff_uin : "0"*1,
+            card_pos : "",
+            copyright_stat : "0",
+            source_biz : "",
+            hd_head_img : "http://wx.qlogo.cn/mmhead/Q3auHgzwzM7qDiauKf0rq6PoTlGUxYFs0Z2XicPwZuuDFMuA2pId7Uqw/0"||(window.location.protocol+"//"+window.location.host + "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/pic/appmsg/pic_rumor_link.2x264e76.jpg")
+      };
+      var _empty_v = "http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/pic/pages/voice/empty26f1f1.mp3";
+
+      var copyright_stat = "0" * 1;
+
+      var pay_fee = "" * 1;
+      var pay_timestamp = "";
+      var need_pay = "" * 1;
+
+      var need_report_cost = "0" * 1;
+      
+            window.wxtoken = "";
+          if(!!window.__initCatch){
+        window.__initCatch({
+            idkey : 27613,
+            startKey : 0,
+            limit : 9,
+            reportOpt : {
+                uin : uin,
+                biz : biz,
+                mid : mid,
+                idx : idx,
+                sn  : sn
+            }
+            
+            
+            
+        });
+    }
+  </script>
+
+  <script type="text/javascript">
+      seajs.use('appmsg/index.js');
+      function onBridgeReady() {
+  		WeixinJSBridge.call('hideOptionMenu');
+  	}
+
+  	if (typeof WeixinJSBridge == "undefined") {
+  		if (document.addEventListener) {
+  			document.addEventListener('WeixinJSBridgeReady', onBridgeReady,
+  					false);
+  		} else if (document.attachEvent) {
+  			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+  			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+  		}
+  	} else {
+  		onBridgeReady();
+  	}
+  </script>
+
+
+    </body>
+</html>
+
+ 

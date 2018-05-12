@@ -1,0 +1,42 @@
+package com.test;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
+import java.util.SortedMap;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import com.zklc.weishangcheng.member.util.HongBaoUtil;
+
+
+public class TestFaHongBao {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String wxOpenId ="o-Iy7wvoMiplPDSiLugaYWpUdFng";
+		String billNo = HongBaoUtil.createBillNo();
+		SortedMap<String, String> map = HongBaoUtil.createMap(billNo, wxOpenId, null,100);  
+		HongBaoUtil.sign(map);  
+		String requestXML = HongBaoUtil.getRequestXml(map);  
+		try {
+			 FileInputStream instream = new FileInputStream(new File("C:/yifei.p12"));
+			 String responseXML = HongBaoUtil.post(requestXML,instream);
+			 Document document;
+			 document = DocumentHelper.parseText(responseXML);
+			 Element root = document.getRootElement();
+			 List<Element> elements = root.elements();
+			 for(int i=0;i<elements.size();i++){
+				 System.out.println(i+"-->"+elements.get(i).getTextTrim());
+			 }
+			 System.out.println("responseXML >>>>>>>>>>>>>>>>>>>>>> "+responseXML);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+
+}

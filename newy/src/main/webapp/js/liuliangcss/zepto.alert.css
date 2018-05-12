@@ -1,0 +1,69 @@
+
+.rDialog {
+    position: fixed;
+}
+.rDialog-wrap {
+    background: white none repeat scroll 0 0 padding-box;
+    border-radius: 10px;
+    opacity: 1;
+    padding: 1em;
+    position: relative;
+}
+.rDialog-header-load {
+    background: rgba(0, 0, 0, 0) url("../images/alert-loading.gif") no-repeat scroll 0 0 / 100% auto;
+    height: 53px;
+    margin: auto;
+    text-align: center;
+    width: 50px;
+}
+.rDialog-header-alert, .rDialog-header-ok {
+    background-size: 100% auto;
+    height: 36px;
+    margin: auto;
+    text-align: center;
+    width: 36px;
+}
+.rDialog-header-alert {
+    background: rgba(0, 0, 0, 0) url("../images/alert.png") no-repeat scroll 0 0;
+}
+.rDialog-header-ok {
+    background: rgba(0, 0, 0, 0) url("../images/ok.png") no-repeat scroll -1px 0;
+}
+.rDialog-content {
+    color: #444;
+    font-size: 0.8em;
+    overflow: hidden;
+    padding: 1em;
+    text-align: center;
+}
+.rDialog-footer {
+    padding-left: 15px;
+    text-align: center;
+}
+.rDialog-footer a {
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 0.8em;
+    height: 32px;
+    line-height: 32px;
+    margin: 0 15px 15px 0;
+    padding: 0 30px;
+    text-decoration: none;
+}
+.rDialog-ok, .rDialog-ok:hover {
+    background: #db2330 none repeat scroll 0 0;
+    color: #fff;
+}
+.rDialog-cancel, .rDialog-cancel:hover {
+    background: #a6bbce none repeat scroll 0 0;
+    color: #fff;
+}
+.rDialog-mask {
+    background: #000 none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    opacity: 0.3;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}

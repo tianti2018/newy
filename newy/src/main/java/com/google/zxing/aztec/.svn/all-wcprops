@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/aztec
+END
+AztecDetectorResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/aztec/AztecDetectorResult.java
+END
+AztecReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/aztec/AztecReader.java
+END
+AztecWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/aztec/AztecWriter.java
+END

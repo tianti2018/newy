@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/util 
+						http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    				http://www.springframework.org/schema/aop 
+    				http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+    				http://www.springframework.org/schema/beans 
+    				http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+      			http://www.springframework.org/schema/context 
+      			http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+            http://www.springframework.org/schema/jee 
+            http://www.springframework.org/schema/jee/spring-jee-3.0.xsd          
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-3.0.xsd ">
+	<!-- xml -->
+	<!-- hibernate 属性配置 -->
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${hibernate.connection.driver_class}" />
+		<property name="jdbcUrl" value="${hibernate.connection.url}" />
+		<property name="username" value="${hibernate.connection.username}" />
+		<property name="password" value="${hibernate.connection.password}" />
+		<property name="idleConnectionTestPeriodInMinutes" value="60" />
+		<property name="idleMaxAgeInMinutes" value="240" />
+		<!-- 缓存的最大连接数 -->
+		<property name="maxConnectionsPerPartition" value="100" />
+		<!-- 缓存的最小连接数 -->
+		<property name="minConnectionsPerPartition" value="10" />
+		<property name="partitionCount" value="1" />
+		<property name="acquireIncrement" value="5" />
+		<property name="statementsCacheSize" value="100" />
+		<property name="releaseHelperThreads" value="3" />
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.zklc.weishangcheng.*.hibernate.persistent</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+				hibernate.show_sql=false
+				hibernate.cache.user_query_cache=false
+				hibernate.cache.use_second_level_cache=false
+				hibernate.hbm2ddl.auto=update
+			</value>
+		</property>
+	</bean>
+
+	<!-- Hibernate 事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:advice id="txBoAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="find*" read-only="true" />
+			<!-- <tx:method name="query*" read-only="true" /> -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" rollback-for="java.lang.Exception" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<aop:config>
+		<aop:pointcut id="BoOperation1" expression="execution(* com.zklc.weishangcheng.*.service.impl..*.*(..))" />
+		<aop:pointcut id="BoOperation2"	expression="execution(* com.zklc.weishangcheng.*.dao.impl..*.*(..))" />
+		<aop:pointcut id="BoOperation3" expression="execution(* com.zklc.framework.service.impl..*.*(..))" />
+		<aop:pointcut id="BoOperation4"	expression="execution(* com.zklc.framework.dao.impl..*.*(..))" />
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation1" />
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation2" />
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation3" />
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation4" />
+	</aop:config>	
+</beans>

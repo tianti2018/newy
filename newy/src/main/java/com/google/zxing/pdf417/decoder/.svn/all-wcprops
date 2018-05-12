@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder
+END
+BarcodeMetadata.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/BarcodeMetadata.java
+END
+DetectionResultRowIndicatorColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/DetectionResultRowIndicatorColumn.java
+END
+PDF417ScanningDecoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/PDF417ScanningDecoder.java
+END
+DetectionResultColumn.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/DetectionResultColumn.java
+END
+BoundingBox.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/BoundingBox.java
+END
+Codeword.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/Codeword.java
+END
+DecodedBitStreamParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/DecodedBitStreamParser.java
+END
+PDF417CodewordDecoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/PDF417CodewordDecoder.java
+END
+DetectionResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/DetectionResult.java
+END
+BarcodeValue.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/newy/!svn/ver/3/newy/src/main/java/com/google/zxing/pdf417/decoder/BarcodeValue.java
+END

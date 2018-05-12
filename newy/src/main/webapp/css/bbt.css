@@ -1,0 +1,122 @@
+body,dl,dd{
+	padding: 0;
+	margin: 0;
+}
+h1{
+	font-weight: normal;
+}
+*{
+	font-family: "微软雅黑";
+	/*color: #323232;*/
+}
+a{
+	text-decoration:none;
+	}
+img{
+	width: 100%;
+	border:none;
+	padding:0;
+	margin:0;
+	display:block;
+	}
+input{
+	border:none;
+	padding:0;
+	margin:0;
+	}
+ul,li,dl,dd,dt,p{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	overflow: hidden;
+}
+
+
+
+.mui-collapse-content{
+	box-shadow: 0px 1px 10px ;
+}
+.div-xinxi{
+	margin-top: 5%;
+}
+.div-xinxi ul{
+	margin-left:10px;
+	color: #323232;
+	font-size: 16px;
+	line-height: 1.42;
+}
+.dengji{
+	color: #323232;
+}
+.div-xinxi li p,.div-xinxi li button{
+	float: left;
+}
+.div-xinxi li button{
+	padding: 6px 4px;
+	margin-right: 2%;
+}
+.but-1{
+	background-color: #f43853;
+	border:1px solid #f43853;
+}
+.div-xinxi li{
+	padding: 4% 0;
+	border-bottom: 1px solid #DADADA;
+}
+.ft-but{
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	background-color: #929292;
+}
+.ft-but button{
+	width: 35%;
+	float: right;
+	border: 0;
+	margin: 0;	
+}
+.xx-J{
+	float: left;
+	color: white;
+	font-size: 22px;
+	margin-top: 15px;
+	margin-left: 20px;
+}
+.div-tishi{
+	width: 62%;
+	position: relative;
+	left: 12%;
+	top: -5px;
+}
+@media screen and (max-width: 350px){
+	.div-tishi{
+		width: 74%;
+		left: 12%;
+		top: -5px;
+	}
+}
+/*.xx-jia{
+	color: #f43853;
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

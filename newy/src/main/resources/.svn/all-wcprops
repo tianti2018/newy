@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/newy/!svn/ver/348/newy/src/main/resources
+END
+applicationContext-timer.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/963/newy/src/main/resources/applicationContext-timer.xml
+END
+exception.properties
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/newy/!svn/ver/3/newy/src/main/resources/exception.properties
+END
+system.properties
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/newy/!svn/ver/981/newy/src/main/resources/system.properties
+END
+fdfs_client.conf
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/newy/!svn/ver/3/newy/src/main/resources/fdfs_client.conf
+END
+jdbc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/newy/!svn/ver/743/newy/src/main/resources/jdbc.properties
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/newy/!svn/ver/3/newy/src/main/resources/log4j.properties
+END
+applicationContext.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/newy/!svn/ver/653/newy/src/main/resources/applicationContext.xml
+END
+ehcache.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/newy/!svn/ver/3/newy/src/main/resources/ehcache.xml
+END
+applicationContext-ehcache.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/newy/!svn/ver/3/newy/src/main/resources/applicationContext-ehcache.xml
+END
+freemarker.properties
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/newy/!svn/ver/3/newy/src/main/resources/freemarker.properties
+END
+struts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/newy/!svn/ver/866/newy/src/main/resources/struts.xml
+END
+applicationContext-hibernate.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/newy/!svn/ver/115/newy/src/main/resources/applicationContext-hibernate.xml
+END
+struts.properties
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/newy/!svn/ver/866/newy/src/main/resources/struts.properties
+END

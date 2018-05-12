@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/java/com/zklc/weishangcheng/member/hibernate/persistent/AccessToken.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/servlet/SendMessageOrdersServlet.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/DBUtil.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/DateUtil.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/JdbcUtil.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/MessageUtil.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/SignUtil.java=UTF-8
+encoding//src/main/java/com/zklc/weixin/util/WeixinUtil.java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/webapp/WEB-INF/jsp/product.jsp=UTF-8
+encoding//src/main/webapp/css/base.css=UTF-8
+encoding//src/main/webapp/css/family.css=UTF-8
+encoding/<project>=UTF-8
