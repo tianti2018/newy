@@ -14,7 +14,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weixin.messageSend.SendText;
 import com.zklc.weixin.messageSend.text;
 import com.zklc.weixin.util.DateUtil;
@@ -44,7 +44,7 @@ public class PublicUtil {
 	 * 
 	 * @return
 	 */
-	public static boolean isRight(Users user) {
+	public static boolean isRight(JifenUser user) {
 		boolean returnObj = false;
 		// 判断1小时内是否输入过二级密码，如输入过则直接进入，如没有输入则进入输入二级密码页
 		if (PublicUtil.SecurityCodeMap.containsKey(user.getLoginName())) {

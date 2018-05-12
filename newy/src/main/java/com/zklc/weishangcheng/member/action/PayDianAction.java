@@ -34,7 +34,7 @@ import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.DianForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecordDian;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
@@ -42,7 +42,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.vo.PriceForDianZhuLeve
 import com.zklc.weishangcheng.member.service.DianForUserService;
 import com.zklc.weishangcheng.member.service.FhRecordDianService;
 import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.OrderDianService;
 import com.zklc.weishangcheng.member.service.UseryService;
@@ -70,7 +70,7 @@ import com.zklc.weixin.util.WeixinUtil;
 })
 public class PayDianAction extends BaseAction {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
@@ -88,7 +88,7 @@ public class PayDianAction extends BaseAction {
 	
 	private OrderDian order;
 	private OrderAddress orderAddress;
-	private Users user;
+	private JifenUser user;
 	
 	private String ordersBH;
 	public String code;
@@ -661,7 +661,7 @@ public class PayDianAction extends BaseAction {
 						orderService.moneyPay(order,user);
 						
 						if(!out_trade_no.startsWith("ms")){
-							Users refferUser = null;
+							JifenUser refferUser = null;
 							Usery parentUsery = null;
 							if(user.getReferrerId()!=null){
 								refferUser = userService.findById(user.getReferrerId());
@@ -674,7 +674,7 @@ public class PayDianAction extends BaseAction {
 								if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
 								autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 								if(refferUser.getReferrerId()!=null){
-									Users r2 = userService.findById(refferUser.getReferrerId());
+									JifenUser r2 = userService.findById(refferUser.getReferrerId());
 									if(r2!=null){
 										Usery usery2 = useryService.findbyUserId(r2.getUserId());
 										if(usery2!=null&&usery2.getWxOpenid()!=null){
@@ -708,9 +708,9 @@ public class PayDianAction extends BaseAction {
     	return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -755,12 +755,12 @@ public class PayDianAction extends BaseAction {
 		this.ordersBH = ordersBH;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

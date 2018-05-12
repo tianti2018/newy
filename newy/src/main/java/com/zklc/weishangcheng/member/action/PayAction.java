@@ -19,11 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.utils.GetWxOrderno;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.OrderDao;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
 import com.zklc.weishangcheng.member.service.UseryService;
@@ -36,7 +36,7 @@ import com.zklc.weishangcheng.member.service.YongjinService;
 @Action(value = "payAction")
 public class PayAction extends BaseAction {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private OrderService orderService;
 	@Autowired
@@ -50,7 +50,7 @@ public class PayAction extends BaseAction {
 	@Autowired
 	private YongjinService yongjinService;
 	
-	private Users user;
+	private JifenUser user;
 	private Order order;
 	private OrderLiu orderLiu;
 	private Integer userId;
@@ -120,7 +120,7 @@ public class PayAction extends BaseAction {
 						orderService.moneyPay(order,openid,user);
 						
 						if(!out_trade_no.startsWith("ms")){
-							Users refferUser = null;
+							JifenUser refferUser = null;
 							Usery parentUsery = null;
 							if(user.getReferrerId()!=null){
 								refferUser = userService.findById(user.getReferrerId());
@@ -133,7 +133,7 @@ public class PayAction extends BaseAction {
 								if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
 								autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 								if(refferUser.getReferrerId()!=null){
-									Users r2 = userService.findById(refferUser.getReferrerId());
+									JifenUser r2 = userService.findById(refferUser.getReferrerId());
 									if(r2!=null){
 										Usery usery2 = useryService.findbyUserId(r2.getUserId());
 										if(usery2!=null&&usery2.getWxOpenid()!=null){
@@ -166,7 +166,7 @@ public class PayAction extends BaseAction {
 						//判断订单类型
 						Integer num  = orderLiuService.liuliangPay(orderLiu,openid,user);
 						
-						Users refferUser = null;
+						JifenUser refferUser = null;
 						Usery parentUsery = null;
 						if(user.getReferrerId()!=null){
 							refferUser = userService.findById(user.getReferrerId());
@@ -187,7 +187,7 @@ public class PayAction extends BaseAction {
 							if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
 							autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 							if(refferUser.getReferrerId()!=null){
-								Users r2 = userService.findById(refferUser.getReferrerId());
+								JifenUser r2 = userService.findById(refferUser.getReferrerId());
 								if(r2!=null){
 									Usery usery2 = useryService.findbyUserId(r2.getUserId());
 									if(usery2!=null&&usery2.getWxOpenid()!=null){

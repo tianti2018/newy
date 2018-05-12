@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
 import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
 import com.zklc.weishangcheng.member.service.UseryService;
@@ -29,7 +29,7 @@ import com.zklc.weixin.util.UserInfoUtil;
 public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements OrderService {
 	
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private FhRecordDao fhRecordDao;
 	@Autowired
@@ -239,12 +239,12 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	}
 	
 	public void updateUserMsg(){
-		String hql = "from Users u where u.unionid is null";//259992
-		List<Users> users = userService.findByHql(hql, null);
+		String hql = "from JifenUser u where u.unionid is null";//259992
+		List<JifenUser> users = userService.findByHql(hql, null);
 //		List<JifenUser> users = userService.findAll();
 		
 		if(users.size()>0){
-			for(Users user:users){
+			for(JifenUser user:users){
 				String wxOpenId = user.getWxOpenid();
 				if(wxOpenId != null&&user.getUnionid()==null){
 					UserInfoUtil userInfo = autosendmsgService.processUserInfoObject(wxOpenId);
@@ -283,7 +283,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	
 	
 	
-	public int moneyPay(Order order, String openid,Users user) {
+	public int moneyPay(Order order, String openid,JifenUser user) {
 		order.setUserId(user.getUserId());
 		order.setOrderStatus(1); //已支付
 		order.setCreateDate(new Date());
@@ -326,7 +326,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 						case 15:money=fv1*1500*feilv;break;
 						
 					}
-					Users pjfUser = userService.findById(puserId);
+					JifenUser pjfUser = userService.findById(puserId);
 					Usery usery = useryService.findbyUserId(puserId);
 					if (null!=pjfUser.getLevel()&&pjfUser.getLevel()>=levelOne&&usery!=null) {
 						switch (money.intValue()) {
@@ -521,7 +521,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 			list = new ArrayList<Integer>();
 		}
 		
-		Users jifenUser = userService.findById(userId);
+		JifenUser jifenUser = userService.findById(userId);
 		Integer referrerId = jifenUser.getReferrerId();
 		System.out.println(">>>>>>>>> referrerId" + referrerId);
 		if (null!=referrerId) {
@@ -548,7 +548,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	}
 
 	@Override
-	public void saveAndCFh(Order order, Users user) {
+	public void saveAndCFh(Order order, JifenUser user) {
 
 		save(order);
 		String levelValue = order.getLevelValue();
@@ -581,7 +581,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 						case 14:money=fv1*1400*feilv;break;
 						case 15:money=fv1*1500*feilv;break;
 					}
-					Users pjfUser = userService.findById(puserId);
+					JifenUser pjfUser = userService.findById(puserId);
 					if (null!=pjfUser.getLevel()) {
 						switch (money.intValue()) {
 							case 90:

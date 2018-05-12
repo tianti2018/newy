@@ -26,7 +26,7 @@ import com.utils.CalendarUtils;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
@@ -35,7 +35,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
@@ -72,7 +72,7 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	private FhrecordService fhrecordService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -81,7 +81,7 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	private FhRecordDao fhRecordDao;
 	@Autowired
-	private UsersService jifenUserService;
+	private JifenUserService jifenUserService;
 	@Autowired
 	private OrderAddressService orderAddressService;
 	@Autowired
@@ -97,7 +97,7 @@ public class OrderAction extends BaseAction {
 	
 	
 	
-	private Users user;
+	private JifenUser user;
 	private Order order;
 	private OrderAddress orderAddress;
 	public String loginName;// 用户登录名
@@ -191,7 +191,7 @@ public class OrderAction extends BaseAction {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					Users user = userService.findById(usery.getUserId());
+					JifenUser user = userService.findById(usery.getUserId());
 					if(user!=null){
 						if(user.getUnionid()==null){
 							user.setUnionid(userInfo.getUnionid());
@@ -366,9 +366,9 @@ public class OrderAction extends BaseAction {
 		return "updateOrderStatus";
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -881,11 +881,11 @@ public class OrderAction extends BaseAction {
 		this.message = message;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 
@@ -1129,11 +1129,11 @@ public class OrderAction extends BaseAction {
 		this.fhrecordService = fhrecordService;
 	}
 
-	public UsersService getUserService() {
+	public JifenUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UsersService userService) {
+	public void setUserService(JifenUserService userService) {
 		this.userService = userService;
 	}
 
@@ -1161,11 +1161,11 @@ public class OrderAction extends BaseAction {
 		this.fhRecordDao = fhRecordDao;
 	}
 
-	public UsersService getJifenUserService() {
+	public JifenUserService getJifenUserService() {
 		return jifenUserService;
 	}
 
-	public void setJifenUserService(UsersService jifenUserService) {
+	public void setJifenUserService(JifenUserService jifenUserService) {
 		this.jifenUserService = jifenUserService;
 	}
 

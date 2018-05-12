@@ -16,11 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.utils.MyUtils;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.City;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
 import com.zklc.weishangcheng.member.service.CityService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weixin.util.WeixinUtil;
@@ -47,7 +47,7 @@ public class OrderAddressAction extends BaseAction {
 	@Autowired
 	private OrderAddressService orderAddressService;
 	@Autowired
-	private UsersService userService; 
+	private JifenUserService userService; 
 	
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
@@ -55,7 +55,7 @@ public class OrderAddressAction extends BaseAction {
 	private CityService cityService;
 	
 	public OrderAddress orderAddress;
-	private Users user;
+	private JifenUser user;
 	private Integer id;
 	private String message;//返回状态
 	public String ckDefaultAddr;//默认地址
@@ -275,9 +275,9 @@ public class OrderAddressAction extends BaseAction {
 		return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 code = request.getParameter("code");
 			 wxOpenid=(String) request.getSession().getAttribute("wxOpenid");
@@ -289,7 +289,7 @@ public class OrderAddressAction extends BaseAction {
 				 }
 			 }
 			 if(wxOpenid!=null){
-					List<Users> userList = userService.findByProperty("wxOpenid", wxOpenid);
+					List<JifenUser> userList = userService.findByProperty("wxOpenid", wxOpenid);
 					if (userList != null && userList.size() > 0) {
 						user = userList.get(0);
 						request.getSession().setAttribute("loginUser",user);
@@ -301,11 +301,11 @@ public class OrderAddressAction extends BaseAction {
 		return  user;
 	} 
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

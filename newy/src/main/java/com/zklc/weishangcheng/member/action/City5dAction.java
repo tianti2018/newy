@@ -24,7 +24,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.City5d;
 import com.zklc.weishangcheng.member.hibernate.persistent.JCity;
 import com.zklc.weishangcheng.member.hibernate.persistent.JTown;
 import com.zklc.weishangcheng.member.hibernate.persistent.JVillage;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.CityService;
 import com.zklc.weishangcheng.member.service.JCityService;
@@ -32,7 +32,7 @@ import com.zklc.weishangcheng.member.service.JCountyService;
 import com.zklc.weishangcheng.member.service.JTownService;
 import com.zklc.weishangcheng.member.service.JVillageService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weixin.util.WeixinUtil;
 
@@ -53,7 +53,7 @@ public class City5dAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private JCityService jcityService;
 	@Autowired
@@ -64,7 +64,7 @@ public class City5dAction extends BaseAction {
 	private JVillageService jvillageService;
 	@Autowired
 	private JiFenRecordService jfrecordService;
-	private Users user;
+	private JifenUser user;
 	private String code;// 微信code
 	private String wxOpenid;// 用户微信标识符
 	public Integer userId;//传值用的    
@@ -118,8 +118,8 @@ public class City5dAction extends BaseAction {
 		String chooseName = c.getShortname();
 		System.out.println("用户选择的城市："+chooseName);
 		
-		List<Users> updateList = new ArrayList<Users>();  //定义一个updateList集合
-		Users jfUser = userService.findById(user.getUserId());
+		List<JifenUser> updateList = new ArrayList<JifenUser>();  //定义一个updateList集合
+		JifenUser jfUser = userService.findById(user.getUserId());
 		jfUser.setCity(c.getOldCityId());
 		updateList.add(jfUser);
 		jfrecordService.saveOrUpdateAll(updateList); //执行update修改语句
@@ -145,15 +145,15 @@ public class City5dAction extends BaseAction {
 			System.out.println("当前用户所在的城市为："+cityNames);
 			
 			List<JCity> cityList = jcityService.findByProperty("shortname", cityNames); //执行hql语句，得到结果
-			List<Users> updateList = new ArrayList<Users>();  //定义一个updateList集合
+			List<JifenUser> updateList = new ArrayList<JifenUser>();  //定义一个updateList集合
 			
 			for(JCity city : cityList){  //遍历cityList，得到每一条记录	
 				Integer id = city.getOldCityId();	//得到城市名为cityNames(济南的)的相对应的id号
 				System.out.println("id======"+id);
 				
-				String hqlJifenUser = "from Users j where userId = "+"'"+user.getUserId()+"'"; //从users表中查出当前登录用户的信息
-				List<Users> jfUserList = jfrecordService.findByHql(hqlJifenUser, null); //执行hql语句，得到结果
-				for(Users jfuser:jfUserList){  //遍历jifenUser得到每一条记录
+				String hqlJifenUser = "from JifenUser j where userId = "+"'"+user.getUserId()+"'"; //从users表中查出当前登录用户的信息
+				List<JifenUser> jfUserList = jfrecordService.findByHql(hqlJifenUser, null); //执行hql语句，得到结果
+				for(JifenUser jfuser:jfUserList){  //遍历jifenUser得到每一条记录
 					if(jfuser.getCity()==null){
 						jfuser.setCity(id); //存入city的值
 						updateList.add(jfuser); //把存入的值放到updateList集合中
@@ -174,7 +174,7 @@ public class City5dAction extends BaseAction {
 		JSONObject json = new JSONObject();
 		json.put("success", false);
 		user = getSessionUser();
-		Users jfUser = userService.findById(user.getUserId());
+		JifenUser jfUser = userService.findById(user.getUserId());
 		System.out.println("cityNum===="+jfUser.getCity());
 		
 //		String currName = request.getParameter("cityNames"); //获取当前登录用户的城市名称，如:济南
@@ -204,9 +204,9 @@ public class City5dAction extends BaseAction {
 		return null;
 	}	
 
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -289,11 +289,11 @@ public class City5dAction extends BaseAction {
 		}
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

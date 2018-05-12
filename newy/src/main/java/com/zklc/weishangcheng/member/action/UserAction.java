@@ -47,12 +47,12 @@ import com.utils.Sha1Util;
 import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
-import com.zklc.weishangcheng.member.dao.UsersDao;
+import com.zklc.weishangcheng.member.dao.JifenUserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
 import com.zklc.weishangcheng.member.hibernate.persistent.Card;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
@@ -66,7 +66,7 @@ import com.zklc.weishangcheng.member.service.FhRecordDianService;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.OrderLiuService;
@@ -117,7 +117,7 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private JiFenRecordService jfrecordService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private FhrecordService fhrecordService;
 	@Autowired
@@ -125,7 +125,7 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private OrderAddressService orderAddressService;
 	@Autowired
-	private UsersDao jifenUserDao;
+	private JifenUserDao jifenUserDao;
 	@Autowired
 	private FhRecordDao fhRecordDao;
 	@Autowired
@@ -153,7 +153,7 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private CityService cityService;
 	
-	private Users user;
+	private JifenUser user;
 	private Order order;
 	private String id;
 	private List tSubscibeList;
@@ -254,15 +254,15 @@ public class UserAction extends BaseAction {
 	
 	
 	public String jampshopIndex(){
-//		user = getSessionUser();
-		user = userService.findById(1820);
-		request.getSession().setAttribute("loginUser",user);
+		user = getSessionUser();
+//		user = userService.findById(1883);
+//		request.getSession().setAttribute("loginUser",user);
 
 		if(user == null){
 			return "timeOut";
 		}
 		
-		return "jampshopIndex";
+		return "jamp";
 	}
 	
 	public String shopIndex(){
@@ -296,9 +296,9 @@ public class UserAction extends BaseAction {
 		if(user==null){
 			return "timeOut";
 		}
-		Users p1=null;
-		Users p2=null;
-		Users p3=null;
+		JifenUser p1=null;
+		JifenUser p2=null;
+		JifenUser p3=null;
 		System.out.println(">>>>>>>>>>>>> user.getReferrerId() "+user.getReferrerId());
 		if (null!=user.getReferrerId()) {
 			//sendAddress(1,user.getReferrerId());
@@ -306,11 +306,11 @@ public class UserAction extends BaseAction {
 			if (null!=p1) {
 				request.setAttribute("orderAddress1", orderAddressService.findOrderAddressByUserId(p1.getUserId()));
 				if (null!=p1.getReferrerId()) {
-					p2 = (Users)userService.findById(p1.getReferrerId()); //2级代理商
+					p2 = (JifenUser)userService.findById(p1.getReferrerId()); //2级代理商
 					if (null!=p2) {
 						request.setAttribute("orderAddress2", orderAddressService.findOrderAddressByUserId(p2.getUserId()));
 						if (null!=p2.getReferrerId()) {
-							p3 = (Users)userService.findById(p2.getReferrerId()); //1级代理商
+							p3 = (JifenUser)userService.findById(p2.getReferrerId()); //1级代理商
 							if (null!=p3) {
 								request.setAttribute("orderAddress3", orderAddressService.findOrderAddressByUserId(p3.getUserId()));
 							}
@@ -458,7 +458,7 @@ public class UserAction extends BaseAction {
 				json.put("success", "yiyou");
 			}else {
 				if(userId!=null){
-					Users ref=userService.findById(userId);
+					JifenUser ref=userService.findById(userId);
 					if(ref!=null){
 						json.put("userId", ref.getUserId());
 						json.put("userName", ref.getUserName());
@@ -750,12 +750,12 @@ public class UserAction extends BaseAction {
 	public String phoneFamily(){
 		//获取用户信息
 //		userId = 1820;
-//		user = getSessionUser();
-		user = userService.findById(1820);
+		user = getSessionUser();
+//		user = userService.findById(3480);
 		if(user == null){
 			return "timeOut";
 		}
-//		user = userService.findById(user.getUserId());
+		user = userService.findById(user.getUserId());
 		request.getSession().setAttribute("loginUser",user);
 		DecimalFormat   fnum   =   new   DecimalFormat("##0.00"); //四舍五入，保留两位小数 
 		Double totalMoney = fhrecordService.findTotalJiFenOneByUserId(user.getUserId(), "2","1,2");//总佣金
@@ -932,11 +932,11 @@ public class UserAction extends BaseAction {
 		} 
 	}
 	
-	private Users getSessionUser2(){
+	private JifenUser getSessionUser2(){
 		
 		
 		UserInfoUtil userInfo = null;
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -979,7 +979,7 @@ public class UserAction extends BaseAction {
 					if(user==null){
 						songjifen = true;
 						System.out.println("旧表中不存在");
-						user = new Users();
+						user = new JifenUser();
 						user.setAppDate(new Date());
 						user.setSubscribe(1);
 						user.setLevel(0);
@@ -1013,7 +1013,7 @@ public class UserAction extends BaseAction {
 						record.setUserId(user.getUserId());
 						record.setType(5);
 						jfrecordService.save(record);
-						Users refferUser = null;
+						JifenUser refferUser = null;
 						if(parentUsery!=null){
 							autosendmsgService.sendMsg(parentUsery.getWxOpenid(), "["+user.getUserName()+":"+
 									user.getUserId()+"]点击了您分享的链接,积分将待其关注公众号后获得!");
@@ -1029,7 +1029,7 @@ public class UserAction extends BaseAction {
 								record1.setType(5);
 								jfrecordService.save(record1);
 								if(refferUser.getReferrerId()!=null){
-									Users r2 = userService.findById(refferUser.getReferrerId());
+									JifenUser r2 = userService.findById(refferUser.getReferrerId());
 									if(r2!=null){
 										JiFenRecord record2 = new JiFenRecord();
 										record2.setCreateDate(new Date());
@@ -1085,7 +1085,7 @@ public class UserAction extends BaseAction {
 						List<Integer> listUserids = findUserIdsLevel(1, listOne, i, 0);//存的所有的id 
 						if(listUserids!=null&&listUserids.size()>0){
 							if(listUserids.contains(userId)){
-								Users uu = userService.findById(userId);
+								JifenUser uu = userService.findById(userId);
 								userList.add(uu);//看到这了 相当于把这些都添加到了userlist里面  用来在页面显示的
 							}
 						}
@@ -1096,7 +1096,7 @@ public class UserAction extends BaseAction {
 			List<UserVo> userVos = new ArrayList<UserVo>();//就是相当于把users(JiFenUser)存到了UserVos  把其他的都遍历出来
 			if(userList!=null&&userList.size()>0){
 				for(int i=0;i<userList.size();i++){
-					Users u = (Users) userList.get(i);
+					JifenUser u = (JifenUser) userList.get(i);
 					OrderAddressVO address = orderAddressService.findOrderAddressByUserId(u.getUserId());
 					UserVo userVo = new UserVo();
 					userVo.setAddress(address);
@@ -1169,7 +1169,7 @@ public class UserAction extends BaseAction {
 		Map<String, Object> jsonMap = new HashMap<String, Object>();
 		List<Integer> listOne = new ArrayList<Integer>();
 		listOne.add(userId);
-		List<Users> listLevelUsers = findUserLevel(1,listOne,Integer.valueOf(viewLevel),pageNum);
+		List<JifenUser> listLevelUsers = findUserLevel(1,listOne,Integer.valueOf(viewLevel),pageNum);
 		response = ServletActionContext.getResponse();
 		/***********组装json*************/
 		
@@ -1177,7 +1177,7 @@ public class UserAction extends BaseAction {
 		if(listLevelUsers != null&&listLevelUsers.size()>0){
 			List<UserVo> userVos = new ArrayList<UserVo>();
 			for(int i=0;i<listLevelUsers.size();i++){
-				Users u = (Users) listLevelUsers.get(i);
+				JifenUser u = (JifenUser) listLevelUsers.get(i);
 				OrderAddressVO address = orderAddressService.findOrderAddressByUserId(u.getUserId());
 				UserVo userVo = new UserVo();
 				userVo.setAddress(address);
@@ -1211,12 +1211,12 @@ public class UserAction extends BaseAction {
 			listOne.add(user.getUserId());
 			
 			//发送不同级别的用户
-			List<Users> hongbaoUsers = new ArrayList<Users>();
-			List<Users> userlist = findUserLevelhongbao(1,listOne,Integer.valueOf(viewLevel));
+			List<JifenUser> hongbaoUsers = new ArrayList<JifenUser>();
+			List<JifenUser> userlist = findUserLevelhongbao(1,listOne,Integer.valueOf(viewLevel));
 			List<FhRecord> fhRecords = fhRecordDao.findFHbyUserIdAndFlag(user.getUserId(),1);
 			if(fhRecords.size()>0&&userlist!=null&&userlist.size()>0){
 				for(FhRecord fh:fhRecords){
-					for(Users u:userlist){
+					for(JifenUser u:userlist){
 						if(fh.getFromUserId().equals(u.getUserId())&&fh.getUserId()==user.getUserId().intValue()){
 							if(!hongbaoUsers.contains(u))
 								hongbaoUsers.add(u);
@@ -1236,7 +1236,7 @@ public class UserAction extends BaseAction {
 		return "viewHongbao";
 	}
 	
-	public List<Users> findUserLevelhongbao(int flag,List<Integer> userIds,int level) {
+	public List<JifenUser> findUserLevelhongbao(int flag,List<Integer> userIds,int level) {
 		
 		
 		if (flag<level) {
@@ -1299,7 +1299,7 @@ public class UserAction extends BaseAction {
 	public void sendAddress(int flag,Integer referrerId) {
 		if (flag <16) {
 			if (null!=referrerId) {
-				Users p = userService.findById(referrerId);
+				JifenUser p = userService.findById(referrerId);
 				if (null!=p) {
 					request.setAttribute("orderAddress"+flag, orderAddressService.findOrderAddressByUserId(p.getUserId()));
 					sendAddress(flag++,p.getReferrerId());
@@ -1618,7 +1618,7 @@ public class UserAction extends BaseAction {
 	
 	public String liuAjaxPay(){
 		OrderLiu orderVo= null;
-		Users user = null;
+		JifenUser user = null;
 		Usery usery = null;
 		if (orderNo != null) {
 			System.out.println("订单编号是1：" + orderNo);
@@ -1925,11 +1925,11 @@ public class UserAction extends BaseAction {
 		this.favid = favid;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 
@@ -2138,11 +2138,11 @@ public class UserAction extends BaseAction {
 	}
 
 
-	public UsersService getUserService() {
+	public JifenUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UsersService userService) {
+	public void setUserService(JifenUserService userService) {
 		this.userService = userService;
 	}
 
@@ -2484,9 +2484,9 @@ public class UserAction extends BaseAction {
 		this.state = state;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {

@@ -3,10 +3,10 @@ package com.zklc.weishangcheng.member.service;
 import javax.servlet.http.HttpServletRequest;
 
 import com.zklc.framework.service.IBaseService;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 
-public interface CoreService extends IBaseService<Users, Integer> {
+public interface CoreService extends IBaseService<JifenUser, Integer> {
 	public  String processRequest(HttpServletRequest request);
 	
-	public Users findByOpenid(String openid);
+	public JifenUser findByOpenid(String openid);
 }

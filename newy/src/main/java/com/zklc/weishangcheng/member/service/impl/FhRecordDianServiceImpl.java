@@ -25,12 +25,12 @@ import com.zklc.weishangcheng.member.dao.FhRecordDianDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.DianForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecordDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.HongbaoDian;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderDian;
 import com.zklc.weishangcheng.member.service.DianForUserService;
 import com.zklc.weishangcheng.member.service.FhRecordDianService;
 import com.zklc.weishangcheng.member.service.HongbaoDianService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderDianService;
 import com.zklc.weishangcheng.member.util.HongBaoUtil;
 
@@ -46,7 +46,7 @@ public class FhRecordDianServiceImpl extends BaseServiceImp<FhRecordDian, Intege
 	@Autowired
 	private HongbaoDianService hongbaoDianService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 
 	@Override
 	public FhRecordDian findFhRecordBytoUserId(Integer puserId,

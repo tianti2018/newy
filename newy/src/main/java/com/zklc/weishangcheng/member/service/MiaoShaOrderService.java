@@ -1,7 +1,7 @@
 package com.zklc.weishangcheng.member.service;
 
 import com.zklc.framework.service.IBaseService;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 
@@ -9,11 +9,11 @@ public interface MiaoShaOrderService extends IBaseService<MiaoShaOrder, Integer>
 
 	MiaoShaOrder findOrderByOrderBH(String orderNo);
 
-	void moneyPay(MiaoShaOrder order, Users user);
+	void moneyPay(MiaoShaOrder order, JifenUser user);
 
-	void saveAndCFh(MiaoShaOrder order, Users user);
+	void saveAndCFh(MiaoShaOrder order, JifenUser user);
   
-	void saveMianMoOrder(MiaoShaOrder order, Users user,Product buyProd);
+	void saveMianMoOrder(MiaoShaOrder order, JifenUser user,Product buyProd);
 	
 	Integer findNumByTypeAndUserId(Integer type,Integer userId);
 
@@ -30,16 +30,16 @@ public interface MiaoShaOrderService extends IBaseService<MiaoShaOrder, Integer>
 	 * @param xiaohaoJifen  消耗积分类型 0：其他积分  1：推荐用户积分
 	 * @return
 	 */
-	Boolean saveJifenOrder(MiaoShaOrder order, Users user, Product prod,Integer xiaohaoJifen);
+	Boolean saveJifenOrder(MiaoShaOrder order, JifenUser user, Product prod,Integer xiaohaoJifen);
 
-	Boolean jifenPay(MiaoShaOrder order, Users user);
+	Boolean jifenPay(MiaoShaOrder order, JifenUser user);
 
-	Boolean saveHuiYuanOrder(MiaoShaOrder order, Users user, Product prod);
+	Boolean saveHuiYuanOrder(MiaoShaOrder order, JifenUser user, Product prod);
 
-	void huiyuanPay(MiaoShaOrder order, Users user);
+	void huiyuanPay(MiaoShaOrder order, JifenUser user);
 	Integer cancelOrder(MiaoShaOrder order);
 	void updateOrdeToSend();
-	Integer checkXingHuoQuanOrder(Users user);
+	Integer checkXingHuoQuanOrder(JifenUser user);
 	
 	/**
 	 * 统计用户需身份证指定产品是否购买过

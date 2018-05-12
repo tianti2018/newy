@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.utils.MyUtils;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.City;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.CityService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weixin.util.WeixinUtil;
 
@@ -46,14 +46,14 @@ public class CityAction extends BaseAction {
 	@Autowired
 	private JiFenRecordService jfrecordService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private UseryService useryService;
 	
 	private String cityWord;
 	private Integer parentId;
 	private Integer cityId;
-	private Users user;
+	private JifenUser user;
 	private String code;// 微信code
 	private String wxOpenid;// 用户微信标识符
 	public Integer userId;//传值用的    
@@ -74,15 +74,15 @@ public class CityAction extends BaseAction {
 			String hqlCity = "from City c where shortname = "+"'"+cityNames+"'"; //从City表中查询出shortname=cityNames
 			List<City> cityList = jfrecordService.findByHql(hqlCity, null); //执行hql语句，得到结果
 			
-			List<Users> updateList = new ArrayList<Users>();  //定义一个updateList集合
+			List<JifenUser> updateList = new ArrayList<JifenUser>();  //定义一个updateList集合
 			
 			for(City city:cityList){  //遍历cityList，得到每一条记录	
 				Integer id = city.getId();	//得到城市名为cityNames(济南的)的相对应的id号
 				System.out.println("id======"+id);
 				
-				String hqlJifenUser = "from Users j where userId = "+"'"+user.getUserId()+"'"; //从users表中查出当前登录用户的信息
-				List<Users> jfUserList = jfrecordService.findByHql(hqlJifenUser, null); //执行hql语句，得到结果
-				for(Users jfuser:jfUserList){  //遍历jifenUser得到每一条记录
+				String hqlJifenUser = "from JifenUser j where userId = "+"'"+user.getUserId()+"'"; //从users表中查出当前登录用户的信息
+				List<JifenUser> jfUserList = jfrecordService.findByHql(hqlJifenUser, null); //执行hql语句，得到结果
+				for(JifenUser jfuser:jfUserList){  //遍历jifenUser得到每一条记录
 					if(jfuser.getCity()==null){
 						jfuser.setCity(id); //存入city的值
 						updateList.add(jfuser); //把存入的值放到updateList集合中
@@ -102,7 +102,7 @@ public class CityAction extends BaseAction {
 		JSONObject json = new JSONObject();
 		json.put("success", false);
 		user = getSessionUser();
-		Users jfUser = userService.findById(user.getUserId());
+		JifenUser jfUser = userService.findById(user.getUserId());
 		System.out.println("cityNum===="+jfUser.getCity());
 		
 //		String currName = request.getParameter("cityNames"); //获取当前登录用户的城市名称，如:济南
@@ -209,9 +209,9 @@ public class CityAction extends BaseAction {
 		System.out.println("用户选择的城市："+chooseName);
 		
 		if(currName.equals(chooseName)){
-			List<Users> updateList = new ArrayList<Users>();  //定义一个updateList集合
+			List<JifenUser> updateList = new ArrayList<JifenUser>();  //定义一个updateList集合
 //			request.setAttribute("city", c);
-			Users jfUser = userService.findById(user.getUserId());
+			JifenUser jfUser = userService.findById(user.getUserId());
 			jfUser.setCity(cityId);
 			updateList.add(jfUser);
 			jfrecordService.saveOrUpdateAll(updateList); //执行update修改语句
@@ -236,9 +236,9 @@ public class CityAction extends BaseAction {
 		return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {

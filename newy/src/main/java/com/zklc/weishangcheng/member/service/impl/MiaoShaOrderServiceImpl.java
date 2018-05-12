@@ -15,7 +15,7 @@ import com.utils.WXRefund;
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.hibernate.persistent.GoodYongJin;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
@@ -24,7 +24,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
 import com.zklc.weishangcheng.member.service.ProductService;
@@ -45,7 +45,7 @@ import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
 public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Integer>
 		implements MiaoShaOrderService {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -67,7 +67,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	 * 一个用户一天内只能使用星火券支付一次
 	 */
 	@Override
-	public Integer checkXingHuoQuanOrder(Users user)
+	public Integer checkXingHuoQuanOrder(JifenUser user)
 	{
 		String startDate =CalendarUtils.getFormatDate(CalendarUtils.Y_M_D_LONG, new Date());
 		String endDate=CalendarUtils.getFormatDate(CalendarUtils.Y_M_DHMS_LONG, new Date());
@@ -102,8 +102,8 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 							}
 						}
 						Double zhifuMoney = order.getMoney();
-						Users user=userService.findById(order.getUserId());
-						Users refferUser = null;
+						JifenUser user=userService.findById(order.getUserId());
+						JifenUser refferUser = null;
 						Usery parentUsery = null;
 						if(user.getReferrerId()!=null){
 							refferUser = userService.findById(user.getReferrerId());
@@ -118,7 +118,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 								autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 							}
 							if(refferUser.getReferrerId()!=null){
-								Users r2 = userService.findById(refferUser.getReferrerId());
+								JifenUser r2 = userService.findById(refferUser.getReferrerId());
 								if(r2!=null){
 									Usery usery2 = useryService.findbyUserId(r2.getUserId());
 									if(usery2!=null&&usery2.getWxOpenid()!=null){
@@ -209,7 +209,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		return cancelResult;
 	}
 	@Override
-	public void moneyPay(MiaoShaOrder order, Users user) {
+	public void moneyPay(MiaoShaOrder order, JifenUser user) {
 		user = userService.findById(order.getUserId());
 		//支付成功后更新用户的星火券数量
 		if(order.getXinghuoquan()>0)
@@ -246,7 +246,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 				}
 			}
 			Double zhifuMoney = order.getMoney();
-			Users refferUser = null;
+			JifenUser refferUser = null;
 			Usery parentUsery = null;
 			if(user.getReferrerId()!=null){
 				refferUser = userService.findById(user.getReferrerId());
@@ -261,7 +261,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 					autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 				}
 				if(refferUser.getReferrerId()!=null){
-					Users r2 = userService.findById(refferUser.getReferrerId());
+					JifenUser r2 = userService.findById(refferUser.getReferrerId());
 					if(r2!=null){
 						Usery usery2 = useryService.findbyUserId(r2.getUserId());
 						if(usery2!=null&&usery2.getWxOpenid()!=null){
@@ -336,7 +336,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 	//面膜订单的保存方法
 	@Override
-	public void saveMianMoOrder(MiaoShaOrder order, Users user,Product buyProd)
+	public void saveMianMoOrder(MiaoShaOrder order, JifenUser user,Product buyProd)
 	{
 		if((order.getXinghuoquan()*100/2)>=(order.getMoney()*100)){
 			order.setPayStatus(1);
@@ -364,7 +364,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		//该方法应该 是一个 事物
 		save(order);
 		if (user.getReferrerId() != null) {
-			Users ref1 = userService.findById(user.getReferrerId());
+			JifenUser ref1 = userService.findById(user.getReferrerId());
 			if (ref1 != null) {
 				GoodYongJin yongJin = new GoodYongJin();
 				yongJin.setCreateDate(new Date());
@@ -388,7 +388,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 				}
 				yongJinService.save(yongJin);
 				if (ref1.getReferrerId() != null) {
-					Users ref2 = userService.findById(ref1.getReferrerId());
+					JifenUser ref2 = userService.findById(ref1.getReferrerId());
 					if (ref2 != null) {
 						GoodYongJin yongJin1 = new GoodYongJin();
 						yongJin1.setCreateDate(new Date());
@@ -412,7 +412,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 						}
 						yongJinService.save(yongJin1);
 						if (ref2.getReferrerId() != null) {
-							Users ref3 = userService.findById(ref2.getReferrerId());
+							JifenUser ref3 = userService.findById(ref2.getReferrerId());
 							if (ref3 != null) {
 								GoodYongJin yongJin2 = new GoodYongJin();
 								yongJin2.setCreateDate(new Date());
@@ -444,12 +444,12 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		}
 	}
 	@Override
-	public void saveAndCFh(MiaoShaOrder order, Users user) {
+	public void saveAndCFh(MiaoShaOrder order, JifenUser user) {
 
 		save(order);
 		if(order.getType().equals(1)){
 			if(user.getReferrerId()!=null){
-				Users ref1 = userService.findById(user.getReferrerId());
+				JifenUser ref1 = userService.findById(user.getReferrerId());
 				if(ref1!=null){
 					GoodYongJin yongJin = new GoodYongJin();
 					yongJin.setCreateDate(new Date());
@@ -475,7 +475,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 					}
 					yongJinService.save(yongJin);
 					if(ref1.getReferrerId()!=null){
-						Users ref2 = userService.findById(ref1.getReferrerId());
+						JifenUser ref2 = userService.findById(ref1.getReferrerId());
 						if(ref2!=null){
 							GoodYongJin yongJin1 = new GoodYongJin();
 							yongJin1.setCreateDate(new Date());
@@ -499,7 +499,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 							}
 							yongJinService.save(yongJin1);
 							if(ref2.getReferrerId()!=null){
-								Users ref3 = userService.findById(ref2.getReferrerId());
+								JifenUser ref3 = userService.findById(ref2.getReferrerId());
 								if(ref3!=null){
 									GoodYongJin yongJin2 = new GoodYongJin();
 									yongJin2.setCreateDate(new Date());
@@ -562,7 +562,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean saveJifenOrder(MiaoShaOrder order, Users user, Product prod,Integer xiaohaoJifen) {
+	public Boolean saveJifenOrder(MiaoShaOrder order, JifenUser user, Product prod,Integer xiaohaoJifen) {
 		Integer jifen = 0;
 		if(order.getScore()!=null){
 			jifen=order.getScore().intValue();
@@ -594,7 +594,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean jifenPay(MiaoShaOrder order, Users user) {
+	public Boolean jifenPay(MiaoShaOrder order, JifenUser user) {
 		try {
 			user = userService.findById(order.getUserId());
 			List jilist =null;
@@ -655,13 +655,13 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean saveHuiYuanOrder(MiaoShaOrder order, Users user,
+	public Boolean saveHuiYuanOrder(MiaoShaOrder order, JifenUser user,
 			Product prod) {
 		save(order);
 		Integer allMoney = 0;
-		Users parent1 = findParent(user);
-		Users parent2 = findParent(parent1);
-		Users parent3 = findParent(parent2);
+		JifenUser parent1 = findParent(user);
+		JifenUser parent2 = findParent(parent1);
+		JifenUser parent3 = findParent(parent2);
 		Integer orderMoney = order.getMoney().intValue();
 		System.out.println("下单金额"+orderMoney);
 		if(user.getLevel()!=null&&user.getLevel()!=0){
@@ -704,8 +704,8 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		return true;
 	}
 	
-	public Boolean CTFenRun(String type,Integer orderMoney,Users user,Users parent1,Users parent2,
-				Users parent3,MiaoShaOrder order){
+	public Boolean CTFenRun(String type,Integer orderMoney,JifenUser user,JifenUser parent1,JifenUser parent2,
+				JifenUser parent3,MiaoShaOrder order){
 		Random random = new Random();
 		try {
 			if(type.contains("3")){
@@ -851,8 +851,8 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		return true;
 	}
 	
-	public Users findParent(Users user) {
-		Users parent = null;
+	public JifenUser findParent(JifenUser user) {
+		JifenUser parent = null;
 		if(user!=null&&user.getReferrerId()!=null){
 			parent = userService.findById(user.getReferrerId());
 			Usery usery = useryService.findbyUserId(user.getReferrerId());
@@ -864,7 +864,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public void huiyuanPay(MiaoShaOrder order, Users user) {
+	public void huiyuanPay(MiaoShaOrder order, JifenUser user) {
 		user = userService.findById(order.getUserId());
 		if(user.getLevel()!=null&&user.getLevel()!=3){
 			try {
@@ -892,7 +892,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 						if(record.getStatus().equals(0)){
 							record.setStatus(1);
 							xingHuoQuanRecordService.update(record);
-							Users parent = userService.findById(record.getUserId());
+							JifenUser parent = userService.findById(record.getUserId());
 							parent.setRealSubmitMoney((parent.getRealSubmitMoney()==null?0:parent.getRealSubmitMoney())+record.getXinghuoquan());
 							userService.update(parent);
 							Usery usery = useryService.findbyUserId(record.getUserId());

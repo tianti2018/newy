@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.service.UsersService;
-import com.zklc.weishangcheng.member.service.impl.UsersServiceImpl;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
+import com.zklc.weishangcheng.member.service.JifenUserService;
+import com.zklc.weishangcheng.member.service.impl.JifenUserServiceImpl;
 import com.zklc.weishangcheng.member.service.impl.WeixinAutosendmsgServiceImpl;
 import com.zklc.weixin.util.UserInfoUtil;
 
@@ -41,10 +41,10 @@ public class SendMessageOrdersServlet extends HttpServlet {
 		       
 		       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	    	   sdf.format(new Date());
-	    	   UsersService service = new UsersServiceImpl();
+	    	   JifenUserService service = new JifenUserServiceImpl();
 	    	   WeixinAutosendmsgServiceImpl autosendmsgServiceImpl = new WeixinAutosendmsgServiceImpl();
-	    	   Users user = service.findUserByOpenId(wxOpenId);
-	    	   Users refferUser = service.findReferrerUser(user);
+	    	   JifenUser user = service.findUserByOpenId(wxOpenId);
+	    	   JifenUser refferUser = service.findReferrerUser(user);
 	    	   UserInfoUtil userInfo = autosendmsgServiceImpl.processUserInfoObject(wxOpenId);
 		        
 		        System.out.println("-------------type-----"+type);

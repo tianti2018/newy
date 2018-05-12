@@ -5,7 +5,7 @@ import java.util.List;
 import com.zklc.framework.hibernate.persistent.Pager;
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.Card;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 
 public interface CardService extends IBaseService<Card, Integer> {
 /**
@@ -31,5 +31,5 @@ public Integer findUsedCardNumByUser(Integer userId);
  * @param user
  * @return
  */
-public List<Card> listCards(Users user);
+public List<Card> listCards(JifenUser user);
 }

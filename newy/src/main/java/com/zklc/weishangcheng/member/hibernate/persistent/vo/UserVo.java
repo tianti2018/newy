@@ -1,18 +1,18 @@
 package com.zklc.weishangcheng.member.hibernate.persistent.vo;
 
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 
 public class UserVo {
 
-	private Users user;
+	private JifenUser user;
 	private Usery usery;
 	private OrderAddressVO address;
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 	public Usery getUsery() {

@@ -12,10 +12,10 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weixin.util.WeixinUtil;
 
@@ -28,18 +28,18 @@ public class GoodYongJinAction extends BaseAction {
 	@Autowired
 	private GoodYongJinService goodYongJinService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private UseryService useryService;
 	
-	private Users user;
+	private JifenUser user;
 	
 	private String code;
 	private String wxOpenid;
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -86,11 +86,11 @@ public class GoodYongJinAction extends BaseAction {
 		}
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

@@ -239,7 +239,7 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	}
 	
 	public void updateUserMsg(){
-		aString hql = "from JifenUser u where u.unionid is null";//259992
+		String hql = "from JifenUser u where u.unionid is null";//259992
 		List<JifenUser> users = userService.findByHql(hql, null);
 //		List<JifenUser> users = userService.findAll();
 		

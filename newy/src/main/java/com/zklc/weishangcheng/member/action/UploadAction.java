@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
 import com.zklc.framework.util.io.FileUtil;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 
 
 @SuppressWarnings("all")
@@ -33,7 +33,7 @@ import com.zklc.weishangcheng.member.service.UsersService;
 public class UploadAction extends BaseAction {
 	
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	private static final long serialVersionUID = 572146812454l;  
 	private List<File> filedata; // 默认的客户端文件对象,命名不符合java规范fileData
 	private List<String> filedataFileName; // 客户端文件名

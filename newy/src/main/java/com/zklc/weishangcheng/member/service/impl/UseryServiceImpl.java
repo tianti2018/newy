@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
-import com.zklc.weishangcheng.member.dao.UsersDao;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.dao.JifenUserDao;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.UseryService;
 
@@ -16,7 +16,7 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 		UseryService {
 
 	@Autowired
-	private UsersDao jifenUserDao;
+	private JifenUserDao jifenUserDao;
 	
 	@Override
 	public Usery findbyUserId(Integer userId) {
@@ -28,12 +28,12 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 	}
 
 	@Override
-	public Usery findbyJifenUser(Users user) {
+	public Usery findbyJifenUser(JifenUser user) {
 		return findbyUserId(user.getUserId());
 	}
 
 	@Override
-	public Users findJifenUserByUsery(Usery usery) {
+	public JifenUser findJifenUserByUsery(Usery usery) {
 		return jifenUserDao.findById(usery.getUserId());
 	}
 

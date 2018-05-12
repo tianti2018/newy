@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.zklc.framework.service.IBaseService;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
@@ -76,7 +76,7 @@ public List findCurrUserAllOrder(Integer userId);
  */
 public List findLevelUserOrderMoney(Integer userId,String orderType,String orderLevel);
 
-public int moneyPay(Order order,String openid,Users user);
+public int moneyPay(Order order,String openid,JifenUser user);
 
 
 
@@ -86,7 +86,7 @@ public int moneyPay(Order order,String openid,Users user);
  */
 public Integer findOrderCountByUserId(Integer userId);
 
-public void saveAndCFh(Order order, Users user);
+public void saveAndCFh(Order order, JifenUser user);
 
 public OrderLiu findOrderLiuOrderBH(String orderBh);
 

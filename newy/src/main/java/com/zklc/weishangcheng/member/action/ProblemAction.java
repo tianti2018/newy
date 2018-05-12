@@ -33,7 +33,7 @@ import com.utils.Sha1Util;
 import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecordDian;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.Problem;
@@ -41,7 +41,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.PriceForDianZhuLevel;
 import com.zklc.weishangcheng.member.service.FhRecordDianService;
 import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.OrderDianService;
 import com.zklc.weishangcheng.member.service.ProblemService;
@@ -69,13 +69,13 @@ import com.zklc.weixin.util.WeixinUtil;
 })
 public class ProblemAction extends BaseAction {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private ProblemService problemService;
 	@Autowired
 	private UseryService useryService;
 	
-	private Users user;
+	private JifenUser user;
 	
 	public String code;
 	public String wxOpenid;
@@ -146,9 +146,9 @@ public class ProblemAction extends BaseAction {
 	}
 	
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -189,12 +189,12 @@ public class ProblemAction extends BaseAction {
 	} 
 
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

@@ -17,12 +17,12 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
 import com.zklc.weixin.util.WeixinUtil;
@@ -38,13 +38,13 @@ import com.zklc.weixin.util.WeixinUtil;
 })
 public class XingHuoQuanAction extends BaseAction {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private XingHuoQuanRecordService xinghuoquanservice;
 	@Autowired
 	private UseryService useryService;
 
-	private Users user;
+	private JifenUser user;
 	private Integer pageNum;
 	private Order order;
 	private OrderAddress orderAddress;
@@ -155,17 +155,17 @@ public class XingHuoQuanAction extends BaseAction {
 		
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {

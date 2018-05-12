@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Yongjin;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -28,7 +28,7 @@ import com.zklc.weishangcheng.member.util.LeMianFlow;
 @Service
 public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> implements OrderLiuService {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private YongjinService yongjinService;
 	@Autowired
@@ -46,7 +46,7 @@ public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> imple
 		return null;
 	}
 	
-	public int liuliangPay(OrderLiu order, String openid,Users user){
+	public int liuliangPay(OrderLiu order, String openid,JifenUser user){
 		//更新订单状态
 		//order.setUserId(user.getUserId());
 		order.setOrderStatus(1); //已支付
@@ -194,7 +194,7 @@ public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> imple
 	}
 
 	@Override
-	public String saveOrder(Users user, OrderLiu order) {
+	public String saveOrder(JifenUser user, OrderLiu order) {
 		   String result = "false";
 		   this.save(order);
 		   //移动佣金最多不能超过17.5（266的11G流量）
@@ -205,7 +205,7 @@ public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> imple
 		   DecimalFormat df = new DecimalFormat("######0.00");   
 		   //创建分润
 		   if(user.getReferrerId() != null){
-			   Users ref = userService.findById(user.getReferrerId());
+			   JifenUser ref = userService.findById(user.getReferrerId());
 			   if(ref != null && ref.getLevel() >= 1){
 				   Yongjin yong = new Yongjin();
 				   yong.setCreateDate(new Date());
@@ -219,7 +219,7 @@ public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> imple
 				   
 			   }
 			   if(ref != null && ref.getReferrerId() != null){
-				   Users ref2 = userService.findById(ref.getReferrerId());
+				   JifenUser ref2 = userService.findById(ref.getReferrerId());
 				   if(ref2!= null && ref2.getLevel() >= 2){
 					   Yongjin yong2 = new Yongjin();
 					   yong2.setCreateDate(new Date());
@@ -233,7 +233,7 @@ public class OrderLiuServiceImpl extends BaseServiceImp<OrderLiu, Integer> imple
 					 
 				   }
 				   if(ref2 != null && ref2.getReferrerId() != null){
-					   Users ref3 = userService.findById(ref2.getReferrerId());
+					   JifenUser ref3 = userService.findById(ref2.getReferrerId());
 					   if(ref3 != null && ref3.getLevel() >= 3){
 						   Yongjin yong3 = new Yongjin();
 						   yong3.setCreateDate(new Date());

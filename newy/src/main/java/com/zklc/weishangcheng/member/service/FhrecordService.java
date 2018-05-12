@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 
 public interface FhrecordService extends IBaseService<FhRecord, Integer> {
 	// 查询会员的总积分

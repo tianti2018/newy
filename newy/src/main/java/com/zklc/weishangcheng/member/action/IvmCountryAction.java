@@ -20,7 +20,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.JCounty;
 import com.zklc.weishangcheng.member.hibernate.persistent.JProvice;
 import com.zklc.weishangcheng.member.hibernate.persistent.JTown;
 import com.zklc.weishangcheng.member.hibernate.persistent.JVillage;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.IvmCountryService;
 import com.zklc.weishangcheng.member.service.JCityService;
@@ -28,7 +28,7 @@ import com.zklc.weishangcheng.member.service.JCountyService;
 import com.zklc.weishangcheng.member.service.JProviceService;
 import com.zklc.weishangcheng.member.service.JTownService;
 import com.zklc.weishangcheng.member.service.JVillageService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weixin.util.WeixinUtil;
 
@@ -47,7 +47,7 @@ import com.zklc.weixin.util.WeixinUtil;
  * 我爱家乡
  */
 public class IvmCountryAction extends BaseAction {
-	private Users user;
+	private JifenUser user;
 	private String code;// 微信code
 	private String wxOpenid;// 用户微信标识符
 	public Integer userId;
@@ -74,7 +74,7 @@ public class IvmCountryAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private IvmCountryService ivmCountryService;
 
@@ -193,7 +193,7 @@ public class IvmCountryAction extends BaseAction {
 			memberCountryList = ivmCountryService.findByHql(sb.toString(), null);
 		} else{
 			//获取定位城市
-			Users jifenUser = userService.findById(user.getUserId());
+			JifenUser jifenUser = userService.findById(user.getUserId());
 			List<JCity> jCity = cityService.findByProperty("oldCityId", jifenUser.getCity());
 			if(jCity != null &&jCity.size()>0){
 				countylist = countyService.findByProperty("cityId",jCity.get(0).getCityId());
@@ -207,9 +207,9 @@ public class IvmCountryAction extends BaseAction {
 	}
 	
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -253,11 +253,11 @@ public class IvmCountryAction extends BaseAction {
 	} 
 
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 	public String getCode() {

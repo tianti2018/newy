@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.CoreService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weixin.messageS.TextMessage;
@@ -23,9 +23,9 @@ import com.zklc.weixin.util.MessageUtil;
 import com.zklc.weixin.util.SystemMessage;
 import com.zklc.weixin.util.UserInfoUtil;
 @Service
-public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements CoreService {
+public class CoreServiceImpl extends BaseServiceImp<JifenUser, Integer> implements CoreService {
 	@Autowired
-	private UsersService jifenUserService;
+	private JifenUserService jifenUserService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -37,7 +37,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 	public String processRequest(HttpServletRequest request) {
 		String respMessage = "";
 		String fromUserName = null;
-		Users jifenUser = null;
+		JifenUser jifenUser = null;
 		Usery usery = null;
 		String refName = null;
 		UserInfoUtil userInfo = null;
@@ -148,7 +148,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 					if(jifenUser==null){
 						songjifen = true;
 						System.out.println("旧表中不存在");
-						jifenUser = new Users();
+						jifenUser = new JifenUser();
 						jifenUser.setAppDate(new Date());
 				    	jifenUser.setSubscribe(1);
 				    	jifenUser.setLevel(0);
@@ -238,7 +238,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 //					sb.append("【分销系统购买】:18001392511   尹女士 ");
 //					sb.append("\n");
 //					sb.append("【咨询学习】加客服微信号:18001392511");
-					Users refferUser = null;
+					JifenUser refferUser = null;
 					if(jifenUser.getReferrerId()!=null){
 						refferUser = jifenUserService.findById(jifenUser.getReferrerId());
 						parentUsery = useryService.findbyUserId(jifenUser.getReferrerId());
@@ -272,7 +272,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 						if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
 							autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
 						if(refferUser.getReferrerId()!=null){
-							Users r2 = jifenUserService.findById(refferUser.getReferrerId());
+							JifenUser r2 = jifenUserService.findById(refferUser.getReferrerId());
 							if(r2!=null){
 								r2.setChild2((r2.getChild2()==null?0:r2.getChild2())+1);
 								if(songjifen){
@@ -302,7 +302,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 								}
 								if(r2.getReferrerId()!=null){
 									Usery u3 = useryService.findbyUserId(r2.getReferrerId());
-									Users r3 = jifenUserService.findById(r2.getReferrerId());
+									JifenUser r3 = jifenUserService.findById(r2.getReferrerId());
 									if(songjifen){
 										JiFenRecord record3 = new JiFenRecord();
 										record3.setCreateDate(new Date());
@@ -364,13 +364,13 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 	}
     
 	@Override
-	public Users findByOpenid(String openid) {
+	public JifenUser findByOpenid(String openid) {
 		StringBuffer hql = new StringBuffer("from JifenUser t where 1=1 ");
 		if(openid!=null&&!"".equals(openid)){
 			hql.append(" and t.wxOpenid ='"+openid+"'");
 			List userList=findByHql(hql.toString(), null);
 			if(userList!=null&&userList.size()>0)
-				return (Users) userList.get(0);
+				return (JifenUser) userList.get(0);
 		}
 		return null;
 	}

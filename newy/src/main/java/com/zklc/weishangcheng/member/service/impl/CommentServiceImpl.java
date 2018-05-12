@@ -11,7 +11,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.HongbaoDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductComment;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
 import com.zklc.weishangcheng.member.service.CommentService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 
 @Service
 public class CommentServiceImpl extends BaseServiceImp<ProductComment, Integer> implements CommentService{

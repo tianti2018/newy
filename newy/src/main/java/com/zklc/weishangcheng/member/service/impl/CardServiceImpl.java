@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.hibernate.persistent.Card;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.service.CardService;
 @Service
 public class CardServiceImpl extends BaseServiceImp<Card, Integer> implements CardService {
@@ -45,7 +45,7 @@ public class CardServiceImpl extends BaseServiceImp<Card, Integer> implements Ca
 
 
 	@Override
-	public List<Card> listCards(Users user) {
+	public List<Card> listCards(JifenUser user) {
 		List<Card> cardList = findByUserId(user.getUserId());
 		Integer num = cardList.size();
 		Integer needNum = 0;

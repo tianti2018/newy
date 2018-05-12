@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
-import com.zklc.weishangcheng.member.dao.UsersDao;
+import com.zklc.weishangcheng.member.dao.JifenUserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 @Service
 public class FhrecordServiceImpl extends BaseServiceImp<FhRecord, Integer> implements FhrecordService {
 	
 	@Autowired
-	private UsersService jifenUserService;
+	private JifenUserService jifenUserService;
 	@Autowired
-	private UsersDao jifenUserDao;
+	private JifenUserDao jifenUserDao;
 	@Autowired
 	private FhRecordDao fhRecordDao;
 	

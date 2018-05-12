@@ -22,8 +22,8 @@ import org.csource.fastdfs.TrackerServer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 
 @ParentPackage("json")
 @Namespace("/file")
@@ -31,7 +31,7 @@ import com.zklc.weishangcheng.member.service.UsersService;
 public class FileUploadAction extends BaseAction {
 	
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	
 	private static final long serialVersionUID = 572146812454l;  
 	private List<File> file1;    
@@ -39,7 +39,7 @@ public class FileUploadAction extends BaseAction {
 	private List<String> file1FileName;    //文件名  
 	
 	public String uploadFile() throws IOException {  
-		Users user = (Users) request.getSession().getAttribute("loginUser");
+		JifenUser user = (JifenUser) request.getSession().getAttribute("loginUser");
 		user = userService.findById(user.getUserId());
 		for(int i = 0; i < file1.size(); i++ ) {	
 			try { 

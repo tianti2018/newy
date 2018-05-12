@@ -20,7 +20,7 @@ import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.OrderDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
 import com.zklc.weishangcheng.member.service.UseryService;
@@ -33,7 +33,7 @@ import com.zklc.weishangcheng.member.service.YongjinService;
 @Action(value = "miaoshaAction")
 public class MiaoShaPay extends BaseAction {
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private OrderService orderService;
 	@Autowired

@@ -11,9 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.google.util.ERCodeUtil;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.service.impl.UsersServiceImpl;
+import com.zklc.weishangcheng.member.service.impl.JifenUserServiceImpl;
 import com.zklc.weishangcheng.member.service.impl.WeixinAutosendmsgServiceImpl;
 import com.zklc.weixin.util.UserInfoUtil;
 
@@ -25,7 +25,7 @@ public class TestQrCodeImage extends AbstractJUnit4SpringContextTests{
 	
 	public static void main(String[] args) throws Exception {
 		WeixinAutosendmsgServiceImpl autosendmsgService = new WeixinAutosendmsgServiceImpl();
-		UsersServiceImpl service = new UsersServiceImpl();
+		JifenUserServiceImpl service = new JifenUserServiceImpl();
 		String wxOpenid = "oyZgewZFscVWHzw7ZJAIO3wTbwAQ";
 		UserInfoUtil userInfo = autosendmsgService.processUserInfoObject(wxOpenid);
 		JSONObject jsonObject = autosendmsgService.processTicketByToken();

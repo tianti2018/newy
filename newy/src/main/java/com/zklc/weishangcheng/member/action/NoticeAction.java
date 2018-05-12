@@ -16,9 +16,9 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Notice;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.NoticeService;
 import com.zklc.weixin.util.WeixinUtil;
 
@@ -31,9 +31,9 @@ public class NoticeAction extends BaseAction {
 	@Autowired
 	private NoticeService noticeService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	
-	private Users user;
+	private JifenUser user;
 	
 	private Integer status;
 	private Integer pageNum;
@@ -48,19 +48,19 @@ public class NoticeAction extends BaseAction {
 		this.noticeService = noticeService;
 	}
 
-	public UsersService getUserService() {
+	public JifenUserService getUserService() {
 		return userService;
 	}
 
-	public void setUserService(UsersService userService) {
+	public void setUserService(JifenUserService userService) {
 		this.userService = userService;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 
@@ -167,9 +167,9 @@ public class NoticeAction extends BaseAction {
 		return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 code = request.getParameter("code");
 			 wxOpenid=(String) request.getSession().getAttribute("wxOpenid");
@@ -181,7 +181,7 @@ public class NoticeAction extends BaseAction {
 				 }
 			 }
 			 if(wxOpenid!=null){
-					List<Users> userList = userService.findByProperty("wxOpenid", wxOpenid);
+					List<JifenUser> userList = userService.findByProperty("wxOpenid", wxOpenid);
 					if (userList != null && userList.size() > 0) {
 						user = userList.get(0);
 						request.getSession().setAttribute("loginUser",user);

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecordDian;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.PriceForDianZhuLevel;
 import com.zklc.weishangcheng.member.service.FhRecordDianService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.OrderDianService;
 import com.zklc.weishangcheng.member.service.UseryService;
 
@@ -22,7 +22,7 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 		OrderDianService {
 
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -38,7 +38,7 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 	}
 
 	@Override
-	public void moneyPay(OrderDian order, Users user) {
+	public void moneyPay(OrderDian order, JifenUser user) {
 
 		order.setOrderStatus(1); //已支付
 		order.setCreateDate(new Date());
@@ -60,7 +60,7 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 		}
 	}
 	@SuppressWarnings("unused")
-	public List<Users> findAllParent(Users user,List<Users> list) {
+	public List<JifenUser> findAllParent(JifenUser user,List<JifenUser> list) {
 		if (null==user) {
 			return list;
 		}
@@ -68,13 +68,13 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 			return list;
 		}
 		if (null==list) {
-			list = new ArrayList<Users>();
+			list = new ArrayList<JifenUser>();
 		}
 		
 		Integer referrerId = user.getReferrerId();
 		System.out.println(">>>>>>>>> referrerId" + referrerId);
 		if (null!=referrerId) {
-			Users ref = userService.findById(referrerId);
+			JifenUser ref = userService.findById(referrerId);
 			list.add(ref);
 			findAllParent(ref,list);
 		}
@@ -114,18 +114,18 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 	}
 
 	@Override
-	public void saveAndCFh(OrderDian order, Users user) {
+	public void saveAndCFh(OrderDian order, JifenUser user) {
 		save(order);
 		Integer userLevel = user.getCardId()==null?0:user.getCardId();
 		Integer levelValue = order.getLevel();
 		Integer referrerId = user.getReferrerId();
 		if (null!=referrerId) {
-			List<Users> list2 = new ArrayList<Users>();
+			List<JifenUser> list2 = new ArrayList<JifenUser>();
 			list2 = findAllParent(user,list2);
 			for (int i=userLevel;i<levelValue;i++) {
 				Integer levelOne = i/3;
 				if (levelOne<=(list2.size()-1)) {
-					Users ref = list2.get(levelOne);
+					JifenUser ref = list2.get(levelOne);
 					System.out.println(ref.getUserName());
 					if(ref!=null){
 						Double lv = 0.0;
@@ -155,7 +155,7 @@ public class OrderDianServiceImpl extends BaseServiceImp<OrderDian, Integer> imp
 		}
 	}
 
-	private void creatFhrecord(Users ref, Integer formUserId, Integer levelOne,
+	private void creatFhrecord(JifenUser ref, Integer formUserId, Integer levelOne,
 			double fhmoney, int ordersId, boolean b,Integer level) {
 
 		if (fhmoney>200) {

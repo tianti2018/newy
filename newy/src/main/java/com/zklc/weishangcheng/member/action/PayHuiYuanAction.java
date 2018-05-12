@@ -29,14 +29,14 @@ import com.utils.RequestHandler;
 import com.utils.Sha1Util;
 import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.ProdImageService;
@@ -69,7 +69,7 @@ public class PayHuiYuanAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private MiaoShaOrderService orderService;
 	@Autowired
@@ -85,7 +85,7 @@ public class PayHuiYuanAction extends BaseAction {
 	
 	private OrderAddress orderAddress;
 	private MiaoShaOrder order;
-	private Users user;
+	private JifenUser user;
 	
 	private String ordersBH;
 	public String code;
@@ -246,9 +246,9 @@ public class PayHuiYuanAction extends BaseAction {
     	return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -449,11 +449,11 @@ public class PayHuiYuanAction extends BaseAction {
 		this.order = order;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 

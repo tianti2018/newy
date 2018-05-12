@@ -33,7 +33,7 @@ import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.JifenUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
@@ -44,7 +44,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
 import com.zklc.weishangcheng.member.service.CommentService;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UsersService;
+import com.zklc.weishangcheng.member.service.JifenUserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
@@ -83,7 +83,7 @@ public class PayGoodAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private UsersService userService;
+	private JifenUserService userService;
 	@Autowired
 	private MiaoShaOrderService orderService;
 	@Autowired
@@ -108,7 +108,7 @@ public class PayGoodAction extends BaseAction {
 	
 	private OrderAddress orderAddress;
 	private MiaoShaOrder order;
-	private Users user;
+	private JifenUser user;
 	
 	private String ordersBH;
 	public String code;
@@ -688,11 +688,11 @@ public class PayGoodAction extends BaseAction {
     	return null;
 	}
 	
-	private Users getSessionUser(){
+	private JifenUser getSessionUser(){
 		
 		
 		UserInfoUtil userInfo = null;
-		 user = (Users) request.getSession().getAttribute("loginUser");
+		 user = (JifenUser) request.getSession().getAttribute("loginUser");
 		 if(user==null){
 			 if(!StringUtils.isNotEmpty(code)){
 					try {
@@ -735,7 +735,7 @@ public class PayGoodAction extends BaseAction {
 					if(user==null){
 						songjifen = true;
 						System.out.println("旧表中不存在");
-						user = new Users();
+						user = new JifenUser();
 						user.setAppDate(new Date());
 						user.setSubscribe(1);
 						user.setLevel(0);
@@ -769,7 +769,7 @@ public class PayGoodAction extends BaseAction {
 						record.setUserId(user.getUserId());
 						record.setType(5);
 						jiFenRecordService.save(record);
-						Users refferUser = null;
+						JifenUser refferUser = null;
 						if(parentUsery!=null){
 							autosendmsgService.sendMsg(parentUsery.getWxOpenid(), "["+user.getUserName()+":"+
 									user.getUserId()+"]点击了您分享的链接,积分将待其关注公众号后获得!");
@@ -785,7 +785,7 @@ public class PayGoodAction extends BaseAction {
 								record1.setType(5);
 								jiFenRecordService.save(record1);
 								if(refferUser.getReferrerId()!=null){
-									Users r2 = userService.findById(refferUser.getReferrerId());
+									JifenUser r2 = userService.findById(refferUser.getReferrerId());
 									if(r2!=null){
 										JiFenRecord record2 = new JiFenRecord();
 										record2.setCreateDate(new Date());
@@ -990,11 +990,11 @@ public class PayGoodAction extends BaseAction {
 		this.order = order;
 	}
 
-	public Users getUser() {
+	public JifenUser getUser() {
 		return user;
 	}
 
-	public void setUser(Users user) {
+	public void setUser(JifenUser user) {
 		this.user = user;
 	}
 
