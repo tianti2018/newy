@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="   
+    				http://www.springframework.org/schema/aop 
+    				http://www.springframework.org/schema/aop/spring-aop-2.5.xsd  
+    				 
+    				http://www.springframework.org/schema/beans 
+    				http://www.springframework.org/schema/beans/spring-beans-2.5.xsd   
+    				
+      			http://www.springframework.org/schema/context 
+      			http://www.springframework.org/schema/context/spring-context-2.5.xsd   
+      			
+            http://www.springframework.org/schema/jee 
+            http://www.springframework.org/schema/jee/spring-jee-2.5.xsd          
+                 
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	
+	<!-- 使Spring关注Annotation -->
+  <context:annotation-config/>	
+	
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.tw" />
+		
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="configLocation">
+			<value>classpath:hibernate.cfg.xml</value>
+		</property>	
+	</bean>
+			
+	<!-- Hibernate 事务管理  -->
+	<!-- Transaction manager for a single Hibernate SessionFactory (alternative to JTA) -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="SpringContextUtil" class="com.tw.web.util.SpringContextUtil"  scope="singleton"/>
+		
+	 <tx:advice id="txBoAdvice" transaction-manager="transactionManager">
+		<tx:attributes>					
+			
+			<tx:method name="find*" read-only="true"/>
+		  <tx:method name="*" rollback-for="java.lang.Exception" />
+								
+		</tx:attributes>
+	</tx:advice>
+			
+	<aop:config>
+		<aop:pointcut id="BoOperation"
+			expression="execution(* com.tw.web.service.impl..*.*(..))"/>
+			<aop:pointcut id="BoOperation1"
+			expression="execution(* com.tw.web.dao.impl..*.*(..))"/>
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation"/>
+		<aop:advisor advice-ref="txBoAdvice" pointcut-ref="BoOperation1"/>
+	</aop:config> 
+		
+	<!--  拦截器 对应的 class start -->
+	<bean id="CheckLogin" class="com.tw.web.interceptor.CheckLoginInterceptor">			
+	</bean>
+	<!--  拦截器 对应的 class end -->
+	<bean id="loginService" class="com.tw.web.service.impl.LoginServiceImpl"></bean>
+	<bean id="build1Task" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+	  <property name="targetObject" ref="loginService" />
+	  <property name="targetMethod" value="fenhongall" />
+	  <property name="concurrent" value="false" />
+	</bean> 
+	
+	<bean id="build1Trigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+	  <property name="jobDetail" ref="build1Task" /> 
+	  <property name="cronExpression" value="10 52 23 * * ?" />
+	</bean> 
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+	  <property name="triggers"> 
+	   <list> 
+	    <ref bean="build1Trigger" /> 
+	   </list> 
+	  </property> 
+	</bean>
+			
+</beans>

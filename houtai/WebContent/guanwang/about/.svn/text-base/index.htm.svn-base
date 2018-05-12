@@ -1,0 +1,103 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />   
+<meta name="viewport" content="width=1024" />
+<title>关于_我的网站</title>
+<meta name="keywords" content="集联集" />
+<meta name="description" content="集联集" />      
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="all" />
+<!--[if lt IE 9]><script type="text/javascript" src="../js/html5.js"></script><![endif]-->
+</head>
+<body >
+
+
+
+<header>
+	<div id="navbg"></div>
+	<div class="wrapper">
+		<h1 class="logo"><a href="../index.htm"  title="集联集"><img src="../images/logo.png"  width="80" height="80" alt="集联集" /><img src="../images/logo.gif" width="320" height="80" alt="集联集面膜:www.jilianji.com" /></a></h1>
+		<nav>			
+			<ul>
+				<li class="home"><a href="../../index.jsp" >首页<span>网站首页！</span></a></li>
+				<li class="about"><a href="../about/index.htm"  title="关于我们">关于<span>我们是谁？</span></a></li>
+				<li class="service"><a href="../service/index.htm"  title="我们的产品">产品<span>我们的优势！</span></a></li>
+				<li class="cases"><a href="javascript:alert('建设中！');" title="网页制作">集联集学院<span>你需要了解的！</span></a></li>
+			</ul>
+		</nav>
+        	</div>
+</header>
+<!-- 查找最顶级栏目  -->
+<section id="single">
+	<!-- 查找子栏目  -->
+	<div class="cat_title">
+		<div class="wrapper">
+			<h2><strong>ABOUT</strong>关于我们</h2>
+			<p>我们是谁？<br/>Who are we?</p>
+		</div>
+	</div>
+	<div class="category">
+		<div class="wrapper">
+			<h1>关于</h1>
+            
+            <ul class="catbtn">
+            
+			</ul>
+		</div>
+	</div>
+	<article class="serv_detailed">
+		<div id="detailed">
+
+<div class="t4Content">
+<ul>
+<li>
+	    
+	<p>在互联网飞速发展的今天，人们生活将以更快的速度网络化、数字化，电子商务将掀开新的篇章，青岛集联集信息技术有限公司就是在这样的大环境下应运而生。<br></p>
+<p>青岛集联集信息技术有限公司于2012年11月起开始筹建，于2013年7月25日正式成立，主要从事智能电子商务平台建设，通过网销、企业数字化管理等相关技术支持，为商家提供广告宣传、形象树立、营销推广等商业互动平台和数字化店铺搜索引擎技术，让顾客更快查找、更简便定位，帮助商家实现：增加顾客数量、扩大分销渠道、运用商业资源、拓展赢利通路，实现收益提升，企业发展！<br></p>
+<p>青岛集联集信息技术有限公司集聚优秀的软件开发专业技术人才，深入了解客户需求、帮助企业实现数字化管理、数字化发展提供坚实的技术后盾和业务扩展能力。<br></p>
+<p>同时集联集通过智能商务平台为创业者提供低成本、0风险、高回报的创业平台，让创业轻松起步，快速成功。<br></p>
+<p>集联集完善的六大支持系统：国贸精品供应系统、专业培训系统、技术服务系统、营销推广系统、赢利通路拓展系统、金融服务系统，帮助企业做大做强，帮助创业者创业成功！<br></p>
+<p>从电脑上网到手机上网，信息的传播速度正快速的提升，我们已面临是互联网的全新世界，集联集的网上信息将会给千家万户带来全新的网络生活体验！将为商家带来无限商业拓展机会和创业空间！<br></p>
+	
+</li>
+<li>网址：<a href="http://www.jilianji.com"  target="_blank">http://www.jilianji.com/</a></li>
+</ul>
+</div>
+        </div>
+		<div id="case_footer"></div>
+	</article>
+</section>
+<footer>
+  <div id="footerinfo">
+    <div class="wrapper">
+				<h2>联系我们<strong>Contact</strong></h2>
+<p>
+	        QQ客服：517665160 <a target="_blank" href="javascript:window.location='http://wpa.qq.com/msgrd?v=3&uin=517665160&site=qq&menu=yes'"><img border="0" src="../images/qq.png"  alt="点击这里给我发消息" title="点击这里给我发消息"/></a><br/>
+	        微信客服：jlj968<br/>
+          电子邮件：2450841570@qq.com<br/>
+					公司地址：山东省青岛市市北区延吉路66号<br/>
+					备案编号：鲁ICP备13022620<br/>
+					Copyright © 2012 - 2014 jilianji.com All rights reserved. 
+				</p>
+				
+			</div>
+    <div class="links">
+      <h2>友情链接<strong>Links</strong></h2>
+      <p>
+      	<ul>
+        	<li>
+        		<a href="http://vip.jilianji.com" target='_blank'>集联集旧版官网</a> 
+        	</li>
+      	</ul>
+      </p>
+    </div>
+  </div>
+</footer>
+<script type="text/javascript" src="../js/jquery.1.8.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.plugin.min.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="../js/killie6.js"></script>
+<![endif]-->
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/hulu/!svn/ver/115/yjht/src/com/tw/web/dao
+END
+UserOrderDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/hulu/!svn/ver/37/yjht/src/com/tw/web/dao/UserOrderDAO.java
+END
+EntityDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/EntityDao.java
+END
+ProductsDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/ProductsDAO.java
+END
+OrdersDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/115/yjht/src/com/tw/web/dao/OrdersDAO.java
+END
+MessageDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/MessageDAO.java
+END
+OrdersProductsDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/OrdersProductsDAO.java
+END
+UserDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/hulu/!svn/ver/61/yjht/src/com/tw/web/dao/UserDAO.java
+END
+EggPrizeDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/EggPrizeDAO.java
+END
+RoleFunctionDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/RoleFunctionDAO.java
+END
+CardDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/CardDAO.java
+END
+RecordDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/RecordDAO.java
+END
+TixianDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/132/yjht/src/com/tw/web/dao/TixianDAO.java
+END
+FhRecordDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/FhRecordDAO.java
+END
+NewsDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/NewsDAO.java
+END
+EggActivityDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/EggActivityDAO.java
+END
+RoleDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/RoleDAO.java
+END
+FunctionDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/FunctionDAO.java
+END
+ICRUDBaseDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/hulu/!svn/ver/58/yjht/src/com/tw/web/dao/ICRUDBaseDAO.java
+END
+EggPrizeUserDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/EggPrizeUserDAO.java
+END
+DailyDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/DailyDAO.java
+END
+AdminUserDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/AdminUserDAO.java
+END
+FinanceDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/FinanceDAO.java
+END
+RepeatDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/RepeatDAO.java
+END
+RelationDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/RelationDAO.java
+END
+EggActivityUserDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/EggActivityUserDAO.java
+END
+ApplyReturnPurchaseDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/hulu/!svn/ver/37/yjht/src/com/tw/web/dao/ApplyReturnPurchaseDao.java
+END
+TAreaDao.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/dao/TAreaDao.java
+END

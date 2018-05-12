@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/hulu/!svn/ver/105/yjht/src/com/tw/web/util
+END
+DateUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/DateUtil.java
+END
+Bytes.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/Bytes.java
+END
+HttpConnectionUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/52/yjht/src/com/tw/web/util/HttpConnectionUtil.java
+END
+MyX509TrustManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/53/yjht/src/com/tw/web/util/MyX509TrustManager.java
+END
+CommUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/CommUtils.java
+END
+RandomNumUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/RandomNumUtil.java
+END
+AccessToken.java
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/hulu/!svn/ver/53/yjht/src/com/tw/web/util/AccessToken.java
+END
+DAOUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/DAOUtil.java
+END
+SpringContextUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/SpringContextUtil.java
+END
+StringUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/StringUtil.java
+END
+SystemConfigUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/42/yjht/src/com/tw/web/util/SystemConfigUtil.java
+END
+ObjectUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/hulu/!svn/ver/8/yjht/src/com/tw/web/util/ObjectUtils.java
+END

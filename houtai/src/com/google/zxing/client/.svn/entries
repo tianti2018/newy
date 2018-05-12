@@ -1,0 +1,34 @@
+10
+
+dir
+119
+http://code.taobao.org/svn/hulu/yjht/src/com/google/zxing/client
+http://code.taobao.org/svn/hulu
+
+
+
+2015-04-21T06:36:45.733889Z
+8
+anston
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+451c6204-7b21-4c9e-b5d8-aabf9c6337fa
+
+j2se
+dir
+
+result
+dir
+

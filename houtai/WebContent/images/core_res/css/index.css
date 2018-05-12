@@ -1,0 +1,47 @@
+/*******公共部分*******/
+body{margin:0px; padding:0px; font-size:12px;}
+.biaoti{font-weight:bold; background-color:#353C44; height:25px; color:#E1E2E3;}
+*{ font-size:12px;}
+.tab_biaoti{background-image:url(../images/bg.gif); height:20px;}
+.tab_font{background-color:White; height:20px;}
+.tab{ width:100%; }
+#chaxun{border:1px solid #C1EBFF; width:100%;}
+#chaxun tr td{border:1px solid #C1EBFF; width:100%}
+
+/*******招标/中标*******/
+#zb_ul{margin-top:10px; line-height:25px;}
+#zb_ul li a{text-decoration: none;}
+#zb_ul2{margin-top:10px; line-height:25px;}
+#zb_ul2 li a{text-decoration: none;}
+
+/*******招标现场*******/
+#xianchang{margin-left:170px; margin-top:10px; line-height:25px;}
+.xc_div{width:73%; border:1px solid #999; line-height:100px; margin-left:170px;}
+#xc_tab{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#xc_tab tr td{border:1px solid #b5d6e6;}
+
+/*******首页表格*******/
+#main_biaoti{background-color:#353C44; color:#E1E2E3; width:100%; height:25px;}
+#main_biaoti2{background-color:#353C44; color:#E1E2E3; width:100%; height:25px;}
+#main_cz{ float:right; margin-right:10px;}
+#main_tab{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#main_tab tr td{border:1px solid #b5d6e6;}
+
+/*******产品信息*******/
+#xx_tab{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#xx_tab tr td{border:1px solid #b5d6e6;}
+#xx_tab1{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#xx_tab1 tr td{border:1px solid #b5d6e6;}
+
+/*******投标步骤*******/
+#bz_tab{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#bz_tab tr td{border:1px solid #b5d6e6;}
+#bz_tab1{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse;}
+#bz_tab1 tr td{border:1px solid #b5d6e6;}
+#bz_tab2{ width:100%; border:1px solid #b5d6e6; border-collapse:collapse; text-align:center;}
+#bz_tab2 tr td{border:1px solid #b5d6e6;}
+
+/*******滑动页面*******/
+#hd_tab{font-size:12px; width:50%; border-collapse:collapse; height:210px; float:left;}
+#hd_tab tr td{border:1px solid #b5d6e6;}
+#hd_tab2{width:100%; border-collapse:collapse;}

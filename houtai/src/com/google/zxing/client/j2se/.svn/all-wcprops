@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se
+END
+CommandLineRunner.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/CommandLineRunner.java
+END
+ImageReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/ImageReader.java
+END
+CommandLineEncoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/CommandLineEncoder.java
+END
+DecodeWorker.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/DecodeWorker.java
+END
+GUIRunner.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/GUIRunner.java
+END
+BufferedImageLuminanceSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/BufferedImageLuminanceSource.java
+END
+Config.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/Config.java
+END
+MatrixToImageWriter.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/MatrixToImageWriter.java
+END
+MatrixToImageConfig.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/client/j2se/MatrixToImageConfig.java
+END

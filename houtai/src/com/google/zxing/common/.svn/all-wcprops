@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common
+END
+StringUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/StringUtils.java
+END
+PerspectiveTransform.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/PerspectiveTransform.java
+END
+BitMatrix.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/BitMatrix.java
+END
+BitArray.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/BitArray.java
+END
+HybridBinarizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/HybridBinarizer.java
+END
+BitSource.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/BitSource.java
+END
+GlobalHistogramBinarizer.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/GlobalHistogramBinarizer.java
+END
+DetectorResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/DetectorResult.java
+END
+CharacterSetECI.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/CharacterSetECI.java
+END
+GridSampler.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/GridSampler.java
+END
+DefaultGridSampler.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/DefaultGridSampler.java
+END
+DecoderResult.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/DecoderResult.java
+END

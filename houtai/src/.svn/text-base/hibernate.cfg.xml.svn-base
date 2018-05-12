@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+ "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+		
+		<hibernate-configuration> 
+			<session-factory>
+			
+			<!--  -->
+			<property name="hibernate.connection.provider_class">org.hibernate.connection.ProxoolConnectionProvider</property>
+			<property name="hibernate.proxool.xml">proxool.xml</property>
+			<property name="hibernate.proxool.pool_alias">MySql</property>
+			
+			<property name="show_sql">true</property>
+			<property name="dialect">org.hibernate.dialect.MySQLDialect</property> 
+			<property name="hibernate.hbm2ddl.auto">update</property> 
+	  
+			<!-- 后台系统设计总用表  -->	    
+			 <mapping class="com.tw.web.hibernate.persistent.Relation" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Repeat" />	
+	    	<mapping class="com.tw.web.hibernate.persistent.User" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Record" />
+	    	
+	    	<mapping class="com.tw.web.hibernate.persistent.FhRecord" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Tixian" />
+	    	
+	    	<mapping class="com.tw.web.hibernate.persistent.Daily" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Finance" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Message" />
+	    	<mapping class="com.tw.web.hibernate.persistent.News" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Card" />
+	    	
+		    <mapping class="com.tw.web.hibernate.persistent.Role" />
+		    <mapping class="com.tw.web.hibernate.persistent.UserRole" />
+		    <mapping class="com.tw.web.hibernate.persistent.RoleFunction" />
+		    <mapping class="com.tw.web.hibernate.persistent.Function" />
+		    
+		     <mapping class="com.tw.web.hibernate.persistent.AdminUser" />
+		     
+		      <mapping class="com.tw.web.hibernate.persistent.Role" />
+		      <mapping class="com.tw.web.hibernate.persistent.Products" />
+		      <mapping class="com.tw.web.hibernate.persistent.Orders" />
+		      <mapping class="com.tw.web.hibernate.persistent.OrdersProducts" />
+	    	 <mapping class="com.tw.web.hibernate.persistent.UserOrder" />
+	    	 <mapping class="com.tw.web.hibernate.persistent.TArea" />
+	    	 <mapping class="com.tw.web.hibernate.persistent.ApplyReturnPurchase" />
+	    	 
+	    	 <mapping class="com.tw.web.hibernate.persistent.EggActivity" />
+		      <mapping class="com.tw.web.hibernate.persistent.EggActivityUser" />
+	    	 <mapping class="com.tw.web.hibernate.persistent.EggPrize" />
+	    	 <mapping class="com.tw.web.hibernate.persistent.EggPrizeUser" />
+	    </session-factory>
+	    </hibernate-configuration>

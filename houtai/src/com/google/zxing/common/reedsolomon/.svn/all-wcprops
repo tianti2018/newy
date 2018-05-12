@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon
+END
+ReedSolomonDecoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon/ReedSolomonDecoder.java
+END
+GenericGF.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon/GenericGF.java
+END
+ReedSolomonException.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon/ReedSolomonException.java
+END
+GenericGFPoly.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon/GenericGFPoly.java
+END
+ReedSolomonEncoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/common/reedsolomon/ReedSolomonEncoder.java
+END

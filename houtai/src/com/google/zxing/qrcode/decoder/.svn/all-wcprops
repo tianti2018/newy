@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder
+END
+ErrorCorrectionLevel.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/ErrorCorrectionLevel.java
+END
+BitMatrixParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/BitMatrixParser.java
+END
+Version.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/Version.java
+END
+DecodedBitStreamParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/DecodedBitStreamParser.java
+END
+DataMask.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/DataMask.java
+END
+FormatInformation.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/FormatInformation.java
+END
+Decoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/Decoder.java
+END
+DataBlock.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/DataBlock.java
+END
+Mode.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/qrcode/decoder/Mode.java
+END

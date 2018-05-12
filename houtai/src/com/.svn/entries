@@ -1,0 +1,40 @@
+10
+
+dir
+119
+http://code.taobao.org/svn/hulu/yjht/src/com
+http://code.taobao.org/svn/hulu
+
+
+
+2015-09-06T09:19:24.293777Z
+119
+tianti2015
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+451c6204-7b21-4c9e-b5d8-aabf9c6337fa
+
+alipay
+dir
+
+google
+dir
+
+test
+dir
+
+tw
+dir
+

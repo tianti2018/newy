@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/hulu/!svn/ver/119/yjht/src
+END
+hibernate.cfg.xml
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/hulu/!svn/ver/36/yjht/src/hibernate.cfg.xml
+END
+url.properties
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/hulu/!svn/ver/146/yjht/src/url.properties
+END
+jdbc.properties
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/hulu/!svn/ver/8/yjht/src/jdbc.properties
+END
+displaytag.properties
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/hulu/!svn/ver/8/yjht/src/displaytag.properties
+END
+proxool.xml
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/hulu/!svn/ver/96/yjht/src/proxool.xml
+END
+displaytag_zh_CN.properties
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/hulu/!svn/ver/8/yjht/src/displaytag_zh_CN.properties
+END
+struts.xml
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/hulu/!svn/ver/8/yjht/src/struts.xml
+END
+struts.properties
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/hulu/!svn/ver/8/yjht/src/struts.properties
+END

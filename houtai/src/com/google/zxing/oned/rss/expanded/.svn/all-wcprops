@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/oned/rss/expanded
+END
+BitArrayBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/oned/rss/expanded/BitArrayBuilder.java
+END
+RSSExpandedReader.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/oned/rss/expanded/RSSExpandedReader.java
+END
+ExpandedPair.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/oned/rss/expanded/ExpandedPair.java
+END
+ExpandedRow.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/oned/rss/expanded/ExpandedRow.java
+END

@@ -1,0 +1,80 @@
+@charset="utf-8";
+*{
+	margin:0;
+	padding:0;
+}
+html,body{
+	font-size: 10px;
+	/*font-size: monospace, monospace;*/
+	font-family: "寰蒋闆呴粦","Helvetica Neue",Helvetica,STHeiTi,Arial,sans-serif;
+	color: #333;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+a{
+	text-decoration: none;
+}
+ul{
+	list-style-type: none;
+}
+em,i{
+	font-style: normal;
+}
+input {-webkit-appearance:none; /*鍘婚櫎input榛樿鏍峰紡(涓昏鏄痠Phone涓�*/outline: none; background:#fdce81; border:none;}
+input.order_btn{ background:none; padding:5px; border: 1px solid #000;}
+/*warpper*/
+.wrapper,.footer{
+	position: absolute;
+	left: 0;
+	right: 0;
+	width: 100%;
+}
+.wrapper{
+	top: 0;
+	bottom: 54px;
+	overflow-y:auto;
+	-webkit-overflow-scrolling:touch;
+	font-size:1.4rem;
+}
+/*footer*/
+.footer{
+	bottom: 0;			
+}
+.foot-nav{
+	width: 100%;
+	overflow: hidden;
+}
+.foot-nav a{
+	float: left;
+	display: inline-block;
+	width: 25%;
+	padding:5px 0;
+	text-align: center;
+	background-color:#ea6834;
+	color: #fff; 
+	font-size: 1.2rem;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	background-image:-webkit-linear-gradient(#f52d2d,#9d0305);
+		background-image:-moz-linear-gradient(#f52d2d,#9d0305);
+		background-image:-o-linear-gradient(#f52d2d,#9d0305);
+		background-image:-ms-linear-gradient(#f52d2d,#9d0305);
+		background-image:-chrome-linear-gradient(#f52d2d,#9d0305);
+		background-image:linear-gradient(#f52d2d,#9d0305);
+}
+.foot-nav i.foot-icon{
+	display: block;
+	text-align: center;
+}
+.foot-nav i.foot-icon img{
+	display: inline-block;
+	width: 22px;
+}
+.foot-nav a.nowpage{
+	background: #fdce81;
+	background-image:-webkit-linear-gradient(#9d0305,#f52d2d);
+		background-image:-moz-linear-gradient(#9d0305,#f52d2d);
+		background-image:-o-linear-gradient(#9d0305,#f52d2d);
+		background-image:-ms-linear-gradient(#9d0305,#f52d2d);
+		background-image:-chrome-linear-gradient(#9d0305,#f52d2d);
+		background-image:linear-gradient(#9d0305,#f52d2d);
+}

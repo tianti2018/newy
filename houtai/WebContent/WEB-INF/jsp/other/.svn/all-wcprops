@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other
+END
+addReply.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/addReply.jsp
+END
+phoneQrCode.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/phoneQrCode.jsp
+END
+messageList1.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/messageList1.jsp
+END
+newsList1.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/newsList1.jsp
+END
+newsList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/newsList.jsp
+END
+addNews.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/addNews.jsp
+END
+winPrizeList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/winPrizeList.jsp
+END
+messageList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/messageList.jsp
+END
+indexWinPrizeList.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/indexWinPrizeList.jsp
+END
+addMessage.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/hulu/!svn/ver/8/yjht/WebContent/WEB-INF/jsp/other/addMessage.jsp
+END

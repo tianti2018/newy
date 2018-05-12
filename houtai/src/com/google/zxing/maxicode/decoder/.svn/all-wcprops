@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/maxicode/decoder
+END
+BitMatrixParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/maxicode/decoder/BitMatrixParser.java
+END
+DecodedBitStreamParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/maxicode/decoder/DecodedBitStreamParser.java
+END
+Decoder.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/hulu/!svn/ver/8/yjht/src/com/google/zxing/maxicode/decoder/Decoder.java
+END
