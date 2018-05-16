@@ -254,15 +254,16 @@ public class UserAction extends BaseAction {
 	
 	
 	public String jampshopIndex(){
-		user = getSessionUser();
-//		user = userService.findById(1883);
-//		request.getSession().setAttribute("loginUser",user);
+//		user = getSessionUser();
+		user = userService.findById(1820);
+		request.getSession().setAttribute("loginUser",user);
 
 		if(user == null){
 			return "timeOut";
 		}
 		
-		return "jamp";
+//		return "jamp";
+		return "jampshopIndex";
 	}
 	
 	public String shopIndex(){
