@@ -1,0 +1,107 @@
+@charset "utf-8";
+/* CSS Document */
+img{ max-width:100%}
+body{ background:#e6e6e6}
+.tabcontent{ margin-top:7px;}
+.good-box .ui-block-a{ padding-right:3%}
+.good-box .gpic{ border:1px solid #f5a13f; text-align:center;}
+.good-box h2{ color:#898989; font-weight:100; font-size:20px;}
+.good-box .price{ color:#ee8300; font-size:15px;}
+.good-box .price span{ padding-right:1em;}
+.good-box .price strong{ font-size:24px;}
+.good-box .price .ui-input-text{ width:70px !important; display:inline-block !important}
+.good-box .price .ui-input-text .ui-li-aside{ background:#feedd9; border-color:#f18300}
+.good-box  .price label{ float:left; padding:0.5em; padding-left:0px; padding-right:1em; margin-top:0.5em; height:1.3em; line-height:1.3em;}
+
+
+
+
+.ui-header a.menu{ background:#33dd66 !important; border: none !important }
+
+.ui-header{ background:#33dd66 !important; color:#fff !important }
+.ui-header a.back{ background: url(../image/back.png) no-repeat center center; text-indent:-9999px; border:none;}
+.ui-header a.back:hover{ background: url(../image/back.png) no-repeat center center; }
+
+.member{ width:100%; padding:15px 40px;}
+.member h1{ color:#33dd66; font-weight:50; font-size:18px; background:url(../image/people.png) no-repeat left center; padding-left:24px;}
+.member span{ color:#8c8c8c; font-size:16px; line-height:15px; display:block}
+.member strong{ color:#f28300; font-size:32px; font-family: "微软雅黑"}
+
+.movie-list{ border-radius:3px; border:1px solid #dedcdd; background:#fff;  border-collapse:inherit !important}
+.movie-list thead th{ background:#33dd66; color:#fff}
+
+.movie-list thead th,
+.movie-list tbody tr:last-child {
+			border-bottom: 1px solid #d6d6d6; /* non-RGBA fallback */
+			border-bottom: 1px solid rgba(0,0,0,.1);
+		}
+.movie-list tbody th,
+.movie-list tbody td {
+			border-bottom: 1px solid #e6e6e6; /* non-RGBA fallback  */
+			border-bottom: 1px solid rgba(0,0,0,.05);
+		}
+.movie-list tbody tr:last-child th,
+.movie-list tbody tr:last-child td {
+			border-bottom: 0;
+		}
+.movie-list tbody tr:nth-child(odd) td,
+.movie-list tbody tr:nth-child(odd) th {
+			background-color: #eeeeee; /* non-RGBA fallback  */
+			background-color: rgba(0,0,0,.04);
+		}
+
+
+.ui-corner-all .ui-navbar li{ background:#33dd66; color:#fff}
+.ui-corner-all .ui-navbar li a.ui-btn{ background:#33dd66; font-size:18px; font-weight:100; font-family:"微软雅黑"; color:#fff; border-color:#fff}
+.ui-corner-all .ui-navbar li a.ui-btn-active{ background:#fff; color:#33dd66}
+.ui-corner-all .ui-navbar li a .sale{ background:url(../image/sale.png) no-repeat left center; padding-left:30px;}
+.ui-corner-all .ui-navbar li a .car{ background:url(../image/car.png) no-repeat left center; padding-left:35px;}
+.ui-corner-all .ui-navbar li a .dot1{ background:url(../image/dot-1.png) no-repeat left center; padding-left:27px;}
+.ui-corner-all .ui-navbar li a .dot2{ background:url(../image/dot-2.png) no-repeat left center; padding-left:27px;}
+.ui-corner-all .ui-navbar li a .dot3{ background:url(../image/dot-3.png) no-repeat left center; padding-left:27px;}
+
+
+
+
+
+.list-goods{ list-style:none; overflow:hidden; padding:0px;}
+.list-goods li{ margin-bottom:1em; background:#fff; border-bottom:1px solid #33dd66; border-top:1px solid #33dd66}
+.list-goods .ui-block-a{ padding-right:3%}
+.list-goods p.lpic{ border:1px solid #f5a13f; margin-bottom:10px; margin-top:10px; text-align:center;}
+.list-goods h2{ color:#898989; font-weight:100;font-size:1em;}
+.list-goods .price{ color:#ee8300; font-size:1em;}
+.list-goods .price span{ padding-right:1em;}
+.list-goods .price strong{font-size:1em;}
+.list-goods p{ margin-bottom:2px; margin-top:0px;}
+.list-goods .price .ui-input-text{ width:70px !important; display:inline-block !important}
+.list-goods .price .ui-input-text .ui-li-aside{ background:#feedd9; border-color:#f18300}
+.list-goods .price label{ float:left; padding:0.5em; padding-left:0px; padding-right:1em; margin-top:0.5em; height:1.3em; line-height:1.3em;}
+
+
+
+.list-goods .ui-checkbox{ border:none; background:#fff; float:right; display:inline}
+.list-goods .ui-checkbox label{ border:none; background:#fff}
+.list-goods .dele{ height:1.3em; line-height:1.3em; text-align:center;
+padding:0 15px; font-size:1em; border:1px solid #f28300; color:#f28300; background:#feedd9; display:block; position:absolute;
+right:1em; bottom:10px;}
+.list-goods .ui-block-c{ position: relative; min-height:100px;}
+.list-goods .dele1{  text-align:center;padding:2px 15px;
+ border:1px solid #f28300; color:#f28300; background:#feedd9; }
+.list-goods .ui-block-c{ position: relative; min-height:100px;}
+.footer{ position:fixed; z-index:9999; left:0px; bottom:0px; background:#eeeeee; border-bottom:2px solid #33dd66; width:100%;}
+.footer .res{ position:relative}
+
+.footer h1{ margin:0 25%; padding:0.7em 0; text-align:center; color:#f08501; font-size:17px; font-family:"微软雅黑"; font-weight:100}
+
+.footer .ckall{ position:absolute; left:0.4em; top:0.24em;}
+.footer a.ui-btn{ float:right; position:absolute; padding:3px 15px; right:0.4em; top:0.24em;}
+
+.footer label{ background:none; border:none; padding:3px; padding-left:2em;}
+
+
+@media (max-width:35em){
+.good-box .ui-block-a{ padding-right:0%}
+.list-goods .ui-block-a{ padding-right:0px;}
+.list-goods .ui-block-c{ height: auto; min-height:inherit}
+	
+	}

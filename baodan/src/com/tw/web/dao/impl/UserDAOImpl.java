@@ -17,6 +17,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.sun.org.apache.xpath.internal.operations.And;
 import com.tw.web.dao.UserDAO;
 import com.tw.web.hibernate.persistent.TArea;
 import com.tw.web.hibernate.persistent.User;
@@ -43,16 +44,13 @@ public class UserDAOImpl extends CRUDBaseHibernateDAOImpl implements UserDAO {
 	public int checkUserExistOrNo(String loginName, String password) {
 		
 		int intflag = 0;
+		String hql = "from User where loginName='"+loginName+"' and passWord='"+password+"'";
 		
 		DetachedCriteria dc = DetachedCriteria.forClass(getPojoClass());
 		dc.add(Restrictions.eq("loginName", loginName));
 		
-		if (getHibernateTemplate().findByCriteria(dc).size() != 0 ) {
+		if (getHibernateTemplate().find(hql).size() != 0 ) {
 			
-			dc.add(Restrictions.eq("passWord", password));
-						
-			if (getHibernateTemplate().findByCriteria(dc).size() != 0) {
-				
 				// 登录成功
 				intflag = 11;
 			}
@@ -61,12 +59,6 @@ public class UserDAOImpl extends CRUDBaseHibernateDAOImpl implements UserDAO {
 				// 密码不正确
 				intflag = 12;
 			}
-		}
-		else {
-			
-			// 用户不存在
-			intflag = -1;
-		}
 				
 		return intflag;			
 	}

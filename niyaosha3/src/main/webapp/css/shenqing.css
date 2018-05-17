@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+body { background:#efeff4;}
+.clear { clear:both;}
+
+.sq_btn_main { padding:15px 8px;}
+.sq_btn_main .sq_btn { display:block; height:40px; line-height:40px; text-align: center; color:#fff; background:#3884ff; border:none;}
+
+.sq_list { border:1px #d9d9d9 solid; border-bottom:none; border-left:none; background:#ffffff;}
+.sq_list ul li{ float:left; width:33.33%;}
+.sq_list ul li .m{ display:block; border:1px #d9d9d9 solid; border-top:none; border-right:none; padding:8px;}
+.sq_list ul li .m img{ display:block; margin:0px auto; width:100%;}
+.sq_list ul li .m span{ display:block; text-align:center; font-size:12px;}
+.sq_list ul li .m i{ display:block; text-align:center; font-size:12px; color:#999;}
+
+.regular-radio{ display:none;}
+.regular-radio + label {
+	-webkit-appearance: none;
+	display:block;
+	position: relative;
+	padding:10px 20px;
+	color: #666666;
+}
+.regular-radio:checked + label {
+	background-color: #f9f9f9;
+	color: #c30000;
+}
+.regular-radio:checked + label span{ color: #c30000; }
+.regular-radio:checked + label i{ color: #c30000; }
