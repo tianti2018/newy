@@ -25,7 +25,7 @@ import com.tw.web.service.LoginService;
 			
 			@Result(name="adminsuccess", 		value="/WEB-INF/jsp/main/main.jsp"),
 			@Result(name="adminerror", 		value="/login.jsp"),
-			@Result(name="mobilesuccess", type=ActionChainResult.class, 	value="orders", params = {"method", "listAllOrderList"}),
+			@Result(name="mobilesuccess", type=ActionChainResult.class, 	value="orders", params = {"method", "ordersList"}),
 		}
 )
 public class LoginAction extends ExtJSONActionSuport {

@@ -342,7 +342,7 @@
 		<tr>
 			<td width="20%" class="pn-flabel pn-flabel-h">详细地址：</td>
 		  <td width="80%" class="pn-fcontent">
-		  	<input type="text" id="address" value="${user.address }" name="address" size="20" maxlength="20" onblur="checkTextArea()"/>
+		  	<input type="text" id="address" value="${user.address }" name="address" size="200" style="width: 90%" maxlength="200" onblur="checkTextArea()"/>
 		  	<font color="red">*<span id="addressspan"></span></font>
 		  </td>
 		</tr>

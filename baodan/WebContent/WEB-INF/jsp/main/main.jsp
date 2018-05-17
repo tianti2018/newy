@@ -9,6 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
 
 <title>会员管理后台</title>
+<script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+
 </head>
 
 <frameset rows="90,*,8" frameborder="no" border="0" framespacing="0">

@@ -28,7 +28,6 @@ import com.tw.web.hibernate.persistent.User;
 )
 public class MainAction extends ExtJSONActionSuport {
 	
-	private FhRecordDAO fhRecordDAO;
 	private String loginPage;
 	private AdminUserDAO adminUserDAO;
 	
@@ -37,13 +36,6 @@ public class MainAction extends ExtJSONActionSuport {
 	}
 	public void setLoginPage(String loginPage) {
 		this.loginPage = loginPage;
-	}
-	public FhRecordDAO getFhRecordDAO() {
-		return fhRecordDAO;
-	}
-	@Autowired
-	public void setFhRecordDAO(FhRecordDAO fhRecordDAO) {
-		this.fhRecordDAO = fhRecordDAO;
 	}
 
 	public AdminUserDAO getAdminUserDAO() {

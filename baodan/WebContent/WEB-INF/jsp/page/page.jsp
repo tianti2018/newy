@@ -139,7 +139,7 @@ this.className=this.tmpClass;
 <input type="hidden" id="hinput_qphone" name="phone" value='${phone}'>
 <input type="hidden" id="hinput_DateType" name="dateType" value='${dateType}'>
 <input type="hidden" id="hinput_block" name="block" value='${block}'>
-
+<input type="hidden" id="hinput_pname" name="pname" value='${pname}'>
 <!-- 上传合同beagin -->
 <input type="hidden" name="key" value="${param.key}"/>
 <input type="hidden" name="categoryid" value="${param.categoryid}"/>

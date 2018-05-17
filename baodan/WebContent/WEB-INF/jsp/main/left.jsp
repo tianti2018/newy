@@ -159,7 +159,7 @@
 		        </table>
 		        <ul class="MM">
 					 <li><a href="user!initModifyUser.action" target="rightFrame">个人资料维护</a></li>
-					 <li><a href="orders!listAllOrderList.action" target="rightFrame">订单查询</a></li>
+					 <li><a href="orders!ordersList.action" target="rightFrame">订单查询</a></li>
 		        </ul>
 		      </div>
 		      </c:if>

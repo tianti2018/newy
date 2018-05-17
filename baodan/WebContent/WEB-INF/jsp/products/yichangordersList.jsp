@@ -110,7 +110,7 @@ $(function(){
 		var winSettings = "dialogHeight:500px;dialogWidth:700px;status:no;help:no";
 		var param = "?time=" + datetime+"&ordersId="+arguments[0];
 		bid = window.showModalDialog("orders!beizhu.action" + param, datetime,winSettings);
-		window.open("orders!listAllOrderList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
+		window.open("orders!ordersList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
 	}
 	function exportToExcel(){
 		var $form = $("<form method='post' action='orders!exportToExcel.action'></form>");
@@ -233,7 +233,7 @@ $(function(){
 				<c:if test="${adminUser==false}">
 					<a href="<%=request.getContextPath()%>/orders!initAdd.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_buy.png" alt=""></i><span>新增订单</span></a>
 				</c:if>
-				<a href="<%=request.getContextPath()%>/orders!listAllOrderList.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
+				<a href="<%=request.getContextPath()%>/orders!ordersList.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
 				
 				<a href="<%=request.getContextPath()%>/user!listAllUser.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>团队列表</span></a>
 				

@@ -18,6 +18,7 @@
 	<link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/family.css" />
 	<script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
+	<script src="<%=request.getContextPath()%>/js/jquery.ui.dialog.js"></script>
 
 <title>list</title>
 <link href="images/common_res/css/jquery_validate.css" rel="stylesheet" type="text/css"/>
@@ -88,7 +89,7 @@
 		$("#hinput_qoUserName").val($("#input_qoUserName").val());
 		$("#hinput_qoPhone").val($("#input_qoPhone").val());
 		$("#hinput_DateType").val($("#st_qDateType").val());
-		
+		$("#hinput_pname").val($("#input_qPname").val());
 		$("#currentPage").val(1);
 		gotoPage();
 	}
@@ -101,7 +102,7 @@
 		var winSettings = "dialogHeight:500px;dialogWidth:700px;status:no;help:no";
 		var param = "?time=" + datetime+"&ordersId="+arguments[0];
 		bid = window.showModalDialog("orders!beizhu.action" + param, datetime,winSettings);
-		window.open("orders!listAllOrderList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
+		window.open("orders!ordersList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
 	}
 	function exportToExcel(){
 		var $form = $("<form method='post' action='orders!exportToExcel.action'></form>");
@@ -148,6 +149,9 @@
 		}
 		return false;
 	}
+	function winCHZH(){
+		self.location.href="orders!quchongzhi.action?ordersId="+arguments[0];
+	}
 	
 </script>
 
@@ -166,6 +170,7 @@
 		<table class="pn-ltable" width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr><td align="center">订单编号：</td><td align="center"><input type="text" id="input_qOrdersBH" name="qOrdersBH" value="${ordersBH }"/></td></tr>
 			<tr><td align="center">收货人电话：</td><td align="center"><input type="text" id="input_qMobile" name="qMobile" value="${mobile }"/></td></tr>
+			<tr><td align="center">货物名称：</td><td align="center"><input type="text" id="input_qPname" name="pname" value="${pname }"/></td></tr>
 			<tr><td align="center">收货人姓名：</td><td align="center"><input type="text" id="input_qtoUserName" name="toUserName" value="${toUserName }"/></td></tr>
 	   		<c:if test="${adminUser}">
 		   		<tr><td align="center">报单人姓名：</td><td align="center"><input type="text" id="input_qoUserName" name="oUserName" value="${oUserName }"/></td></tr>
@@ -189,10 +194,12 @@
 		</td></tr> 
 		<tr><td align="center">订单状态：</td><td align="center">
 			<select id="st_qOrderType"> 
-				<option value="0">未支付</option>
-				<option value="1">已支付</option>
-				<option value="3">已发货</option>
-				<option value="5">已退货</option>
+				<option value="0" >未支付</option>
+		  		<option value="1" >已支付</option>
+		  		<option value="2" >异常</option>
+		  		<option value="3" >已发货</option>
+		  		<option value="4" >完成</option>
+		  		<option value="5">已退货</option>
 				<option value="6">已收货</option>
 			</select>
 		</td></tr> 
@@ -250,6 +257,7 @@
 								</c:if>
 								<c:if test="${userFlag>=1}">
 									<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
+									<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a>
 								</c:if>
 							</c:if>
 							
@@ -271,7 +279,7 @@
 			</ul>
 			</c:forEach>
 			<c:import url="/WEB-INF/jsp/page/page.jsp">
-     			<c:param name="pageActionUrl" value="orders!listAllOrderList.action"/>
+     			<c:param name="pageActionUrl" value="orders!ordersList.action"/>
      		</c:import>
      		</br>
      		</br>
@@ -287,7 +295,7 @@
 				<c:if test="${adminUser==false}">
 					<a href="<%=request.getContextPath()%>/orders!initAdd.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_buy.png" alt=""></i><span>新增订单</span></a>
 				</c:if>
-				<a href="<%=request.getContextPath()%>/orders!listAllOrderList.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
+				<a href="<%=request.getContextPath()%>/orders!ordersList.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
 				
 				<a href="<%=request.getContextPath()%>/user!listAllUser.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>团队列表</span></a>
 				
@@ -347,9 +355,10 @@
 						<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a>
 					</c:if>
 					<c:if test="${adminUser}">
-					<c:if test="${userFlag==0}">
+						<c:if test="${userFlag==0}">
 							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a>
 						</c:if>
+						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a>
 					</c:if>
 					
 					<c:if test="${adminUser==false}">
@@ -406,7 +415,7 @@
 	
 	 <!-- 导入分页组件  -->
      <c:import url="/WEB-INF/jsp/page/page.jsp">
-     	<c:param name="pageActionUrl" value="orders!listAllOrderList.action"/>
+     	<c:param name="pageActionUrl" value="orders!ordersList.action"/>
      </c:import>
      </c:if>
 
@@ -478,13 +487,13 @@ $('#div_search').keydown(function(e){
 		loadSearch();//处理事件 
 	} 
 }); 
-var order_status = '<%=request.getAttribute("order_status")%>';
+var order_status = '<%=session.getAttribute("order_status")%>';
 if(order_status == "null")
 	$("#st_qOrderType  option[value='1'] ").attr("selected",true);
 else
 	$("#st_qOrderType  option[value='"+order_status+"'] ").attr("selected",true);
 	
-var st_qDateType = '<%=request.getAttribute("dateType")%>';
+var st_qDateType = '<%=session.getAttribute("dateType")%>';
 if(st_qDateType == "null")
 	$("#st_qDateType  option[value='1'] ").attr("selected",true);
 else

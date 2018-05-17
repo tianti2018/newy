@@ -63,14 +63,14 @@
 		var winSettings = "dialogHeight:500px;dialogWidth:700px;status:no;help:no";
 		var param = "?time=" + datetime+"&ordersId="+arguments[0];
 		bid = window.showModalDialog("orders!initkuaidi.action" + param, datetime,winSettings);
-		window.open("orders!listAllOrderList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
+		window.open("orders!ordersList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
 	}
 	function winSdy() {
 		var datetime = new Date();
 		var winSettings = "dialogHeight:500px;dialogWidth:700px;status:no;help:no";
 		var param = "?time=" + datetime+"&ordersId="+arguments[0];
 		bid = window.showModalDialog("orders!beizhu.action" + param, datetime,winSettings);
-		window.open("orders!listAllOrderList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
+		window.open("orders!ordersList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
 	}
 	function exportToExcel(){
 		var $form = $("<form method='post' action='orders!exportToExcel.action'></form>");

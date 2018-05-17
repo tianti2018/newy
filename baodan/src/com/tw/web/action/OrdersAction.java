@@ -64,6 +64,7 @@ import com.tw.web.util.CommUtils;
 @Results(
 		{
 			
+			@Result(name="quchongzhi", 			value="/WEB-INF/jsp/products/chongzhiOrder.jsp"),
 			@Result(name="initAdd", 			value="/WEB-INF/jsp/products/editorder.jsp"),
 			@Result(name="block", 			value="/block.html"),
 			@Result(name="yichang", 			value="/WEB-INF/jsp/products/addyichang.jsp"),
@@ -73,14 +74,14 @@ import com.tw.web.util.CommUtils;
 			@Result(name="create", 				value="/WEB-INF/jsp/products/productsList.jsp"),
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/productsList.jsp"),
 			@Result(name="listAllApplys", 			value="/WEB-INF/jsp/products/listAllApplys.jsp"),
-			@Result(name="listAllOrderList", 			value="/WEB-INF/jsp/products/ordersList.jsp"),
+			@Result(name="ordersList", 			value="/WEB-INF/jsp/products/ordersList.jsp"),
 			
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/allOrders.jsp"),
 			@Result(name="initkuaidi", 			value="/WEB-INF/jsp/products/addKuaidi.jsp"),
 			@Result(name="beizhu", 			value="/WEB-INF/jsp/products/addbeizhu.jsp"),
 			@Result(name="applyReturnPurchase", 			value="/WEB-INF/jsp/products/applyReturnPurchase.jsp"),
 			@Result(name="goBackList", type=ActionChainResult.class, 	value="role", params = {"method", "listAll"}),
-			@Result(name="goBackList1", type=ActionChainResult.class, 	value="orders", params = {"method", "listAllOrderList"}),
+			@Result(name="goBackList1", type=ActionChainResult.class, 	value="orders", params = {"method", "ordersList"}),
 			@Result(name="dealApply", type=ActionChainResult.class, 	value="orders", params = {"method", "listAllApplys"}),
 			@Result(name="error", type=ActionChainResult.class, 	value="login", params = {"method", "doLogin"}),
 			@Result(name="adminerror", type=ActionChainResult.class, 	value="login", params = {"method", "doAdminLogin"})
@@ -132,6 +133,29 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private Integer order_status;//订单状态
 	private String pictureUrl;//图片url
 	private String comments;//信息
+	
+	public String chongzhiOrder(){
+		Orders orders = (Orders)ordersDAO.findById(ordersId);
+//		User user = null;
+		AdminUser adminUser = (AdminUser) ServletActionContext.getRequest().getSession().getAttribute("user");
+		if(adminUser == null){
+			return "adminerror";
+		}
+		if(orders!=null){
+			if(order_status!=null){
+				orders.setOrder_status(order_status);
+				ordersDAO.update(orders);
+			}
+		}
+		return "goBackList1";
+	}
+	
+	public String quchongzhi(){
+		Orders orders = (Orders)ordersDAO.findById(ordersId);
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setAttribute("orders", orders);
+		return "quchongzhi";
+	}
 	
 	public String zhifuOrder(){
 		Orders orders = (Orders) ordersDAO.findById(ordersId);
@@ -266,7 +290,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		return "listYichang";
 	}
 	
-	public String listAllOrderList() {
+	public String ordersList() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		
 		Object obj = request.getSession().getAttribute("user");
@@ -299,6 +323,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 		
 		if (null==orderType ||"".equals(orderType.trim())) {
+			orderType = (String) request.getSession().getAttribute("order_status");
+		}
+		
+		if (null==orderType ||"".equals(orderType.trim())) {
 			orderType = "1";
 		}
 		sql += " and order_status =" +orderType;
@@ -309,6 +337,11 @@ public class OrdersAction extends ExtJSONActionSuport {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
 			sql += " and toUserName like '%"+toUserName.trim()+"%'";
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
+			sql += " and pname like '%"+pname.trim()+"%'";
 		}
 		if (null!=oUserName &&! "".equals(oUserName.trim())) {
 			conditionProperties.put("oUserName", oUserName.trim());
@@ -431,10 +464,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 		
 		List<Orders> litPager = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
 		request.setAttribute("litPager", litPager);
-		request.setAttribute("order_status", orderType);
-		request.setAttribute("dateType", dateType);
+		request.getSession().setAttribute("order_status", orderType);
+		request.getSession().setAttribute("dateType", dateType);
 		request.setAttribute("totalMoney", totalMoney);
-		return "listAllOrderList";
+		return "ordersList";
 	}
 	
 	public String create() throws Exception {

@@ -3,17 +3,14 @@ package com.tw.web.action;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionSupport;
-
+import com.tw.web.hibernate.persistent.Pager;
 import com.tw.web.service.PagerService;
 
 public class ExtJSONActionSuport extends ActionSupport {
 	
-	private static final long serialVersionUID = 1656050495784169029L;
-	
 	private PagerService pagerService;
 	
-	@SuppressWarnings("unchecked")
-	private com.tw.web.hibernate.persistent.Pager pager;
+	private Pager pager;
 	
 
 	protected String currentPage;
@@ -42,13 +39,11 @@ public class ExtJSONActionSuport extends ActionSupport {
 		this.pagerService = pagerService;
 	}
 
-	@SuppressWarnings("unchecked")
-	public com.tw.web.hibernate.persistent.Pager getPager() {
+	public Pager getPager() {
 		return pager;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void setPager(com.tw.web.hibernate.persistent.Pager pager) {
+	public void setPager(Pager pager) {
 		this.pager = pager;
 	}
 
