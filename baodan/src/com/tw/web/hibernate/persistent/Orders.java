@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Orders extends AbstractSymBasePO {
 	
 	private Integer ordersId;
-	private Integer order_status;//0:未支付,1:已支付,2:异常,3发货,4完成,5退货,6收获,7待用,8待用,9删除
+	private Integer order_status;//0:未支付,1:已支付,2:异常,3发货,4完成,5退货,6收货,7待用,8待用,9删除
 	
 	private String toUserName;//收货人姓名
 	private String mobile; //收货人电话

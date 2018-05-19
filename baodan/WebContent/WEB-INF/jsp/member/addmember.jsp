@@ -121,6 +121,13 @@
 			frmUser.loginName.focus();
 			return false;
 		}
+		//s = s.replaceAll("[^0-9a-zA-Z]","");
+		var re = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/; 
+		if(!re.test(loginName)){
+			alert("对不起，登录名不正确！");
+			frmUser.loginName.focus();
+			return false;
+		}
 			
 		if (userId == "" || userId == null) {
 			if(checkspace(password))  {		
@@ -243,8 +250,8 @@
 	function yanzheng(){
 		var loginName=$("#loginName").val();
 		//s = s.replaceAll("[^0-9a-zA-Z]","");
-		var re = /[^a-zA-Z]/; 
-		if(re.test(loginName)){
+		var re = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/; 
+		if(!re.test(loginName)){
 			$("#loginName").val("");
 		}
 	}
@@ -268,9 +275,9 @@
 		<tr>
 			<td width="30%" class="pn-flabel pn-flabel-h">登录名：</td>
 			<td width="70%" class="pn-fcontent">
-				<input type="text" id="loginName" name="loginName" value="${user.loginName }" size="20"  maxlength="12" onkeyup="yanzheng();">
+				<input type="text" id="loginName" name="loginName" value="${user.loginName }" size="20"  maxlength="12">
 				<input type="hidden" id="userId" name="userId" value="${user.userId }"/>
-				<font color="red">*登录名必须为英文字母</font>				
+				<font color="red">*登录名必须为11位手机号</font>				
 			</td>
 		</tr>
 	

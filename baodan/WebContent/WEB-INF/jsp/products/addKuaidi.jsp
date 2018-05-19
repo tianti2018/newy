@@ -118,6 +118,7 @@
 		  	<input type="hidden" id="ordersId" name="ordersId"  value="${orders.ordersId}" />
 		  	<select id="kuaidiName" name="kuaidiName">
 		  		<option value="${orders.kuaidiName }">${orders.kuaidiName }</option>
+		  		<option value="特急送">特急送</option>
 		  		<option value="圆通" >圆通</option>
 		  		<option value="顺丰" >顺丰</option>
 		  		<option value="申通" >申通</option>

@@ -77,7 +77,7 @@
 		$("#j_fromDate").val("");
 		$("#st_qDateType").val("1")
 		$("#j_endDate").val("");
-	
+		$("#input_qPname").val("");
 	}
 	loadSearch =function () {
 		$("#hOrdersBH").val($("#input_qOrdersBH").val());
@@ -152,6 +152,13 @@
 	function winCHZH(){
 		self.location.href="orders!quchongzhi.action?ordersId="+arguments[0];
 	}
+	function shouhuo(ordersId){
+		if(confirm('请再次确定是否收货？')) {
+			self.location.href="orders!shouhuo.action?ordersId="+ordersId;
+			return true;	
+		}
+		return false;
+	}
 	
 </script>
 
@@ -225,14 +232,15 @@
 						<li>收货人姓名：<em>${item.toUserName}</em></li>
 						<li>收货人电话：<em>${item.mobile}</em></li>
 						<li>产品名称：<em>${item.pname}</em></li>
-						<li>订单状态：<em>
-							<c:if test="${item.order_status=='0'}"><font size="2">未支付</font></c:if>
-							<c:if test="${item.order_status=='1'}"><font size="2">已支付</font></c:if>
-							<c:if test="${item.order_status=='3'}"><font size="2">已发货</font></c:if>
-							<c:if test="${item.order_status=='4'}"><font size="2">已完成</font></c:if>
-							<c:if test="${item.order_status=='5'}"><font size="2">已退货</font></c:if>
-							<c:if test="${item.order_status=='6'}"><font size="2">已收货</font></c:if>
-						</em></li>
+						<c:if test="${item.order_status=='0'}">
+							<li>订单状态：<em><font size="2">未支付</font></em></li>
+						</c:if>
+						<c:if test="${item.order_status=='1'}"><li>订单状态：<em><font size="2">已支付</font></em></li></c:if>
+							<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
+							<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
+							<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2">已退货</font></em></li></c:if>
+							<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
+						
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
 						<li>收货地址：<em>${item.sheng }${item.chengshi }${item.diqu }${item.address }，邮编: ${item.zipcode }</em></li>
@@ -256,20 +264,24 @@
 									<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a>
 								</c:if>
 								<c:if test="${userFlag>=1}">
-									<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
-									<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a>
+									<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a><br/>
+									<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a><br/>
+									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
 								</c:if>
 							</c:if>
 							
 							<c:if test="${adminUser==false}">
 								<c:if test="${userFlag==0}">
-									<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a>
+									<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
 								</c:if>
 								<c:if test="${userFlag==1||userFlag==0}">
-									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a>
+									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
 								</c:if>
-								<c:if test="${userFlag>=3}">
-									<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a>
+								<c:if test="${userFlag==3}">
+									<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
+								</c:if>
+								<c:if test="${userFlag>3}">
+									<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
 								</c:if>
 							</c:if>
 						
@@ -350,26 +362,30 @@
 				<td align="center">${item.mobile}</td>
 				<td align="center">${item.pname}</td>
 				<td align="center" title="点击查看收货信息">
-					<a href="javascript:void(0)" onclick="showShouhuo('${status.index}')">送货信息</a>
+					<a href="javascript:void(0)" onclick="showShouhuo('${status.index}')">送货信息</a><br/>
 					<c:if test="${userFlag>=3}">
-						<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a>
+						<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a><br/>
 					</c:if>
 					<c:if test="${adminUser}">
 						<c:if test="${userFlag==0}">
-							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a>
+							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a><br/>
 						</c:if>
-						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a>
+						<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
+						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a><br/>
 					</c:if>
 					
 					<c:if test="${adminUser==false}">
 						<c:if test="${userFlag==0}">
-							<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a>
+							<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
 						</c:if>
 						<c:if test="${userFlag==1||userFlag==0}">
-							<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a>
+							<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
 						</c:if>
-						<c:if test="${userFlag>=3}">
-							<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a>
+						<c:if test="${userFlag==3}">
+							<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
+						</c:if>
+						<c:if test="${userFlag>3}">
+							<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
 						</c:if>
 					</c:if>
 				</td>

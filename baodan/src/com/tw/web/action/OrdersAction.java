@@ -163,6 +163,13 @@ public class OrdersAction extends ExtJSONActionSuport {
 		ordersDAO.update(orders);
 		return "goBackList1";
 	}
+	public String shouhuo(){
+		Orders orders = (Orders) ordersDAO.findById(ordersId);
+		orders.setOrder_status(6);
+		orders.setShouhuoDate(new Date());
+		ordersDAO.update(orders);
+		return "goBackList1";
+	}
 	
 	public String initImport(){
 		return "importExcel";
@@ -307,7 +314,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
+		
 		String sql = "select sum(money) from orders where 1=1 ";
 		if(user !=null){
 			userId = user.getUserId();
@@ -328,6 +335,21 @@ public class OrdersAction extends ExtJSONActionSuport {
 		
 		if (null==orderType ||"".equals(orderType.trim())) {
 			orderType = "1";
+		}
+		if(orderType.equals("0")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("1")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("2")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("3")){
+			sort.put("fahuoDate", false);
+		}else if(orderType.equals("4")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("5")){
+			sort.put("tuihuoDate", false);
+		}else if(orderType.equals("6")){
+			sort.put("shouhuoDate", false);
 		}
 		sql += " and order_status =" +orderType;
 		conditionProperties.put("order_status", Integer.valueOf(orderType));
@@ -472,9 +494,13 @@ public class OrdersAction extends ExtJSONActionSuport {
 	
 	public String create() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		User user = (User)request.getSession().getAttribute("user");
-		if(user == null){
+		Object obj = request.getSession().getAttribute("user");
+		if(obj == null){
 			return "error";
+		}
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
 		}
 		Orders orders = null;
 		if(ordersId ==null){
@@ -495,9 +521,12 @@ public class OrdersAction extends ExtJSONActionSuport {
 		orders.setMobile(mobile);
 		orders.setPname(pname);
 		orders.setZipcode(zipcode);
-		orders.setoPhone(user.getPhone());
-		orders.setoUserName(user.getUserName());
-		orders.setUser(user);
+		if(user!=null){
+			orders.setoPhone(user.getPhone());
+			orders.setoUserName(user.getUserName());
+			orders.setUser(user);
+		}
+		
 		orders.setMoney(money);
 		orders.setSheng(sheng);
 		orders.setChengshi(chengshi);
