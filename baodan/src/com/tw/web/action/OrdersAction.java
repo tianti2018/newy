@@ -278,8 +278,16 @@ public class OrdersAction extends ExtJSONActionSuport {
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
 		if(sumList!=null&&sumList.size()>0){
-			if(sumList.get(0)!=null)
-				totalMoney = sumList.get(0).toString();
+			java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+			// 不使用千分位，即展示为11672283.234，而不是11,672,283.234
+			nf.setGroupingUsed(false);
+			// 设置数的小数部分所允许的最小位数
+			nf.setMinimumFractionDigits(0);
+			// 设置数的小数部分所允许的最大位数
+			nf.setMaximumFractionDigits(5);
+			if(sumList.get(0)!=null){
+				totalMoney = nf.format(sumList.get(0));
+			}
 		}
 		// 修改的时候保存当前页
 		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
@@ -637,8 +645,17 @@ public class OrdersAction extends ExtJSONActionSuport {
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
 		if(sumList!=null&&sumList.size()>0){
-			if(sumList.get(0)!=null)
-				totalMoney = sumList.get(0).toString();
+			java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+			// 不使用千分位，即展示为11672283.234，而不是11,672,283.234
+			nf.setGroupingUsed(false);
+			// 设置数的小数部分所允许的最小位数
+			nf.setMinimumFractionDigits(0);
+			// 设置数的小数部分所允许的最大位数
+			nf.setMaximumFractionDigits(5);
+			if(sumList.get(0)!=null){
+				totalMoney = nf.format(sumList.get(0));
+			}
+			
 		}
 		// 修改的时候保存当前页
 		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
