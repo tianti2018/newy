@@ -70,7 +70,7 @@
 	function cleanSearch(){
 		$("#input_qOrdersBH").val("");
 		$("#input_qMobile").val("");
-		$("#st_qOrderType").val("1");
+		$("#st_qOrderType").val("");
 		$("#input_qtoUserName").val("");
 		$("#input_qoUserName").val("");
 		$("#input_qMobile").val("");
@@ -170,7 +170,6 @@
 		<div class="clear"></div>
 	</div>
 	<div class="rhead">
-		<div class="rpos" >总计金额:<span id="zongJinE" style="color: red">${totalMoney}</span>元</div>
 		<div class="clear"></div>
 	</div>
 		<div class="rhead">
@@ -201,6 +200,7 @@
 		</td></tr> 
 		<tr><td align="center">订单状态：</td><td align="center">
 			<select id="st_qOrderType"> 
+				<option value="">未选择</option>
 				<option value="0" >未支付</option>
 		  		<option value="1" >已支付</option>
 		  		<option value="2" >异常</option>
@@ -236,16 +236,17 @@
 							<li>订单状态：<em><font size="2">未支付</font></em></li>
 						</c:if>
 						<c:if test="${item.order_status=='1'}"><li>订单状态：<em><font size="2">已支付</font></em></li></c:if>
+						<c:if test="${item.order_status=='2'}"><li>订单状态：<em><font size="2">异常</font></em></li></c:if>
 							<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
 							<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
 							<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2">已退货</font></em></li></c:if>
 							<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
-						
+						<c:if test="${item.order_status=='9'}"><li>订单状态：<em><font size="2">已删除</font></em></li></c:if>
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
 						<li>收货地址：<em>${item.sheng }${item.chengshi }${item.diqu }${item.address }，邮编: ${item.zipcode }</em></li>
 						<li>报单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
-						<c:if test="${userFlag>1}">
+						<c:if test="${orderType>1}">
 							<li>发货人：<em>${item.fromUserName}</em></li>
 							<li>发货人电话：<em>${item.tel}</em></li>
 							<li>发货时间：<em>${item.fahuoDate}</em></li>
@@ -260,10 +261,10 @@
 						<li>备注信息：<em>${item.comments },处理时间:${item.dealDate },处理次数:${item.dealNum }</em></li>
 						<li>操作：<em>
 							<c:if test="${adminUser}">
-								<c:if test="${userFlag==0}">
+								<c:if test="${orderType==0}">
 									<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a>
 								</c:if>
-								<c:if test="${userFlag>=1}">
+								<c:if test="${orderType>=1}">
 									<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a><br/>
 									<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a><br/>
 									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
@@ -271,16 +272,16 @@
 							</c:if>
 							
 							<c:if test="${adminUser==false}">
-								<c:if test="${userFlag==0}">
+								<c:if test="${orderType==0}">
 									<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
 								</c:if>
-								<c:if test="${userFlag==1||userFlag==0}">
+								<c:if test="${orderType==1||orderType==0}">
 									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
 								</c:if>
-								<c:if test="${userFlag==3}">
+								<c:if test="${orderType==3}">
 									<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
 								</c:if>
-								<c:if test="${userFlag>3}">
+								<c:if test="${orderType>3}">
 									<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
 								</c:if>
 							</c:if>
@@ -315,7 +316,7 @@
 					<a href="<%=request.getContextPath()%>/user!initAddUser.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>我的信息</span></a>
 				</c:if>
 				<c:if test="${adminUser}">
-					<a href="#"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_erweima.png" alt=""/></i><span>待开发</span></a>
+					<a href="<%=request.getContextPath()%>/orders!caiwuList.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_erweima.png" alt=""/></i><span>对账查询</span></a>
 				</c:if>
 				</div>
 			</footer>
@@ -335,7 +336,7 @@
 			<th width="5%">购买数量</th>
 			<th width="5%">订单金额</th>
 			
-			<c:if test="${userFlag>1}">
+			<c:if test="${orderType>1}">
 				<th width="5%">发货人</th>
 				<th width="5%">发货人电话</th>
 				<th width="5%">发货时间</th>
@@ -345,7 +346,7 @@
 			<c:if test="${adminUser}">
 				<th width="5%">报单人姓名</th>
 				<th width="5%">报单人电话</th>
-				<c:if test="${userFlag==1}">
+				<c:if test="${orderType==1}">
 					<th width="5%">报单日期</th>
 					<th width="5%">确认送货</th>
 				</c:if>
@@ -363,28 +364,30 @@
 				<td align="center">${item.pname}</td>
 				<td align="center" title="点击查看收货信息">
 					<a href="javascript:void(0)" onclick="showShouhuo('${status.index}')">送货信息</a><br/>
-					<c:if test="${userFlag>=3}">
+					<c:if test="${orderType>=3}">
 						<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a><br/>
 					</c:if>
 					<c:if test="${adminUser}">
-						<c:if test="${userFlag==0}">
+						<c:if test="${orderType==0}">
 							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a><br/>
 						</c:if>
+						<c:if test="${orderType>0}">
 						<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
-						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a><br/>
+						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" >订单重置</a><br/>
+						</c:if>
 					</c:if>
 					
 					<c:if test="${adminUser==false}">
-						<c:if test="${userFlag==0}">
+						<c:if test="${orderType==0}">
 							<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
 						</c:if>
-						<c:if test="${userFlag==1||userFlag==0}">
+						<c:if test="${orderType==1||orderType==0}">
 							<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
 						</c:if>
-						<c:if test="${userFlag==3}">
+						<c:if test="${orderType==3}">
 							<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
 						</c:if>
-						<c:if test="${userFlag>3}">
+						<c:if test="${orderType>3}">
 							<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
 						</c:if>
 					</c:if>
@@ -392,14 +395,16 @@
 				<td align="center">
 					<c:if test="${item.order_status=='0'}"><font size="2">未支付</font></c:if>
 					<c:if test="${item.order_status=='1'}"><font size="2">已支付</font></c:if>
+					<c:if test="${item.order_status=='2'}"><font size="2">异常</font></c:if>
 					<c:if test="${item.order_status=='3'}"><font size="2">已发货</font></c:if>
 					<c:if test="${item.order_status=='4'}"><font size="2">已完成</font></c:if>
 					<c:if test="${item.order_status=='5'}"><font size="2">已退货</font></c:if>
 					<c:if test="${item.order_status=='6'}"><font size="2">已收货</font></c:if>
+					<c:if test="${item.order_status=='9'}"><font size="2">已删除</font></c:if>
 				</td>
 				<td align="center">${item.shuliang}${item.size}</td>
 				<td align="center">${item.money}</td>
-				<c:if test="${userFlag>1}">
+				<c:if test="${orderType>1}">
 					<td align="center">	${item.fromUserName}</td>
 					<td align="center">	${item.tel}</td>
 					<td align="center">	${item.fahuoDate}</td>
@@ -409,7 +414,7 @@
 				<c:if test="${adminUser}">
 					<td align="center">	${item.oUserName}</td>
 					<td align="center">	${item.oPhone}</td>
-					<c:if test="${userFlag=='1'}">
+					<c:if test="${orderType=='1'}">
 						<td align="center"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td class="pn-lopt"><a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
 						</td>
@@ -503,11 +508,9 @@ $('#div_search').keydown(function(e){
 		loadSearch();//处理事件 
 	} 
 }); 
-var order_status = '<%=session.getAttribute("order_status")%>';
-if(order_status == "null")
-	$("#st_qOrderType  option[value='1'] ").attr("selected",true);
-else
-	$("#st_qOrderType  option[value='"+order_status+"'] ").attr("selected",true);
+var order_status = '<%=session.getAttribute("orderType")%>';
+if(orderType != "null")
+	$("#st_qOrderType  option[value='"+orderType+"'] ").attr("selected",true);
 	
 var st_qDateType = '<%=session.getAttribute("dateType")%>';
 if(st_qDateType == "null")

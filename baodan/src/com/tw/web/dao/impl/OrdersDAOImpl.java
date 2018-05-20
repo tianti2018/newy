@@ -141,7 +141,6 @@ public class OrdersDAOImpl extends CRUDBaseHibernateDAOImpl implements OrdersDAO
 		if(orders.size()>0){
 			for(Orders o:orders){
 				Double bilv = 0.0 ;
-				User u = o.getUser();
 				Double chengben = Double.valueOf(SystemConfigUtil.getString("chengben"));
 				Double danjia =Double.valueOf(SystemConfigUtil.getString("danjia"));
 				lirun += o.getMoney()*(1-bilv)-chengben*o.getMoney()/danjia;
@@ -185,7 +184,6 @@ public class OrdersDAOImpl extends CRUDBaseHibernateDAOImpl implements OrdersDAO
 		if(orders.size()>0){
 			for(Orders o:orders){
 				Double bilv = 0.0 ;
-				User u = o.getUser();
 				zongzhichu += o.getMoney()*bilv;
 			}
 		}

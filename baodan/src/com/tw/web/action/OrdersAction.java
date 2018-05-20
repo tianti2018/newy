@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,8 +39,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sun.misc.BASE64Encoder;
-
 import com.opensymphony.xwork2.ActionChainResult;
 import com.tw.web.dao.ApplyReturnPurchaseDao;
 import com.tw.web.dao.OrdersDAO;
@@ -58,6 +57,8 @@ import com.tw.web.hibernate.persistent.UserOrder;
 import com.tw.web.service.LoginService;
 import com.tw.web.util.CommUtils;
 
+import sun.misc.BASE64Encoder;
+
 @SuppressWarnings("serial")
 @ParentPackage("app-default")
 @Namespace("")
@@ -75,7 +76,7 @@ import com.tw.web.util.CommUtils;
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/productsList.jsp"),
 			@Result(name="listAllApplys", 			value="/WEB-INF/jsp/products/listAllApplys.jsp"),
 			@Result(name="ordersList", 			value="/WEB-INF/jsp/products/ordersList.jsp"),
-			
+			@Result(name="caiwuList", 			value="/WEB-INF/jsp/products/caiwuList.jsp"),
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/allOrders.jsp"),
 			@Result(name="initkuaidi", 			value="/WEB-INF/jsp/products/addKuaidi.jsp"),
 			@Result(name="beizhu", 			value="/WEB-INF/jsp/products/addbeizhu.jsp"),
@@ -99,7 +100,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private ApplyReturnPurchaseDao applyReturnPurchaseDao;
 	
 	private String toUserName;//收货人电话
-	private Double money;//金额
+	private String money;//金额
 	private String mobile;//收货人电话
 	private String fromUserName;//发货人姓名
 	private String tel;//发货人电话
@@ -120,7 +121,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private String fromDate;//起始日期
 	private String endDate;//截止日期
 	private String size;//货物单位
-	private Double shuliang;//货物数量
+	private String shuliang;//货物数量
 	private String sheng;//省
 	private String chengshi;//市
 	private String diqu;//地区
@@ -273,7 +274,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("mobile", 2);
 			sql += " and mobile like '%"+mobile.trim()+"%'";
 		}
-		int count_size =ordersDAO.cout_size1(conditionProperties, compare);
+		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
 		if(sumList!=null&&sumList.size()>0){
@@ -289,7 +290,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
 		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
 		
-		List<Orders> litPager = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
+		List<Orders> litPager = ordersDAO.findAllPagerList(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
 		request.setAttribute("litPager", litPager);
 		request.setAttribute("order_status", orderType);
 		request.setAttribute("dateType", dateType);
@@ -315,27 +316,28 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
 		
-		String sql = "select sum(money) from orders where 1=1 ";
 		if(user !=null){
 			userId = user.getUserId();
-			sql+=" and userId ="+userId;
 		}
 		if (null!=userId &&! "".equals(userId)) {
-			conditionProperties.put("t.userId", userId);
-			compare.put("t.userId", 13);
+			conditionProperties.put("userId", userId);
+			compare.put("userId", 0);
 		}
-		if(null != userName && !userName.isEmpty()){
-			conditionProperties.put("t.userName", userName);
-			compare.put("t.userName", 14);
-		}
-		
-		if (null==orderType ||"".equals(orderType.trim())) {
+		if (null==orderType) {
+			
 			orderType = (String) request.getSession().getAttribute("order_status");
+			
+		}
+		if(orderType!=null&&!"".equals(orderType.trim())){
+			conditionProperties.put("order_status", Integer.valueOf(orderType));
+			compare.put("order_status", 0);
+		}else{
+			Integer[] os = {0,1,2,3,4,5,6};
+			conditionProperties.put("order_status", os);
+			compare.put("order_status", 4);
+			orderType = "-1";
 		}
 		
-		if (null==orderType ||"".equals(orderType.trim())) {
-			orderType = "1";
-		}
 		if(orderType.equals("0")){
 			sort.put("createDate", false);
 		}else if(orderType.equals("1")){
@@ -351,10 +353,156 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}else if(orderType.equals("6")){
 			sort.put("shouhuoDate", false);
 		}
-		sql += " and order_status =" +orderType;
-		conditionProperties.put("order_status", Integer.valueOf(orderType));
-		compare.put("order_status", 0);
-		request.setAttribute("userFlag", Integer.parseInt(orderType));
+		
+		if (null!=toUserName &&! "".equals(toUserName.trim())) {
+			conditionProperties.put("toUserName", toUserName.trim());
+			compare.put("toUserName", 2);
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
+		}
+		if (null!=oUserName &&! "".equals(oUserName.trim())) {
+			conditionProperties.put("oUserName", oUserName.trim());
+			compare.put("oUserName", 2);
+		}
+		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
+			conditionProperties.put("fromUserName", fromUserName.trim());
+			compare.put("fromUserName", 2);
+		}
+		if (null!=tel &&! "".equals(tel.trim())) {
+			conditionProperties.put("tel", tel.trim());
+			compare.put("tel", 2);
+		}
+		if (null!=oPhone &&! "".equals(oPhone.trim())) {
+			conditionProperties.put("oPhone", oPhone.trim());
+			compare.put("oPhone", 2);
+		}
+		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
+			conditionProperties.put("ordersBH", ordersBH.trim());
+			compare.put("ordersBH", 2);
+		}
+		if(null!=mobile &&! "".equals(mobile.trim())){
+			conditionProperties.put("mobile", mobile.trim());
+			compare.put("mobile", 2);
+		}
+		String selectDate = "";
+		if(dateType!=null&&!"".equals(dateType)){
+			if(dateType.equals("1")){
+				selectDate = "createDate";
+			}else if(dateType.equals("3")){
+				selectDate = "fahuoDate";
+			}else if(dateType.equals("5")){
+				selectDate = "tuihuoDate";
+			}else if(dateType.equals("6")){
+				selectDate = "shouhuoDate";
+			}
+		}
+		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+			System.out.println("---------------------------------------"+fromDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 8);
+		}
+		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+			System.out.println("+++++++++++++++++++++++++"+endDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 9);
+		}
+		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
+			System.out.println("=========================");
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date date2=null;
+			try
+			{
+				date2=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+		}
+		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
+		// 修改的时候保存当前页
+		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
+			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
+			
+			this.setPagerMethod("next");
+		}
+		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
+		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
+		
+		List<Orders> litPager = ordersDAO.findAllPagerList(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
+		request.setAttribute("litPager", litPager);
+		request.getSession().setAttribute("orderType", orderType);
+		request.getSession().setAttribute("dateType", dateType);
+		request.setAttribute("totalMoney", totalMoney);
+		return "ordersList";
+	}
+	
+	public String caiwuList() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Object obj = request.getSession().getAttribute("user");
+		if(obj == null){
+			return "error";
+		}
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+			if(user.getBlock().equals("1")){
+				return "block";
+			}
+		}
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		
+		String sql = "select sum(money) from orders where order_status in (1,2,3,4,6) ";
+		Integer[] os = {1,2,3,4,5,6};
+		conditionProperties.put("order_status", os);
+		compare.put("order_status", 4);
+		if(user !=null){
+			userId = user.getUserId();
+			sql+=" and userId ="+userId;
+		}
+		if (null!=userId &&! "".equals(userId)) {
+			conditionProperties.put("userId", userId);
+			compare.put("userId", 0);
+		}
+		
+		sort.put("createDate", true);
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
@@ -406,6 +554,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 			}else if(dateType.equals("6")){
 				selectDate = "shouhuoDate";
 			}
+		}
+		if(selectDate.equals("")){
+			selectDate = "createDate";
 		}
 		String dateSql = "";
 		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
@@ -467,8 +618,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put(selectDate, 10);
 			dateSql = " and "+selectDate+" between '"+fromDate+"' and '"+endDate+"'";
 		}
+
+		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+			Date date=calendar.getTime();
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			Date date2=calendar.getTime();
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"' and '"+formatter.format(date2)+"'";
+		}
 		sql = sql+dateSql;
-		int count_size =ordersDAO.cout_size1(conditionProperties, compare);
+		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
 		if(sumList!=null&&sumList.size()>0){
@@ -484,13 +649,13 @@ public class OrdersAction extends ExtJSONActionSuport {
 		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
 		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
 		
-		List<Orders> litPager = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
+		List<Orders> litPager = ordersDAO.findAllPagerList(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
 		request.setAttribute("litPager", litPager);
-		request.getSession().setAttribute("order_status", orderType);
 		request.getSession().setAttribute("dateType", dateType);
 		request.setAttribute("totalMoney", totalMoney);
-		return "ordersList";
+		return "caiwuList";
 	}
+	
 	
 	public String create() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -524,10 +689,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(user!=null){
 			orders.setoPhone(user.getPhone());
 			orders.setoUserName(user.getUserName());
-			orders.setUser(user);
+			orders.setUserId(user.getUserId());
 		}
 		
-		orders.setMoney(money);
+		orders.setMoney(Double.valueOf(money));
 		orders.setSheng(sheng);
 		orders.setChengshi(chengshi);
 		orders.setShengCode(shengCode);
@@ -535,7 +700,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		orders.setDiquCode(diquCode);
 		orders.setDiqu(diqu);
 		orders.setSize(size);
-		orders.setShuliang(shuliang);
+		orders.setShuliang(Double.valueOf(shuliang));
 		ordersDAO.saveOrUpdate(orders);
 		ServletActionContext.getRequest().setAttribute("message", "报单成功");
 		return "goBackList1";
@@ -1012,17 +1177,10 @@ public class OrdersAction extends ExtJSONActionSuport {
             // 第四步，创建单元格，并设置值  
             row.createCell(0).setCellValue(order.getOrdersBH());//订单编号
             row.createCell(1).setCellValue(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getCreateDate())); //下单时间
-			User u = order.getUser();
-			if(u != null){//下单人编号和昵称
-				row.createCell(2).setCellValue(u.getUserName());
-				row.createCell(3).setCellValue(u.getPhone());
-				row.createCell(4).setCellValue(u.getUserId());
+			row.createCell(2).setCellValue(order.getoUserName());
+			row.createCell(3).setCellValue(order.getoPhone());
+			row.createCell(4).setCellValue(order.getUserId());
 				
-			}else {
-				row.createCell(2).setCellValue("");
-				row.createCell(3).setCellValue("");
-				row.createCell(4).setCellValue("");
-			}
 			row.createCell(5).setCellValue(order.getToUserName()==null?"":order.getToUserName());//收货人姓名
             row.createCell(6).setCellValue(order.getMobile()==null?"":order.getMobile());//收货人电话
 			row.createCell(7).setCellValue(order.getSheng());//所在省
@@ -1338,10 +1496,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				e.printStackTrace();
 			}
 			
-			User user = order.getUser();
-			if(user == null){
-				user = (User) userDAO.findById(order.getUserId());
-			}
+			User user = (User) userDAO.findById(order.getUserId());
 			ordersDAO.update(order);
 			applyReturnPurchaseDao.saveOrUpdate(arp);
 		}
@@ -1439,13 +1594,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 			}
 		}
 		
-		User user = order.getUser();
-		if(user == null){
-			user = (User) userDAO.findById(order.getUserId());
+			User user = (User) userDAO.findById(order.getUserId());
 			if(user != null){
 				userDAO.update(user);
 			}
-		}
 		
 //		if(refferUser != null)
 //			try {
@@ -1462,11 +1614,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Orders order = (Orders) ordersDAO.findById(arp.getOrderId());
 		order.setTel("");
 		
-		User user = order.getUser();
 		User refferUser ;
-		if(user == null){
-			user = (User) userDAO.findById(order.getUserId());
-		}
+		User user = (User) userDAO.findById(order.getUserId());
 		ordersDAO.update(order);
 		applyReturnPurchaseDao.deleteById(ordersId);
 		return "dealApply";
@@ -1516,9 +1665,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			orders.setComments(kuaidiNo);
 			ordersDAO.update(orders);
 			ServletActionContext.getRequest().setAttribute("message", "操作成功");
-			user = orders.getUser();
-			if(user == null)
-				user = (User) userDAO.findById(orders.getUserId());
+			user = (User) userDAO.findById(orders.getUserId());
 		}
 		else {
 			ServletActionContext.getRequest().setAttribute("message", "此订单不存在");
@@ -1583,23 +1730,11 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 	}
 
-	public Double getMoney() {
-		return money;
-	}
-	public void setMoney(Double money) {
-		this.money = money;
-	}
 	public String getSize() {
 		return size;
 	}
 	public void setSize(String size) {
 		this.size = size;
-	}
-	public Double getShuliang() {
-		return shuliang;
-	}
-	public void setShuliang(Double shuliang) {
-		this.shuliang = shuliang;
 	}
 	public String getSheng() {
 		return sheng;
@@ -1699,6 +1834,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public String getMoney() {
+		return money;
+	}
+
+	public void setMoney(String money) {
+		this.money = money;
+	}
+
+	public String getShuliang() {
+		return shuliang;
+	}
+
+	public void setShuliang(String shuliang) {
+		this.shuliang = shuliang;
 	}
 	
 	

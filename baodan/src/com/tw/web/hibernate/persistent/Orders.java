@@ -44,7 +44,6 @@ public class Orders extends AbstractSymBasePO {
 	
 	private String ordersBH;//订单号
 	private Double money;//支付金额
-	private User user;//订单提交人
 	private String oUserName;//报单人姓名
 	private String oPhone;//报单人电话
 	private Double shuliang;//发货数量
@@ -94,7 +93,6 @@ public class Orders extends AbstractSymBasePO {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	@Column(name="userId", insertable = false, updatable = false)
 	public Integer getUserId() {
 		return userId;
 	}
@@ -106,14 +104,6 @@ public class Orders extends AbstractSymBasePO {
 	}
 	public void setToUserName(String toUserName) {
 		this.toUserName = toUserName;
-	}
-	@ManyToOne
-	@JoinColumn(name="userId")
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
 	}
 	
 	public String getPname() {

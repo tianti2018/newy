@@ -18,9 +18,9 @@ jdbc:mysql://58.64.213.202:3306/beijingzh?useUnicode=true&amp;characterEncoding=
 -->
 
 <driver-url> 
-<!-- jdbc:mysql://101.1.16.190:3306/jifen?useUnicode=true&amp;characterEncoding=utf8 -->
-<!-- jdbc:mysql://103.26.1.13:4407/yingjun?useUnicode=true&amp;characterEncoding=utf8 -->
-jdbc:mysql://127.0.0.1:4407/baodan?useUnicode=true&amp;characterEncoding=utf8
+<!-- jdbc:mysql://127.0.0.1:4407/wdl?useUnicode=true&amp;characterEncoding=utf8 -->
+jdbc:mysql://www.yuewenanime.com:4407/wdl?useUnicode=true&amp;characterEncoding=utf8
+<!-- jdbc:mysql://127.0.0.1:4407/baodan?useUnicode=true&amp;characterEncoding=utf8 -->
 </driver-url>
 
 <!-- JDBC驱动名称 -->

@@ -51,7 +51,7 @@
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>480</session-timeout>
   </session-config>
   <error-page>
     <error-code>404</error-code>
