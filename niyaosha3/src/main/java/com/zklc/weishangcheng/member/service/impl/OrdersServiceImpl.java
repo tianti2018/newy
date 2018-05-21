@@ -17,18 +17,22 @@ import com.zklc.weishangcheng.member.hibernate.persistent.GoodYongJin;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
-import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 import com.zklc.weishangcheng.member.hibernate.persistent.RefundRecord;
+import com.zklc.weishangcheng.member.hibernate.persistent.ShouYiForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
-import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
+import com.zklc.weishangcheng.member.service.OrderJinHuoService;
+import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.ProductService;
 import com.zklc.weishangcheng.member.service.RefundRecordService;
+import com.zklc.weishangcheng.member.service.ShouYiForUserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
@@ -42,10 +46,14 @@ import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
  */
 @SuppressWarnings("rawtypes")
 @Service
-public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Integer>
-		implements MiaoShaOrderService {
+public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
+		implements OrdersService {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ShouYiForUserService shouyiService;
+	@Autowired
+	private OrderJinHuoService jinhuoService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -84,10 +92,10 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	 */
 	@Override
 	public void updateOrdeToSend() {
-		List<MiaoShaOrder> list = super.findByHql("from MiaoShaOrder t  where t.orderStatus=0 and t.payStatus=1", null);
-		List<MiaoShaOrder> updateList = new ArrayList<MiaoShaOrder>();
+		List<Orders> list = super.findByHql("from MiaoShaOrder t  where t.orderStatus=0 and t.payStatus=1", null);
+		List<Orders> updateList = new ArrayList<Orders>();
 		if (MyUtils.isNotEmpty(list) && list.size() > 0) {
-			for (MiaoShaOrder order : list) {
+			for (Orders order : list) {
 				if (CalendarUtils.compareDate(CalendarUtils.mergeHour(order.getPayTime(), 6), new Date()).equals("<")) {
 					 order.setOrderStatus(1);
 					  update(order);
@@ -146,9 +154,9 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		
 	}
 	@Override
-	public MiaoShaOrder findOrderByOrderBH(String orderNo) {
+	public Orders findOrderByOrderBH(String orderNo) {
 		
-		List<MiaoShaOrder> orders = findByProperty("ordersBH", orderNo);
+		List<Orders> orders = findByProperty("ordersBH", orderNo);
 		if(orders.size()>0){
 			return orders.get(0);
 		}
@@ -157,15 +165,15 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Integer cancelOrder(MiaoShaOrder order) {
+	public Integer cancelOrder(Orders order) {/*
 		Integer cancelResult = 0;
 		// 1.更新订单状态和取消时间
 		// 2.还需要操作退款
 		// 3.还需要作废上级用户的佣金
-		if (order.getOrderStatus() != null && order.getOrderStatus()==0) {
+		if (order.getOrder_status() != null && order.getOrder_status()==0) {
 			Usery user = useryService.findbyUserId(order.getUserId());
 			order.setCancelTime(new Date());
-			if (order.getPayStatus() != null && order.getPayStatus() == 1) {
+			if (order.getOrder_status() != null && order.getOrder_status() == 1) {
 				// 微信退款
 				String xmlResult = WXRefund.refund(user.getWxOpenid(), order.getOrdersBH(), String.valueOf(order.getMoney()*97));
 				Map refundMap=null;
@@ -187,16 +195,14 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 				
 				if (refundMap.get("return_code").equals("SUCCESS")&&refundMap.get("result_code").equals("SUCCESS")) {
 					refundRecord.setPartnerTradeNo(refundMap.get("payment_no")==null?"":refundMap.get("payment_no").toString());
-					order.setPayStatus(2);
 					order.setRefundTime(new Date());
 					refundRecord.setResult(1);
 					// 更新订单的取消状态
-					order.setOrderStatus(11);
 					cancelResult = 1;
 					// 如果订单已支付 则添加退款明细记录
 					Product product = productService.findById(order.getProductId());
 					if (product.getStock() != null && product.getStock() != 999) {
-						product.setStock(product.getStock() + order.getSize());
+						product.setStock(product.getStock() );
 						productService.update(product);
 					}	
 				} else {
@@ -207,12 +213,14 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		   this.update(order);
 		}
 		return cancelResult;
-	}
+	*/
+		return null;
+		}
 	@Override
-	public void moneyPay(MiaoShaOrder order, Users user) {
+	public void moneyPay(Orders order, Users user) {
 		user = userService.findById(order.getUserId());
 		//支付成功后更新用户的星火券数量
-		if(order.getXinghuoquan()>0)
+		if(order.getShouyi()>0)
 		{
 			
 			userService.update(user);
@@ -226,9 +234,9 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 			xhqRecord.setStatus(2);//表示支出
 			xhqRecord.setType(4);//4:购买兑换
 			xhqRecord.setUserId(user.getUserId());
-			xhqRecord.setXinghuoquan(order.getXinghuoquan());
-			xingHuoQuanRecordService.save(xhqRecord);
-			order.setOrderStatus(0);
+//			xhqRecord.setXinghuoquan(order.getXinghuoquan());
+//			xingHuoQuanRecordService.save(xhqRecord);
+//			order.setOrderStatus(0);
 		}
 		else
 		{
@@ -281,13 +289,13 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 			}
 		}
 		//更新订单的支付信息
-		order.setPayStatus(1);
+//		order.setPayStatus(1);
 		order.setPayTime(new Date());
 		update(order);
 		
 		Product product = productService.findById(order.getProductId());
 		if(product.getStock()!=null&&product.getStock()!=999){
-			product.setStock(product.getStock()-order.getSize());
+			product.setStock(product.getStock());
 			productService.update(product);
 		}
 	}
@@ -335,30 +343,30 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 	//面膜订单的保存方法
 	@Override
-	public void saveMianMoOrder(MiaoShaOrder order, Users user,Product buyProd)
+	public void saveMianMoOrder(Orders order, Users user,Product buyProd)
 	{
-		if((order.getXinghuoquan()*100/2)>=(order.getMoney()*100)){
-			order.setPayStatus(1);
-			order.setPayTime(new Date());
-			user = userService.findById(order.getUserId());
-			userService.update(user);
-			//添加星火券的消费记录
-			XingHuoQuanRecord xhqRecord=new XingHuoQuanRecord();
-			xhqRecord.setCreateDate(new Date());
-			xhqRecord.setFromUserId(user.getUserId());
-			xhqRecord.setMemo("订单"+order.getOrdersBH()+"兑换消费");
-			xhqRecord.setOrderId(order.getOrdersId());
-			xhqRecord.setOrdersBH(order.getOrdersBH());
-			xhqRecord.setStatus(2);//表示支出
-			xhqRecord.setType(4);//4:购买兑换
-			xhqRecord.setUserId(user.getUserId());
-			xhqRecord.setXinghuoquan(order.getXinghuoquan());
-			xingHuoQuanRecordService.save(xhqRecord);
-			String content="您好:\n您的订单已支付成功！\n"+"订单编号："+order.getOrdersBH()+"\n"+"支付金额："+order.getMoney()+"元,购买产品!";
-			Usery usery = useryService.findbyUserId(user.getUserId());
-			if(usery!=null)
-				autosendmsgService.sendMsg(usery.getWxOpenid(), content);
-		}
+//		if((order.getXinghuoquan()*100/2)>=(order.getMoney()*100)){
+//			order.setPayStatus(1);
+//			order.setPayTime(new Date());
+//			user = userService.findById(order.getUserId());
+//			userService.update(user);
+//			//添加星火券的消费记录
+//			XingHuoQuanRecord xhqRecord=new XingHuoQuanRecord();
+//			xhqRecord.setCreateDate(new Date());
+//			xhqRecord.setFromUserId(user.getUserId());
+//			xhqRecord.setMemo("订单"+order.getOrdersBH()+"兑换消费");
+//			xhqRecord.setOrderId(order.getOrdersId());
+//			xhqRecord.setOrdersBH(order.getOrdersBH());
+//			xhqRecord.setStatus(2);//表示支出
+//			xhqRecord.setType(4);//4:购买兑换
+//			xhqRecord.setUserId(user.getUserId());
+//			xhqRecord.setXinghuoquan(order.getXinghuoquan());
+//			xingHuoQuanRecordService.save(xhqRecord);
+//			String content="您好:\n您的订单已支付成功！\n"+"订单编号："+order.getOrdersBH()+"\n"+"支付金额："+order.getMoney()+"元,购买产品!";
+//			Usery usery = useryService.findbyUserId(user.getUserId());
+//			if(usery!=null)
+//				autosendmsgService.sendMsg(usery.getWxOpenid(), content);
+//		}
 		//该方法应该 是一个 事物
 		save(order);
 //		if (user.getReferrerId() != null) {
@@ -442,7 +450,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 //		}
 	}
 	@Override
-	public void saveAndCFh(MiaoShaOrder order, Users user) {
+	public void saveAndCFh(Orders order, Users user) {
 
 		save(order);
 		if(order.getType().equals(1)){
@@ -560,11 +568,11 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean saveJifenOrder(MiaoShaOrder order, Users user, Product prod,Integer xiaohaoJifen) {
+	public Boolean saveJifenOrder(Orders order, Users user, Product prod,Integer xiaohaoJifen) {
 		Integer jifen = 0;
-		if(order.getScore()!=null){
-			jifen=order.getScore().intValue();
-		}
+//		if(order.getScore()!=null){
+//			jifen=order.getScore().intValue();
+//		}
 		/*if(user.getBuyCount()==null||user.getBuyCount()<jifen){
 			return false;
 		}*/
@@ -592,7 +600,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean jifenPay(MiaoShaOrder order, Users user) {
+	public Boolean jifenPay(Orders order, Users user) {
 		try {
 			user = userService.findById(order.getUserId());
 			List jilist =null;
@@ -604,9 +612,9 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 					//可使用积分是否足够
 					jilist = jiFenRecordService.countNewUserJifen(user.getUserId(), 2);
 					if(jilist.size() >0){
-						if(Integer.parseInt(jilist.get(0).toString()) >=  order.getScore().intValue()){
-							xiaohaoType=1;
-						}
+//						if(Integer.parseInt(jilist.get(0).toString()) >=  order.getScore().intValue()){
+//							xiaohaoType=1;
+//						}
 					}
 					//推荐用户积分不足
 					if(xiaohaoType == 0){
@@ -626,24 +634,25 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 			//Integer jifen = 0;
 			order.setOrderStatus(1);
 			//List<JiFenRecord> updateRecords = new ArrayList<JiFenRecord>();
-			if(order.getScore() != null && order.getScore()<=dataji){
-				update(order);
-				List<JiFenRecord> records = jiFenRecordService.findByProperty("orderId", order.getOrdersId());
-				if(records.size() > 0){
-					JiFenRecord jf = records.get(0);
-					jf.setStatus(2);
-					jiFenRecordService.update(jf);
-				}else{
-					order.setOrderStatus(8);//设置订单需退款的状态8 退款完成状态9;
-					update(order);
-					return false;
-				}
-				return true;
-			}else{
-				order.setOrderStatus(8);//设置订单需退款的状态8 退款完成状态9;
-				update(order);
-				return false;
-			}
+//			if(order.getScore() != null && order.getScore()<=dataji){
+//				update(order);
+//				List<JiFenRecord> records = jiFenRecordService.findByProperty("orderId", order.getOrdersId());
+//				if(records.size() > 0){
+//					JiFenRecord jf = records.get(0);
+//					jf.setStatus(2);
+//					jiFenRecordService.update(jf);
+//				}else{
+////					order.setOrderStatus(8);//设置订单需退款的状态8 退款完成状态9;
+//					update(order);
+//					return false;
+//				}
+//				return true;
+//			}else{
+//				order.setOrderStatus(8);//设置订单需退款的状态8 退款完成状态9;
+//				update(order);
+//				return false;
+//			}
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -653,7 +662,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 
 	@Override
-	public Boolean saveHuiYuanOrder(MiaoShaOrder order, Users user,
+	public Boolean saveHuiYuanOrder(Orders order, Users user,
 			Product prod) {
 		save(order);
 		Integer allMoney = 0;
@@ -703,7 +712,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 	}
 	
 	public Boolean CTFenRun(String type,Integer orderMoney,Users user,Users parent1,Users parent2,
-				Users parent3,MiaoShaOrder order){
+				Users parent3,Orders order){
 		Random random = new Random();
 		try {
 			if(type.contains("3")){
@@ -862,7 +871,7 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 //	}
 
 	@Override
-	public void huiyuanPay(MiaoShaOrder order, Users user) {
+	public void huiyuanPay(Orders order, Users user) {
 		user = userService.findById(order.getUserId());
 //		if(user.getLevel()!=null&&user.getLevel()!=3){
 //			try {
@@ -955,6 +964,31 @@ public class MiaoShaOrderServiceImpl extends BaseServiceImp<MiaoShaOrder, Intege
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public void createOrder(Orders order, OrderJinHuo orderJinHuo, ShouYiForUser dianzhuShouyiRecord,
+			ShouYiForUser shangjiShouyiRecord,ShouYiForUser xiaohaoRecord) {
+		if(order!=null){
+			save(order);
+			if(orderJinHuo!=null){
+				orderJinHuo.setOrdersId(order.getOrdersId());
+				jinhuoService.save(orderJinHuo);
+				if(shangjiShouyiRecord!=null){
+					shangjiShouyiRecord.setOrdersId(orderJinHuo.getId());
+					shouyiService.save(shangjiShouyiRecord);
+				}
+			}
+			if(dianzhuShouyiRecord!=null){
+				dianzhuShouyiRecord.setOrdersId(order.getOrdersId());
+				shouyiService.save(dianzhuShouyiRecord);
+			}
+			if(xiaohaoRecord!=null){
+				xiaohaoRecord.setOrdersId(order.getOrdersId());
+				shouyiService.save(xiaohaoRecord);
+			}
+		}
+		
 	}
 
 	

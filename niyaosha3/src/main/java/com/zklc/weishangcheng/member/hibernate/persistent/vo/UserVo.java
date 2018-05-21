@@ -1,5 +1,6 @@
 package com.zklc.weishangcheng.member.hibernate.persistent.vo;
 
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 
@@ -7,7 +8,7 @@ public class UserVo {
 
 	private Users user;
 	private Usery usery;
-	private OrderAddressVO address;
+	private OrderAddress orderAddress;
 	public Users getUser() {
 		return user;
 	}
@@ -20,11 +21,12 @@ public class UserVo {
 	public void setUsery(Usery usery) {
 		this.usery = usery;
 	}
-	public OrderAddressVO getAddress() {
-		return address;
+	public OrderAddress getOrderAddress() {
+		return orderAddress;
 	}
-	public void setAddress(OrderAddressVO address) {
-		this.address = address;
+	public void setOrderAddress(OrderAddress orderAddress) {
+		this.orderAddress = orderAddress;
 	}
+	
 	
 }

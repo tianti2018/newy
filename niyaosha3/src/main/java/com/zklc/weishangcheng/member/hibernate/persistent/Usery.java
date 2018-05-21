@@ -36,7 +36,7 @@ public class Usery implements Serializable {
 	
 	private Date appDate;					//关注时间
 	
-	private String block;					//锁定用户
+	private Integer block;					//锁定用户
 	
 	private String qrCode;					//名片二维码
 	private String wxOpenid;				//微信唯一标识
@@ -213,11 +213,11 @@ public class Usery implements Serializable {
 		this.level = level;
 	}
 
-	public String getBlock() {
+	public Integer getBlock() {
 		return block;
 	}
 
-	public void setBlock(String block) {
+	public void setBlock(Integer block) {
 		this.block = block;
 	}
 

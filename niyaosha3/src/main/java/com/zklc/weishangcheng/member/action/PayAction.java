@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletInputStream;
@@ -18,14 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.utils.GetWxOrderno;
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.dao.OrderDao;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.service.UserService;
-import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weishangcheng.member.service.YongjinService;
@@ -44,13 +40,10 @@ public class PayAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private OrderLiuService orderLiuService;
-	@Autowired
 	private YongjinService yongjinService;
 	
 	private Users user;
-	private Order order;
-	private OrderLiu orderLiu;
+	private OrderJinHuo order;
 	private Integer userId;
 	private String ordersBH;
 	private String code;// 微信code
@@ -98,22 +91,16 @@ public class PayAction extends BaseAction {
 		//String total_fee = (String) map.get("total_fee");
 			//支付成功
 			if(null!=return_code&&return_code.equals("SUCCESS")){
-				if(out_trade_no.startsWith("99")){
-					//流量
-					orderLiu = orderLiuService.findOrderByOrderBH(out_trade_no);
-				}else{
 					order = orderService.findOrderByOrderBH(out_trade_no);
-				}
 				
 				if(null!=order){
-					if(order.getOrderStatus()==0){
-						System.out.println("order.getOrderStatus() "+order.getOrderStatus());
+					if(order==null){
 						
 						returnStr="SUCCESS";
 						//信息通知用户
 						String content="您好:\n您的订单已支付成功！\n"+"订单编号："+order.getOrdersBH()+"\n"+"支付金额："+order.getMoney()+"元";
 						autosendmsgService.sendMsg(openid, content);
-						user = userService.findById(order.getUserId());
+//						user = userService.findById(order.getUserId());
 
 						orderService.moneyPay(order,openid,user);
 						
@@ -152,69 +139,6 @@ public class PayAction extends BaseAction {
 							}
 						}
 					}
-				}else{
-					if(orderLiu.getOrderStatus()==0){
-						System.out.println("orderLiu.getOrderStatus() "+orderLiu.getOrderStatus());
-						
-						returnStr="SUCCESS";
-						//信息通知用户
-						String content="您好:\n您的订单已支付成功！\n"+"订单编号："+orderLiu.getOrdersBH()+"\n"+"支付金额："+orderLiu.getMoney()+"元";
-						autosendmsgService.sendMsg(openid, content);
-						user = userService.findById(orderLiu.getUserId());
-						//判断订单类型
-						Integer num  = orderLiuService.liuliangPay(orderLiu,openid,user);
-						
-						Users refferUser = null;
-						Usery parentUsery = null;
-//						if(user.getReferrerId()!=null){
-//							refferUser = userService.findById(user.getReferrerId());
-//							parentUsery = useryService.findbyUserId(user.getReferrerId());
-//						}
-						
-						String mess = "";
-						if(refferUser !=null){
-							
-							
-							mess = "您好:\n您的超级粉丝:";
-							mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+orderLiu.getMoney()+"元";
-							
-							//返给各级别佣金
-							List list = yongjinService.findBySql("SELECT if(sum(y.money)>0,sum(y.money),0) FROM yongjin y where y.orderId="+orderLiu.getOrdersId()+" and y.toUserId="+refferUser.getUserId(), null);
-							mess += "，您获得佣金"+list.get(0).toString()+"元";
-							
-							if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
-							autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
-//							if(refferUser.getReferrerId()!=null){
-//								Users r2 = userService.findById(refferUser.getReferrerId());
-//								if(r2!=null){
-//									Usery usery2 = useryService.findbyUserId(r2.getUserId());
-//									if(usery2!=null&&usery2.getWxOpenid()!=null){
-//										mess = "您好:\n您的铁杆粉丝:";
-//										mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+orderLiu.getMoney()+"元";
-//										
-//									
-//										//返给各级别佣金
-//										List list1 = yongjinService.findBySql("SELECT if(sum(y.money)>0,sum(y.money),0) FROM yongjin y where y.orderId="+orderLiu.getOrdersId()+" and y.toUserId="+usery2.getUserId(), null);
-//										mess += "，您获得佣金"+list1.get(0).toString()+"元";
-//										
-//										autosendmsgService.sendMsg(usery2.getWxOpenid(),mess);
-//									}
-//									if(r2.getReferrerId()!=null){
-//										Usery u3 = useryService.findbyUserId(r2.getReferrerId());
-//										if(u3!=null&&u3.getWxOpenid()!=null){
-//											mess = "您好:\n您的忠实粉丝:";
-//											mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+orderLiu.getMoney()+"元";
-//											//返给各级别佣金
-//											List list1 = yongjinService.findBySql("SELECT if(sum(y.money)>0,sum(y.money),0) FROM yongjin y where y.orderId="+orderLiu.getOrdersId()+" and y.toUserId="+u3.getUserId(), null);
-//											mess += "，您获得佣金"+list1.get(0).toString()+"元";
-//											
-//											autosendmsgService.sendMsg(u3.getWxOpenid(),mess);
-//										}
-//									}
-//								}
-//							}
-						}
-					}
 				}
 			}
 		//}
@@ -228,11 +152,11 @@ public class PayAction extends BaseAction {
     	return null;
 	}
 	
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 
@@ -268,18 +192,4 @@ public class PayAction extends BaseAction {
 		this.wxOpenid = wxOpenid;
 	}
 
-	/**
-	 * @return the orderLiu
-	 */
-	public OrderLiu getOrderLiu() {
-		return orderLiu;
-	}
-
-	/**
-	 * @param orderLiu the orderLiu to set
-	 */
-	public void setOrderLiu(OrderLiu orderLiu) {
-		this.orderLiu = orderLiu;
-	}
-	
 }

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.ServletInputStream;
@@ -18,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.utils.GetWxOrderno;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.OrderDao;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
-import com.zklc.weishangcheng.member.service.UserService;
-import com.zklc.weishangcheng.member.service.OrderLiuService;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weishangcheng.member.service.YongjinService;
@@ -43,12 +40,9 @@ public class MiaoShaPay extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private OrderLiuService orderLiuService;
-	@Autowired
 	private YongjinService yongjinService;
 	
-	private Order order;
-	private OrderLiu orderLiu;
+	private OrderJinHuo order;
 	private Integer userId;
 	private String ordersBH;
 	private String code;// 微信code
@@ -91,8 +85,8 @@ public class MiaoShaPay extends BaseAction {
 		if(null!=return_code&&return_code.equals("SUCCESS")){
 			order = orderDao.findOrderByOrderBH(out_trade_no);
 			
-			if(null!=order){
-				if(order.getOrderStatus()==0){
+			/*if(null!=order){
+				if(order.get==0){
 					System.out.println("order.getOrderStatus() "+order.getOrderStatus());
 					
 					returnStr="SUCCESS";
@@ -103,7 +97,7 @@ public class MiaoShaPay extends BaseAction {
 					order.setCreateDate(new Date());
 					orderService.update(order);
 				}
-			}
+			}*/
 		}
 		System.out.println("秒杀订单支付返回结果是："+returnStr);
 		out.close();
@@ -115,11 +109,11 @@ public class MiaoShaPay extends BaseAction {
     	return null;
 	}
 	
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 
@@ -155,18 +149,4 @@ public class MiaoShaPay extends BaseAction {
 		this.wxOpenid = wxOpenid;
 	}
 
-	/**
-	 * @return the orderLiu
-	 */
-	public OrderLiu getOrderLiu() {
-		return orderLiu;
-	}
-
-	/**
-	 * @param orderLiu the orderLiu to set
-	 */
-	public void setOrderLiu(OrderLiu orderLiu) {
-		this.orderLiu = orderLiu;
-	}
-	
 }

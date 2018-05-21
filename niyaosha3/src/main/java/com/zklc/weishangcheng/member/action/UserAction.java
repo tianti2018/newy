@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,19 +36,13 @@ import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
-import com.utils.GetWxOrderno;
-import com.utils.RequestHandler;
-import com.utils.Sha1Util;
-import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.dao.UserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.CardService;
 import com.zklc.weishangcheng.member.service.CityService;
@@ -59,9 +52,7 @@ import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
-import com.zklc.weishangcheng.member.service.TixianLiuService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -123,13 +114,9 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private OrderLiuService orderLiuService;
-	@Autowired
 	private CardService cardService;
 	@Autowired
 	private YongjinService yongjinService;
-	@Autowired
-	private TixianLiuService tixianLiuService;
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
@@ -145,7 +132,7 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private CityService cityService;
 	
-	private Order order;
+	private OrderJinHuo order;
 	private String id;
 	private List tSubscibeList;
 	private String hyid;
@@ -1067,12 +1054,7 @@ public class UserAction extends BaseAction {
 		Usery usery = userVo.getUsery();
 		List<Usery> userList = new ArrayList<>();
 		if(usery!=null){
-			if(userId!=null){
-				Usery usery2 = useryService.findById(userId);
-				userList.add(usery2);
-			}else{
 				userList = useryService.findChildsPagerByLevelAndSort(viewLevel,usery.getId(),pageNum,pageSize);
-			}
 			
 			request.setAttribute("userList", userList);
 		}else{
@@ -1567,182 +1549,6 @@ public class UserAction extends BaseAction {
 //		return "ajaxResult";
 //	}
 	
-	public String liuAjaxPay(){
-		OrderLiu orderVo= null;
-		Users user = null;
-		Usery usery = null;
-		if (orderNo != null) {
-			System.out.println("订单编号是1：" + orderNo);
-			orderVo = orderLiuService.findOrderByOrderBH(orderNo);
-			if(orderVo != null){
-			
-				user = userService.findById(orderVo.getUserId());
-				usery = useryService.findbyUserId(orderVo.getUserId());
-			}else{
-				message = "error";
-				return "ajaxResult";
-			}
-		} else { 
-			message = "error";
-			return "ajaxResult";
-		}
-		System.out.println("查询结果："+orderVo);
-
-			total_fee = (int)(orderVo.getMoney()*100)+"";
-			Double bmoney = Double.parseDouble(total_fee);
-			
-			/*if (null!=user.getLoginName()&&!"".equals(user.getLoginName())) {
-				if (user.getLoginName().equals("t01")) total_fee="1";
-			}*/
-			//验证价格与购买流量是否正确
-			String busType = null;//运营商
-			Integer num = Integer.parseInt(orderVo.getPname().substring(6,orderVo.getPname().length()-1));//购买流量数
-			
-			if(orderVo.getPname().contains("电信")){
-				busType = "3";
-			}else if(orderVo.getPname().contains("移动")){
-				busType = "1";
-			}else if(orderVo.getPname().contains("联通")){
-				busType = "2";
-			}else{
-				return "error";
-			}
-			String isG = orderVo.getPname().substring(orderVo.getPname().length()-1, orderVo.getPname().length());
-			if(isG.equals("G")){
-				num = num*1024;
-			}
-			//根据流量运营商，购买流量数据，流量价值，判断数据库中是否存在，0 不存在，返回 ，大于1，数据异常返回，等于1 继续执行
-			List list = orderLiuService.checkLiuDateIsTure(busType, num.toString(), orderVo.getMoney().toString());
-			if(list.size() == 0 ){
-				return "error";
-			}else if(list.size() > 1){
-				return "error";
-			}   
-			
-			
-	
-		// 商户相关资料
-		String appid = SystemMessage.getString("APPID");
-		String appsecret = SystemMessage.getString("APPSECRET");
-		String mch_id = SystemMessage.getString("MCH_ID");// 邮件里的MCHID
-		String partnerkey = SystemMessage.getString("PARTNERKEY");// 在微信商户平台pay.weixin.com里自己生成的那个key
-
-		
-		String openId = usery.getWxOpenid();
-		// 获取openId后调用统一支付接口https://api.mch.weixin.qq.com/pay/unifiedorder
-		String currTime = TenpayUtil.getCurrTime();
-		// 8位日期
-		String strTime = currTime.substring(8, currTime.length());
-		// 四位随机数
-		String strRandom = TenpayUtil.buildRandom(4) + "";
-		// 10位序列号,可以自行调整。
-		String strReq = strTime + strRandom;
-
-		
-		// 设备号 非必输
-		String device_info = "";
-		// 随机数
-		String nonce_str = strReq;
-		// 商品描述
-		// String body = describe;
-
-		// 商品描述根据情况修改
-		String body = orderVo.getPname();
-		// 商户订单号
-		String out_trade_no = orderVo.getOrdersBH();
-	
-
-		// 总金额以分为单位，不带小数点
-		// int total_fee = intMoney;
-		// 订单生成的机器 IP
-		String spbill_create_ip = "127.0.0.1";
-		
-
-		// 这里notify_url是 支付完成后微信发给该链接信息，可以判断会员是否支付成功，改变订单状态等。
-		String notify_url = SystemMessage.getString("ZHIFU_YUMING")+"/pay/payAction.action";
-	
-		String trade_type = "JSAPI";
-		// 非必输
-		// String product_id = "";
-		SortedMap<String, String> packageParams = new TreeMap<String, String>();
-		packageParams.put("appid", appid);
-		packageParams.put("mch_id", mch_id);
-		packageParams.put("nonce_str", nonce_str);
-		packageParams.put("body", body);
-		// packageParams.put("attach", attach);
-		packageParams.put("out_trade_no", out_trade_no);
-
-		// 这里写的金额为1 分到时修改
-		packageParams.put("total_fee", total_fee);
-		// packageParams.put("total_fee", "finalmoney");
-		packageParams.put("spbill_create_ip", spbill_create_ip);
-		packageParams.put("notify_url", notify_url);
-
-		packageParams.put("trade_type", trade_type);
-		packageParams.put("openid", openId);
-
-		RequestHandler reqHandler = new RequestHandler(null, null);
-		reqHandler.init(appid, appsecret, partnerkey);
-
-		String sign = reqHandler.createSign(packageParams);
-		String xml = "<xml>" + "<appid>" + appid + "</appid>" + "<mch_id>"
-				+ mch_id + "</mch_id>" + "<nonce_str>" + nonce_str
-				+ "</nonce_str>" + "<sign><![CDATA[" + sign + "]]></sign>"
-				+ "<body><![CDATA[" + body + "]]></body>"
-				+ "<out_trade_no>"
-				+ out_trade_no
-				+ "</out_trade_no>"
-				+
-				// 金额，这里写的1 分到时修改
-				"<total_fee>"
-				+ total_fee
-				+ "</total_fee>"
-				+
-			
-				"<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
-				+ "<notify_url>" + notify_url + "</notify_url>"
-				+ "<trade_type>" + trade_type + "</trade_type>" + "<openid>"
-				+ openId + "</openid>" + "</xml>";
-		String allParameters = "";
-		try {
-			allParameters = reqHandler.genPackage(packageParams);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String createOrderURL = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-		Map<String, Object> dataMap2 = new HashMap<String, Object>();
-		String prepay_id = "";
-		try {
-			prepay_id = new GetWxOrderno().getPayNo(createOrderURL, xml);
-			if (prepay_id.equals("")) {
-				System.out.println("统一支付接口获取预支付订单出错");
-			}
-		} catch (Exception e1) {
-			
-			e1.printStackTrace();
-		}
-		SortedMap<String, String> finalpackage = new TreeMap<String, String>();
-
-		timeStamp = Sha1Util.getTimeStamp();
-		appId2 = appid;
-		nonceStr2 = nonce_str;
-		String prepay_id2 = "prepay_id=" + prepay_id;
-		packages = prepay_id2;
-		signType2 = "MD5";
-		finalpackage.put("appId", appId2);
-		finalpackage.put("timeStamp", timeStamp);
-		finalpackage.put("nonceStr", nonceStr2);
-		finalpackage.put("package", packages);
-		finalpackage.put("signType", "MD5");
-		String finalsign = reqHandler.createSign(finalpackage);
-		paySign2 = finalsign;
-		
-
-		message = "success";
-		return "ajaxResult";
-	
-	}
 	
 	/**
 	 * 
@@ -2016,11 +1822,11 @@ public class UserAction extends BaseAction {
 		this.total_fee = total_fee;
 	}
 
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 

@@ -60,6 +60,8 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 		String sql ="select * from usery where parentId = "+id;
 		if(viewLevel!=null&&!viewLevel.equals("all")){
 			sql+=" and level = "+viewLevel;
+		}else{
+			sql+=" and level in (0,1)";
 		}
 		if(pageNum==null||pageNum==0){
 			pageNum = 1;

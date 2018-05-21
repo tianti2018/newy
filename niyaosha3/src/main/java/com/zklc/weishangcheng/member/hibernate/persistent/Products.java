@@ -31,7 +31,7 @@ public class Products implements Serializable {
 	private Integer type;//首页图显示类型 0轮播图 1一行一款2一行两款
 	private Integer status;//0取消上架1上架
 	private String prodDescription;//商品描述卖点
-	private Integer transFee;//运费
+	private Double transFee;//运费
 	private Integer limitNum;//限购// 限购数量，默认值0 表示无限制，大于0，表示限制数量
 	private Integer stock;// 库存量
 	private String prodColor;//颜色
@@ -39,6 +39,7 @@ public class Products implements Serializable {
 	private String guige;//规格
 	private Integer paixu;//值越大,越靠前
 	private Integer prodType;//特征码这个值相同则为同一款产品的属性
+	private Integer ketiao;//价格可调0:不可调,1可调
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "productsId", unique = true, nullable = false)
@@ -134,10 +135,10 @@ public class Products implements Serializable {
 	public void setProdDescription(String prodDescription) {
 		this.prodDescription = prodDescription;
 	}
-	public Integer getTransFee() {
+	public Double getTransFee() {
 		return transFee;
 	}
-	public void setTransFee(Integer transFee) {
+	public void setTransFee(Double transFee) {
 		this.transFee = transFee;
 	}
 	public Integer getLimitNum() {
@@ -187,6 +188,12 @@ public class Products implements Serializable {
 	}
 	public void setProdType(Integer prodType) {
 		this.prodType = prodType;
+	}
+	public Integer getKetiao() {
+		return ketiao;
+	}
+	public void setKetiao(Integer ketiao) {
+		this.ketiao = ketiao;
 	}
 	
 }

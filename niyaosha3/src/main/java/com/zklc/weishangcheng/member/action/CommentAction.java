@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductComment;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
@@ -52,7 +52,7 @@ public class CommentAction extends BaseAction{
 	
 	private Users user;
 	private Integer pageNum;
-	private Order order;
+	private OrderJinHuo order;
 	private OrderAddress orderAddress;
 	private ProductComment productComment;
 	public String loginName;// 用户登录名

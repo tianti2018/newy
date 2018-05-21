@@ -2,18 +2,20 @@ package com.zklc.weishangcheng.member.service;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
+import com.zklc.weishangcheng.member.hibernate.persistent.ShouYiForUser;
 
-public interface MiaoShaOrderService extends IBaseService<MiaoShaOrder, Integer> {
+public interface OrdersService extends IBaseService<Orders, Integer> {
 
-	MiaoShaOrder findOrderByOrderBH(String orderNo);
+	Orders findOrderByOrderBH(String orderNo);
 
-	void moneyPay(MiaoShaOrder order, Users user);
+	void moneyPay(Orders order, Users user);
 
-	void saveAndCFh(MiaoShaOrder order, Users user);
+	void saveAndCFh(Orders order, Users user);
   
-	void saveMianMoOrder(MiaoShaOrder order, Users user,Product buyProd);
+	void saveMianMoOrder(Orders order, Users user,Product buyProd);
 	
 	Integer findNumByTypeAndUserId(Integer type,Integer userId);
 
@@ -30,14 +32,14 @@ public interface MiaoShaOrderService extends IBaseService<MiaoShaOrder, Integer>
 	 * @param xiaohaoJifen  消耗积分类型 0：其他积分  1：推荐用户积分
 	 * @return
 	 */
-	Boolean saveJifenOrder(MiaoShaOrder order, Users user, Product prod,Integer xiaohaoJifen);
+	Boolean saveJifenOrder(Orders order, Users user, Product prod,Integer xiaohaoJifen);
 
-	Boolean jifenPay(MiaoShaOrder order, Users user);
+	Boolean jifenPay(Orders order, Users user);
 
-	Boolean saveHuiYuanOrder(MiaoShaOrder order, Users user, Product prod);
+	Boolean saveHuiYuanOrder(Orders order, Users user, Product prod);
 
-	void huiyuanPay(MiaoShaOrder order, Users user);
-	Integer cancelOrder(MiaoShaOrder order);
+	void huiyuanPay(Orders order, Users user);
+	Integer cancelOrder(Orders order);
 	void updateOrdeToSend();
 	Integer checkXingHuoQuanOrder(Users user);
 	
@@ -48,5 +50,8 @@ public interface MiaoShaOrderService extends IBaseService<MiaoShaOrder, Integer>
 	 * @return
 	 */
 	public Integer countUserIdCardProduct(Integer userId, Integer prodId,String idCard);
+
+	void createOrder(Orders order, OrderJinHuo orderJinHuo, ShouYiForUser dianzhuShouyiRecord,
+			ShouYiForUser shangjiShouyiRecord, ShouYiForUser xiaohaoRecord);
 
 }

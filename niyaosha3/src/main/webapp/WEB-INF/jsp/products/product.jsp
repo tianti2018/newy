@@ -74,6 +74,125 @@
 						touch: true
 					});
 				});
+				function orderBuy(){
+					$("#lijibuy").removeAttr("onclick");
+					var str ='2016-03-10 02:00:00';
+					str = str.replace(/-/g,"/");
+					var end = '2016-04-12 08:00:00';
+					end = end.replace(/-/g,"/");
+					var date = new Date(str);
+					var endDate = new Date(end);
+					 //if("${user.userId}"!="1821")
+					if(date < new Date() && new Date() < endDate){
+						alert("系统升级维护中,请"+end+"以后再次操作!");
+						$("#lijibuy").attr("onclick","orderBuy()");
+						return false;
+					}
+					
+					var num = $("#qty_item_1").val();
+					var stock=$("#productKC").val()==""?"0":$("#productKC").val();
+					var prodId=$("#checkProdId").val();
+					var xhq_count=$("#diyongcount").val();
+					xhq_count=xhq_count==""?"0":xhq_count;
+					var addressId = ${userVo.orderAddress.id};
+					if(addressId==null){
+						alert("请选择收货地址或点击刷新页面!");
+						return;
+					}
+					
+					var inputamt = parseInt(parseInt(xhq_count) / 2);
+					var totalamt = parseFloat($("#total_amt").val());
+					if(num <=0){
+						alert("至少购买一套!");
+						$("#lijibuy").attr("onclick","orderBuy()");
+						return false;
+					}
+					else if(parseInt("${prod.limitNum}")>0 && num>parseInt("${prod.limitNum}"))
+					{
+						alert("由于本产品倾销过快,防止厂家出现货源问题,所以最多只能购买${prod.limitNum}件,敬请谅解!");
+						$("#lijibuy").attr("onclick","orderBuy()");
+						return false;
+					}
+					else if(parseInt(num)>parseInt(stock))
+						{
+						  alert("库存不够");
+						  $("#lijibuy").attr("onclick","orderBuy()");
+						  return false;
+						}
+					else if(prodId=="")
+						{
+						  alert("请选择购买商品");
+						  $("#lijibuy").attr("onclick","orderBuy()");
+						  return false;
+						}
+					
+					
+					if(confirm("确定购买"+num+"套吗?")){
+								$.ajax({
+							        type:"POST",
+							        url:"<%=request.getContextPath()%>/pay/payGoodAction!saveMianMoOrder.action",
+							        data : {
+							        	"qty_item_1":num,
+							        	"prodId":prodId,
+							        	 "xhq_count":xhq_count
+							        	},
+							        dataType:"json",
+							        success:function(data) {
+							       	 	if(data.success){
+											//如果订单用火星券全部支付则不用调用微信的支付接口
+										    if(data.need_pay)
+										    {
+											   moneyPay(data.ordersBh);
+											 }
+										    else 
+										    {
+										    	alert("订单保存成功");
+										    	WeixinJSBridge.call('closeWindow'); 
+										    }
+							       	 	//alert(data.ordersBh);
+							       	 	}else{
+							       	 		if(data.timeOut){
+							       	 			alert("用户已超时,请关闭网页重新进入!");
+							       	 		}
+							       	 		if(data.error){
+							       	 			alert("参数错误!请重试");
+							       	 		}
+							       	 		if(data.overbuy)
+							       	 			{
+							       	 		$("#lijibuy").attr("onclick","orderBuy()");
+							       	 			  alert("订购数量不能大于${prod.limitNum}");
+							       	 			}
+							       	 		else if(data.stockless)
+							       	 			{
+							       	 		$("#lijibuy").attr("onclick","orderBuy()");
+							       	 			  alert("库存不够");
+							       	 			}
+							       	 		else if(data.xhq_nok)
+							       	 			{
+							       	 			  alert("星火券数量异常，请关闭网页重新进入");
+							       	 			}
+							       	 		else if(data.xhq_overbuy)
+							       	 			{
+							       	 			   alert("现在处于测试阶段, 一天只能用星火券购买两次");
+							       	 			}
+								       	 	$("#btn_submit").html("立即购买");
+						       	 			$("#btn_submit").removeAttr('disabled');
+							       	 		
+							       	 	}
+								 	},
+								 	beforeSend : function() {
+									 	$("#btn_submit").html("订单生成中!");
+									 	$("#btn_submit").attr('disabled',"disabled");
+									},
+									error:function(){
+										$("#btn_submit").html("立即购买");
+					       	 			$("#btn_submit").removeAttr('disabled');
+										alert("错误!");
+									}
+							 	});
+					}
+					$("#lijibuy").attr("onclick","orderBuy()");
+				}
 			</script>
 		<div style="height: 10px"></div>
 		<div class="det-middle">
@@ -146,44 +265,47 @@
 					<input type="hidden" id="prodprice" value="${prod.price}" />
 					<input type="hidden" id="productKC" value="${prod.stock}" />
 				</c:if>
-				<br> <input type="checkbox" name="diyong" id="diyong"
-					onclick="checkDiYong(this)"> <label for="diyong"
-					style="color: red;"> 当前余额：<span id="max_xhq_count"><c:out
-							value="${xhq}" /></span>，是否使用 ？
-				</label> <span id="diyiong_info" style="display: none;"> <br>请输入：<input
-					type="text" name="diyongcount" value="0" id="diyongcount"
-					onblur="inputDiYongAmt(this)" ;/> <input type="hidden"
-					id="final_diyongamt" value="0"> <input type="hidden"
-					id="max_xhqamt" value="${xhq_money}">
+				<br> 
+				<c:if test="${userVo.usery.level>=1 }">
+				<input type="checkbox" name="diyong" id="diyong" onclick="checkDiYong(this)"> 
+					<label for="diyong"	style="color: red;"> 
+						当前余额：<span id="max_xhq_count">
+							<c:out value="${userVo.usery.account}" />
+						</span>，是否使用 ？
+					</label> 
+				</c:if>	
 			</div>
 			<div class="message">
-				<c:if test="${null!=orderAddress}">
+				<c:if test="${null!=userVo.orderAddress}">
 
 					<ul class="menu-list">
 						<li><a href="javascript:;"><i class="arrows rotated"></i><em>收货信息</em></a>
 							<ul class="sub-menu" style="height: 180px">
 								<li><a
-									href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action"
+									href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?productId=${prod.productsId}"
 									style="background: #00aa3a; display: inline-block; color: #fff;">选择默认收货地址</a></li>
-								<li>收货人：<em>${orderAddress.userName}</em></li>
-								<li>联系方式：<em> ${orderAddress.mobile} </em></li>
-								<li>收货地址：<em>${orderAddress.address}</em></li>
+								<li>收货人：<em>${userVo.orderAddress.userName}</em></li>
+								<li>联系方式：<em> ${userVo.orderAddress.mobile} </em></li>
+								<li>收货地址：<em>${userVo.orderAddress.sheng}${userVo.orderAddress.chengshi}${userVo.orderAddress.diqu}${userVo.orderAddress.address}</em></li>
 
 
 							</ul></li>
 
-						<li><a href="#" id="lijibuy" onclick="javascript:orderBuy()"
-							class="btn green">立即购买</a></li>
 					</ul>
 
 				</c:if>
-				<c:if test="${null==orderAddress}">
+				<c:if test="${null==userVo.orderAddress}">
 					<div align="center">
 						<a
-							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action"
+							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?productId=${prod.productsId}"
 							class="btn green" onclick="go();">选择一条收货地址</a>
 					</div>
 				</c:if>
+				<br/>
+				<a href="#" id="lijibuy" onclick="javascript:orderBuy()"
+							class="btn green" style="width: 45%;margin-left: 5px">立即购买</a>
+				<a href="#" id="lijibuy1" onclick="javascript:shuaxin()"
+							class="btn green" style="width: 45%;margin-left: 2px">刷新页面</a>
 			</div>
 		</div>
 	</div>
@@ -371,121 +493,7 @@
 	function dianji(a){///newy/src/main/webappproduct1.jsp
 		window.location.href="<%=request.getContextPath()%>/product"+a+".jsp";
 	}
-		function orderBuy(){
-			$("#lijibuy").removeAttr("onclick");
-			var str ='2016-03-10 02:00:00';
-			str = str.replace(/-/g,"/");
-			var end = '2016-04-12 08:00:00';
-			end = end.replace(/-/g,"/");
-			var date = new Date(str);
-			var endDate = new Date(end);
-			 //if("${user.userId}"!="1821")
-			if(date < new Date() && new Date() < endDate){
-				alert("系统升级维护中,请"+end+"以后再次操作!");
-				$("#lijibuy").attr("onclick","orderBuy()");
-				return false;
-			}
-			
-			var num = $("#qty_item_1").val();
-			var stock=$("#productKC").val()==""?"0":$("#productKC").val();
-			var prodId=$("#checkProdId").val();
-			var xhq_count=$("#diyongcount").val();
-			xhq_count=xhq_count==""?"0":xhq_count;
-			
-			var inputamt = parseInt(parseInt(xhq_count) / 2);
-			var totalamt = parseFloat($("#total_amt").val());
-			if(num <=0){
-				alert("至少购买一套!");
-				$("#lijibuy").attr("onclick","orderBuy()");
-				return false;
-			}
-			else if(parseInt("${prod.limitNum}")>0 && num>parseInt("${prod.limitNum}"))
-			{
-				alert("由于本产品倾销过快,防止厂家出现货源问题,所以最多只能购买${prod.limitNum}件,敬请谅解!");
-				$("#lijibuy").attr("onclick","orderBuy()");
-				return false;
-			}
-			else if(parseInt(num)>parseInt(stock))
-				{
-				  alert("库存不够");
-				  $("#lijibuy").attr("onclick","orderBuy()");
-				  return false;
-				}
-			else if(prodId=="")
-				{
-				  alert("请选择购买商品");
-				  $("#lijibuy").attr("onclick","orderBuy()");
-				  return false;
-				}
-			
-			
-			if(confirm("确定购买"+num+"套吗?")){
-						$.ajax({
-					        type:"POST",
-					        url:"<%=request.getContextPath()%>/pay/payGoodAction!saveMianMoOrder.action",
-					        data : {
-					        	"qty_item_1":num,
-					        	"orderAddRessId":"${orderAddress.id}",
-					        	"prodId":prodId,
-					        	 "xhq_count":xhq_count
-					        	},
-					        dataType:"json",
-					        success:function(data) {
-					       	 	if(data.success){
-									//如果订单用火星券全部支付则不用调用微信的支付接口
-								    if(data.need_pay)
-								    {
-									   moneyPay(data.ordersBh);
-									 }
-								    else 
-								    {
-								    	alert("订单保存成功");
-								    	WeixinJSBridge.call('closeWindow'); 
-								    }
-					       	 	//alert(data.ordersBh);
-					       	 	}else{
-					       	 		if(data.timeOut){
-					       	 			alert("用户已超时,请关闭网页重新进入!");
-					       	 		}
-					       	 		if(data.error){
-					       	 			alert("参数错误!请重试");
-					       	 		}
-					       	 		if(data.overbuy)
-					       	 			{
-					       	 		$("#lijibuy").attr("onclick","orderBuy()");
-					       	 			  alert("订购数量不能大于${prod.limitNum}");
-					       	 			}
-					       	 		else if(data.stockless)
-					       	 			{
-					       	 		$("#lijibuy").attr("onclick","orderBuy()");
-					       	 			  alert("库存不够");
-					       	 			}
-					       	 		else if(data.xhq_nok)
-					       	 			{
-					       	 			  alert("星火券数量异常，请关闭网页重新进入");
-					       	 			}
-					       	 		else if(data.xhq_overbuy)
-					       	 			{
-					       	 			   alert("现在处于测试阶段, 一天只能用星火券购买两次");
-					       	 			}
-						       	 	$("#btn_submit").html("立即购买");
-				       	 			$("#btn_submit").removeAttr('disabled');
-					       	 		
-					       	 	}
-						 	},
-						 	beforeSend : function() {
-							 	$("#btn_submit").html("订单生成中!");
-							 	$("#btn_submit").attr('disabled',"disabled");
-							},
-							error:function(){
-								$("#btn_submit").html("立即购买");
-			       	 			$("#btn_submit").removeAttr('disabled');
-								alert("错误!");
-							}
-					 	});
-			}
-			$("#lijibuy").attr("onclick","orderBuy()");
-		}
+		
 	
 		//执行支付
    	 	function pay(appId, timeStamp, nonceStr, package1, signType, paySign) {

@@ -51,7 +51,7 @@ License: You must have a valid license purchased only from themeforest(the above
 var pageNum = 1;
 var viewLevel="${viewLevel==null?'all':viewLevel}";
 function insertcode() {
-	pageNum++;
+	
 	//var viewLevel='${viewLevel}';
     /*加载内容*/
 	$.ajax({
@@ -103,7 +103,7 @@ function insertcode() {
 	    	}
 	    }
 	});
-	
+	pageNum++;
 }
 $(document).ready(function () {
 	/* alert("document.documentElement.scrollHeight:"+document.documentElement.scrollTop+
@@ -126,6 +126,7 @@ $(document).ready(function () {
 			insertcode();
 		}             
     });
+	insertcode();
 });
 </script>
 	<!-- wrapper start -->
@@ -134,7 +135,7 @@ $(document).ready(function () {
 		<%@ include file="/WEB-INF/jsp/order_head.jsp"%>
 		<!-- 主要内容区域 -->
 		<div class="my_header_links">
-	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=3"><span id="dazhanggui"></span><span id="wodefensi">大掌柜</span></a>
+	            <%-- <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=3"><span id="dazhanggui"></span><span id="wodefensi">大掌柜</span></a> --%>
 	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=2"><span id="zhanggui"></span><span id="wodefensi">掌柜</span></a>
 	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=1"><span id="dianxiaoer"></span><span id="wodefensi">店小二</span></a>
 	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=0"><span id="zhundianxiaoer"></span><span id="wodefensi">准店小二</span></a>
@@ -148,56 +149,6 @@ $(document).ready(function () {
 				</form>
 			</div>	
 			<div class="my_member" id="appendUl">
-			<c:forEach items="${userList}" var="item" varStatus="status">
-				<div class="item" >
-					
-					<div class="item_t">
-					<img src="${item.headUrl==null?'/images/s1.png':item.headUrl}" class="img">
-					<P>昵称:${item.userName}</P>
-					<P>ID：${item.id}</P>
-					<P>头衔：<c:if test="${item.level == 0|| item.level == null}">客官</c:if>
-						<c:if test="${item.level == 1}">店小二<img style="width: 15px" src="../images/s1.png"/></c:if>
-						<c:if test="${item.level == 2}">掌柜<img style="width: 15px" src="../images/s2.png"/></c:if>
-						<c:if test="${item.level == 3}">大掌柜<img style="width: 25px" src="../images/shenqing/4.png"/></c:if></P>
-					</div>
-					<div class="item_m">
-					<P>关注时间：${item.appDate}</P>
-					<%-- <P>星级：<c:if test="${viewLevel==1}">超级粉丝</c:if>
-					<c:if test="${viewLevel==2}">铁杆粉丝</c:if>
-					<c:if test="${viewLevel==3}">忠实粉丝</c:if></P>
-					<P>店铺等级：<c:if test="${p2.cardId== null||p2.cardId == 0}">未开店</c:if>
-		            	<c:if test="${p2.cardId== 1}">黄金店</c:if>
-						<c:if test="${p2.cardId== 2}">黑钻店</c:if>
-						<c:if test="${p2.cardId== 3}">蓝钻店</c:if>
-						<c:if test="${p2.cardId== 4}">黄钻店</c:if>
-						<c:if test="${p2.cardId== 5}">绿钻店</c:if>
-						<c:if test="${p2.cardId== 6}">红钻店</c:if>
-						<c:if test="${p2.cardId== 7}">皇冠店</c:if>
-						<c:if test="${p2.cardId== 8}">旗舰店</c:if>
-						<c:if test="${p2.cardId== 9}">星火总店</c:if>     
-						</P> --%>
-     				<%-- <h5>手机号：<i>${item.address.mobile}</i></h5> --%>
-     				<%-- <p>微信号：${item.address.zipcode}</p> --%>
-     				</div>
-						<%-- <div class="item_f">
-							<ul>
-								<li><c:if test="${item.level==null || item.level==0}">
-										<p>
-											<font color="red">尚未购买</font>
-										</p>
-									</c:if></li>
-								<li><c:if test="${item.level!=null && item.level!=0}">
-										<a href="#" class="btn btn1"
-											onclick="searchOrder(${item.userId},${viewLevel})">查看订单</a>
-									</c:if></li>
-								<li><a href="#" class="btn btn3" style="display: none">查看</a></li>
-								<li><a id="liuyan" href="#inline" class="btn btn3"
-									onclick="viewDialog('${item.unionid}');">留言</a></li>
-							</ul>
-						</div> --%>
-
-					</div>
-				</c:forEach>	
 			</div>
 			
 		</div>

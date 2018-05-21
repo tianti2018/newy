@@ -30,8 +30,11 @@
 <body style="background-color: #EFEFEF;">
 <script type="text/javascript">
 var pageNum=0;
+var continuesearch = 0;
 function insertcode(){
-	pageNum++;
+	if(continuesearch!=0){
+		return;
+	}
    	var date1 = $("#date1").val();
    	var date2 = $("#date2").val();
    	var fahuoTime="";
@@ -42,7 +45,7 @@ function insertcode(){
 		type: "POST",
 		url:"<%=request.getContextPath()%>/order/orderAction!ajaxOrderPerList.action",
 		data:{
-			"userId":'${user.userId }',
+			"orderType":'${orderType }',
 			"pageNum":pageNum,
 			"date1":date1,
 			"date2":date2
@@ -59,75 +62,51 @@ function insertcode(){
 	    		var children = data.children;
 	    		var child = '';
 	    		for(var i=0;i<children.length;i++){
-	    			if(children[i][4]!=null){
-	    			  var createTime= new Date(children[i][4].time).Format("yyyy-MM-dd hh:mm:ss");
+	    			if(children[i].createDate!=null){
+	    			  var createTime= new Date(children[i].createDate.time).Format("yyyy-MM-dd hh:mm:ss");
 		    		}
-	    			if(children[i][22]!=null){
-	    			  var fahuoTime= new Date(children[i][22].time).Format("yyyy-MM-dd hh:mm:ss");
+	    			if(children[i].fahuoDate!=null){
+	    			  var fahuoTime= new Date(children[i].fahuoDate.time).Format("yyyy-MM-dd hh:mm:ss");
 		    		}
 	    			child+=(' <div class="my_order">');
-	    			child+=('<div class="item" onclick="zhankai('+children[i][0]+')">');    
+	    			child+=('<div class="item" onclick="zhankai('+children[i].ordersId+')">');    
 	    			child+=('<div class="item_t">');
-	    			if(children[i][13].length<10){
-	    			child+=('<em>'+children[i][13]+'</em></div>');
+	    			if(children[i].pname.length<10){
+	    			child+=('<em>'+children[i].pname+'</em></div>');
 	    			}else{
-	    			child+=('<em>'+children[i][13].substring(0,10)+'...</em></div>');	
+	    			child+=('<em>'+children[i].pname.substring(0,10)+'...</em></div>');	
 	    			}
-	    			child+=('<div class="item_m" id="item_m'+children[i][0]+'"><ul>');
-	    			child+=('<li>订单类型：<em>');
-	    			if(children[i][11]==1){
-                       child+=('秒杀订单');
-		    		}else if(children[i][11]==2){
-                       child+=('积分订单');
-			    	}else if(children[i][11]==3){
-                       child+=('会员专区订单 ');
-			    	}else if(children[i][11]==4){
-                       child+=('店主专区订单 ');
-			    	}else if(children[i][11]==5){
-                       child+=('星火券订单 ');
-			    	}
-	    			child+=('</em></li>');
-	    			child+=('<li>订单编号：<em>'+children[i][12]+'</em>');
-	    			if(children[i][10]==0&&children[i][26]==1){
-	    				child+=('<em style="float: right;">');
-	    				child+=('<input type="button" onclick="cancelOrder(this)"');
-	    				child+=(' orderId="children[i][0]" value="取消订单"/></em>');
-	    			}
+	    			child+=('<div class="item_m" id="item_m'+children[i].ordersId+'"><ul>');
+	    			child+=('<li>订单编号：<em>'+children[i].ordersBH+'</em>');
 	    			child+=('</li>');
 	    			child+=('<li>订单时间：<em>'+createTime+'</em></li>');
-	    			child+=('<li>下单人ID：<em>'+children[i][20]+'</em></li>');
-	    			child+=('<li>收货人：<em>'+children[i][18]+'</em></li>');
-	    			child+=('<li>收货地址：<em>'+children[i][1]+'</em></li>');
-	    			child+=('<li>收货电话：<em>'+children[i][8]+'</em></li>');
-	    			child+=('<li>订单金额：<em>'+(children[i][9]==null?0:children[i][9])+'</em></li>');
-	    			child+=('<li>支付状态：<em>');
-	    			if(children[i][25]==1){
-	    				child+=('已支付');
-	    			}else if(children[i][25]==0){
-	    				child+=('未支付');
-	    			}
-	    			else if(children[i][25]==1){
-	    				child+=('已退款');
-	    			}
-	    			child+=('</em></li>');
-	    			
-	    			
-	    			child+=('<li>处理状态：<em>');
+	    			child+=('<li>收货人：<em>'+children[i].toUserName+'</em></li>');
+	    			child+=('<li>收货地址：<em>'+children[i].sheng+children[i].chengshi+children[i].diqu+children[i].address+'</em></li>');
+	    			child+=('<li>收货电话：<em>'+children[i].mobile+'</em></li>');
+	    			child+=('<li>订单金额：<em>'+children[i].money+'</em></li>');
+	    			child+=('<li>订单状态：<em>');
 	    			var fahuo = false;
-	    			if(children[i][10]==0){
-	    				child+=('备货中');
+	    			if(children[i].orderStatus==0){
+	    				child+=('待付款');
 	    			}
-	    			if(children[i][10]==11){
+	    			if(children[i].orderStatus==11){
 	    				child+=('已取消');
 	    			}
-	    			else if(children[i][10]==1){
-	    				child+=('发货中');
-	    			}else if(children[i][10]==2){
-	    				child+=('已发货');
+	    			else if(children[i].orderStatus==1){
+	    				child+=('待发货');
+	    			}else if(children[i].orderStatus==2){
+	    				child+=('售后服务中');
 	    				fahuo = true;
-	    			}else if(children[i][10]==3){
+	    			}else if(children[i].orderStatus==3){
+	    				child+=('已发待收');
+	    				fahuo = true;
+	    			}else if(children[i].orderStatus==4){
+	    				fahuo = true;
+	    				child+=('已完成');
+	    			}else if(children[i].orderStatus==5){
 	    				child+=('已退货');
-	    			}else if(children[i][10]==4){
+	    				fahuo = true;
+	    			}else if(children[i].orderStatus==6){
 	    				child+=('已收货');
 	    				fahuo = true;
 	    			}
@@ -136,55 +115,42 @@ function insertcode(){
 	    			
 	    			if(fahuo){
 	    				
-		    			child+=('<li>快递公司：<em>');
-	                    if(children[i][5]==0){
-	                       child+=('圆通');
-	                    }else if(children[i][5]==1){
-	                       child+=('顺丰');
-	                    }else if(children[i][5]==2){
-	                       child+=('申通');
-	                    }else if(children[i][5]==3){
-	                       child+=('中通');
-	                    }else if(children[i][5]==4){
-	                       child+=('韵达');
-	                    }else if(children[i][5]==5){
-	                       child+=('EMS');
-	                    }else if(children[i][5]==6){
-	                       child+=('宅急送');
-	                    }else if(children[i][5]==7){
-	                       child+=('全峰');
-	                    }else if(children[i][5]==8){
-	                       child+=('天天快递');
-	                    }else if(children[i][5]==9){
-	                       child+=('自提');
-	                    }else if(children[i][5]==10){
-	                       child+=('国通快递');
-	                    }else if(children[i][5]==11){
-	                       child+=('邮政');
-	                    }else if(children[i][5]==12){
-	                       child+=('优速快递');
-	                    }else if(children[i][5]==13){
-	                       child+=('德邦快递');
-	                    }else if(children[i][5]==14){
-	                       child+=('百世汇通');
-	                    }
+		    			child+=('<li>快递公司：<em>children[i].kuaidiName');
 		    			child+=('</em></li>');
-		    			child+=('<li>快递单号：<em>'+children[i][6]+'</em><input type="button" value="  查看物流 " onclick="serch('+children[i][6]+')"/></li>');
+		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="  查看物流 " onclick="serch('+children[i].kuaidiNo+')"/></li>');
 		    			child+=('<li>发货日期：<em>'+(fahuoTime==null?null:fahuoTime)+'</em></li>');
 	    			}
-	    			child+=('<li>支付积分：<em>'+(children[i][15]==null?0:children[i][15])+'</em></li>');
-	    			child+=('<li>购买数量：<em>'+(children[i][16]==null?1:children[i][16])+'</em></li>');
-	    			child+=('<li>星火券：<em>'+(children[i][24]==null?0:children[i][24])+'</em></li></ul></div></div></div>');
-                    
+	    			child+=('<li>购买数量：<em>'+children[i].shuliang+'</em></li>');
+	    			child+=('<li>消耗收益：<em>'+children[i].xiaohaoShouyi+'</em></li>');
+	    			child+=('<li style="text-align:center">');
+   					if(children[i].orderStatus==0){
+   	    				child+=('<em><input type="button" onclick="cancelOrder(this)" orderId="children[i].ordersId" value="取消订单"/></em>&nbsp;&nbsp;');
+   	    				child+=('<em><input type="button" onclick="quzhifu(this)" orderId="children[i].ordersId" value="去支付"/></em>');
+   	    			}else if(children[i].orderStatus==1){
+   	    				child+=('<em><input type="button" onclick="tuihuo(this)" orderId="children[i].ordersId" value="申请退货"/></em>');
+   	    			}else if(children[i].orderStatus==3){
+   	    				child+=('<em><input type="button" onclick="shouhuo(this)" orderId="children[i].ordersId" value="确认收货"/></em>');
+   	    			}else if(children[i].orderStatus==4){
+   	    				child+=('<em><input type="button" onclick="shouhou(this)" orderId="children[i].ordersId" value="申请售后"/></em>');
+   	    				if(children[i].pingjia==null||children[i].pingjia==0){
+   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="pingjia(this)" orderId="children[i].ordersId" value="去评价"/></em>');
+   	    				}else if(children[i].pingjia==1){
+   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="zhuiping(this)" orderId="children[i].ordersId" value="追评"/></em>');
+   	    				}
+   	    			}
+   					child+=('</li>');
+   					child+=('</ul></div></div></div>');
 	    		}
 	    		var ul = $("#appendUl");
 	    		ul.append(child);
 	    		
 	    	}else{
+	    		continuesearch = 1;
 	    		alert("已经加载完毕!");
 	    	}
 	    }
 	});
+	pageNum++;
 }
 Date.prototype.Format = function (fmt) { //author: meizz 
     var o = {
@@ -234,6 +200,7 @@ $(document).ready(function () {
 			insertcode();
 		}             
     });
+	insertcode();
 });
  //取消订单
 function cancelOrder(obj){
@@ -280,98 +247,8 @@ function cancelOrder(obj){
 			</form><br>
 			<!-- 推荐 -->
 			
-			<!-- 等待收货 -->
-
-			<c:forEach items="${myfhOrder}" var="order" varStatus="status">
-					<div class="my_order">
-						<div class="item">
-							<div class="item_t">
-								<c:if test="${fn:length(order[13]) >10}">
-								<em>${fn:substring(order[13],0,10) }...</em>
-								</c:if>
-								<c:if test="${fn:length(order[13]) <10}">
-								<em>${order[13]}</em>
-								</c:if>
-							</div>
-							<div class="item_m">
-								<ul>
-									<li>订单类型： <em> <c:if test="${order[11]==1 }">秒杀订单</c:if>
-											<c:if test="${order[11]==2 }">积分订单</c:if> <c:if
-												test="${order[11]==3 }">会员专区订单 </c:if> <c:if
-												test="${order[11]==4 }">店主专区订单 </c:if> <c:if
-												test="${order[11]==5 }">星火券订单</c:if>
-									</em>
-									</li>
-									<li>订单编号：<em>${order[12] }</em> <c:if
-											test="${order[10]==0 && order[26]==1 }">
-											<em style="float: right;">
-												<input type="button" onclick="cancelOrder(this)"
-													orderId="${order[0]}" value="取消订单"/>
-											</em>
-										</c:if>
-									</li>
-									<li>订单时间：<em>${order[4]}</em></li>
-									<li>下单人ID：<em>${order[20]}</em></li>
-									<li>收&nbsp;货&nbsp;人&nbsp;：<em>${order[18]}</em></li>
-									<li>收货地址：<em>${order[1]}</em></li>
-									<li>收货电话：<em>${order[8]}</em></li>
-									<li>订单金额：<em>${order[9]+0}元</em></li>
-									<li>支付状态： <em> <c:if test="${order[26]==1 }">已支付</c:if>
-									</em>
-									</li>
-
-									<li>订单状态： <em> <c:if test="${order[10]==11 }">已取消</c:if>
-											<c:if test="${order[10]==0}">支付确认中</c:if> <c:if
-												test="${order[10]==1 }">发货中</c:if> <c:if
-												test="${order[10]==2 }">已发货</c:if> <c:if
-												test="${order[10]==3 }">已退货</c:if> <c:if
-												test="${order[10]==4 }">已收货</c:if>
-									</em>
-									</li>
-
-
-									<c:if test="${order[10]>1 }">
-										<li>快递公司： <em> <c:if test="${order[5]==0 }">圆通</c:if>
-												<c:if test="${order[5]==1 }">顺丰</c:if> <c:if
-													test="${order[5]==2 }">申通</c:if> <c:if
-													test="${order[5]==3 }">中通</c:if> <c:if
-													test="${order[5]==4 }">韵达</c:if> <c:if
-													test="${order[5]==5 }">EMS</c:if> <c:if
-													test="${order[5]==6 }">宅急送</c:if> <c:if
-													test="${order[5]==7 }">全峰</c:if> <c:if
-													test="${order[5]==8 }">天天快递</c:if> <c:if
-													test="${order[5]==9 }">自提</c:if> <c:if
-													test="${order[5]==10 }">国通快递</c:if> <c:if
-													test="${order[5]==11 }">邮政</c:if> <c:if
-													test="${order[5]==12 }">优速快递</c:if> <c:if
-													test="${order[5]==13 }">德邦快递</c:if> <c:if
-													test="${order[5]==14 }">百世汇通</c:if>
-										</em>
-										</li>
-										<li>快递单号：<em>${order[6]}</em> <input type="button"
-											value="  查看物流 " onclick="serch('${order[6]}')" /></li>
-										<li>发货日期：<em>${order[22]}</em></li>
-									</c:if>
-									<li>支付积分：<em>${order[15]+0}</em></li>
-									<li>购买数量：<em>${order[16]+0}</em></li>
-									<li>星&nbsp;火&nbsp;券&nbsp;：<em>${order[24]+0}</em></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-		</c:forEach>
 	</div>
-	<div id="footer">
-  <div class="foot_nav">
-    <div class="foot_nav_inner">
-    <a href="<%=request.getContextPath()%>/user/userAction!phoneFamily.action"><span class="line"><i class="nav_f1"></i></span><span class="text">我的红包</span></a>
-    <a href="<%=request.getContextPath()%>/user/userAction!jampshopIndex.action"><span class="line"><i class="nav_f2"></i></span><span class="text">商城首页</span></a>
-    <a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action"><span class="line"><i class="nav_f3"></i></span><span class="text">二维码</span></a>
-    <a href="javascript:zanwu();"><span class="line"><i class="nav_f4"></i></span><span class="text">购物车</span></a>
-    <a href="<%=request.getContextPath()%>/user/userAction!gotoPersonalCenter.action" class="hover"><span class="line"><i class="nav_f5"></i></span><span class="text">个人中心</span></a>
-    </div>
-  </div>
-</div>
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	<script type="text/javascript">
 	$(function(){
 		// 判断是否有sub-menu

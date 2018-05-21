@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.zklc.framework.dao.impl.EntityDaoImpl;
 import com.zklc.weishangcheng.member.dao.CityDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.City;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 @Repository
 public class CityDaoImpl extends EntityDaoImpl <City, Integer> implements CityDao{
 
@@ -19,7 +19,7 @@ public class CityDaoImpl extends EntityDaoImpl <City, Integer> implements CityDa
 		DetachedCriteria dc = DetachedCriteria.forClass(getPojoClass());
 		dc.add(Restrictions.eq("ordersBH", level));
 		
-		List<Order> list = getHibernateTemplate().findByCriteria(dc,0,1);
+		List<OrderJinHuo> list = getHibernateTemplate().findByCriteria(dc,0,1);
 		
 		return null;
 	}

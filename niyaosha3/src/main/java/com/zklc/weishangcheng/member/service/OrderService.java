@@ -1,24 +1,23 @@
 package com.zklc.weishangcheng.member.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.zklc.framework.service.IBaseService;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 
-public interface OrderService extends IBaseService<Order, Integer> {
+public interface OrderService extends IBaseService<OrderJinHuo, Integer> {
 /**
  * 查询最后一次订单
  * @param userId 用户id
  * @return
  */
-public Order findByUserId(Integer userId);
+public OrderJinHuo findByUserId(Integer userId);
 
 
-public Order findByOrderBH (String orderBH);
+public OrderJinHuo findByOrderBH (String orderBH);
 public OrderVo findByOrderVoBH (String orderBH);
 
 /**
@@ -42,11 +41,11 @@ public List findLevelPeoOrder(Integer userId,String orderType,String orderLevel)
 
 /**
  * 获取我的订单信息
- * @param userId
+ * @param userVo
  * @param type 订单类型
  * @return
  */
-public List findMyOrderList(Integer userId,String type,String date1,String date2,Integer pageNum); 
+public List findMyOrderList(UserVo userVo,String type,String date1,String date2,Integer pageNum); 
 
 /**
  * 更新订单信息
@@ -76,7 +75,7 @@ public List findCurrUserAllOrder(Integer userId);
  */
 public List findLevelUserOrderMoney(Integer userId,String orderType,String orderLevel);
 
-public int moneyPay(Order order,String openid,Users user);
+public int moneyPay(OrderJinHuo order,String openid,Users user);
 
 
 
@@ -86,9 +85,7 @@ public int moneyPay(Order order,String openid,Users user);
  */
 public Integer findOrderCountByUserId(Integer userId);
 
-public void saveAndCFh(Order order, Users user);
-
-public OrderLiu findOrderLiuOrderBH(String orderBh);
+public void saveAndCFh(OrderJinHuo order, Users user);
 
 /**
  * 查询这一期秒杀卖出的产品数量
@@ -104,5 +101,5 @@ public Integer findSellerNumByQi(Integer qi);
 public Integer findTotalMoneyByUserId(Integer userId);
 
 
-public Order findOrderByOrderBH(String out_trade_no);
+public OrderJinHuo findOrderByOrderBH(String out_trade_no);
 }

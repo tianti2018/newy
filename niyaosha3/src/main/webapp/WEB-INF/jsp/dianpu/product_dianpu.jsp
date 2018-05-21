@@ -382,6 +382,7 @@
 								});
 						pageNum++;
 					}
+					 
 			</script>
 		<div style="height: 10px"></div>
 		<div class="det-middle">
@@ -468,33 +469,39 @@
 					id="max_xhqamt" value="${xhq_money}"> --%>
 			</div>
 			<div class="message">
-				<c:if test="${null!=orderAddress}">
+				<c:if test="${null!=userVo.orderAddress}">
 
 					<ul class="menu-list">
 						<li><a href="javascript:;"><i class="arrows rotated"></i><em>收货信息</em></a>
 							<ul class="sub-menu" style="height: 180px">
 								<li><a
-									href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action"
+									href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?pdId=${prod.id}"
 									style="background: #00aa3a; display: inline-block; color: #fff;">选择默认收货地址</a></li>
-								<li>收货人：<em>${orderAddress.userName}</em></li>
-								<li>联系方式：<em> ${orderAddress.mobile} </em></li>
-								<li>收货地址：<em>${orderAddress.address}</em></li>
+								<li>收货人：<em>${userVo.orderAddress.userName}</em></li>
+								<li>联系方式：<em> ${userVo.orderAddress.mobile} </em></li>
+								<li>收货地址：<em>${userVo.orderAddress.sheng}${userVo.orderAddress.chengshi}${userVo.orderAddress.diqu}${userVo.orderAddress.address}</em></li>
 
 
 							</ul></li>
-
-						<li><a href="#" id="lijibuy" onclick="javascript:orderBuy()"
-							class="btn green">立即购买</a></li>
 					</ul>
 
 				</c:if>
-				<c:if test="${null==orderAddress}">
+				<c:if test="${null==userVo.orderAddress}">
 					<div align="center">
 						<a
-							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action"
+							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?pdId=${prod.id}"
 							class="btn green" onclick="go();">选择一条收货地址</a>
 					</div>
 				</c:if>
+				<br/>
+				<div align="center">
+					<a href="#" id="lijibuy" onclick="javascript:orderBuy()"
+							class="btn green" style="width: 20%;margin-left: 1px">进货</a>
+					<a href="#" id="lijibuy1" onclick="javascript:orderBuy()"
+							class="btn green" style="width: 20%;margin-left: 1px">代客下单</a>
+					<a href="#" id="lijibuy2" onclick="javascript:shuaxin()"
+							class="btn green" style="width: 20%;margin-left: 1px">刷新页面</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -695,11 +702,16 @@
 			var prodId=$("#checkPdId").val();
 			var xhq_count=$("#diyongcount").val();
 			xhq_count=xhq_count==""?"0":xhq_count;
+			var addressId = ${userVo.orderAddress.id};
+			if(addressId==null){
+				alert("请选择收货地址或点击刷新页面!");
+				return;
+			}
 			
 			var inputamt = parseInt(parseInt(xhq_count) / 2);
 			var totalamt = parseFloat($("#total_amt").val());
 			if(num <=0){
-				alert("至少购买一套!");
+				alert("数量不能为0!");
 				$("#lijibuy").attr("onclick","orderBuy()");
 				return false;
 			}
@@ -711,19 +723,18 @@
 				}
 			else if(prodId=="")
 				{
-				  alert("请选择购买商品");
+				  alert("请选择商品");
 				  $("#lijibuy").attr("onclick","orderBuy()");
 				  return false;
 				}
 			
 			
-			if(confirm("确定购买"+num+"套吗?")){
+			if(confirm("确定购买"+num+"吗?")){
 						$.ajax({
 					        type:"POST",
 					        url:"<%=request.getContextPath()%>/pay/payGoodAction!saveMianMoOrder.action",
 					        data : {
 					        	"qty_item_1":num,
-					        	"orderAddRessId":"${orderAddress.id}",
 					        	"prodId":prodId,
 					        	 "xhq_count":xhq_count
 					        	},

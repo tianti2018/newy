@@ -19,20 +19,9 @@
 				<c:if test="${userVo.usery.level == 2}">掌柜<!-- <img style="width: 15px" src="../images/s2.png"/> --></c:if>
 				<c:if test="${userVo.usery.level == 3}">大掌柜<!-- <img style="width: 25px" src="../images/shenqing/4.png"/> --></c:if>
 			</p>
-            <%-- <p>店铺等级：<c:if test="${user.cardId== null||user.cardId == 0}">未开店</c:if>
-            	<c:if test="${user.cardId== 1}">黄金店</c:if>
-				<c:if test="${user.cardId== 2}">黑钻店</c:if>
-				<c:if test="${user.cardId== 3}">蓝钻店</c:if>
-				<c:if test="${user.cardId== 4}">黄钻店</c:if>
-				<c:if test="${user.cardId== 5}">绿钻店</c:if>
-				<c:if test="${user.cardId== 6}">红钻店</c:if>
-				<c:if test="${user.cardId== 7}">皇冠店</c:if>
-				<c:if test="${user.cardId== 8}">旗舰店</c:if>
-				<c:if test="${user.cardId== 9}">星火总店</c:if>
-            </p> --%>
 			<p>关注时间：${userVo.usery.appDate }</p>
             </div>
-           <!-- <div class="edit_btn"><a href="#">修改收货地址</a></div>-->
+           <div class="edit_btn"><a href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action">修改收货地址</a></div>
             
         </header>
 	<script type="text/javascript">

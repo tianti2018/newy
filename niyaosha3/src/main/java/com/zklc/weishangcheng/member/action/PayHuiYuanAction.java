@@ -13,7 +13,6 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletInputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -27,14 +26,13 @@ import com.utils.RequestHandler;
 import com.utils.Sha1Util;
 import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
-import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
+import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.ProductService;
 import com.zklc.weishangcheng.member.service.UserService;
@@ -42,7 +40,6 @@ import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weishangcheng.member.util.PublicUtil;
 import com.zklc.weixin.util.SystemMessage;
-import com.zklc.weixin.util.WeixinUtil;
 
 import net.sf.json.JSONObject;
 
@@ -70,7 +67,7 @@ public class PayHuiYuanAction extends BaseAction {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private MiaoShaOrderService orderService;
+	private OrdersService orderService;
 	@Autowired
 	private GoodYongJinService yongJinService;
 	@Autowired
@@ -81,7 +78,7 @@ public class PayHuiYuanAction extends BaseAction {
 	private ProductService productService;
 	
 	private OrderAddress orderAddress;
-	private MiaoShaOrder order;
+	private Orders order;
 	private Users user;
 	
 	private String ordersBH;
@@ -153,25 +150,21 @@ public class PayHuiYuanAction extends BaseAction {
 				// 创建订单
 				if (order == null)
 				{
-					order = new MiaoShaOrder();
+					order = new Orders();
 				}
 				
-				OrderAddressVO orderAddress = orderAddressService.getAddressVoById(orderAddRessId);
-				order.setSize(size);//这里记录数量
+				OrderAddress orderAddress = orderAddressService.findById(orderAddRessId);
 				order.setMoney(prod.getPrice()*size+prod.getTransFee());
 				order.setOrdersBH(orderNo);
 				order.setPname(prod.getProdName());
 				order.setToUserName(orderAddress.getUserName());
 				order.setMobile(orderAddress.getMobile());
 				order.setZipcode(orderAddress.getZipcode());
-				order.setOrderStatus(0);// 待支付
 				order.setCreateDate(new Date());
 				order.setUserId(user.getUserId());
 				order.setType(prod.getManufacturer());
-				order.setQi(prod.getQi());
 				order.setAddress(orderAddress.getAddress());
 				order.setProductId(prodId);
-				order.setOrderType("3");
 //					order.setLevelValue(levelValue);
 				Boolean boolean1=orderService.saveHuiYuanOrder(order,user,prod);
 				json.put("success", boolean1);
@@ -402,11 +395,11 @@ public class PayHuiYuanAction extends BaseAction {
 		return "ajaxResult";
 	}
 
-	public MiaoShaOrder getOrder() {
+	public Orders getOrder() {
 		return order;
 	}
 
-	public void setOrder(MiaoShaOrder order) {
+	public void setOrder(Orders order) {
 		this.order = order;
 	}
 

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
@@ -47,7 +47,7 @@ public class JiFenAction extends BaseAction {
 
 	private Users user;
 	private Integer pageNum;
-	private Order order;
+	private OrderJinHuo order;
 	private OrderAddress orderAddress;
 	public String loginName;// 用户登录名
 	public Integer userId ;// 用户id
@@ -260,13 +260,13 @@ public class JiFenAction extends BaseAction {
 	}
 	
 
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
 
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 

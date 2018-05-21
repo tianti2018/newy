@@ -49,11 +49,11 @@
 			<c:forEach items="${addressList}" var="item" varStatus="status">			
 			<ul>
 				<li>
-					<div class="add-list-con"> 
+					<div class="add-list-con" onclick="defaultAddr('${item.id}')"> 
 					 <p><span class="addName">${item.userName }</span>
 					    <span class="addPhone">${item.mobile}</span>
 					 </p>
-					 <p>${item.province }${item.city }${item.region }${item.address }</p>
+					 <p>${item.sheng }${item.chengshi }${item.diqu }${item.address }</p>
 					</div>
 					<div class="add-list-btn">
 					 <input type="radio" name="defaultAdd" class="radioclass" id="radio-${status.index+1 }" value=""
@@ -84,19 +84,27 @@
 	<script type="text/javascript">
 	function defaultAddr(aid){
 	    var radios = document.getElementsByName("defaultAdd");
+	    var productId = '${productId}';
+	    var pdId = '${pdId}';
 	    for(var i=0;i<radios.length;i++){
 	    //判断哪个单选按钮为选中状态  
 	    if(radios[i].checked){
-		var order = '${orerType}';
 		if(aid!=null&&aid!=""){
 			//ajax检测用户名是否可用
 			$.ajax({
 				   url : "<%=request.getContextPath()%>/orderAddress/orderAddressAction!ajaxDefaultAddr.action?"+new Date(),
 		           type: "post", 
-		           data : {"id":aid,"orderType":order},
+		           data : {"id":aid},
 		           success: function(result) {
 		        	   if(result.message=="success"){
-		        		  $("#frmSenList").submit();
+		        		   if(productId!==''){
+		        			   window.location.href="<%=request.getContextPath()%>/products/productsAction!product.action?prodId="+productId;
+		        		   }else if(pdId!=''){
+		        			   window.location.href="<%=request.getContextPath()%>/dianpu/dianpuAction!dianPuProduct.action?pdId="+pdId;
+		        		   }else{
+		        			   window.location.reload(true);
+		        		   }
+		        		  
 		        	   }else{
 		        		   alert("操作失败！");
 		        	   }
@@ -113,7 +121,6 @@
 	function updateAddr(aid){
 		
 		$("#id").val(aid);
-		window.location.href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!updatePage.action";
 		$("#updateStatus1").submit();
 	<%--	 if(aid!=null&&aid!=""){
 			//ajax检测用户名是否可用
@@ -146,7 +153,7 @@
 		           data : {"id":aid},
 		           success: function(result) {
 		        	   if(result.message=="success"){
-		        		  $("#frmList").submit();
+		        		   window.location.reload(true);
 		        		  alert("删除成功！");
 		        	   }else{
 		        		   alert("操作失败！");

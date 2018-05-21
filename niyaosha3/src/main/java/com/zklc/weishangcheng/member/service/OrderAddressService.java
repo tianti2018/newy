@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderAddressVO;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 
 public interface OrderAddressService extends IBaseService<OrderAddress, Integer> {
 /**
@@ -14,9 +14,15 @@ public interface OrderAddressService extends IBaseService<OrderAddress, Integer>
  */
 public void defaultAddr(Integer aid,Integer userId);
 
-public OrderAddressVO findOrderAddressByUserId(Integer userId);
+public OrderAddress findOrderAddressByUserId(Integer userId);
 
-public List findOrderAddressListByid(Integer userId);
 public List<OrderAddress> findByUserId(Integer userId);
-public OrderAddressVO  getAddressVoById(Integer id);
+
+public List<OrderAddress> findByUseryId(Integer useryId);
+
+public List<OrderAddress> listAllAddress(UserVo userVo);
+
+public UserVo defaultAddr(Integer id, UserVo userVo);
+
+public OrderAddress findByUserVo(UserVo userVo);
 }  

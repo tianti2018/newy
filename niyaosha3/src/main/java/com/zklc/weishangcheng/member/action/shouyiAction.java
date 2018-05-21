@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -17,36 +14,38 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
-import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.ShouYiForUser;
+import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
+import com.zklc.weishangcheng.member.service.ShouYiForUserService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
-import com.zklc.weixin.util.WeixinUtil;
+
+import net.sf.json.JSONObject;
 
 @SuppressWarnings("serial")
 @ParentPackage("json")
-@Namespace("/xinghuoquan")
-@Action(value = "xinghuoquanAction")
+@Namespace("/shouyi")
+@Action(value = "shouyiAction")
 @Results({
-		@Result(name = "myXingHuoQuanList", location = "/WEB-INF/jsp/xinghuoquan/phone_my_xinghuoquan.jsp"),//我的订单
+		@Result(name = "myshouyiList", location = "/WEB-INF/jsp/shouyi/phone_my_shouyi.jsp"),//我的订单
 		@Result(name = "product", location = "/WEB-INF/jsp/product.jsp"),
 		@Result(name = "products", location = "/WEB-INF/jsp/products.jsp"),
 })
-public class XingHuoQuanAction extends BaseAction {
+public class shouyiAction extends BaseAction {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private XingHuoQuanRecordService xinghuoquanservice;
-	@Autowired
 	private UseryService useryService;
+	@Autowired
+	private ShouYiForUserService shouyiService;
 
 	private Users user;
 	private Integer pageNum;
-	private Order order;
+	private OrderJinHuo order;
 	private OrderAddress orderAddress;
 	public String loginName;// 用户登录名
 	public Integer userId ;// 用户id
@@ -99,63 +98,51 @@ public class XingHuoQuanAction extends BaseAction {
 	public String myXingHuoQuanList(){
 		//获取用户信息
 		userVo = getSessionUser();
-		user = userVo.getUser();
-		//user = userService.findById(1883);
-		if(user == null){
+		if(userVo == null){
 			return "timeOut";
 		}
 		//获得查询订单的起止时间和用户id
-		Integer uId=null;
-		if(userId==null||userId.equals(""))
-			uId=user.getUserId();
-		else
-			uId=userId;
-		System.out.println(uId);
-		List<XingHuoQuanRecord> myxinghuoquan = xinghuoquanservice.findXingHuoQuanList(uId, date1, date2,pageNum);
-		request.setAttribute("myxinghuoquan", myxinghuoquan);
-		request.setAttribute("length", myxinghuoquan.size());
-		System.out.println(myxinghuoquan.size());
 		return "myXingHuoQuanList";
 			
 	}
 
-	public String ajaxmyXingHuoQuanList(){
-		userVo = getSessionUser();
-		user = userVo.getUser();
-		if(user == null){
-			return "timeOut";
-		}
-		//获得查询订单的起止时间和用户id
-		Integer uId=null;
-		if(userId==null||userId.equals(""))
-			uId=user.getUserId();
-		else
-			uId=userId;
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		//	System.out.println(date1+":::"+date2);
-			List<XingHuoQuanRecord> mo1  = xinghuoquanservice.findXingHuoQuanList(uId, date1, date2,pageNum);
-			System.out.println(mo1.size());
-		//	JSONObject json=new JSONObject();
-			response=ServletActionContext.getResponse();
-			/**************组装json*****************/
-            if(mo1!=null && mo1.size()>0){
-//            	for(int i=0;i<mo1.size();i++){
-//            	}
-            	jsonMap.put("success", true);
-            	jsonMap.put("children", mo1);
-            	jsonMap.put("length", mo1.size());
-            }else{
-        		jsonMap.put("success", false);
-            }
-            JSONObject jsonObject = JSONObject.fromObject(jsonMap);
-		try {
-			response.getWriter().print(jsonObject.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
-		return null;
-		
-	}
+//	public String ajaxmyXingHuoQuanList(){
+//		userVo = getSessionUser();
+//		user = userVo.getUser();
+//		if(user == null){
+//			return "timeOut";
+//		}
+//		//获得查询订单的起止时间和用户id
+//		Integer uId=null;
+//		if(userId==null||userId.equals(""))
+//			uId=user.getUserId();
+//		else
+//			uId=userId;
+//		Map<String, Object> jsonMap = new HashMap<String, Object>();
+//		//	System.out.println(date1+":::"+date2);
+//			List<XingHuoQuanRecord> mo1  = xinghuoquanservice.findXingHuoQuanList(uId, date1, date2,pageNum);
+//			System.out.println(mo1.size());
+//		//	JSONObject json=new JSONObject();
+//			response=ServletActionContext.getResponse();
+//			/**************组装json*****************/
+//            if(mo1!=null && mo1.size()>0){
+////            	for(int i=0;i<mo1.size();i++){
+////            	}
+//            	jsonMap.put("success", true);
+//            	jsonMap.put("children", mo1);
+//            	jsonMap.put("length", mo1.size());
+//            }else{
+//        		jsonMap.put("success", false);
+//            }
+//            JSONObject jsonObject = JSONObject.fromObject(jsonMap);
+//		try {
+//			response.getWriter().print(jsonObject.toString());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}		
+//		return null;
+//		
+//	}
 
 	public Users getUser() {
 		return user;
@@ -167,13 +154,13 @@ public class XingHuoQuanAction extends BaseAction {
 	
 
 
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
 
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 

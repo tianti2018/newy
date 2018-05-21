@@ -36,47 +36,23 @@
         </div>
           <div class="ui-field-contain">
           <label for="name2">省份：</label>
-          <select id="province" name="orderAddress.provinceId" onchange="showArea(this,'city')">
-          <option value="">==请选择省份</option>
-            <c:forEach var="p" items="${provincelist}">
-            <c:choose>
-            <c:when test="${p.id==orderAddress.provinceId}">
-             <option selected="selected" value="<c:out value="${p.id}"/>"><c:out value="${p.name }"/></option>
-            </c:when>
-            <c:otherwise> 
-                <option value="<c:out value="${p.id}"/>"><c:out value="${p.name }"/></option>
-            </c:otherwise>
-            </c:choose>
-            </c:forEach>
-          </select>
+          <input type="hidden" id="sheng" name="orderAddress.sheng" value=""/>
+          <select  id="shengCode" name="orderAddress.shengCode" onchange="getTarea(1);">
+		  		<option selected="selected">请选择</option>
+		  		<c:forEach items="${litTArea_sheng}" var="item" varStatus="status">
+		  			<option value="${item.areaCode }">${item.areaName }</option>
+		  		</c:forEach>
+		  	</select>
            <label for="name2">市：</label>
-            <select id="city" name="orderAddress.cityId" onchange="showArea(this,'region')">
-           <option value="">==请选择城市</option>
-            <c:forEach var="c" items="${citylist}">
-             <c:choose>
-            <c:when test="${c.id==orderAddress.cityId}">
-             <option selected="selected" value="<c:out value="${c.id}"/>"><c:out value="${c.name }"/></option>
-            </c:when>
-            <c:otherwise> 
-                <option value="<c:out value="${c.id}"/>"><c:out value="${c.name }"/></option>
-            </c:otherwise>
-            </c:choose>
-            </c:forEach>
-          </select>
+           	<input type="hidden" id="chengshi" name="orderAddress.chengshi" value=""/>
+            <select  id="chengshiCode" name="orderAddress.chengshiCode" onchange="getTarea(2);">
+		  		<option selected="selected">请选择</option>
+		  	</select>
             <label for="name2">区县：</label>
-            <select id="region" name="orderAddress.areaId">
-            	<option value="">==请选择地区</option>
-            	<c:forEach var="a" items="${arealist}">
-               		<c:choose>
-            			<c:when test="${a.id==orderAddress.areaId}">
-             				<option selected="selected" value="<c:out value="${a.id}"/>"><c:out value="${a.name }"/></option>
-            			</c:when>
-            			<c:otherwise> 
-                			<option value="<c:out value="${a.id}"/>"><c:out value="${a.name }"/></option>
-            			</c:otherwise>
-            		</c:choose>
-            	</c:forEach>
-            </select>
+            <input type="hidden" id="diqu" name="orderAddress.diqu" value=""/>
+            <select  id="diquCode" name="orderAddress.diquCode" onchange="getTarea(3)">
+		  		<option selected="selected">请选择</option>
+		  	</select>
         </div>
         <div class="ui-field-contain">
          <label for="name2">详细地址：</label>
@@ -85,14 +61,14 @@
           </textarea>
         </div>
      	<div class="ui-field-contain">
-          <label for="name2">微信号：</label>
-          <input type="text" name="orderAddress.zipcode" value='${orderAddress.zipcode}'  id="input_yb" maxlength="18" placeholder="微信号"/>
+          <label for="name2">邮编：</label>
+          <input type="text" name="orderAddress.zipcode" value='${orderAddress.zipcode}'  id="input_yb" maxlength="18" placeholder="邮编"/>
         </div>
         
-        <div class="ui-field-contain">
+        <%-- <div class="ui-field-contain">
           <label for="name2">身份证号：</label>
           <input type="text" name="orderAddress.idCard" value='${orderAddress.idCard}'  id="input_idc" maxlength="18" placeholder="身份证号"/>
-        </div>
+        </div> --%>
        
         <div class="ui-field-contain">
           <label for="name2">默认收货地址：</label>
@@ -101,7 +77,8 @@
         </div>
          <s:hidden name="orderAddress.id"></s:hidden>
          <s:hidden name="orderAddress.userId"></s:hidden>
-           <s:hidden name="orderAddress.isFirst"></s:hidden>
+         <s:hidden name="orderAddress.useryId"></s:hidden>
+         <s:hidden name="orderAddress.isFirst"></s:hidden>
       </div>
  	 </form>
       <div class="ui-field-contain">
@@ -111,6 +88,51 @@
  
 </div>
 <script type="text/javascript">
+	
+	
+function getTarea(type){
+	var value = null;
+	var ws = null;
+	var obj = null;
+	if(type==1){
+		ws = $("#chengshiCode");
+		$("#diqu").val("");
+		$("#chengshi").val("");
+		obj = $("#shengCode");
+		$("#sheng").val(obj[0].options[obj[0].selectedIndex].text);
+	}else if(type==2){
+		ws = $("#diquCode");
+		$("#diqu").val("");
+		obj = $("#chengshiCode");
+		$("#chengshi").val(obj[0].options[obj[0].selectedIndex].text);
+	}else if(type==3){
+		obj = $("#diquCode");
+		$("#diqu").val(obj[0].options[obj[0].selectedIndex].text);
+	}
+	value = obj.val();
+	if(value!=null&&type!=3){
+		$.ajax({
+			url : "<%=request.getContextPath()%>/tarea/tareaAction!getTareaByCode.action",
+	        type: "post", 
+	        data : {"areaCode":value},
+	        success: function(result) {
+	     	   if(result!=null||result!=""){
+	     		  ws.empty();
+	     		  ws.append("<option value=''>请选择</option>");
+	     		   for(var i=0;i<result.length;i++){
+	     			  ws.append("<option value='"+result[i].areaCode+"'>"+result[i].areaName+"</option>");
+	     		   }
+	     	   }
+	        },
+	        error: function() {
+	     	   alert("系统错误，请联系管理员！",0);
+	        },
+	    	beforeSend : function() {
+	        }
+	     });
+	}
+	
+}
 	
 	//省市选择级联
 	function showArea(obj,targetId)
@@ -151,9 +173,9 @@
 		var yb =$("#input_yb");
 		var shr = $("#input_shr");
 		var shsj = $("#input_shsj"); // 手机号码
-		var province=$("#province").val();
-		var city=$("#city").val();
-		var region=$("#region").val();
+		var province=$("#sheng").val();
+		var city=$("#chengshi").val();
+		var region=$("#diqu").val();
 		var idcard = $("#input_idc").val();
 		if($.trim(shr.val())==null||$.trim(shr.val())=="")  {		
 			alert("对不起，"+shr.attr("placeholder")+"不能为空，请重新输入！");
@@ -165,8 +187,8 @@
 			shsj.focus();
 			return false;
 		}
-		if(province==""||city==""||region==""||city=="==请选择"||region=="==请选择")  {		
-			alert("对不起，省市区不能为空！");
+		if(province==""||city==""||region==""||city=="请选择"||region=="请选择"||province=="请选择")  {		
+			alert("请正确选择省市区！");
 			return false;
 		}
 		if($.trim(dz.val())==null||$.trim(dz.val())=="")  {		
@@ -174,18 +196,18 @@
 			dz.focus();
 			return false;
 		}
-		if($.trim(yb.val())==null||$.trim(yb.val())=="")  {		
+		/* if($.trim(yb.val())==null||$.trim(yb.val())=="")  {		
 			alert("对不起，"+yb.attr("placeholder")+"不能为空，请重新输入！");
 			yb.focus();
 			return false;
-		}
-		if($.trim(idcard) != null&&$.trim(idcard) !="" ){
+		} */
+		/* if($.trim(idcard) != null&&$.trim(idcard) !="" ){
 			var isIDCard1=/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 			if(!isIDCard1.test(idcard)){
 				alert("身份证号格式不正确");
 				return;
 			}
-		}
+		} */
 		
 		$("#btn_submit").val("提交中");
 		$("#btn_submit").attr("disabled","disabled"); 

@@ -6,11 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSONObject;
-
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.TixianLiu;
+
+import net.sf.json.JSONObject;
 public interface UserService extends IBaseService<Users, Integer> {
 	public Users findUserByLoginName(String loginName);    
 	/**
@@ -93,8 +92,6 @@ public interface UserService extends IBaseService<Users, Integer> {
 	public Integer createQrCodeAgain(Users user) throws Exception;
 	
 	Users findbyUnionId(String unionId);
-	
-	public String fahongbaoLiu(String wxOpenId,Integer userId,int amount,TixianLiu tx);
 	
 	public List findYongin(Integer userId);
 	

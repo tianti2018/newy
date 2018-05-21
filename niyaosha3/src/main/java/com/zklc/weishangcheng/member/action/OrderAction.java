@@ -24,28 +24,21 @@ import com.utils.CalendarUtils;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
-import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
-import com.zklc.weishangcheng.member.service.MiaoShaOrderService;
+import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.OrderLiuBlackService;
-import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weishangcheng.member.util.PublicUtil;
 import com.zklc.weixin.util.SystemMessage;
-import com.zklc.weixin.util.UserInfoUtil;
-import com.zklc.weixin.util.WeixinUtil;
 
 import net.sf.json.JSONObject;
 
@@ -68,7 +61,7 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	private OrderService orderService;
 	@Autowired
-	private MiaoShaOrderService miaoShaOrderService;
+	private OrdersService miaoShaOrderService;
 	@Autowired
 	private FhrecordService fhrecordService;
 	@Autowired
@@ -83,17 +76,13 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	private OrderAddressService orderAddressService;
 	@Autowired
-	private OrderLiuService orderLiuService;
-	@Autowired
 	private LiuCodeService liuCodeService;
-	@Autowired
-	private OrderLiuBlackService liuBlackService;
 	
 	@Autowired
 	private JiFenRecordService jiFenRecordService;
 	
 	private Users user;
-	private Order order;
+	private OrderJinHuo order;
 	private OrderAddress orderAddress;
 	public String loginName;// 用户登录名
 	public Integer userId ;// 用户id
@@ -311,66 +300,35 @@ public class OrderAction extends BaseAction {
 	 * 获取个人订单，下单未购买/下单已购买
 	 * @xxh
 	 */
-	public String orderPerList(){
+	public String myOrderList(){
 		//获取用户信息
 		userVo = getSessionUser();
-		user = userVo.getUser();
- 		//user = userService.findById(1820);
-		if(user == null){
+		if(userVo == null){
 			return "timeOut";
 		}
-		//获得查询订单的起止时间和用户id
-		String date1=request.getParameter("date1");
-		String date2=request.getParameter("date2");
-		String userId=request.getParameter("userId");
-		System.out.println(date1+":::"+date2+":::"+userId);
-		Integer uId=null;
-		if(userId==null||userId.equals(""))
-			uId=user.getUserId();
-		else
-			try {
-				uId=Integer.parseInt(userId);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
-		List<MiaoShaOrder> orders = orderService.findMyOrderList(uId, "1,2,3,4,11",date1,date2,pageNum);
-		request.setAttribute("myfhOrder", orders);
-		System.out.println(orders.size());
+		request.setAttribute("orderType", orderType);
 		return "myOrderList";
 			
 	}
 	
-	public String ajaxOrderPerList(){
+	public void ajaxOrderPerList(){
 		userVo = getSessionUser();
-		user = userVo.getUser();
-			if(user == null){
-				return "timeOut";
-			}
-			Integer uId=null;
-			if(userId==null||userId.equals(""))
-				uId=user.getUserId();
-			else
-				uId=userId;
-		    Map<String, Object> jsonMap = new HashMap<String, Object>();
-			//获得查询订单的起止时间
-			String date1=request.getParameter("date1");
-			String date2=request.getParameter("date2");
-			List<MiaoShaOrder> orders=orderService.findMyOrderList(uId, "1,2,3,4,11", date1, date2, pageNum);
-			response=ServletActionContext.getResponse();
-			/**************组装json*****************/
-            if(orders!=null && orders.size()>0){
-            	jsonMap.put("success", true);
-            	jsonMap.put("children", orders);
-            }else{
-        		jsonMap.put("success", false);
-            }
-            JSONObject jsonObject = JSONObject.fromObject(jsonMap);
+		//获得查询订单的起止时间
+		String date1=request.getParameter("date1");
+		String date2=request.getParameter("date2");
+		List<Orders> orders=orderService.findMyOrderList(userVo, orderType, date1, date2, pageNum);
+		/**************组装json*****************/
+		if(orders!=null&&orders.size()>0){
+			json.put("success", true);
+	    	json.put("children", orders);
+		}else{
+			json.put("success", false);
+		}
 		try {
-			response.getWriter().print(jsonObject.toString());
-		} catch (IOException e) {
+			jsonOut(json);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;		
 	}	
 	/**
 	 * 取消订单 by yang
@@ -381,7 +339,7 @@ public class OrderAction extends BaseAction {
 		response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("application/json;charset=utf-8");
-		MiaoShaOrder mOrder = miaoShaOrderService.findById(orderId);
+		Orders mOrder = miaoShaOrderService.findById(orderId);
 		Date compareDate = CalendarUtils.mergeHour(new Date(), -6);
 		// 订单支付如果超过6小时 则不能操作取消
 		if (CalendarUtils.compareDate(mOrder.getPayTime(), compareDate).equals("<")) {
@@ -403,147 +361,6 @@ public class OrderAction extends BaseAction {
 			e.printStackTrace();
 		}
 	}
-	public String saveOrderLiu(){
-		JSONObject json = new JSONObject();
-		response = ServletActionContext.getResponse();
-		response.setCharacterEncoding("utf-8");
-		userVo = getSessionUser();
-		user = userVo.getUser();
-		
-		String phone = request.getParameter("phone");
-		String money = request.getParameter("lmoney");
-		String lnumber = request.getParameter("lnumber");
-		String lyongjin = request.getParameter("lyongjin");
-		
-		
-		if(user == null || StringUtils.isBlank(phone) || StringUtils.isBlank(money)
-				|| StringUtils.isBlank(lnumber) || StringUtils.isBlank(lyongjin)){
-			json.put("success", false);
-			json.put("", true);
-			return null;
-		}else {
-			
-			List blackList = liuBlackService.findByHql("from OrderLiuBlack b where b.isStart=1 and b.phone='"+phone.trim()+"'", null);
-			if(blackList.size() > 0){
-				return "error";
-			}
-			Double mmoney = Double.parseDouble(money);
-			
-			OrderLiu order = new OrderLiu();
-			order.setUserId(user.getUserId());
-			order.setCreateDate(new Date());
-			order.setMobile(phone);
-			order.setPname(lnumber);
-			order.setMoney(Double.parseDouble(money));
-			//验证价格与购买流量是否正确
-			String busType = null;//运营商
-			Integer num = Integer.parseInt(lnumber.substring(6,lnumber.length()-1));//购买流量数
-			LiuCode code = liuCodeService.findById(25);
-			//判断流量充值模式，采用华时或是乐免（云通讯）
-			if(code == null){
-				return "error";
-			}
-			if(code.getLiuType() == null){
-				return "error";
-			}
-			
-			
-			
-			
-			if(code.getBusPerson().equals("1")){
-				return "error";
-			}
-			if(lnumber.contains("电信")){
-				busType = "3";
-				if(code.getYongjin().equals(1.0)){
-					return "error";
-				}
-			}else if(lnumber.contains("移动")){
-				busType = "1";
-				if(code.getLiuMoney().equals("1")){
-					return "error";
-				}
-			}else if(lnumber.contains("联通")){
-				busType = "2";
-				if(code.getLiuNum().equals("1")){
-					return "error";
-				}
-			}else{
-				return "error";
-			}
-			String isG = order.getPname().substring(order.getPname().length()-1, order.getPname().length());
-			if(isG.equals("G")){
-				num = num*1024;
-			}
-			//根据流量运营商，购买流量数据，流量价值，判断数据库中是否存在，0 不存在，返回 ，大于1，数据异常返回，等于1 继续执行,获取编码
-			List list = orderLiuService.checkLiuDateIsTure(busType, num.toString(), money);
-			if(list.size() == 0 ){
-				return "error";
-			}else if(list.size() > 1){
-				return "error";
-			}   
-			
-			if(code.getLiuType()==0){//走乐免
-				/*if(lnumber.contains("电信")){
-					
-					if(num ==5){
-						order.setLiunum("300001");
-					}else if(num==10){
-						order.setLiunum("300002");
-					}else if(num==30){
-						order.setLiunum("300003");
-					}else if(num==50){
-						order.setLiunum("300004");
-					}else if(num==100){
-						order.setLiunum("300005");
-					}else if(num==200){
-						order.setLiunum("300006");
-					}else if(num == 500){
-						order.setLiunum("300007");
-					}else if(num==1024){
-						order.setLiunum("300008");
-					}
-				}*/
-				LiuCode lcode = (LiuCode) list.get(0);
-				if(StringUtils.isBlank(lcode.getYunCode())){
-					return "error";
-				}
-				order.setLiunum(lcode.getYunCode());
-			}else{
-				LiuCode lcode = (LiuCode) list.get(0);
-				if(StringUtils.isBlank(lcode.getHuaCode())){
-					return "error";
-				}
-				order.setLiunum(lcode.getHuaCode());
-			}
-			
-			
-			order.setRetMoney(Double.parseDouble(lyongjin));
-			order.setOrdersBH("99" + PublicUtil.getOrderNo());
-			order.setOrderStatus(0);
-			
-			orderLiuService.saveOrder(user, order);
-			json.put("success", true);
-			json.put("ordersBh", order.getOrdersBH());
-			try {
-				response.getWriter().print(json.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	
-	public void bufaLiuliang(){
-		List list = orderLiuService.findByHql("from OrderLiu o where o.description='余额不足' and o.orderStatus=1 and ", null);
-		if(list.size() > 0){
-			for(int x=0;x<list.size();x++){
-				OrderLiu order = (OrderLiu) list.get(x);
-				orderLiuService.liuliangPay(order,null,null);
-			}
-		}
-	}
 	
 	
 	
@@ -562,7 +379,7 @@ public class OrderAction extends BaseAction {
 			Integer num = orderService.findSellerNumByQi(qi);
 			if(miaoShaNum!=null&&num<=miaoShaNum){
 				orderNo = "ms" + PublicUtil.getOrderNo();
-				order = new Order();
+				order = new OrderJinHuo();
 				if(orderAddress!= null){
 					if(orderAddress.getId()==null){
 						orderAddress.setIsFirst("1");
@@ -584,15 +401,6 @@ public class OrderAction extends BaseAction {
 					StringUtils.replace(total_price1, "￥", "");
 					order.setMoney(Double.parseDouble(StringUtils.replace(total_price1, "￥", "")));
 					order.setOrdersBH(orderNo);
-					order.setPname(SystemMessage.getString("goods"));
-					order.setToUserName(orderAddress.getUserName());
-					order.setMobile(orderAddress.getMobile());
-					order.setZipcode(orderAddress.getZipcode());
-					order.setOrderStatus(0);// 待支付
-					order.setCreateDate(new Date());
-					order.setUserId(user.getUserId());
-					order.setAddress(orderAddress.getAddress());
-					order.setQi(qi);
 					orderService.save(order);
 					json.put("success", true);
 					json.put("ordersBh", orderNo);
@@ -641,7 +449,7 @@ public class OrderAction extends BaseAction {
 			orderNo = "77" + PublicUtil.getOrderNo();
 			// 创建订单
 			if (order == null)
-				order = new Order();
+				order = new OrderJinHuo();
 			
 			if(orderAddress!= null){
 				if(orderAddress.getId()==null){
@@ -694,15 +502,7 @@ public class OrderAction extends BaseAction {
 //					}
 					if(!cunchu){
 						order.setOrdersBH(orderNo);
-						order.setPname(SystemMessage.getString("company"));
 		//				order.setSize(qty_item_1);//这里记录运费
-						order.setToUserName(orderAddress.getUserName());
-						order.setMobile(orderAddress.getMobile());
-						order.setZipcode(orderAddress.getZipcode());
-						order.setOrderStatus(0);// 待支付
-						order.setCreateDate(new Date());
-						order.setUserId(user.getUserId());
-						order.setAddress(orderAddress.getAddress());
 	//					order.setLevelValue(levelValue);
 						orderService.saveAndCFh(order,user);
 						json.put("success", true);
@@ -753,11 +553,11 @@ public class OrderAction extends BaseAction {
 		this.userId = userId;
 	}
 
-	public Order getOrder() {
+	public OrderJinHuo getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(OrderJinHuo order) {
 		this.order = order;
 	}
 

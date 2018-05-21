@@ -29,94 +29,52 @@
         <!--我的团队-->
         <c:if test="${userVo.usery!=null }">
 	        <div class="my_header_links">
-	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action"><span id="xianshifensi"></span><span id="wodefensi">我的团队</span></a>
+	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action"><span id="tuandui">0</span><span>我的团队</span></a>
+	            <a href=""><span id="chengjiaoliang">0</span><span>日成交量</span></a>
+	            <a href=""><span id="chengjiaoliang">0</span><span>总成交量</span></a>
+	            <a href=""><span id="chengjiaoliang">0</span><span>今日收益</span></a>
 	        </div>
-        
+        </c:if>
         
 
         <!--订单信息-->
         <section class="my_section"  id="gongneng">
-            <!-- <a href="javascript:void(0)" class="head head_order">功能模块</a> -->
+            <a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action" class="head head_order">我的订单</a>
             <ul class="list list_order">
-            	<%-- <li><a href="<%=request.getContextPath()%>/user/userAction!jampshopIndex.action" class="item_3"><span>爆款专区</span></a></li>
-                <li><a href="<%=request.getContextPath()%>/user/userAction!gotoHuiyuanShop.action" class="item_0"><span>特消专区</span></a></li>--%>
-                <c:if test="${userVo.usery!=null }">
-	                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action" class="item_3" id="payItem"><span>店铺管理</span></a></li> 
-	                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}" class="item_1" id="payItem"><span>进入店铺</span></a></li>
-                </c:if>
-                <li><a href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action" class="item_4" id="commentItem"><span>收货地址管理</span></a></li>
+                <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=0" class="item_1" id="payItem"><span>待付款</span></a></li> 
+                <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=1" class="item_2" id="payItem"><span>待收货</span></a></li>
+                <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=2" class="item_3" id="payItem"><span>待评价</span></a></li>
+                <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=3" class="item_4" id="payItem"><span>退换货</span></a></li> 
             </ul>
         </section>
 
         <!--我的钱包-->
             <section  class="my_section" id="myWallet">
                 <a href="javascript:zige();" class="head head_value">我的钱包&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="totalMoney">0</strong></a>
-                <%-- <ul class="list list_value list_value_center" onclick="jampUrl()">
-                    <li><a href="#"><strong id="kdailiYJ">0</strong>今日收益</a></li>
-                    <li><a href="#"><strong id="kdianzhuYJ">0</strong>今日消费</a></li>
-                    <li><a href="#"><strong id="kgoodYJ">0</strong>总消费</a></li>
-                </ul> --%>
                 <ul class="list list_value list_value_center" onclick="jampUrl()">
-                    <li><a href="#"><strong id="yue">0</strong>余额</a></li>
-                    <li><a href="#"><strong id="tixianshenqingzhong">0</strong>提现申请中</a></li>
-                    <li><a href="#"><strong id="yitongguo">0</strong>已通过</a></li>
+                    <li><a href="#"><strong id="yve">0</strong>余额</a></li>
+                    <li><a href="#"><strong id="huafei">0</strong>花费</a></li>
+                    <li><a href="#"><strong id="daishengxiao">0</strong>待生效</a></li>
                 </ul>
             </section>
-         <%-- <section class="my_section"  id="myXinghuoquan">
-            <a href="<%=request.getContextPath()%>/xinghuoquan/xinghuoquanAction!myXingHuoQuanList.action" class="head head_value">星火券&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="xinghuoquan">${user.realSubmitMoney+0 }</strong></a>
-		 </section>
 		 
-		 <!-- 星火微积分 -->
-         <section class="my_section"  id="myJiFenList">
-            <a  href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=69" class="head head_value">星火微积分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="totalJiFen">${usejifen }</strong></a>
-		    <ul class="list list_value list_value_center">
-              
-               <li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=1"><strong id="keyongJF">${zongJifen+0}</strong>其它类型积分</a></li>
-               <li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=1"><strong id="keyongJF">${zongnewuser+0}</strong>推荐用户积分</a></li>
-              <li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=2">
-                  <strong id="xiaofeiJF">${xiaofeiJifen+0 }</strong>已消费积分</a>
-              </li>
-             
-               <li><a href="#"><strong id="keyongJF">${notUse+0}</strong>未激活积分</a></li>
-            </ul>
-		 </section> --%>
-		 </c:if>
-		 <section class="my_section"  id="myJiFenList">
-            <a href="<%=request.getContextPath()%>/order/orderAction!orderPerList.action?orderNo=0&requestType=mo" class="head head_order">我的订单&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="totalOrderNum">0</strong></a>
-	 		<ul class="list list_value list_value_center">
-            	<li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=1">
-            			<strong id="daizhifu">${daizhifu+0}</strong>待支付
-            		</a>
-            	</li>
-            	<li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=1">
-            		<strong id="daifahuo">${daifahuo+0}</strong>待发货
-            		</a>
-            	</li>
-           		<li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=2">
-               			<strong id="daishouhuo">${daishouhuo+0 }</strong>待收货
-               		</a>
-           		</li>
-           		<li><a href="<%=request.getContextPath()%>/jifen/jifenAction!myJiFenList.action?status=2">
-               			<strong id="yiwancheng">${yiwancheng+0 }</strong>已完成
-               		</a>
-           		</li>
-           	</ul>
+		 <section class="my_section"  id="dianpuDingDan">
+            <a href="<%=request.getContextPath()%>/order/orderAction!orderPerList.action?orderNo=0&requestType=mo" class="head head_order">店铺订单</a>
 		 </section>
 
         <!--我的活动-->
         <section class="my_section" id="myActivity">
             <a href="javascript:void(0);" class="head head_act" data-tag="activity" ptag="" data-wxtag="7155.1.20" data-sqtag="7155.2.20">其他功能<span id="navigat"></span></a>
             <ul class="list list_act">
-                <%-- <li><a href="<%=request.getContextPath()%>/user/userAction!loadRefs.action">推荐人信息</a></li>
-                <li><a href="<%=request.getContextPath()%>/user/userAction!gotoUpdateRef.action">修改推荐人</a></li> --%>
-                <li><a href="<%=request.getContextPath()%>/user/problemAction!problemList.action">问题反馈</a></li>
-                <%-- <li><a href="<%=request.getContextPath()%>/pay/payDianAction!listBuDianHongBaos.action">店主红包补发</a></li> --%>
-                <!-- <li><a  href="javascript:listCards();">无卡pos邀请码</a></li> -->
-				<li><a href="javascript:zanwu();">聊天记录</a></li>
+            	<c:if test="${userVo.usery!=null }">
+                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action">店铺管理</a></li>
+				<li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}">进入店铺</a></li>
+				<li><a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action">我的二维码</a></li>
+				</c:if>
+				
                 <li><a href="javascript:zanwu();">平台规则</a></li>
                 
                 <li><a href="javascript:zanwu();">注意事项</a></li>
-               <!--  <li id="wxActivity"  style="display: none;"><a href="#">我的礼包</a></li> -->
                 <li><a href="<%=request.getContextPath() %>/notice/noticeAction!noticeList.action" id="change">公告</a></li>
                 <li id="last"></li>
             </ul>

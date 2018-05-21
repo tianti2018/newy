@@ -24,3 +24,8 @@ var t;
 			interval = setInterval(showImg, 4000);
 		}
 	}
+
+	function shuaxin(){
+		window.location.reload(true);
+	}
+	

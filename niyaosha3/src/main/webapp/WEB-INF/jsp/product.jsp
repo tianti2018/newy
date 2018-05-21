@@ -102,7 +102,7 @@
 					    <li><a href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action" style="background:#00aa3a; display:inline-block; color:#fff;">选择默认收货地址</a></li>
 						<li>收货人：<em>${orderAddress.userName}</em></li>
 						<li>联系方式：<em> ${orderAddress.mobile} </em></li>
-						<li>收货地址：<em>${orderAddress.address}</em></li>
+						<li>收货地址：<em>${orderAddress.sheng}${orderAddress.chengshi}${orderAddress.diqu}${orderAddress.address}</em></li>
 						
 										
 					</ul>

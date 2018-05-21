@@ -16,16 +16,20 @@ import javax.persistence.Table;
 public class OrderAddress implements Serializable {
 	
 	private Integer id;
-	private String address;
-	private String mobile;
-	private String zipcode;
-	private String userName;
-	private Integer userId;
+	private String shengCode;
+	private String chengshiCode;
+	private String diquCode;
+	private String sheng;
+	private String chengshi;
+	private String diqu;
+	private String address;			//详细地址
+	private String mobile;			//收货人电话
+	private String zipcode;			//邮编
+	private String userName;		//收货人姓名
+	private Integer userId;			
+	private Integer useryId;
 	private Date createDate;
-	private Integer areaId;
-	private Integer cityId;
-	private Integer provinceId;
-	private String idCard;
+	private String idCard;			//身份证
 	/**
 	 * 是否是默认收货地址，1是，0为空不是
 	 */
@@ -40,75 +44,47 @@ public class OrderAddress implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	@Column(name = "address")
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	@Column(name = "mobile")
 	public String getMobile() {
 		return mobile;
 	}
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	@Column(name = "zipcode")
 	public String getZipcode() {
 		return zipcode;
 	}
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
-	@Column(name = "user_name")
 	public String getUserName() {
 		return userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	@Column(name = "user_id")
 	public Integer getUserId() {
 		return userId;
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-	@Column(name = "create_date")
 	public Date getCreateDate() {
 		return createDate;
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	@Column(name = "is_first")
 	public String getIsFirst() {
 		return isFirst;
 	}
 	public void setIsFirst(String isFirst) {
 		this.isFirst = isFirst;
-	}
-	public Integer getAreaId() {
-		return areaId;
-	}
-	public void setAreaId(Integer areaId) {
-		this.areaId = areaId;
-	}
-	
-	@Column(name="cityId")
-	public Integer getCityId() {
-		return cityId;
-	}
-	public void setCityId(Integer cityId) {
-		this.cityId = cityId;
-	}
-	@Column(name="provinceId")
-	public Integer getProvinceId() {
-		return provinceId;
-	}
-	public void setProvinceId(Integer provinceId) {
-		this.provinceId = provinceId;
 	}
 	/**
 	 * @return the idCard
@@ -121,6 +97,48 @@ public class OrderAddress implements Serializable {
 	 */
 	public void setIdCard(String idCard) {
 		this.idCard = idCard;
+	}
+	public String getShengCode() {
+		return shengCode;
+	}
+	public void setShengCode(String shengCode) {
+		this.shengCode = shengCode;
+	}
+	public String getChengshiCode() {
+		return chengshiCode;
+	}
+	public void setChengshiCode(String chengshiCode) {
+		this.chengshiCode = chengshiCode;
+	}
+	public String getDiquCode() {
+		return diquCode;
+	}
+	public void setDiquCode(String diquCode) {
+		this.diquCode = diquCode;
+	}
+	public String getSheng() {
+		return sheng;
+	}
+	public void setSheng(String sheng) {
+		this.sheng = sheng;
+	}
+	public String getChengshi() {
+		return chengshi;
+	}
+	public void setChengshi(String chengshi) {
+		this.chengshi = chengshi;
+	}
+	public String getDiqu() {
+		return diqu;
+	}
+	public void setDiqu(String diqu) {
+		this.diqu = diqu;
+	}
+	public Integer getUseryId() {
+		return useryId;
+	}
+	public void setUseryId(Integer useryId) {
+		this.useryId = useryId;
 	}
 	
 }

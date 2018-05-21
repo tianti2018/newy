@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,21 +11,18 @@ import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.dao.OrderDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.MiaoShaOrder;
-import com.zklc.weishangcheng.member.hibernate.persistent.Order;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderLiu;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.OrderLiuService;
 import com.zklc.weishangcheng.member.service.OrderService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weixin.util.UserInfoUtil;
 @Service
-public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements OrderService {
+public class OrderServiceImpl extends BaseServiceImp<OrderJinHuo, Integer> implements OrderService {
 	
 	@Autowired
 	private UserService userService;
@@ -39,8 +35,6 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
-	private OrderLiuService orderLiuService;
-	@Autowired
 	private OrderDao orderDao;
 	
 	
@@ -48,15 +42,15 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	
 	
 	@Override
-	public Order findByUserId(Integer userId) {
-		Order returnOrder=null;
+	public OrderJinHuo findByUserId(Integer userId) {
+		OrderJinHuo returnOrder=null;
 		StringBuffer hql = new StringBuffer("from Order t where 1=1 ");
 		if(userId!=null&&!"".equals(userId)){
 			hql.append(" and t.userId="+userId);
 			hql.append(" order by t.createDate desc");
 			List list=super.findByHql(hql.toString(), null);
 			if(list!=null&&list.size()>0)
-				returnOrder=(Order) list.get(0);
+				returnOrder=(OrderJinHuo) list.get(0);
 		}else{
 			return null;
 		}
@@ -65,14 +59,14 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 
 
 	@Override
-	public Order findByOrderBH(String orderBH) {
-		Order returnOrder=null;
+	public OrderJinHuo findByOrderBH(String orderBH) {
+		OrderJinHuo returnOrder=null;
 		StringBuffer hql = new StringBuffer("from Order t where 1=1 ");
 		if(orderBH!=null&&!"".equals(orderBH)){
 			hql.append(" and t.ordersBH='"+orderBH+"'");
 			List list=super.findByHql(hql.toString(), null);
 			if(list!=null&&list.size()>0)
-				returnOrder=(Order) list.get(0);
+				returnOrder=(OrderJinHuo) list.get(0);
 		}else{
 			return null;
 		}
@@ -147,14 +141,33 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 
 
 	@Override
-	public List findMyOrderList(Integer userId, String type,String date1,String date2,Integer pageNum) {
+	public List findMyOrderList(UserVo userVo, String type,String date1,String date2,Integer pageNum) {
 		if(pageNum==null || pageNum.equals("")){
 			pageNum=0;
 		}else{
-			pageNum=pageNum*5;
+			pageNum=pageNum*10;
 		}
-		String sql="select * from miaosha_order where userId = "+userId+" and (order_status in("+type+")";
-		sql+=" or (order_status=0 and payStatus<>0 ))";
+		String sql="select * from orders where 1=1 ";
+		if(type!=null&&!type.equals("")){
+			if(type.equals("0"))
+				sql+=" and order_status ="+ type;
+			else if(type.equals("1")){
+				sql+=" and order_status in (1,3)";
+			}else if(type.equals("2")){
+				sql+=" and (pingjia in (0,1) or pingjia is null) and order_status = 6";
+			}else if(type.equals("3")){
+				sql+=" and order_status = 2";
+			}
+		}
+		if(userVo.getUser()!=null&&userVo.getUsery()==null){
+			sql+=" and userId = "+userVo.getUser().getUserId();
+		}else if(userVo.getUser()==null&&userVo.getUsery()!=null){
+			sql+=" and useryId = "+userVo.getUsery().getId();
+		}else if(userVo.getUser()!=null&&userVo.getUsery()!=null){
+			sql+=" and ((userId = "+userVo.getUser().getUserId()+" and useryId is null) or ( userId is null and useryId ="
+					+userVo.getUsery().getId() + ") or (userId ="+userVo.getUser().getUserId() +" and useryId = "+userVo.getUsery().getId()+"))";
+		}
+		
 		if((date1!=null&&!date1.equals(""))&&(date2!=null&&!date2.equals(""))){
           sql+=" and createDate between '"+date1+"' and '"+date2+"'";
         } else if((date1==null||date1.equals(""))&&(date2!=null&&!date2.equals(""))){
@@ -164,9 +177,9 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
         }
                     
         sql+=" order by createDate desc";
-        sql+=" limit "+pageNum+" ,"+5;
+        sql+=" limit "+pageNum+" ,"+10;
         System.out.println(sql);
-        List<MiaoShaOrder> orders=super.findBySql(sql, null);
+        List<Orders> orders= findBySql(Orders.class, sql, null);
 		return orders;
 	}
 
@@ -179,9 +192,9 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	@Override
 	public boolean updateOrdersMsg(Integer orderId) { 
 		boolean result = false;
-		Order order = super.findById(orderId);
+		OrderJinHuo order = super.findById(orderId);
 		if(null != order && !"".equals(order)){
-			order.setOrderStatus(6);
+//			order.setOrderStatus(6);
 			super.update(order);
 			result = true;
 		}
@@ -284,16 +297,14 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	
 	
 	
-	public int moneyPay(Order order, String openid,Users user) {
-		order.setUserId(user.getUserId());
-		order.setOrderStatus(1); //已支付
-		order.setCreateDate(new Date());
+	public int moneyPay(OrderJinHuo order, String openid,Users user) {
+//		order.setOrderStatus(1); //已支付
 		update(order);
 		
 	  	//激活该用户
 	    //user.setActivitiFlag("1");
-		String levelValue = order.getLevelValue();
-		String[] lvs = StringUtils.split(levelValue, ",");
+//		String levelValue = order.getLevelValue();
+//		String[] lvs = StringUtils.split(levelValue, ",");
 //		user.setLevel(Integer.valueOf(lvs[lvs.length-1]).intValue());
 //		user.setBlock("1");
 		userService.update(user);
@@ -528,11 +539,11 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 	}
 
 	@Override
-	public void saveAndCFh(Order order, Users user) {
+	public void saveAndCFh(OrderJinHuo order, Users user) {
 
 		save(order);
-		String levelValue = order.getLevelValue();
-		String[] lvs = StringUtils.split(levelValue, ",");
+//		String levelValue = order.getLevelValue();
+//		String[] lvs = StringUtils.split(levelValue, ",");
 //		Integer referrerId = user.getReferrerId();
 //		if (null!=referrerId) {
 //			List<Integer> list2 = new ArrayList<Integer>();
@@ -652,18 +663,6 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 
 
 	@Override
-	public OrderLiu findOrderLiuOrderBH(String orderBh) {
-		OrderLiu ordre = null;
-		String hql = "from OrderLiu o where o.ordersBH='"+orderBh+"'";
-		List list = orderLiuService.findByHql(hql, null);
-		if(list.size() > 0){
-			ordre = (OrderLiu) list.get(0);
-		}
-		return ordre;
-	}
-
-
-	@Override
 	public Integer findSellerNumByQi(Integer qi) {
 		
 		Number returnNum=0;
@@ -727,9 +726,10 @@ public class OrderServiceImpl extends BaseServiceImp<Order, Integer> implements 
 
 
 	@Override
-	public Order findOrderByOrderBH(String out_trade_no) {
+	public OrderJinHuo findOrderByOrderBH(String out_trade_no) {
 		return orderDao.findOrderByOrderBH(out_trade_no);
 	}
+
 
 
 }

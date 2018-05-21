@@ -49,14 +49,12 @@ import com.zklc.weishangcheng.member.dao.UserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.ChengFaUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.Hongbao;
-import com.zklc.weishangcheng.member.hibernate.persistent.TixianLiu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.ChengFaUserService;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.OrderService;
-import com.zklc.weishangcheng.member.service.TixianLiuService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -85,8 +83,6 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 	
 	@Autowired
 	private UseryService useryService;
-	@Autowired
-	private TixianLiuService tixianLiuService;
 	@Autowired
 	private OrderService orderService;
 	@Autowired
@@ -658,95 +654,6 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 		else {
 			message = "您已发货或者您正在进行重复提交，请等待服务器的反应...";
 		}
-		return message;
-	}
-	@Override
-	public String fahongbaoLiu(String wxOpenId,Integer userId,int amount,TixianLiu tx) {
-		if(tx == null){
-			return "保存失败了";
-		}
-		//tixianLiuService.save(tx);
-		String message="";
-		String billNo = HongBaoUtil.createBillNo(String.valueOf(userId));
-		SortedMap<String, String> map = HongBaoUtil.createMap(billNo, wxOpenId, String.valueOf(userId),amount);  
-		HongBaoUtil.sign(map);  
-		String requestXML = HongBaoUtil.getRequestXml(map);  
-		try {
-			String path="/yunwei8/caoyuan.p12";
-			if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-				path="c:/yifei.p12";
-			}
-			 FileInputStream instream = new FileInputStream(new File(path));
-			 String responseXML = HongBaoUtil.post(requestXML,instream);
-			 
-			 Document document;
-			 document = DocumentHelper.parseText(responseXML);
-			 Element root = document.getRootElement();
-			 List<Element> elements = root.elements();
-			 Element element = elements.get(0);
-			 Element element2 = elements.get(1);
-			 message=element2.getTextTrim();
-			 
-			 TixianLiu hongbao = new TixianLiu();
-			 hongbao.setAddTime(new Date());
-			 hongbao.setOpenid(wxOpenId);
-			 hongbao.setAmount(amount/100);
-			 hongbao.setBillNo(billNo);
-			 hongbao.setUserId(userId);
-			 hongbao.setRemark(responseXML);
-			 
-			 String return_msg = "";
-			 String return_code = "";
-			 String result_code = "";
-			 String send_listid = "";
-			 for(Element el:elements){
-				 if(el.getName().trim().equals("return_code")){
-					 return_code = el.getTextTrim();
-				 }
-				 if(el.getName().trim().equals("return_msg")){
-					 return_msg = el.getTextTrim();
-					 message=return_msg;
-				 }
-				 if(el.getName().trim().equals("result_code")){
-					 result_code = el.getTextTrim();
-				 }
-				 if(el.getName().trim().equals("send_listid")){
-					 send_listid = el.getTextTrim();
-				 }
-			 }
-			 if (send_listid!="") {
-				 hongbao.setResult(1);
-				 message="发放成功";
-			 }else if(responseXML.contains("请求已受理")){
-				 hongbao.setResult(1);
-				 message="发放成功";
-			 }else{
-				hongbao.setResult(0);
-			 }
-			 tixianLiuService.save(hongbao);
-		} 
-		catch (KeyManagementException e) {
-			e.printStackTrace();
-		} 
-		catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
-		} 
-		catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} 
-		catch (CertificateException e) {
-			e.printStackTrace();
-		} 
-		catch (KeyStoreException e) {
-			e.printStackTrace();
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		} 
-		catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		
 		return message;
 	}
 
