@@ -96,7 +96,7 @@
 		/* var tel = document.getElementById(arguments[0]).value; */
 		var tel = $("#mobile").val();
 		//var matchTel = /^(\d{3,4})\-{0,1}(\d{7,8})$/ ;
-		var matchTel = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/ ;
+		var matchTel = /^[1][3,4,5,7,8][0-9]{9}$/ ;
 		
 	                       
 		if (tel != "") {
@@ -269,7 +269,7 @@
 		<tr>
 			<td width="20%" class="pn-flabel pn-flabel-h">电话：</td>
 		  <td width="80%" class="pn-fcontent">
-		  	<input type="text" id="mobile" value="" name="mobile" size="20" maxlength="20" onblur="checkTel('mobile');"/>
+		  	<input type="text" id="mobile" value="" name="mobile" size="11" maxlength="11" onblur="checkTel('mobile');"/>
 		  	<font color="red">*<span id="phonespan"></span></font>
 		  </td>
 		</tr>

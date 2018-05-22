@@ -18,11 +18,8 @@
 	<link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/family.css" />
 	<script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.dialog.js"></script>
 
 <title>list</title>
-<link href="images/common_res/css/jquery_validate.css" rel="stylesheet" type="text/css"/>
-<link href="images/common_res/css/jquery.alerts.css" rel="stylesheet" type="text/css"/>
 <link href="images/core_res/css/front.css" rel="stylesheet" type="text/css"/>
 <link href="images/core_res/css/admin.css" rel="stylesheet" type="text/css"/>
 <link href="images/core_res/css/theme.css" rel="stylesheet" type="text/css"/>
@@ -217,16 +214,14 @@
 						<li>收货人姓名：<em>${item.toUserName}</em></li>
 						<li>收货人电话：<em>${item.mobile}</em></li>
 						<li>产品名称：<em>${item.pname}</em></li>
-						<c:if test="${item.order_status=='0'}">
-							<li>订单状态：<em><font size="2">未支付</font></em></li>
-						</c:if>
+						<c:if test="${item.order_status=='0'}"><li>订单状态：<em><font size="2">未支付</font></em></li></c:if>
 						<c:if test="${item.order_status=='1'}"><li>订单状态：<em><font size="2">已支付</font></em></li></c:if>
 						<c:if test="${item.order_status=='2'}"><li>订单状态：<em><font size="2">异常</font></em></li></c:if>
-							<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
-							<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
-							<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2" style="color: red;">已退货</font></em></li></c:if>
-							<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
-							<c:if test="${item.order_status=='9'}"><li>订单状态：<em><font size="2">已删除</font></em></li></c:if>
+						<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
+						<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
+						<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2" style="color: red;">已退货</font></em></li></c:if>
+						<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
+						<c:if test="${item.order_status=='9'}"><li>订单状态：<em><font size="2">已删除</font></em></li></c:if>
 						
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
@@ -286,7 +281,6 @@
 			<th width="5%">收货人姓名</th>
 			<th width="5%">收货人电话</th>
 			<th width="5%">产品名称</th>
-			<th width="5%">操作</th>
 			<th width="5%">订单状态</th>
 			<th width="5%">购买数量</th>
 			<th width="5%">订单金额</th>
@@ -303,15 +297,11 @@
 		</thead>
 		<tbody class="pn-ltbody">
 			<c:forEach items="${litPager}" var="item" varStatus="status">
-			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);">
+			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')">
 				<td align="center">${item.ordersBH}</td>
 				<td align="center">${item.toUserName}</td>
 				<td align="center">${item.mobile}</td>
 				<td align="center">${item.pname}</td>
-				<td align="center" title="点击查看收货信息">
-					<a href="javascript:void(0)" onclick="showShouhuo('${status.index}')">送货信息</a><br/>
-					<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a><br/>
-				</td>
 				<td align="center">
 					<c:if test="${item.order_status=='0'}"><font size="2">未支付</font></c:if>
 					<c:if test="${item.order_status=='1'}"><font size="2">已支付</font></c:if>
@@ -338,10 +328,9 @@
 			
 			<tr style="display:none" id="tr_${status.index }">
 				<td colspan="13" align="left"  ><span style="color:red">收货信息：</span>地址: 
-				${item.sheng }${item.chengshi }${item.diqu }${item.address }，&nbsp;邮编: ${item.zipcode }，&nbsp;收货人: ${item.toUserName }，&nbsp;收货人电话: ${item.mobile }</td>
-			</tr>
-			<tr style="display:none" id="trr_${status.index }">
-				<td colspan="13" align="left"  ><span style="color:red">备注信息：</span>${item.comments }&nbsp;&nbsp;处理时间:${item.dealDate },处理次数:${item.dealNum }</td>
+				${item.sheng }${item.chengshi }${item.diqu }${item.address }，&nbsp;邮编: ${item.zipcode }，&nbsp;收货人: ${item.toUserName }，&nbsp;收货人电话: ${item.mobile }，
+				&nbsp;&nbsp;备注信息：${item.comments }&nbsp;&nbsp;处理时间:${item.dealDate },处理次数:${item.dealNum }
+				</td>
 			</tr>
 		</c:forEach>   
 		</tbody>

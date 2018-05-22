@@ -18,11 +18,34 @@
 	<link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/family.css" />
 	<script src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
-	<script src="<%=request.getContextPath()%>/js/jquery.ui.dialog.js"></script>
 
 <title>list</title>
-<link href="images/common_res/css/jquery_validate.css" rel="stylesheet" type="text/css"/>
-<link href="images/common_res/css/jquery.alerts.css" rel="stylesheet" type="text/css"/>
+<style>
+        ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        #myMenu{
+            list-style: none;
+            width: 150px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            position: absolute;
+            display: none;
+            background-color:#fff;
+        }
+
+        #myMenu li{
+            border-bottom: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        #myMenu li:hover{
+            background-color: #ccc;
+        }
+    </style>
 <link href="images/core_res/css/front.css" rel="stylesheet" type="text/css"/>
 <link href="images/core_res/css/admin.css" rel="stylesheet" type="text/css"/>
 <link href="images/core_res/css/theme.css" rel="stylesheet" type="text/css"/>
@@ -70,7 +93,7 @@
 	function cleanSearch(){
 		$("#input_qOrdersBH").val("");
 		$("#input_qMobile").val("");
-		$("#st_qOrderType").val("");
+		$("#st_qOrderType").val("-1");
 		$("#input_qtoUserName").val("");
 		$("#input_qoUserName").val("");
 		$("#input_qMobile").val("");
@@ -129,6 +152,52 @@
 	    }
 		//orders!exportToExcel.action;
 	}
+	
+	function exportKudiExcel(){
+		var $form = $("<form method='post' action='orders!exportKudiExcel.action'></form>");
+	    
+	    try{
+	        var data = {
+	        		toUserName:$("#input_qtoUserName").val(),
+	        		mobile:$("#input_qMobile").val(),
+	        		oUserName:$("#input_qoUserName").val(),
+	        		oPhone:$("#input_qoPhone").val(),
+	        		ordersBH:$("#input_qOrdersBH").val(),
+	        		
+	        		};
+	        for (var attr in data){
+	         
+	                $form.append("<input type='text' name='" + attr + "' value='" + data[attr] + "' />");
+	        }
+	        $("body").append($form);
+	        $form.submit();
+	    } finally{
+	        if ($form)
+	            $form.remove();
+	    }
+		//orders!exportToExcel.action;
+	}
+	
+	function exportOne(ordersId){
+		var $form = $("<form method='post' action='orders!exportKudiExcel.action'></form>");
+	    
+	    try{
+	        var data = {
+	        		"ordersId":ordersId,
+	        		};
+	        for (var attr in data){
+	         
+	                $form.append("<input type='text' name='" + attr + "' value='" + data[attr] + "' />");
+	        }
+	        $("body").append($form);
+	        $form.submit();
+	    } finally{
+	        if ($form)
+	            $form.remove();
+	    }
+		//orders!exportToExcel.action;
+	}
+	
 	//orders!importExcel.action;
 	function importExcel(){
 		self.location.href="orders!initImport.action";
@@ -200,7 +269,7 @@
 		</td></tr> 
 		<tr><td align="center">订单状态：</td><td align="center">
 			<select id="st_qOrderType"> 
-				<option value="">未选择</option>
+				<option value="-1">未选择</option>
 				<option value="0" >未支付</option>
 		  		<option value="1" >已支付</option>
 		  		<option value="2" >异常</option>
@@ -213,7 +282,8 @@
 		<tr><td align="center">
 			<c:if test="${adminUser}">
 				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportToExcel();" value="导出到EXCEL" style="cursor:pointer" />
-				<input type="button" id="cmdBtn4" name="cmdBtn4" onclick="importExcel();" value="导入快递EXCEL" style="cursor:pointer" />
+				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportKudiExcel();" value="导出快递单" style="cursor:pointer" />
+				<input type="button" id="cmdBtn4" name="cmdBtn4" onclick="importExcel();" value="导入快递单" style="cursor:pointer" />
 			</c:if>
 			<c:if test="${adminUser ==false}">
 				<input type="button" id="cmdBtn3" name="cmdBtn3" onclick="addNews();" value="报  单" style="cursor:pointer;width: 100px;" /> 
@@ -326,7 +396,6 @@
 	<table class="pn-ltable" width="100%" cellspacing="1" cellpadding="0" border="0">
 		<thead class="pn-lthead">
 		<tr>
-			<th width="5%">序号</th>
 			<th width="5%">订单编号</th>
 			<th width="5%">收货人姓名</th>
 			<th width="5%">收货人电话</th>
@@ -336,13 +405,11 @@
 			<th width="5%">购买数量</th>
 			<th width="5%">订单金额</th>
 			
-			<c:if test="${orderType>1}">
 				<th width="5%">发货人</th>
 				<th width="5%">发货人电话</th>
 				<th width="5%">发货时间</th>
 				<th width="5%">快递名称</th>
 				<th width="5%">快递编号</th>
-			</c:if>
 			<c:if test="${adminUser}">
 				<th width="5%">报单人姓名</th>
 				<th width="5%">报单人电话</th>
@@ -356,24 +423,15 @@
 		</thead>
 		<tbody class="pn-ltbody">
 			<c:forEach items="${litPager}" var="item" varStatus="status">
-			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);">
-				<td>${status.index+1}</td>
+			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')" oncontextmenu = "javascript:showMenu(${item.ordersId});">
 				<td align="center">${item.ordersBH}</td>
 				<td align="center">${item.toUserName}</td>
 				<td align="center">${item.mobile}</td>
 				<td align="center">${item.pname}</td>
 				<td align="center" title="点击查看收货信息">
-					<a href="javascript:void(0)" onclick="showShouhuo('${status.index}')">送货信息</a><br/>
-					<c:if test="${orderType>=3}">
-						<a href="javascript:void(0)" onclick="showBeizhu('${status.index}')">查看备注</a><br/>
-					</c:if>
 					<c:if test="${adminUser}">
 						<c:if test="${orderType==0}">
 							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a><br/>
-						</c:if>
-						<c:if test="${orderType>0}">
-						<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
-						<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" >订单重置</a><br/>
 						</c:if>
 					</c:if>
 					
@@ -404,13 +462,11 @@
 				</td>
 				<td align="center">${item.shuliang}${item.size}</td>
 				<td align="center">${item.money}</td>
-				<c:if test="${orderType>1}">
 					<td align="center">	${item.fromUserName}</td>
 					<td align="center">	${item.tel}</td>
 					<td align="center">	${item.fahuoDate}</td>
 					<td align="center">	${item.kuaidiName}</td>
 					<td align="center">${item.kuaidiNo}</td>
-				</c:if>	
 				<c:if test="${adminUser}">
 					<td align="center">	${item.oUserName}</td>
 					<td align="center">	${item.oPhone}</td>
@@ -425,15 +481,19 @@
 			
 			<tr style="display:none" id="tr_${status.index }">
 				<td colspan="13" align="left"  ><span style="color:red">收货信息：</span>地址: 
-				${item.sheng }${item.chengshi }${item.diqu }${item.address }，&nbsp;邮编: ${item.zipcode }，&nbsp;收货人: ${item.toUserName }，&nbsp;收货人电话: ${item.mobile }</td>
-			</tr>
-			<tr style="display:none" id="trr_${status.index }">
-				<td colspan="13" align="left"  ><span style="color:red">备注信息：</span>${item.comments }&nbsp;&nbsp;处理时间:${item.dealDate },处理次数:${item.dealNum }</td>
+				${item.sheng }${item.chengshi }${item.diqu }${item.address }，&nbsp;邮编: ${item.zipcode }，&nbsp;收货人: ${item.toUserName }，&nbsp;收货人电话: ${item.mobile }，
+				&nbsp;&nbsp;备注信息：${item.comments }&nbsp;&nbsp;处理时间:${item.dealDate },处理次数:${item.dealNum }
+				</td>
 			</tr>
 		</c:forEach>   
 		</tbody>
 	</table>
-	
+	<ul id="myMenu" style="display: none;" ordersId=''>
+	    <li onclick="editOrder(getOrdersId());">修改记录</li>
+	    <li onclick="winCHZH(getOrdersId());">重置订单</li>
+	    <li onclick="importExcel()">导入快递单</li>
+	    <li onclick="exportOne(getOrdersId());">导出需打印快递单</li>
+	</ul>
 	 <!-- 导入分页组件  -->
      <c:import url="/WEB-INF/jsp/page/page.jsp">
      	<c:param name="pageActionUrl" value="orders!ordersList.action"/>
@@ -449,6 +509,13 @@
 <script src="images/core_res/js/front.js" type="text/javascript"></script>
 <script src="images/core_res/js/admin.js" type="text/javascript"></script>
 <script>
+var myMenu = $("#myMenu");
+function getOrdersId(){
+	var ordersId = myMenu.attr("ordersId")
+	return ordersId;
+	
+}
+
 $(function(){
 	// 判断是否有sub-menu
 	 if($("ul.sub-menu")){
@@ -468,7 +535,50 @@ $(function(){
 			return false;
 		} 
 	
-})
+});
+
+
+function showMenu(ordersId){
+	if("${adminUser}"=="true"){
+		event.preventDefault();
+	   	myMenu.show();
+	    myMenu.attr("ordersId",ordersId);
+	    //获取鼠标视口位置
+	    myMenu.css("top",getScrollTop()+event.clientY + "px"); 
+	   	myMenu.css("left",event.clientX + "px"); 
+	}
+	
+}
+
+
+/* document.addEventListener("contextmenu", function(event){
+	    event.preventDefault();
+	   	myMenu.show();
+	    
+	    //获取鼠标视口位置
+	    myMenu.css("top",getScrollTop()+event.clientY + "px"); 
+	   	myMenu.css("left",event.clientX + "px"); 
+	    
+	}); */
+          
+document.addEventListener("click", function(event){
+		myMenu.hide();
+});
+
+/** 
+ * 获取滚动条距离顶端的距离 
+ * @return {}支持IE6 
+ */  
+function getScrollTop() {  
+        var scrollPos;  
+        if (window.pageYOffset) {  
+        scrollPos = window.pageYOffset; }  
+        else if (document.compatMode && document.compatMode != 'BackCompat')  
+        { scrollPos = document.documentElement.scrollTop; }  
+        else if (document.body) { scrollPos = document.body.scrollTop; }   
+        return scrollPos;   
+} 
+
 $("#st_qOrderType").val('${order_status}');
 function showShouhuo(i){
 	$("#tr_"+i).toggle();
@@ -508,7 +618,7 @@ $('#div_search').keydown(function(e){
 		loadSearch();//处理事件 
 	} 
 }); 
-var order_status = '<%=session.getAttribute("orderType")%>';
+var orderType = '<%=session.getAttribute("orderType")%>';
 if(orderType != "null")
 	$("#st_qOrderType  option[value='"+orderType+"'] ").attr("selected",true);
 	

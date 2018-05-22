@@ -26,6 +26,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -37,6 +38,7 @@ import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.logicalcobwebs.proxool.admin.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionChainResult;
@@ -332,18 +334,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("userId", 0);
 		}
 		if (null==orderType) {
-			
 			orderType = (String) request.getSession().getAttribute("order_status");
 			
 		}
-		if(orderType!=null&&!"".equals(orderType.trim())){
+		if(orderType==null){
+			orderType = "-1";
+		}
+		if(orderType!=null){
+			request.getSession().setAttribute("order_status", orderType);
+		}
+		if(!"-1".equals(orderType)){
 			conditionProperties.put("order_status", Integer.valueOf(orderType));
 			compare.put("order_status", 0);
 		}else{
 			Integer[] os = {0,1,2,3,4,5,6};
 			conditionProperties.put("order_status", os);
 			compare.put("order_status", 4);
-			orderType = "-1";
 		}
 		
 		if(orderType.equals("0")){
@@ -395,6 +401,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("mobile", 2);
 		}
 		String selectDate = "";
+		if(dateType==null){
+			dateType = (String) request.getSession().getAttribute("dateType");
+		}
 		if(dateType!=null&&!"".equals(dateType)){
 			if(dateType.equals("1")){
 				selectDate = "createDate";
@@ -510,7 +519,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("userId", 0);
 		}
 		
-		sort.put("createDate", true);
+		sort.put("createDate", false);
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
@@ -552,6 +561,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 			sql += " and mobile like '%"+mobile.trim()+"%'";
 		}
 		String selectDate = "";
+		if(dateType==null){
+			dateType = (String) request.getSession().getAttribute("dateType");
+		}
 		if(dateType!=null&&!"".equals(dateType)){
 			if(dateType.equals("1")){
 				selectDate = "createDate";
@@ -629,7 +641,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
 			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+					new   SimpleDateFormat( "yyyy-MM-dd");
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 			Date date=calendar.getTime();
@@ -638,7 +650,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 			Date[] dates = {date,date2};
 			conditionProperties.put(selectDate, dates);
 			compare.put(selectDate, 10);
-			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"' and '"+formatter.format(date2)+"'";
+			
+			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
 		}
 		sql = sql+dateSql;
 		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
@@ -995,6 +1008,289 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 	}
 	
+	public void exportKudiExcel(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Object obj = request.getSession().getAttribute("user");
+		AdminUser adminUser = null;
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+		}
+		if(obj instanceof AdminUser){
+			adminUser = (AdminUser) obj;
+		}
+		//excel模板路径
+		String path = ServletActionContext.getServletContext().getRealPath("")+"/resource/kuaidi.xls";
+		File fi=new File(path);
+		POIFSFileSystem fs = null;
+		HSSFWorkbook wb = null;
+		try {
+			fs = new POIFSFileSystem(new FileInputStream(fi));
+			//读取excel模板
+			wb = new HSSFWorkbook(fs);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 
+		if(wb!=null){
+			
+		
+		//读取了模板内所有sheet内容
+		HSSFSheet sheet = wb.getSheetAt(0);
+		
+		//如果这行没有了，整个公式都不会有自动计算的效果的
+		sheet.setForceFormulaRecalculation(true);
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		conditionProperties.put("order_status", 1);
+		compare.put("order_status", 0);
+		sort.put("createDate", false);
+		if(null!=ordersId&&!"".equals(ordersId)){
+			conditionProperties.put("ordersId", ordersId);
+			compare.put("ordersId", 0);
+		}
+		
+		if (null!=toUserName &&! "".equals(toUserName.trim())) {
+			conditionProperties.put("toUserName", toUserName.trim());
+			compare.put("toUserName", 2);
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
+		}
+		if (null!=oUserName &&! "".equals(oUserName.trim())) {
+			conditionProperties.put("oUserName", oUserName.trim());
+			compare.put("oUserName", 2);
+		}
+		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
+			conditionProperties.put("fromUserName", fromUserName.trim());
+			compare.put("fromUserName", 2);
+		}
+		if (null!=tel &&! "".equals(tel.trim())) {
+			conditionProperties.put("tel", tel.trim());
+			compare.put("tel", 2);
+		}
+		if (null!=oPhone &&! "".equals(oPhone.trim())) {
+			conditionProperties.put("oPhone", oPhone.trim());
+			compare.put("oPhone", 2);
+		}
+		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
+			conditionProperties.put("ordersBH", ordersBH.trim());
+			compare.put("ordersBH", 2);
+		}
+		if(null!=mobile &&! "".equals(mobile.trim())){
+			conditionProperties.put("mobile", mobile.trim());
+			compare.put("mobile", 2);
+		}
+		String selectDate = "";
+		
+		if(dateType!=null&&!"".equals(dateType)){
+			if(dateType.equals("1")){
+				selectDate = "createDate";
+			}else if(dateType.equals("3")){
+				selectDate = "fahuoDate";
+			}else if(dateType.equals("5")){
+				selectDate = "tuihuoDate";
+			}else if(dateType.equals("6")){
+				selectDate = "shouhuoDate";
+			}
+		}
+		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+			System.out.println("---------------------------------------"+fromDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 8);
+		}
+		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+			System.out.println("+++++++++++++++++++++++++"+endDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 9);
+		}
+		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
+			System.out.println("=========================");
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date date2=null;
+			try
+			{
+				date2=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+		}
+		
+		List<Orders> list = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, 0, 0, "all");
+		if(list!=null){
+			HSSFRow row = null;
+			for (int i = 0; i < list.size(); i++) {  
+				row=sheet.createRow(i+2);
+				row.createCell(0).setCellValue("山人物语");
+				row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
+				row.createCell(6).setCellValue(list.get(i).getChengshi().substring(0, list.get(i).getChengshi().length()-1));//到达城市  注意:不带"市"字
+				row.createCell(7).setCellValue("现结");
+				row.createCell(8).setCellValue(list.get(i).getToUserName());
+				row.createCell(10).setCellValue(list.get(i).getChengshi()+list.get(i).getAddress());
+				row.createCell(12).setCellValue(list.get(i).getMobile());
+				row.createCell(14).setCellValue(list.get(i).getPname());
+				row.createCell(15).setCellValue("1");
+				row.createCell(25).setCellValue("全运村");
+				row.createCell(28).setCellValue(list.get(i).getFromUserName());
+				row.createCell(29).setCellValue(list.get(i).getOrdersBH());
+	        }
+		}
+		 try  
+	        {  
+	        	HttpServletResponse response = ServletActionContext.getResponse();
+	        	String filename = "已支付订单列表";
+	        	filename += new String((new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())).getBytes());
+	        	filename += ".xls";
+	        	filename = encodeFilename(request.getHeader("user-agent"),filename);
+	        	response.setHeader("Content-disposition","attachment; filename=" +filename);
+	        	OutputStream outputStream = response.getOutputStream();
+	            wb.write(outputStream);
+	            outputStream.flush();
+	            outputStream.close();  
+	        }  
+	        catch (Exception e)  
+	        {  
+	            e.printStackTrace();  
+	        } 
+		}
+		
+	}
+	
+	public String importExcelToOrders(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		
+		Object obj = request.getSession().getAttribute("user");
+		if(obj == null){
+			return "error";
+		}
+		User user = null;
+		AdminUser adminUser = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+			request.setAttribute("adminUser", false);
+		}
+		if (obj instanceof AdminUser) {
+			request.setAttribute("adminUser", true);
+			adminUser = (AdminUser) obj;
+		}
+		InputStream is=null;
+		int jiShu=0;
+		if(importFile!=null){
+		try {
+			is = new FileInputStream(importFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        XSSFWorkbook hssfWorkbook=null;
+		try {
+			hssfWorkbook = new XSSFWorkbook(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		String hql = "from Orders s where s.kuaidiNo is null and order_status=1";
+		//List<Orders> orders = ordersDAO.findAll();
+		List<Orders> orders = ordersDAO.findbyHql(hql);
+        // 循环工作表Sheet
+        for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
+            XSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
+            if (hssfSheet == null) {
+                continue;
+            }
+            // 循环行Row
+            for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
+            	
+                XSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                if (hssfRow == null) {
+                    continue;
+                }
+                	//	获取第一列
+                	XSSFCell bh=hssfRow.getCell(29);
+                	if(bh==null){
+                		continue;
+                	}
+                	String ddbh=getValue(bh);       //订单编号
+                    //获取第二列
+                	XSSFCell sj=hssfRow.getCell(30);
+                	if(sj==null){
+                		continue;
+                	}
+                	String kdgs=getValue(sj);			//快递名称
+                    //获取第三列
+                	XSSFCell pn=hssfRow.getCell(31);
+					if(pn==null){
+						continue;
+					}
+					String kddh=getValue(pn);		//快递单号
+					int i=3;
+					
+					if(orders.size()>0){
+						 Iterator<Orders> iter = orders.iterator();
+						 while(iter.hasNext()){
+					            Orders b = iter.next();
+					            if(b.getOrdersBH().trim().equals(ddbh.trim())){
+					            	b.setKuaidiName(kdgs);
+									b.setKuaidiNo(kddh);
+									b.setOrder_status(i);
+									if(adminUser!=null){
+										b.setFromUserName(adminUser.getUserName());
+										b.setTel(adminUser.getPhone());
+									}
+									b.setFahuoDate(new Date());
+									ordersDAO.update(b);
+					                iter.remove();
+					                jiShu++;
+					            }
+					        }
+					}
+					
+            }
+        }
+        System.out.println("jishu----------------"+jiShu);
+        request.setAttribute("jiShu", jiShu);
+		return "goBackList1";
+		}else{
+			return "importNull";
+		}
+}
+	
 	public String exportToExcel(){
 		// 第一步，创建一个webbook，对应一个Excel文件  
         HSSFWorkbook wb = new HSSFWorkbook();  
@@ -1081,16 +1377,39 @@ public class OrdersAction extends ExtJSONActionSuport {
         Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
-		
-		if (null==orderType ||"".equals(orderType.trim())) {
-			orderType = "1";
+		if(orderType!=null&&!"".equals(orderType.trim())){
+			conditionProperties.put("order_status", Integer.valueOf(orderType));
+			compare.put("order_status", 0);
+		}else{
+			Integer[] os = {0,1,2,3,4,5,6};
+			conditionProperties.put("order_status", os);
+			compare.put("order_status", 4);
+			orderType = "-1";
 		}
-		conditionProperties.put("order_status", Integer.valueOf(orderType));
-		compare.put("order_status", 0);
+		
+		if(orderType.equals("0")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("1")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("2")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("3")){
+			sort.put("fahuoDate", false);
+		}else if(orderType.equals("4")){
+			sort.put("createDate", false);
+		}else if(orderType.equals("5")){
+			sort.put("tuihuoDate", false);
+		}else if(orderType.equals("6")){
+			sort.put("shouhuoDate", false);
+		}
+		
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
 		}
 		if (null!=oUserName &&! "".equals(oUserName.trim())) {
 			conditionProperties.put("oUserName", oUserName.trim());
@@ -1117,6 +1436,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("mobile", 2);
 		}
 		String selectDate = "";
+		
 		if(dateType!=null&&!"".equals(dateType)){
 			if(dateType.equals("1")){
 				selectDate = "createDate";
@@ -1268,103 +1588,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		return null;
 	}
 	
-	public String importExcelToOrders(){
-		HttpServletRequest request = ServletActionContext.getRequest();
-		
-		Object obj = request.getSession().getAttribute("user");
-		if(obj == null){
-			return "error";
-		}
-		User user = null;
-		AdminUser adminUser = null;
-		if (obj instanceof User) {
-			user = (User) obj;
-			request.setAttribute("adminUser", false);
-		}
-		if (obj instanceof AdminUser) {
-			request.setAttribute("adminUser", true);
-			adminUser = (AdminUser) obj;
-		}
-		InputStream is=null;
-		int jiShu=0;
-		if(importFile!=null){
-		try {
-			is = new FileInputStream(importFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-        XSSFWorkbook hssfWorkbook=null;
-		try {
-			hssfWorkbook = new XSSFWorkbook(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		String hql = "from Orders s where s.kuaidiNo is null and order_status=1";
-		//List<Orders> orders = ordersDAO.findAll();
-		List<Orders> orders = ordersDAO.findbyHql(hql);
-        // 循环工作表Sheet
-        for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
-            XSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
-            if (hssfSheet == null) {
-                continue;
-            }
-            // 循环行Row
-            for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
-            	
-                XSSFRow hssfRow = hssfSheet.getRow(rowNum);
-                if (hssfRow == null) {
-                    continue;
-                }
-                	//	获取第一列
-                	XSSFCell bh=hssfRow.getCell(0);
-                	if(bh==null){
-                		continue;
-                	}
-                	String ddbh=getValue(bh);       //订单编号
-                    //获取第二列
-                	XSSFCell sj=hssfRow.getCell(1);
-                	if(sj==null){
-                		continue;
-                	}
-                	String kdgs=getValue(sj);			//快递名称
-                    //获取第三列
-                	XSSFCell pn=hssfRow.getCell(2);
-					if(pn==null){
-						continue;
-					}
-					String kddh=getValue(pn);		//快递单号
-					int i=3;
-					
-					if(orders.size()>0){
-						 Iterator<Orders> iter = orders.iterator();
-						 while(iter.hasNext()){
-					            Orders b = iter.next();
-					            if(b.getOrdersBH().trim().equals(ddbh.trim())){
-					            	b.setKuaidiName(kdgs);
-									b.setKuaidiNo(kddh);
-									b.setOrder_status(i);
-									if(adminUser!=null){
-										b.setFromUserName(adminUser.getUserName());
-										b.setTel(adminUser.getPhone());
-									}
-									b.setFahuoDate(new Date());
-									ordersDAO.update(b);
-					                iter.remove();
-					                jiShu++;
-					            }
-					        }
-					}
-					
-            }
-        }
-        System.out.println("jishu----------------"+jiShu);
-        request.setAttribute("jiShu", jiShu);
-		return "goBackList1";
-		}else{
-			return "importNull";
-		}
-}
+	
 	@SuppressWarnings({ "static-access"})
     private String getValue(XSSFCell hssfCell) {
         if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {

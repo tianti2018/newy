@@ -83,7 +83,7 @@
 		/* var tel = document.getElementById(arguments[0]).value; */
 		var tel = $("#phone").val();
 		//var matchTel = /^(\d{3,4})\-{0,1}(\d{7,8})$/ ;
-		var matchTel = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/ ;
+		var matchTel = /^[1][3,4,5,7,8][0-9]{9}$/ ;
 		
 	                       
 		if (tel != "") {
@@ -122,7 +122,7 @@
 			return false;
 		}
 		//s = s.replaceAll("[^0-9a-zA-Z]","");
-		var re = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/; 
+		var re = /^[1][3,4,5,7,8][0-9]{9}$/; 
 		if(!re.test(loginName)){
 			alert("对不起，登录名不正确！");
 			frmUser.loginName.focus();
@@ -250,7 +250,7 @@
 	function yanzheng(){
 		var loginName=$("#loginName").val();
 		//s = s.replaceAll("[^0-9a-zA-Z]","");
-		var re = /(\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$/; 
+		var re = /^[1][3,4,5,7,8][0-9]{9}$/; 
 		if(!re.test(loginName)){
 			$("#loginName").val("");
 		}
@@ -275,7 +275,7 @@
 		<tr>
 			<td width="30%" class="pn-flabel pn-flabel-h">登录名：</td>
 			<td width="70%" class="pn-fcontent">
-				<input type="text" id="loginName" name="loginName" value="${user.loginName }" size="20"  maxlength="12">
+				<input type="text" id="loginName" name="loginName" value="${user.loginName }" size="11"  maxlength="11">
 				<input type="hidden" id="userId" name="userId" value="${user.userId }"/>
 				<font color="red">*登录名必须为11位手机号</font>				
 			</td>
@@ -307,7 +307,7 @@
 		<tr>
 			<td width="20%" class="pn-flabel pn-flabel-h">电话：</td>
 		  <td width="80%" class="pn-fcontent">
-		  	<input type="text" id="phone" value="${user.phone }" name="phone" size="20" maxlength="20" onblur="checkTel('phone');"/>
+		  	<input type="text" id="phone" value="${user.phone }" name="phone" size="11" maxlength="11" onblur="checkTel('phone');"/>
 		  	<font color="red">*<span id="phonespan"></span></font>
 		  </td>
 		</tr>
