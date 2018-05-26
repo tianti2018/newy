@@ -28,12 +28,13 @@ import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrdersVo;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -50,7 +51,7 @@ import net.sf.json.JSONObject;
 		@Result(name = "myOrderList", location = "/WEB-INF/jsp/phone_my_order.jsp"),//我的订单
 		@Result(name = "product", location = "/WEB-INF/jsp/product.jsp"),
 		@Result(name = "products", location = "/WEB-INF/jsp/products/products.jsp"),
-		
+		@Result(name = "dianpuOrders", location = "/WEB-INF/jsp/dianpu/dianpuOrders.jsp"),
 })
 /**
  * 订单action
@@ -59,24 +60,17 @@ import net.sf.json.JSONObject;
  */
 public class OrderAction extends BaseAction {
 	@Autowired
-	private OrderService orderService;
+	private OrderJinHuoService orderService;
 	@Autowired
 	private OrdersService miaoShaOrderService;
-	@Autowired
-	private FhrecordService fhrecordService;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private WeixinAutosendmsgService autosendmsgService;
-	
-	@Autowired
-	private FhRecordDao fhRecordDao;
+	private OrdersService ordersService;
 	@Autowired
 	private OrderAddressService orderAddressService;
-	@Autowired
-	private LiuCodeService liuCodeService;
 	
 	@Autowired
 	private JiFenRecordService jiFenRecordService;
@@ -118,6 +112,54 @@ public class OrderAction extends BaseAction {
 	private String requestType;//订单访问类型
 	private String levelValue;
 	private Integer pageNum;
+	
+	public void updateOrderStatusTimer(){
+		ordersService.timerUpdateOrderStatus();
+	}
+	
+	public String dianpuOrders(){
+		
+		return "dianpuOrders";
+	}
+	
+	public void ajaxDianppuOrders() {
+		json.put("success", false);
+		userVo = getSessionUser();
+		if(userVo!=null){
+			if(userVo.getUsery()!=null){
+				if(userVo.getUsery().getDianPuId()!=null){
+					//获得查询订单的起止时间
+					String date1=request.getParameter("date1");
+					String date2=request.getParameter("date2");
+					List<OrdersVo> orders=orderService.findMyDianpuOrderList(userVo, orderType, date1, date2, pageNum);
+					if(orders==null||orders.size()<=0){
+						List<OrdersVo> list = orderService.findMyDianpuOrderList_jinhuo(userVo, date2, date1, date2, pageNum);
+						if(list!=null&&list.size()>0){
+							orders = list;
+						}
+					}
+					/**************组装json*****************/
+					if(orders!=null&&orders.size()>0){
+						json.put("success", true);
+						json.put("children", orders);
+					}
+					
+				}else{
+					json.put("message", "请先去店铺管理-->修改店铺信息!!!!");
+				}
+			}else{
+				json.put("message", "没有资格!");
+			}
+		}else{
+			json.put("message", "登录超时!请重新登录!!!");
+		}
+		
+		try {
+			jsonOut(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 已付款订单6小时后更新状态可以发货

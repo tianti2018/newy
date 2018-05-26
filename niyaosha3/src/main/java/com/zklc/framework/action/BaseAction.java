@@ -147,6 +147,23 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 		response.getWriter().println(JSONArray.fromObject(object));
 	}
 
+	public JSONObject yanzheng(UserVo userVo){
+		if(userVo!=null){
+			if(userVo.getUsery()!=null){
+				if(userVo.getUsery().getDianPuId()!=null){
+					json.put("code", "000000");
+				}else{
+					//前三位第一个为1是用户登录问题,第二位为1是微信公众账号问题,第三位为1是店铺问题,错误码规则后三位为错误数字000表示不存在
+					json.put("code", "001000");//请先去店铺管理-->修改店铺信息
+				}
+			}else{
+				json.put("code", "010000");//没有资格   公众号未关注
+			}
+		}else{
+			json.put("code", "100000");//用户未登录!请重新登录!!!!
+		}
+		return json;
+	}
 
     public List getList()
     {

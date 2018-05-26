@@ -51,10 +51,11 @@ import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.Hongbao;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.ChengFaUserService;
 import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -84,7 +85,7 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private OrderService orderService;
+	private OrderJinHuoService orderService;
 	@Autowired
 	private XingHuoQuanRecordService xingHuoQuanRecordService;
 	
@@ -798,47 +799,25 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 	}
 
 	@Override
-	public JSONObject updateUserInfo(Users user, JSONObject json,HttpServletRequest request) {
-		Usery usery = useryService.findbyUserId(user.getUserId());
-		if(usery!=null){
-			UserInfoUtil userInfo = autosendmsgService.processUserInfoObject(usery.getWxOpenid());
-			if (userInfo!=null) {
-				user.setUserName(userInfo.getNickname());
-				user.setHeadUrl(userInfo.getHeadimgurl());
-//				user.setSubscribe(0);
-			}else{
-//				user.setSubscribe(1);
+	public JSONObject updateUserInfo(UserVo userVo, JSONObject json,HttpServletRequest request) {
+		json.put("success", false);
+		if(userVo.getUsery()!=null){
+			Usery usery = useryService.findById(userVo.getUsery().getId());
+			if(usery!=null){
+				UserInfoUtil userInfo = autosendmsgService.processUserInfoObject(usery.getWxOpenid());
+				if (userInfo!=null) {
+					usery.setUserName(userInfo.getNickname());
+					usery.setHeadUrl(userInfo.getHeadimgurl());
+					usery.setSubscribe(0);
+				}else{
+					usery.setSubscribe(1);
+				}
 			}
+			useryService.update(usery);
+			userVo.setUsery(usery);
+			request.getSession().setAttribute("loginUser",userVo);
+			json.put("success", true);
 		}
-		List<Integer> userIds = new ArrayList<Integer>();
-		userIds.add(usery.getUserId());
-		findUserLevelCountNew(userIds,1,user);
-		user.setCreateDate(new Date());
-//		if(user.getLevel()!=null){
-//			if(user.getLevel()==3){
-//				if(user.getSubmitMoney()==null||user.getSubmitMoney()<660){
-//					user.setSubmitMoney(660);
-//				}
-//			}else if(user.getLevel()==2){
-//				if(user.getSubmitMoney()==null||user.getSubmitMoney()<330){
-//					user.setSubmitMoney(330);
-//				}
-//			}else if(user.getLevel()==1){
-//				if(user.getSubmitMoney()==null||user.getSubmitMoney()<110){
-//					user.setSubmitMoney(110);
-//				}
-//			}
-//		}
-		Integer allxinghuoquan = xingHuoQuanRecordService.findAllMoneyByUserIdAndStatus(user.getUserId(),1);
-		Integer xfxinghuoquan = xingHuoQuanRecordService.findAllMoneyByUserIdAndStatus(user.getUserId(),2);
-		Integer totalXfMoney=orderService.findTotalMoneyByUserId(user.getUserId());
-		System.out.println(totalXfMoney);
-		update(user);
-		request.getSession().setAttribute("loginUser",user);
-		json.put("success", true);
-		json.put("userName", user.getUserName());
-		json.put("headUrl", user.getHeadUrl());
-		json.put("xinghuoquan", (allxinghuoquan-xfxinghuoquan));
 		return json;
 	}
 

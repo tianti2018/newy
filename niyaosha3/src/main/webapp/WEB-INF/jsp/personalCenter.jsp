@@ -17,6 +17,7 @@
     <link href="<%=request.getContextPath()%>/css/my_v2.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/footer.css" rel="stylesheet" />
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/commenObject/massageCode.js"></script>
     <!--E 线上样式-->
 
 </head>
@@ -30,13 +31,13 @@
         <c:if test="${userVo.usery!=null }">
 	        <div class="my_header_links">
 	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action"><span id="tuandui">0</span><span>我的团队</span></a>
-	            <a href=""><span id="chengjiaoliang">0</span><span>日成交量</span></a>
-	            <a href=""><span id="chengjiaoliang">0</span><span>总成交量</span></a>
-	            <a href=""><span id="chengjiaoliang">0</span><span>今日收益</span></a>
+	            <a href=""><span id="richengjiaoliang">0</span><span>日成交量</span></a>
+	            <a href=""><span id="zongchengjiaoliang">0</span><span>总成交量</span></a>
+	            <a href=""><span id="jinrishouyi">0</span><span>今日收益</span></a>
 	        </div>
         </c:if>
         
-
+		
         <!--订单信息-->
         <section class="my_section"  id="gongneng">
             <a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action" class="head head_order">我的订单</a>
@@ -47,21 +48,21 @@
                 <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=3" class="item_4" id="payItem"><span>退换货</span></a></li> 
             </ul>
         </section>
-
+		<c:if test="${userVo.usery.dianPuId!=null }">
         <!--我的钱包-->
             <section  class="my_section" id="myWallet">
-                <a href="javascript:zige();" class="head head_value">我的钱包&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="totalMoney">0</strong></a>
-                <ul class="list list_value list_value_center" onclick="jampUrl()">
-                    <li><a href="#"><strong id="yve">0</strong>余额</a></li>
-                    <li><a href="#"><strong id="huafei">0</strong>花费</a></li>
-                    <li><a href="#"><strong id="daishengxiao">0</strong>待生效</a></li>
+                <a href="javascript:zige();" class="head head_value">店铺账户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong id="yve">0</strong></a>
+                <ul class="list list_value list_value_center">
+                    <li><a href="<%=request.getContextPath()%>/shouyi/shouyiAction!myshouyiList.action?orderType=1"><strong id="zhichu">0</strong>支出</a></li>
+                    <li><a href="<%=request.getContextPath()%>/shouyi/shouyiAction!myshouyiList.action?orderType=2"><strong id="shouru">0</strong>收入</a></li>
+                    <li><a href="<%=request.getContextPath()%>/shouyi/shouyiAction!myshouyiList.action?orderType=3"><strong id="daishengxiao">0</strong>待生效</a></li>
                 </ul>
             </section>
 		 
 		 <section class="my_section"  id="dianpuDingDan">
-            <a href="<%=request.getContextPath()%>/order/orderAction!orderPerList.action?orderNo=0&requestType=mo" class="head head_order">店铺订单</a>
+            <a href="<%=request.getContextPath()%>/order/orderAction!dianpuOrders.action" class="head head_order">店铺订单</a>
 		 </section>
-
+		</c:if>
         <!--我的活动-->
         <section class="my_section" id="myActivity">
             <a href="javascript:void(0);" class="head head_act" data-tag="activity" ptag="" data-wxtag="7155.1.20" data-sqtag="7155.2.20">其他功能<span id="navigat"></span></a>
@@ -122,7 +123,7 @@ function zige(){
 	/* if("${user.level}"=="0"||"${user.level}"==""||"${user.level}"=="null"){
 		alert("抱歉您还没有资格进入本功能模块");
 	}else{ */
-	window.location.href="<%=request.getContextPath()%>/user/userAction!phoneFamily.action";
+	window.location.href="<%=request.getContextPath()%>/shouyi/shouyiAction!myshouyiList.action";
 	/* } */
 }
 
@@ -133,7 +134,7 @@ function onBridgeReady() {
 	WeixinJSBridge.call('hideOptionMenu');
 }
 
-function fengsi(){//这个方法用来统计粉丝的数量
+function loadtuandui(){//这个方法用来统计粉丝的数量
 	var s=${userVo.usery.childNum +0};//247
 	document.getElementById("xianshifensi").innerHTML=s;
 }
@@ -191,16 +192,42 @@ function listCards(){
 }
 
 	$(document).ready(function() { 
-		if(ifValidate()){
-			loadUserInfo();
+		if("${userVo.usery!=null}"=="true"){
+			if(ifValidate()){
+				loadUserInfo();
+				
+			}
+			loadTdAndChjl();//加载团队和成交量
+			//loadUserMoneyWL();//加载
+			loadUserMoneyAll();//加载收益
 			
+			//loadUserJifen();加载用户积分
 		}
-		//fengsi();//测试粉丝
-		loadUserMoneyWL();//加载未领取佣金
-		loadUserMoneyAll();//加载总佣金
-		
-		//loadUserJifen();加载用户积分
 	}); 
+	
+	function loadTdAndChjl(){
+		$.ajax({
+	        type:"POST",
+	        url:"<%=request.getContextPath()%>/user/userAction!loadTdAndChjl.action",
+	        dataType:"json",
+	        success:function(data) {
+	        	var code = data.code;
+	        	if(code.startsWith("00")){
+	        		var tuandui=$("#tuandui");
+	        		var richengjiaoliang=$("#richengjiaoliang");
+	        		var zongchengjiaoliang=$("#zongchengjiaoliang");
+	        		var jinrishouyi=$("#jinrishouyi");
+	        		tuandui.html(data.tuandui);
+	        		richengjiaoliang.html(data.richengjiaoliang);
+	        		zongchengjiaoliang.html(data.zongchengjiaoliang);
+	        		jinrishouyi.html(data.jinrishouyi);
+	        	}else{
+	        		alert(getMessageByCode(code));
+	        	}
+	        	
+		 	}
+	 	});
+	}
 	
 	function loadUserMoneyWL(){//未领取佣金
 		$.ajax({
@@ -236,16 +263,26 @@ function listCards(){
 	 	});
 	}
 	
-	function loadUserMoneyAll(){//总佣金
+	function loadUserMoneyAll(){//
 		$.ajax({
 	        type:"POST",
-	        url:"<%=request.getContextPath()%>/user/userAction!loadUserMoneyAll.action",
+	        url:"<%=request.getContextPath()%>/shouyi/shouyiAction!loadUserMoneyAll.action",
 	        dataType:"json",
 	        success:function(data) {
-	        	if(data.success){
-	        		var totalMoney=$("#totalMoney");
-	        		totalMoney.html(data.totalMoney);
+	        	var code = data.code;
+	        	if(code=="000000"){
+	        		var yve=$("#yve");
+	        		var zhichu=$("#zhichu");
+	        		var shouru=$("#shouru");
+	        		var daishengxiao = $("#daishengxiao");
+	        		yve.html(data.yve);
+	        		zhichu.html(data.zhichu);
+	        		shouru.html(data.woaiwojia);
+	        		daishengxiao.html(data.daishengxiao);
+	        	}else{
+	        		alert(getMessageByCode(code));
 	        	}
+	        	
 		 	}
 	 	});
 	}
@@ -276,16 +313,7 @@ function listCards(){
 	        dataType:"json",
 	        success:function(data) {
 	        	if(data.success){
-	        		var userName=$("#nicheng");
-	        		var child1=$("#goodsFav");
-	        		var child2=$("#shopFav");
-	        		var child3=$("#recent");
-	        		var xinghuoquan=$("#xinghuoquan");
-	        		userName.html(data.userName);
-	        		child1.html(data.child1);
-	        		child2.html(data.child2);
-	        		child3.html(data.child3);
-	        		xinghuoquan.html(data.xinghuoquan);
+	        		window.location.reload(true);
 	        	}
 		 	}
 	 	});

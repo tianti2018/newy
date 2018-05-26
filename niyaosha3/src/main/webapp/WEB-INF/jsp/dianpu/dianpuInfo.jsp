@@ -78,6 +78,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					<div class="form-group">
 						<input type="hidden" id="dianpuId" name="dianpuId" value =""/>
 						<input type="hidden" id="productId" name="productId" value =""/>
+						<input type="hidden" id="ketiao" name="ketiao" value =""/>
 						店铺名称:<input style="width: 90%" class="form-control" id="dianpuName" name="dianpuName" 
 							value="<c:if test="${dianpu.name==null}">${userVo.usery.userName }的店铺</c:if>
 								<c:if test="${dianpu.name!=null}">${dianpu.name }</c:if> "/>
@@ -137,6 +138,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<script src="<%=request.getContextPath()%>/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<script type="text/javascript">
+	var ketiaoJia = 0;
 	function shuzi() {
 		var reg = new RegExp("^[0-9]*$");  
 	    if(!reg.test($("#paixu").val())){  
@@ -159,12 +161,14 @@ License: You must have a valid license purchased only from themeforest(the above
 	    }   */
 	}
 	
-	function shangjia(dianpuId,productId){
+	function shangjia(dianpuId,productId,ketiao){
 		 $("#shangjia").fancybox({
 		        'hideOnContentClick': true
 		 });
 		 $("#productId").val(productId);
 		 $("#dianpuId").val(dianpuId);
+		 $("#ketiao").val(ketiao);
+		 ketiaoJia = ketiao;
 	}
 	function querenShangjia(){
 		var dianpuPrice = $("#dianpuPrice").val();
@@ -185,7 +189,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		    success: function(data) {
 		    	if(data.success){
 		    		closefancybox();
-		    		alert("上架成功!");
+		    		if(data.message!=null&&data.message!=""){
+		    			alert(data.message);
+		    		}
 		    		$("#weishang_"+$("#productId").val()).remove();
 		    	}else{
 		    		alert(data.message);
@@ -296,7 +302,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			    			}else{
 			    				child+=data[i].price +'</span>';
 			    			}
-			    			child+='<div href="#inline_shangjia" id="shangjia" onclick="javascript:shangjia(${userVo.usery.dianPuId },'+data[i].productsId +');" class="btn_relate" >上架</div> ';
+			    			child+='<div href="#inline_shangjia" id="shangjia" onclick="javascript:shangjia(${userVo.usery.dianPuId },'+data[i].productsId +','+data[i].ketiao+');" class="btn_relate" >上架</div> ';
 			    			child+='</div></div></div>';
 			    		}
 		    		}

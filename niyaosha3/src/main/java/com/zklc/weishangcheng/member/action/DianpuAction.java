@@ -11,7 +11,6 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.thoughtworks.xstream.mapper.Mapper.Null;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.DianpuForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
@@ -153,14 +152,18 @@ public class DianpuAction extends BaseAction {
 						dianpuPrice = products.getPrice();
 					}
 					
-					if(products.getLevelone()>dianpuPrice){
-						json.put("message", "价格不能低于"+products.getLevelone());
+					if(products.getPrice()>dianpuPrice){
+						json.put("message", "价格不能低于"+products.getPrice());
 						try {
 							jsonOut(json);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 						return ;
+					}
+					if(products.getKetiao()!=null&&products.getKetiao()==1){
+						dianpuPrice = products.getPrice();
+						json.put("message", "本产品价格不可调,已修改为建议价格!");
 					}
 					productsForDianpu.setPrice(dianpuPrice);
 					productsForDianpu.setProductId(products.getProductsId());
@@ -172,6 +175,7 @@ public class DianpuAction extends BaseAction {
 					productsForDianpu.setProdType(products.getProdType());
 					productsForDianpuService.save(productsForDianpu);
 					json.put("success", true);
+					
 				}
 				json.put("message", "商品已经被下架!");
 			}

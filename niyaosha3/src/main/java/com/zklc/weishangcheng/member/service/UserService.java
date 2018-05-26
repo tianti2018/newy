@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 
 import net.sf.json.JSONObject;
 public interface UserService extends IBaseService<Users, Integer> {
@@ -111,12 +112,12 @@ public interface UserService extends IBaseService<Users, Integer> {
 	public Users updateMoney(Users user, Double totalMoney);
 	/**
 	 * 更新用户信息
-	 * @param user
+	 * @param userVo
 	 * @param json
 	 * @param request 
 	 * @return
 	 */
-	public JSONObject updateUserInfo(Users user, JSONObject json, HttpServletRequest request);
+	public JSONObject updateUserInfo(UserVo userVo, JSONObject json, HttpServletRequest request);
 	
 	/**
 	 * 更新user数据

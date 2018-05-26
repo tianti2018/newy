@@ -4,11 +4,14 @@ import java.util.List;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
+import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
+import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrdersVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 
-public interface OrderService extends IBaseService<OrderJinHuo, Integer> {
+public interface OrderJinHuoService extends IBaseService<OrderJinHuo, Integer> {
 /**
  * 查询最后一次订单
  * @param userId 用户id
@@ -94,6 +97,7 @@ public void saveAndCFh(OrderJinHuo order, Users user);
  */
 public Integer findSellerNumByQi(Integer qi);
 
+OrderJinHuo findbyOrdersId(Integer ordersId);
 
 /**
  * 查询用户消费的总金额
@@ -102,4 +106,17 @@ public Integer findTotalMoneyByUserId(Integer userId);
 
 
 public OrderJinHuo findOrderByOrderBH(String out_trade_no);
+
+
+public List<OrdersVo> findMyDianpuOrderList(UserVo userVo, String orderType, String date1, String date2, Integer pageNum);
+
+
+public List<OrdersVo> findMyDianpuOrderList_jinhuo(UserVo userVo, String date2, String date1, String date22,
+		Integer pageNum);
+
+
+public Long findOrderNum(Usery usery, String lingDianDateStringByDays, String lingDianDateStringByDays2);
+
+
+public void deleteByOrders(List<Orders> deleteList);
 }

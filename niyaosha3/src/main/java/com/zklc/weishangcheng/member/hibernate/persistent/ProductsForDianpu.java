@@ -24,7 +24,7 @@ public class ProductsForDianpu implements Serializable{
 	private Double price;					//店主自制价格
 	private Integer type;					//产品显示样式,0:轮播图,1:单爆款,2:普通散列
 	private Integer paixu;					//排序值,倒序
-	private Integer kaiguan;				//开关,0:正常贩卖,1:商城修改过价格,此时客户显示无货
+	private Integer kaiguan;				//开关,0:正常贩卖,1:产品下架后自动变1,客户显示无货
 	private Date createDate;				//上架时间
 	private Double jianyiPrice;				//商品建议价格
 	private String name;					//商品名称

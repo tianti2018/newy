@@ -19,5 +19,9 @@ public interface UseryService extends IBaseService<Usery, Integer> {
 	Usery findbyUnionId(String unionId);
 
 	List<Usery> findChildsPagerByLevelAndSort(String viewLevel, Integer id, Integer pageNum, Integer pageSize);
+
+	Long findChildNum(Integer useryId);
+
+	Usery findByDianpuId(Integer dianpuId);
 	
 }

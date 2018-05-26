@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.zklc.framework.action.BaseAction;
+import com.zklc.framework.util.DateUtil;
 import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.dao.UserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
@@ -52,7 +53,8 @@ import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.OrderJinHuoService;
+import com.zklc.weishangcheng.member.service.ShouYiForUserService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -104,13 +106,9 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private FhrecordService fhrecordService;
 	@Autowired
-	private OrderService orderService;
+	private OrderJinHuoService orderService;
 	@Autowired
 	private OrderAddressService orderAddressService;
-	@Autowired
-	private UserDao jifenUserDao;
-	@Autowired
-	private FhRecordDao fhRecordDao;
 	@Autowired
 	private UseryService useryService;
 	@Autowired
@@ -131,6 +129,8 @@ public class UserAction extends BaseAction {
 	private XingHuoQuanRecordService xingHuoQuanRecordService;
 	@Autowired
 	private CityService cityService;
+	@Autowired
+	private ShouYiForUserService shouyiService;
 	
 	private OrderJinHuo order;
 	private String id;
@@ -208,6 +208,36 @@ public class UserAction extends BaseAction {
 	private String loginName;
 	private String passWord;
 	private String phone;
+	
+	public void loadTdAndChjl(){
+		Long tuandui = 0L;
+		Long richengjiaoliang = 0l;
+		Long zongchengjiaoliang = 0l;
+		Double jinrishouyi = 0.0;
+		userVo = getSessionUser();
+		json = yanzheng(userVo);
+		String code = json.getString("code");
+		if(code.startsWith("0")){
+			if(code.substring(1, 2).equals("0")){
+				Integer useryId = userVo.getUsery().getId();
+				tuandui = useryService.findChildNum(useryId);
+				richengjiaoliang = orderService.findOrderNum(userVo.getUsery(),
+						DateUtil.getLingDianDateStringByDays(0),DateUtil.getLingDianDateStringByDays(1));
+				zongchengjiaoliang +=orderService.findOrderNum(userVo.getUsery(),null,null);
+				jinrishouyi = shouyiService.findShouRu(userVo.getUsery(),
+						DateUtil.getLingDianDateStringByDays(0),DateUtil.getLingDianDateStringByDays(1));
+			}
+		}
+		json.put("tuandui", tuandui);
+		json.put("richengjiaoliang", richengjiaoliang);
+		json.put("zongchengjiaoliang", zongchengjiaoliang);
+		json.put("jinrishouyi", jinrishouyi);
+		try {
+			jsonOut(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void login(){
 		json.put("success", false);
@@ -339,46 +369,17 @@ public class UserAction extends BaseAction {
 		}
 	}
 	
-	public void loadUserMoneyAll(){
-		JSONObject json = new JSONObject();
-		userVo = getSessionUser();
+	public void loadUserInfo(){
 		json.put("success", false);
-//		if(user !=null){
-//			DecimalFormat   fnum   =   new   DecimalFormat("##0.00"); //四舍五入，保留两位小数 
-//			Double totalMoneyDai = fhrecordService.findTotalJiFenOneByUserId(user.getUserId(), "2","1,2");//代理总佣金
-//			Double totalMoneyDian = fhDianService.findTotalJiFenOneByUserId(user.getUserId(), null,"1,2");//店铺总佣金
-//			Double ytxGoodYJ = yongJinService.findAllMoneyBuyUserIdAndType(user.getUserId(),2);
-//			Double ktxGoodYJ = yongJinService.findAllMoneyBuyUserIdAndType(user.getUserId(),1);
-//			Double allGoodYJ = ytxGoodYJ+ktxGoodYJ;
-//			List ktList = userService.findYongin(user.getUserId());
-//			Object[] obj = (Object[]) ktList.get(0);
-//			Double tolLiuLiangMoney = Double.parseDouble(obj[0].toString());
-//			Double totalMoney = tolLiuLiangMoney+totalMoneyDai+totalMoneyDian+allGoodYJ;
-//			user = userService.updateMoney(user,totalMoney);
-//			request.getSession().setAttribute("loginUser",user);
-//			json.put("totalMoney", fnum.format(totalMoney));
-//			json.put("success", true);
-//		}
+		userVo = getSessionUser();
+		if(userVo !=null){
+			json = userService.updateUserInfo(userVo,json,request);
+		}
 		try {
-			ServletActionContext.getResponse().getWriter().print(json);
-		} catch (IOException e) {
+			jsonOut(json);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void loadUserInfo(){
-//		JSONObject json = new JSONObject();
-//		json.put("success", false);
-//		user = getSessionUser();
-//		if(user !=null){
-//			json = userService.updateUserInfo(user,json,request);
-//		}
-//		try {
-//			ServletActionContext.getResponse().getWriter().print(json);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 	}
 	
 	public String gotoPersonalCenter(){
@@ -671,65 +672,7 @@ public class UserAction extends BaseAction {
 //		
 //	} 
 	
-	public List findUserLevel(int flag,List<Integer> userIds,int level,int pageNum) {
-		List list1 = jifenUserDao.findAllUserIdByrefferIds(userIds,1,level,0);
-		if (flag==level) {
-			return jifenUserDao.findAllUserIdByrefferIds(userIds,2,level,pageNum);
-		}
-		else if (flag<level) {
-			flag++;
-			return findUserLevel(flag,list1,level,pageNum);
-		}
-		return null;
-	}
 	
-	public List findUserIdsLevel(int flag, List<Integer> userIds, int level,int pageNum) {
-		List list1 = jifenUserDao.findAllUserIdByrefferIds(userIds,1,level,0);
-		if (flag==level) {
-			return jifenUserDao.findAllUserIdByrefferIds(userIds,1,level,0);
-		}
-		else if (flag<level) {
-			flag++;
-			return findUserIdsLevel(flag,list1,level,pageNum);
-		}
-		return null;
-	}
-	
-	
-	public void findUserLevelCount(int flag,List<Integer> userIds,int level) {
-		List list1 = jifenUserDao.findAllUserIdByrefferIds(userIds,1,level,0);
-		if (flag==level) {
-			if (list1!=null&&list1.size()!=0) {
-				int count = Integer.valueOf(list1.size()+"");
-				HttpServletRequest request = ServletActionContext.getRequest();
-				request.setAttribute("count"+level, count);
-			}
-		}
-		else {
-			if (flag<level) {
-				flag++;
-				findUserLevelCount(flag,list1,level);
-			}
-		}
-	}
-	
-//	public String listCards(){
-//		user = getSessionUser();
-////		user = userService.findById(1821);
-//		if(user!=null){
-//			List<Card> list = cardService.listCards(user);
-//			Map<String, Object> map = new HashMap<String, Object>();
-//			map.put("success", true);
-//			map.put("list", list);
-//			JSONObject json = JSONObject.fromObject(map);
-//			try {
-//				ServletActionContext.getResponse().getWriter().print(json.toString());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return null;
-//	}
 	
 	/**
 	 * 获取用户信息并跳转到family页面
@@ -1168,21 +1111,6 @@ public class UserAction extends BaseAction {
 //		
 //		return "viewHongbao";
 //	}
-	
-	public List<Users> findUserLevelhongbao(int flag,List<Integer> userIds,int level) {
-		
-		
-		if (flag<level) {
-			List list1 = jifenUserDao.findAllUserIdByrefferIds(userIds,1,level,0);
-			flag++;
-			return findUserLevelhongbao(flag,list1,level);
-		}
-		else {
-			List listUsers = jifenUserDao.findhongbaoAllUserIdByrefferIds(userIds,2,level);
-			return listUsers;
-			
-		}
-	}
 	
 	
 //	public String buy() {
@@ -1903,11 +1831,11 @@ public class UserAction extends BaseAction {
 		this.fhrecordService = fhrecordService;
 	}
 
-	public OrderService getOrderService() {
+	public OrderJinHuoService getOrderService() {
 		return orderService;
 	}
 
-	public void setOrderService(OrderService orderService) {
+	public void setOrderService(OrderJinHuoService orderService) {
 		this.orderService = orderService;
 	}
 

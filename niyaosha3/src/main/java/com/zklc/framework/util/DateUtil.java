@@ -317,4 +317,29 @@ public class DateUtil
         calendar.add(Calendar.DAY_OF_MONTH, day);
         return calendar.getTime();
     }
+    
+    public static Date getDateByDays(Integer days){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+		return calendar.getTime();
+	}
+	
+	public static String getDateStringByDays(Integer days){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(getDateByDays(days));
+	}
+	
+	public static Date getLingDianDateByDays(Integer days){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		return calendar.getTime();
+	}
+	
+	public static String getLingDianDateStringByDays(Integer days){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.format(getLingDianDateByDays(days))+" 00:00:00";
+	}
 }

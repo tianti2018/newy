@@ -1,6 +1,7 @@
 package com.zklc.weishangcheng.member.util;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,4 +123,17 @@ public class PublicUtil {
 			}
 		}
 	}
+	
+	public static String DoubleObjectToString(Object number){
+		NumberFormat nf = NumberFormat.getInstance();
+		// 不使用千分位，即展示为11672283.234，而不是11,672,283.234
+		nf.setGroupingUsed(false);
+		// 设置数的小数部分所允许的最小位数
+		nf.setMinimumFractionDigits(0);
+		// 设置数的小数部分所允许的最大位数
+		nf.setMaximumFractionDigits(5);
+		
+		return nf.format(number);
+	}
+	
 }

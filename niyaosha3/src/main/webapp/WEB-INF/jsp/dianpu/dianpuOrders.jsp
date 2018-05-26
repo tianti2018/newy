@@ -43,9 +43,8 @@ function insertcode(){
     /*加载内容*/
 	$.ajax({
 		type: "POST",
-		url:"<%=request.getContextPath()%>/order/orderAction!ajaxOrderPerList.action",
+		url:"<%=request.getContextPath()%>/order/orderAction!ajaxDianppuOrders.action",
 		data:{
-			"orderType":'${orderType }',
 			"pageNum":pageNum,
 			"date1":date1,
 			"date2":date2
@@ -86,13 +85,7 @@ function insertcode(){
 	    			child+=('<li>订单金额：<em>'+children[i].money+'</em></li>');
 	    			child+=('<li>订单状态：<em>');
 	    			var fahuo = false;
-	    			if(children[i].orderStatus==0){
-	    				child+=('待付款');
-	    			}
-	    			if(children[i].orderStatus==11){
-	    				child+=('已取消');
-	    			}
-	    			else if(children[i].orderStatus==1){
+	    			if(children[i].orderStatus==1){
 	    				child+=('待发货');
 	    			}else if(children[i].orderStatus==2){
 	    				child+=('售后服务中');
@@ -122,23 +115,7 @@ function insertcode(){
 	    			}
 	    			child+=('<li>购买数量：<em>'+children[i].shuliang+'</em></li>');
 	    			child+=('<li>消耗收益：<em>'+children[i].xiaohaoShouyi+'</em></li>');
-	    			child+=('<li style="text-align:center">');
-   					if(children[i].orderStatus==0){
-   	    				child+=('<em><input type="button" onclick="cancelOrder(this)" orderId="children[i].ordersId" value="取消订单"/></em>&nbsp;&nbsp;');
-   	    				child+=('<em><input type="button" onclick="quzhifu(this)" orderId="children[i].ordersId" value="去支付"/></em>');
-   	    			}else if(children[i].orderStatus==1){
-   	    				child+=('<em><input type="button" onclick="tuihuo(this)" orderId="children[i].ordersId" value="申请退货"/></em>');
-   	    			}else if(children[i].orderStatus==3){
-   	    				child+=('<em><input type="button" onclick="shouhuo(this)" orderId="children[i].ordersId" value="确认收货"/></em>');
-   	    			}else if(children[i].orderStatus==4){
-   	    				child+=('<em><input type="button" onclick="shouhou(this)" orderId="children[i].ordersId" value="申请售后"/></em>');
-   	    				if(children[i].pingjia==null||children[i].pingjia==0){
-   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="pingjia(this)" orderId="children[i].ordersId" value="去评价"/></em>');
-   	    				}else if(children[i].pingjia==1){
-   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="zhuiping(this)" orderId="children[i].ordersId" value="追评"/></em>');
-   	    				}
-   	    			}
-   					child+=('</li>');
+	    			
    					child+=('</ul></div></div></div>');
 	    		}
 	    		var ul = $("#appendUl");

@@ -11,7 +11,7 @@ public interface OrdersService extends IBaseService<Orders, Integer> {
 
 	Orders findOrderByOrderBH(String orderNo);
 
-	void moneyPay(Orders order, Users user);
+	void moneyPay(Orders order);
 
 	void saveAndCFh(Orders order, Users user);
   
@@ -53,5 +53,7 @@ public interface OrdersService extends IBaseService<Orders, Integer> {
 
 	void createOrder(Orders order, OrderJinHuo orderJinHuo, ShouYiForUser dianzhuShouyiRecord,
 			ShouYiForUser shangjiShouyiRecord, ShouYiForUser xiaohaoRecord);
+
+	void timerUpdateOrderStatus();
 
 }

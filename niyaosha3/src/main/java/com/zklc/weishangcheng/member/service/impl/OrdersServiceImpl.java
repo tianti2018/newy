@@ -13,6 +13,7 @@ import com.utils.CalendarUtils;
 import com.utils.MyUtils;
 import com.utils.WXRefund;
 import com.zklc.framework.service.impl.BaseServiceImp;
+import com.zklc.weishangcheng.member.hibernate.persistent.DianpuForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.GoodYongJin;
 import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
@@ -24,6 +25,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.RefundRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.ShouYiForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
+import com.zklc.weishangcheng.member.service.DianpuForUserService;
 import com.zklc.weishangcheng.member.service.GoodYongJinService;
 import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.UserService;
@@ -71,6 +73,59 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 	
 	@Autowired
 	private LiuCodeService liuCodeService;
+	@Autowired
+	private DianpuForUserService dianpuService;
+	@Autowired
+	private OrderJinHuoService orderJinHuoService;
+	
+	@Override
+	public void timerUpdateOrderStatus() {
+		String hql = " from Orders o where o.orderStatus = 0";
+		List<Orders> updateList = new ArrayList<>();
+		List<Orders> deleteList = new ArrayList<>();
+		List<Orders> weizhifulist = super.findByHql(hql, null);
+		List<Orders> shouyiOrders = new ArrayList<>();
+		Date now = new Date();
+		if(weizhifulist!=null&&weizhifulist.size() > 0){
+			for(Orders order:weizhifulist){
+				if(now.getTime()-order.getCreateDate().getTime()>1000*60*60*24*3){
+					deleteList.add(order);
+				}
+			}
+		}
+		hql = " from Order o where o.orderStatus = 3";
+		List<Orders> yifahuoList = findByHql(hql, null);
+		if(yifahuoList!=null&&yifahuoList.size()>0){
+			for(Orders order:yifahuoList){
+				if(now.getTime()-order.getFahuoDate().getTime()>1000*60*60*24*7){
+					order.setOrderStatus(6);
+					updateList.add(order);
+				}
+			}
+		}
+		hql = " from Order o where o.orderStatus = 6";
+		List<Orders> yishouhuoList = findByHql(hql, null);
+		if(yishouhuoList!=null&&yishouhuoList.size()>0){
+			for(Orders order:yishouhuoList){
+				if(now.getTime()-order.getShouhuoDate().getTime()>1000*3600*24*7){
+					order.setOrderStatus(4);
+					updateList.add(order);
+				}
+			}
+		}
+		if(deleteList.size()>0){
+			deleteAll(deleteList);
+		}
+		if(updateList.size()>0){
+			saveOrUpdateAll(updateList);
+		}
+		//最后还需要更新收益列表里面的状态
+		//这里还没有确定是哪一个状态才修改,如果定了就去添加list更新状态吧
+		shouyiService.updateShouyiStatusByOrders(shouyiOrders);
+		shouyiService.deleteShouyiByOrders(deleteList);
+//		updateUserMsg();
+	}
+	
 	/**
 	 * 一个用户一天内只能使用星火券支付一次
 	 */
@@ -217,85 +272,60 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		return null;
 		}
 	@Override
-	public void moneyPay(Orders order, Users user) {
-		user = userService.findById(order.getUserId());
-		//支付成功后更新用户的星火券数量
-		if(order.getShouyi()>0)
-		{
-			
-			userService.update(user);
-			//添加星火券的消费记录
-			XingHuoQuanRecord xhqRecord=new XingHuoQuanRecord();
-			xhqRecord.setCreateDate(new Date());
-			xhqRecord.setFromUserId(user.getUserId());
-			xhqRecord.setMemo("订单"+order.getOrdersBH()+"兑换消费");
-			xhqRecord.setOrderId(order.getOrdersId());
-			xhqRecord.setOrdersBH(order.getOrdersBH());
-			xhqRecord.setStatus(2);//表示支出
-			xhqRecord.setType(4);//4:购买兑换
-			xhqRecord.setUserId(user.getUserId());
-//			xhqRecord.setXinghuoquan(order.getXinghuoquan());
-//			xingHuoQuanRecordService.save(xhqRecord);
-//			order.setOrderStatus(0);
+	public void moneyPay(Orders order) {
+		Usery usery = null;
+		Users user = null;
+		if(order.getUserId()!=null){
+			user = userService.findById(order.getUserId());
 		}
-		else
-		{
-			//如果没有用星火券支付 则 直接给佣金
-			order.setOrderStatus(1);
-			//更新佣金的状态
-			List<GoodYongJin> yongJins = yongJinService.findByProperty("orderId", order.getOrdersId());
-			if(yongJins.size()>0){
-				for(GoodYongJin yongJin:yongJins){
-					if(yongJin.getStatus().equals(0)){
-						yongJin.setStatus(1);
-						yongJinService.update(yongJin);
-					}
-				}
+		if(order.getUseryId()!=null){
+			usery = useryService.findById(order.getUseryId());
+		}
+		Usery dianzhu =null;
+		Usery jinhuoDianzhu = null;
+		OrderJinHuo orderJinHuo = null;
+		String mess = "【";
+		if(order.getDianpuId()!=null){
+			dianzhu = useryService.findByDianpuId(order.getDianpuId());
+			orderJinHuo = orderJinHuoService.findbyOrdersId(order.getOrdersId());
+			if(orderJinHuo!=null){
+				jinhuoDianzhu = useryService.findByDianpuId(orderJinHuo.getDianpuId());
 			}
-			Double zhifuMoney = order.getMoney();
-			Users refferUser = null;
-			Usery parentUsery = null;
-//			if(user.getReferrerId()!=null){
-//				refferUser = userService.findById(user.getReferrerId());
-//				parentUsery = useryService.findbyUserId(user.getReferrerId());
-//			}
-			String mess = "";
-			if(refferUser !=null){
-				mess = "您好:\n您的超级粉丝:";
-				mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+zhifuMoney+"元,请留意佣金变化!";
-				if(parentUsery !=null&&parentUsery.getWxOpenid()!=null){
-					
-					autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
-				}
-//				if(refferUser.getReferrerId()!=null){
-//					Users r2 = userService.findById(refferUser.getReferrerId());
-//					if(r2!=null){
-//						Usery usery2 = useryService.findbyUserId(r2.getUserId());
-//						if(usery2!=null&&usery2.getWxOpenid()!=null){
-//							mess = "您好:\n您的铁杆粉丝:";
-//							mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+zhifuMoney+"元,请留意佣金变化!";
-//							autosendmsgService.sendMsg(usery2.getWxOpenid(),mess);
-//						}
-//						if(r2.getReferrerId()!=null){
-//							Usery u3 = useryService.findbyUserId(r2.getReferrerId());
-//							if(u3!=null&&u3.getWxOpenid()!=null){
-//								mess = "您好:\n您的忠实粉丝:";
-//								mess += "【"+user.getUserId()+" ： "+user.getUserName()+"】已成功下单！\n"+"支付金额："+zhifuMoney+"元,请留意佣金变化!";
-//								autosendmsgService.sendMsg(u3.getWxOpenid(),mess);
-//							}
-//						}
-//					}
-//				}
-			}
+		}
+		
+		if(usery!=null){
+			mess += usery.getUserName();
+		}else {
+			mess +=user.getUserName();
+		}
+		mess+="】在您的店铺里购买了【"+order.getPname()+"】"+order.getShuliang();
+		if(dianzhu !=null){
+			String message =mess+ ",订单编号:"+order.getOrdersBH()+",请尽快处理!";
+			autosendmsgService.sendMsg(dianzhu.getWxOpenid(), message);
+		}
+		if(jinhuoDianzhu!=null){
+			String message =mess+ ",订单编号:"+orderJinHuo.getOrdersBH()+",请尽快处理!";
+			autosendmsgService.sendMsg(jinhuoDianzhu.getWxOpenid(), message);
 		}
 		//更新订单的支付信息
-//		order.setPayStatus(1);
+		order.setOrderStatus(1);
 		order.setPayTime(new Date());
 		update(order);
-		
+		ShouYiForUser dianzhuShouyi = shouyiService.findUniqueByProperty("ordersId", order.getOrdersId());
+		if(dianzhuShouyi!=null){
+			dianzhuShouyi.setStatus(1);
+			shouyiService.update(dianzhuShouyi);
+		}
+		if(orderJinHuo!=null){
+			ShouYiForUser jinhuoDianzhuShouyi = shouyiService.findUniqueByProperty("ordersId", orderJinHuo.getId());
+			if(jinhuoDianzhuShouyi!=null){
+				jinhuoDianzhuShouyi.setStatus(1);
+				shouyiService.update(jinhuoDianzhuShouyi);
+			}
+		}
 		Product product = productService.findById(order.getProductId());
 		if(product.getStock()!=null&&product.getStock()!=999){
-			product.setStock(product.getStock());
+			product.setStock(product.getStock()-1);
 			productService.update(product);
 		}
 	}

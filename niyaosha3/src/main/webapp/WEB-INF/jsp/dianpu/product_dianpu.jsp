@@ -732,7 +732,7 @@
 			if(confirm("确定购买"+num+"吗?")){
 						$.ajax({
 					        type:"POST",
-					        url:"<%=request.getContextPath()%>/pay/payGoodAction!saveMianMoOrder.action",
+					        url:"<%=request.getContextPath()%>/pay/payGoodAction!saveProductDianpuOrder.action",
 					        data : {
 					        	"qty_item_1":num,
 					        	"prodId":prodId,

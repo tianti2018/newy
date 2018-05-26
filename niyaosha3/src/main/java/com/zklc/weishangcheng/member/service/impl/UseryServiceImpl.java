@@ -73,5 +73,20 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 		return findBySql(Usery.class,sql, null);
 	}
 
+	@Override
+	public Long findChildNum(Integer useryId) {
+		String sql = "select count(1) from usery where parentId = "+useryId;
+		List list = findBySql(sql, null);
+		if(list!=null&&list.size()>0){
+			return Long.valueOf(list.get(0).toString());
+		}
+		return 0l;
+	}
+
+	@Override
+	public Usery findByDianpuId(Integer dianpuId) {
+		return findUniqueByProperty("dianPuId", dianpuId);
+	}
+
 
 }

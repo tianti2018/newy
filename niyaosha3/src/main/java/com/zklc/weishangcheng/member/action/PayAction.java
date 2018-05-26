@@ -20,7 +20,7 @@ import com.zklc.framework.action.BaseAction;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.service.OrderService;
+import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
@@ -34,7 +34,7 @@ public class PayAction extends BaseAction {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private OrderService orderService;
+	private OrderJinHuoService orderService;
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
