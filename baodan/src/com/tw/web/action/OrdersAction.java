@@ -38,7 +38,6 @@ import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.logicalcobwebs.proxool.admin.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionChainResult;
@@ -136,6 +135,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private Integer order_status;//订单状态
 	private String pictureUrl;//图片url
 	private String comments;//信息
+	private Integer[] orderIds;
+	private Integer paixu;//0正序1倒序
 	
 	public String chongzhiOrder(){
 		Orders orders = (Orders)ordersDAO.findById(ordersId);
@@ -351,21 +352,19 @@ public class OrdersAction extends ExtJSONActionSuport {
 			conditionProperties.put("order_status", os);
 			compare.put("order_status", 4);
 		}
-		
-		if(orderType.equals("0")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("1")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("2")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("3")){
-			sort.put("fahuoDate", false);
-		}else if(orderType.equals("4")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("5")){
-			sort.put("tuihuoDate", false);
-		}else if(orderType.equals("6")){
-			sort.put("shouhuoDate", false);
+		if(paixu==null){
+			paixu = (Integer) request.getSession().getAttribute("paixu");
+			
+		}
+		if(paixu==null){
+			paixu = 0;
+		}
+		boolean desc = true;
+		if(paixu!=null){
+			request.getSession().setAttribute("paixu", paixu);
+			if(paixu == 1){
+				desc = false;
+			}
 		}
 		
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
@@ -404,6 +403,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(dateType==null){
 			dateType = (String) request.getSession().getAttribute("dateType");
 		}
+		if(dateType==null){
+			dateType = "1";
+		}
 		if(dateType!=null&&!"".equals(dateType)){
 			if(dateType.equals("1")){
 				selectDate = "createDate";
@@ -415,6 +417,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
+		sort.put(selectDate, desc);
 		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
 			System.out.println("---------------------------------------"+fromDate);
 			Date date=null;
@@ -505,6 +508,20 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		if(paixu==null){
+			paixu = (Integer) request.getSession().getAttribute("paixu");
+			
+		}
+		if(paixu==null){
+			paixu = 0;
+		}
+		boolean desc = true;
+		if(paixu!=null){
+			request.getSession().setAttribute("paixu", paixu);
+			if(paixu == 1){
+				desc = false;
+			}
+		}
 		
 		String sql = "select sum(money) from orders where order_status in (1,2,3,4,6) ";
 		Integer[] os = {1,2,3,4,5,6};
@@ -578,6 +595,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(selectDate.equals("")){
 			selectDate = "createDate";
 		}
+		sort.put(selectDate, desc);
 		String dateSql = "";
 		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
 			System.out.println("---------------------------------------"+fromDate);
@@ -1046,9 +1064,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 		conditionProperties.put("order_status", 1);
 		compare.put("order_status", 0);
 		sort.put("createDate", false);
-		if(null!=ordersId&&!"".equals(ordersId)){
-			conditionProperties.put("ordersId", ordersId);
-			compare.put("ordersId", 0);
+		if(null!=orderIds&&orderIds.length>0){
+			conditionProperties.put("ordersId", orderIds);
+			compare.put("ordersId", 4);
 		}
 		
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
@@ -1153,7 +1171,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put(selectDate, 10);
 		}
 		
-		List<Orders> list = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, 0, 0, "all");
+		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
 		if(list!=null){
 			HSSFRow row = null;
 			for (int i = 0; i < list.size(); i++) {  
@@ -1163,7 +1181,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				row.createCell(6).setCellValue(list.get(i).getChengshi().substring(0, list.get(i).getChengshi().length()-1));//到达城市  注意:不带"市"字
 				row.createCell(7).setCellValue("现结");
 				row.createCell(8).setCellValue(list.get(i).getToUserName());
-				row.createCell(10).setCellValue(list.get(i).getChengshi()+list.get(i).getAddress());
+				row.createCell(10).setCellValue(list.get(i).getSheng()+list.get(i).getChengshi()+list.get(i).getDiqu()+list.get(i).getAddress());
 				row.createCell(12).setCellValue(list.get(i).getMobile());
 				row.createCell(14).setCellValue(list.get(i).getPname());
 				row.createCell(15).setCellValue("1");
@@ -2091,6 +2109,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 	public void setShuliang(String shuliang) {
 		this.shuliang = shuliang;
+	}
+
+	public Integer[] getOrderIds() {
+		return orderIds;
+	}
+
+	public void setOrderIds(Integer[] orderIds) {
+		this.orderIds = orderIds;
+	}
+
+	public Integer getPaixu() {
+		return paixu;
+	}
+
+	public void setPaixu(Integer paixu) {
+		this.paixu = paixu;
 	}
 	
 	

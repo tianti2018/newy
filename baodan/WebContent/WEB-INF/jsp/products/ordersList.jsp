@@ -178,17 +178,15 @@
 		//orders!exportToExcel.action;
 	}
 	
-	function exportOne(ordersId){
+	function exportOne(orderIds){
 		var $form = $("<form method='post' action='orders!exportKudiExcel.action'></form>");
 	    
 	    try{
-	        var data = {
-	        		"ordersId":ordersId,
-	        		};
-	        for (var attr in data){
-	         
-	                $form.append("<input type='text' name='" + attr + "' value='" + data[attr] + "' />");
-	        }
+	    	var data = {};
+	    	for(var i in orderIds){
+	    		$form.append("<input type='text' name='orderIds' value='" + orderIds[i] + "' />");
+	    	}
+	        
 	        $("body").append($form);
 	        $form.submit();
 	    } finally{
@@ -228,6 +226,9 @@
 		}
 		return false;
 	}
+	function paixu(paixu){
+		self.location.href="orders!ordersList.action?paixu="+paixu;
+	}
 	
 </script>
 
@@ -266,6 +267,8 @@
 				<option value="5">退货日期</option>
 				<option value="6">收货日期</option>
 			</select>
+			<input type="button" id="cmdBtn6" name="cmdBtn6" value="正序" style="cursor:pointer" onclick="paixu(0);" />
+			<input type="button" id="cmdBtn7" name="cmdBtn7" value="倒序" style="cursor:pointer" onclick="paixu(1);" />
 		</td></tr> 
 		<tr><td align="center">订单状态：</td><td align="center">
 			<select id="st_qOrderType"> 
@@ -282,7 +285,7 @@
 		<tr><td align="center">
 			<c:if test="${adminUser}">
 				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportToExcel();" value="导出到EXCEL" style="cursor:pointer" />
-				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportKudiExcel();" value="导出快递单" style="cursor:pointer" />
+				<input type="button" id="cmdBtn5" name="cmdBtn5" onclick="exportKudiExcel();" value="导出快递单" style="cursor:pointer" />
 				<input type="button" id="cmdBtn4" name="cmdBtn4" onclick="importExcel();" value="导入快递单" style="cursor:pointer" />
 			</c:if>
 			<c:if test="${adminUser ==false}">
@@ -302,15 +305,13 @@
 						<li>收货人姓名：<em>${item.toUserName}</em></li>
 						<li>收货人电话：<em>${item.mobile}</em></li>
 						<li>产品名称：<em>${item.pname}</em></li>
-						<c:if test="${item.order_status=='0'}">
-							<li>订单状态：<em><font size="2">未支付</font></em></li>
-						</c:if>
+						<c:if test="${item.order_status=='0'}"><li>订单状态：<em><font size="2">未支付</font></em></li></c:if>
 						<c:if test="${item.order_status=='1'}"><li>订单状态：<em><font size="2">已支付</font></em></li></c:if>
 						<c:if test="${item.order_status=='2'}"><li>订单状态：<em><font size="2">异常</font></em></li></c:if>
-							<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
-							<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
-							<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2">已退货</font></em></li></c:if>
-							<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
+						<c:if test="${item.order_status=='3'}"><li>订单状态：<em><font size="2">已发货</font></em></li></c:if>
+						<c:if test="${item.order_status=='4'}"><li>订单状态：<em><font size="2">已完成</font></em></li></c:if>
+						<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2">已退货</font></em></li></c:if>
+						<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
 						<c:if test="${item.order_status=='9'}"><li>订单状态：<em><font size="2">已删除</font></em></li></c:if>
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
@@ -331,28 +332,29 @@
 						<li>备注信息：<em>${item.comments },处理时间:${item.dealDate },处理次数:${item.dealNum }</em></li>
 						<li>操作：<em>
 							<c:if test="${adminUser}">
-								<c:if test="${orderType==0}">
-									<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a>
+								<c:if test="${item.order_status==0}">
+									<input type="button" name="cmdBtn" value="确认支付" style="cursor:pointer;width: 20%;" onclick="zhifuOrder('${item.ordersId}')" />
 								</c:if>
-								<c:if test="${orderType>=1}">
-									<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a><br/>
-									<a href="javascript:void(0);" onclick="winCHZH('${item.ordersId}');" class="pn-loperator">订单重置</a><br/>
-									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
+								<c:if test="${item.order_status==1}">
+									<input type="button" name="cmdBtn" value="确认送货" style="cursor:pointer;width: 20%;" onclick="winSd('${item.ordersId}')" />
 								</c:if>
+								<input type="button" name="cmdBtn" value="订单重置" style="cursor:pointer;width: 20%;" onclick="winCHZH('${item.ordersId}')" />
+								<input type="button" name="cmdBtn" value="修改" style="cursor:pointer;width: 20%;" onclick="editOrder('${item.ordersId}')" />
 							</c:if>
 							
 							<c:if test="${adminUser==false}">
-								<c:if test="${orderType==0}">
-									<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
+								<c:if test="${item.order_status==0}">
+									<input type="button" name="cmdBtn" value="删除" style="cursor:pointer;width: 20%;" onclick="deleteOrder('${item.ordersId}')" />
+									<input type="button" name="cmdBtn" value="修改" style="cursor:pointer;width: 20%;" onclick="editOrder('${item.ordersId}')" />
 								</c:if>
-								<c:if test="${orderType==1||orderType==0}">
-									<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
+								<c:if test="${item.order_status==1||item.order_status==0}">
+									<input type="button" name="cmdBtn" value="修改" style="cursor:pointer;width: 20%;" onclick="editOrder('${item.ordersId}')" />
 								</c:if>
-								<c:if test="${orderType==3}">
-									<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
+								<c:if test="${item.order_status==3}">
+									<input type="button" name="cmdBtn" value="确认收货" style="cursor:pointer;width: 20%;" onclick="shouhuo('${item.ordersId}')" />
 								</c:if>
-								<c:if test="${orderType>3}">
-									<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
+								<c:if test="${item.order_status>3}">
+									<input type="button" name="cmdBtn" value="异常报告" style="cursor:pointer;width: 20%;" onclick="yichangOrder('${item.ordersId}')" />
 								</c:if>
 							</c:if>
 						
@@ -396,15 +398,15 @@
 	<table class="pn-ltable" width="100%" cellspacing="1" cellpadding="0" border="0">
 		<thead class="pn-lthead">
 		<tr>
+			<th width="2%"><input id="CheckedAll" type="checkbox"/></th>
 			<th width="5%">订单编号</th>
 			<th width="5%">收货人姓名</th>
 			<th width="5%">收货人电话</th>
 			<th width="5%">产品名称</th>
-			<th width="5%">操作</th>
 			<th width="5%">订单状态</th>
 			<th width="5%">购买数量</th>
 			<th width="5%">订单金额</th>
-			
+			<th width="5%">报单日期</th>
 				<th width="5%">发货人</th>
 				<th width="5%">发货人电话</th>
 				<th width="5%">发货时间</th>
@@ -413,43 +415,19 @@
 			<c:if test="${adminUser}">
 				<th width="5%">报单人姓名</th>
 				<th width="5%">报单人电话</th>
-				<c:if test="${orderType==1}">
-					<th width="5%">报单日期</th>
-					<th width="5%">确认送货</th>
-				</c:if>
 			</c:if>
-			
+			<th width="5%">操作</th>
 		</tr>
 		</thead>
 		<tbody class="pn-ltbody">
 			<c:forEach items="${litPager}" var="item" varStatus="status">
 			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')" oncontextmenu = "javascript:showMenu(${item.ordersId});">
+				<td align="center"><input name="checkbox" type="checkbox" value="${item.ordersId}"/></td>
 				<td align="center">${item.ordersBH}</td>
 				<td align="center">${item.toUserName}</td>
 				<td align="center">${item.mobile}</td>
 				<td align="center">${item.pname}</td>
-				<td align="center" title="点击查看收货信息">
-					<c:if test="${adminUser}">
-						<c:if test="${orderType==0}">
-							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')">确认支付</a><br/>
-						</c:if>
-					</c:if>
-					
-					<c:if test="${adminUser==false}">
-						<c:if test="${orderType==0}">
-							<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')">删除</a><br/>
-						</c:if>
-						<c:if test="${orderType==1||orderType==0}">
-							<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')">修改</a><br/>
-						</c:if>
-						<c:if test="${orderType==3}">
-							<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')">确认收货</a><br/>
-						</c:if>
-						<c:if test="${orderType>3}">
-							<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')">异常报告</a><br/>
-						</c:if>
-					</c:if>
-				</td>
+				
 				<td align="center">
 					<c:if test="${item.order_status=='0'}"><font size="2">未支付</font></c:if>
 					<c:if test="${item.order_status=='1'}"><font size="2">已支付</font></c:if>
@@ -462,6 +440,7 @@
 				</td>
 				<td align="center">${item.shuliang}${item.size}</td>
 				<td align="center">${item.money}</td>
+				<td align="center"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 					<td align="center">	${item.fromUserName}</td>
 					<td align="center">	${item.tel}</td>
 					<td align="center">	${item.fahuoDate}</td>
@@ -470,13 +449,33 @@
 				<c:if test="${adminUser}">
 					<td align="center">	${item.oUserName}</td>
 					<td align="center">	${item.oPhone}</td>
-					<c:if test="${orderType=='1'}">
-						<td align="center"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-						<td class="pn-lopt"><a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
-						</td>
-					</c:if>	
 					
 				</c:if>
+				<td align="center" title="点击查看收货信息">
+					<c:if test="${adminUser}">
+						<c:if test="${item.order_status==0}">
+							<a href="javascript:void(0)" onclick="zhifuOrder('${item.ordersId}')" class="pn-loperator">确认支付</a><br/>
+						</c:if>
+						<c:if test="${item.order_status=='1'}">
+							<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
+						</c:if>	
+					</c:if>
+					
+					<c:if test="${adminUser==false}">
+						<c:if test="${item.order_status==0}">
+							<a href="javascript:void(0)" onclick="deleteOrder('${item.ordersId}')" class="pn-loperator">删除</a><br/>
+						</c:if>
+						<c:if test="${item.order_status==1||item.order_status==0}">
+							<a href="javascript:void(0)" onclick="editOrder('${item.ordersId}')" class="pn-loperator">修改</a><br/>
+						</c:if>
+						<c:if test="${item.order_status==3}">
+							<a href="javascript:void(0)" onclick="shouhuo('${item.ordersId}')" class="pn-loperator">确认收货</a><br/>
+						</c:if>
+						<c:if test="${item.order_status>3}">
+							<a href="javascript:void(0)" onclick="yichangOrder('${item.ordersId}')" class="pn-loperator">异常报告</a><br/>
+						</c:if>
+					</c:if>
+				</td>
 			</tr>
 			
 			<tr style="display:none" id="tr_${status.index }">
@@ -492,7 +491,7 @@
 	    <li onclick="editOrder(getOrdersId());">修改记录</li>
 	    <li onclick="winCHZH(getOrdersId());">重置订单</li>
 	    <li onclick="importExcel()">导入快递单</li>
-	    <li onclick="exportOne(getOrdersId());">导出需打印快递单</li>
+	    <li onclick="exportOne(getOrderIds());">导出需打印快递单</li>
 	</ul>
 	 <!-- 导入分页组件  -->
      <c:import url="/WEB-INF/jsp/page/page.jsp">
@@ -509,9 +508,34 @@
 <script src="images/core_res/js/front.js" type="text/javascript"></script>
 <script src="images/core_res/js/admin.js" type="text/javascript"></script>
 <script>
+$("#CheckedAll").click(function () {
+    if ($(this).is(":checked")) {
+        /* $("[name=checkbox]:checkbox").attr("checked", true); */
+    	$("input[type='checkbox']").each(function(){  
+            this.checked=true;  
+        });  
+    } else {
+        /* $("[name=checkbox]:checkbox").attr("checked", false); */
+    	$("input[type='checkbox']").each(function(){  
+            this.checked=false;  
+        });  
+    }
+});
+function getOrderIds(){
+	var orderIds = new Array();
+	$("[name=checkbox]:checkbox").each(function(){  
+		if(this.checked){
+			orderIds.push(this.value);
+		}
+        
+    });
+	return orderIds;
+}
+
 var myMenu = $("#myMenu");
+
 function getOrdersId(){
-	var ordersId = myMenu.attr("ordersId")
+	var ordersId = myMenu.attr("ordersId");
 	return ordersId;
 	
 }

@@ -156,6 +156,9 @@
 		}
 		return false;
 	}
+	function paixu(paixu){
+		self.location.href="orders!caiwuList.action?paixu="+paixu;
+	}
 	
 </script>
 
@@ -195,6 +198,8 @@
 				<option value="5">退货日期</option>
 				<option value="6">收货日期</option>
 			</select>
+			<input type="button" id="cmdBtn6" name="cmdBtn6" value="正序" style="cursor:pointer" onclick="paixu(0);" />
+			<input type="button" id="cmdBtn7" name="cmdBtn7" value="倒序" style="cursor:pointer" onclick="paixu(1);" />
 		</td></tr> 
 		<tr><td align="center">
 			<c:if test="${adminUser ==false}">
@@ -259,15 +264,15 @@
 				<c:if test="${adminUser==false}">
 					<a href="<%=request.getContextPath()%>/orders!initAdd.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_buy.png" alt=""></i><span>新增订单</span></a>
 				</c:if>
-				<a href="<%=request.getContextPath()%>/orders!ordersList.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
+				<a href="<%=request.getContextPath()%>/orders!ordersList.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
 				
 				<a href="<%=request.getContextPath()%>/user!listAllUser.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>团队列表</span></a>
 				
 				<c:if test="${adminUser==false}">
-					<a href="<%=request.getContextPath()%>/user!initAddUser.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>我的信息</span></a>
+					<a href="<%=request.getContextPath()%>/user!initAddUser.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>我的信息</span></a>
 				</c:if>
 				<c:if test="${adminUser}">
-					<a href="#"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_erweima.png" alt=""/></i><span>待开发</span></a>
+					<a href="<%=request.getContextPath()%>/orders!caiwuList.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_erweima.png" alt=""/></i><span>对账查询</span></a>
 				</c:if>
 				</div>
 			</footer>
