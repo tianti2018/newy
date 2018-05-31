@@ -380,7 +380,6 @@ function cancelOrder(obj){
 			});
 		}); --%>
 		
-		//删除地址
 		function serch(orderid){
 				var selCom = "";
 				var num = "";

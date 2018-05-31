@@ -9,7 +9,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,28 +37,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
 import com.zklc.framework.action.BaseAction;
 import com.zklc.framework.util.DateUtil;
-import com.zklc.weishangcheng.member.dao.FhRecordDao;
-import com.zklc.weishangcheng.member.dao.UserDao;
 import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
-import com.zklc.weishangcheng.member.service.CardService;
-import com.zklc.weishangcheng.member.service.CityService;
-import com.zklc.weishangcheng.member.service.FhRecordDianService;
-import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.GoodYongJinService;
-import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.LiuCodeService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.ShouYiForUserService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
-import com.zklc.weishangcheng.member.service.YongjinService;
 import com.zklc.weishangcheng.member.util.HongBaoUtil;
 import com.zklc.weixin.util.SystemMessage;
 import com.zklc.weixin.util.sign;
@@ -100,11 +89,7 @@ import net.sf.json.JSONObject;
  */
 public class UserAction extends BaseAction {
 	@Autowired
-	private JiFenRecordService jfrecordService;
-	@Autowired
 	private UserService userService;
-	@Autowired
-	private FhrecordService fhrecordService;
 	@Autowired
 	private OrderJinHuoService orderService;
 	@Autowired
@@ -112,23 +97,9 @@ public class UserAction extends BaseAction {
 	@Autowired
 	private UseryService useryService;
 	@Autowired
-	private CardService cardService;
-	@Autowired
-	private YongjinService yongjinService;
-	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
-	private LiuCodeService liuCodeService;
-	@Autowired
 	private WeixinAutosendmsgService weixinAutosendmsgService;
-	@Autowired
-	private FhRecordDianService fhDianService;
-	@Autowired
-	private GoodYongJinService yongJinService;
-	@Autowired
-	private XingHuoQuanRecordService xingHuoQuanRecordService;
-	@Autowired
-	private CityService cityService;
 	@Autowired
 	private ShouYiForUserService shouyiService;
 	
@@ -242,13 +213,27 @@ public class UserAction extends BaseAction {
 	public void login(){
 		json.put("success", false);
 		Users user = userService.findUserByLoginNameAndPassword(loginName,passWord);
+		userVo = getSessionUser();
 		if(user!=null){
-			userVo = new UserVo();
+			if(userVo==null){
+				userVo = new UserVo();
+			}else if(userVo.getUsery()!=null){
+				if(user.getUseryId()==null){
+					user.setUseryId(userVo.getUsery().getId());
+					userService.update(user);
+				}
+				if(userVo.getUsery().getUserId()==null){
+					userVo.getUsery().setUserId(user.getUserId());
+					useryService.update(userVo.getUsery());
+				}
+			}
 			userVo.setUser(user);
 			if(user.getUseryId()!=null){
 				Usery usery = useryService.findById(user.getUseryId());
 				userVo.setUsery(usery);
 			}
+			OrderAddress orderAddress = orderAddressService.findDefaultAddressByUserVo(userVo);
+			userVo.setOrderAddress(orderAddress);
 			session.setAttribute("loginUser", userVo);
 			json.put("success", true);
 		}
@@ -265,37 +250,35 @@ public class UserAction extends BaseAction {
 		if(StringUtils.isNotEmpty(loginName)&&StringUtils.isNotEmpty(passWord)){
 			List<Users> users = userService.findByProperty("loginName", loginName);
 			if(users!=null&&users.size()>0){
-				json.put("message", "被占用,请换一个!");
+				json.put("message", "手机号已经注册过,请联系客服找回密码!");
 				
 			}else{
 				Users user = new Users();
 				user.setLoginName(loginName);
 				user.setPassWord(passWord);
-				user.setPhone(phone);
+				user.setPhone(loginName);
 				user.setUserName(userName);
 				user.setCreateDate(new Date());
 				
 				if(userVo==null){
 					userVo=new UserVo();
 				}
-				if(userVo.getUser()==null){
-					Usery usery = userVo.getUsery();
-					if(usery!=null){
-						user.setUseryId(usery.getId());
-					}
-					userService.save(user);
-					if(usery!=null){
-						usery.setUserId(user.getUserId());
-						useryService.update(usery);
-						userVo.setUsery(usery);
-					}
-					userVo.setUser(user);
-					session.setAttribute("loginUser", userVo);
-					json.put("success", true);
+				Usery usery = userVo.getUsery();
+				if(usery!=null){
+					user.setUseryId(usery.getId());
 				}
+				userService.save(user);
+				if(usery!=null){
+					usery.setUserId(user.getUserId());
+					useryService.update(usery);
+					userVo.setUsery(usery);
+				}
+				userVo.setUser(user);
+				session.setAttribute("loginUser", userVo);
+				json.put("success", true);
 			}
 		}else{
-			json.put("message", "用户名密码不能为空!");
+			json.put("message", "手机号或密码不能为空!");
 		}
 		try {
 			jsonOut(json);
@@ -342,32 +325,6 @@ public class UserAction extends BaseAction {
 		return "loadRefs";
 	}
 	
-	public void loadUserMoneyWL(){//未领取佣金
-		JSONObject json = new JSONObject();
-		userVo = getSessionUser();
-		json.put("success", false);
-		if(userVo !=null){
-			DecimalFormat   fnum   =   new   DecimalFormat("##0.00"); //四舍五入，保留两位小数 
-			Double kdailiYJ = fhrecordService.findTotalJiFenOneByUserId(userVo.getUsery().getId(), "2","1");//代理佣金
-			Double kdianzhuYJ = fhDianService.findTotalJiFenOneByUserId(userVo.getUsery().getId(), null,"1");//店铺佣金
-			Double kgoodYJ = yongJinService.findAllMoneyBuyUserIdAndType(userVo.getUsery().getId(),1);//产品佣金
-			List ktList = userService.findYongin(userVo.getUsery().getId());
-			Object[] obj = (Object[]) ktList.get(0);
-			Double tolMoney = Double.parseDouble(obj[0].toString());
-			Double yiMoney = Double.parseDouble(obj[1].toString());
-			Double kliuliangYJ=tolMoney-yiMoney;
-			json.put("success", true);
-			json.put("kdailiYJ", fnum.format(kdailiYJ));
-			json.put("kdianzhuYJ", fnum.format(kdianzhuYJ));
-			json.put("kgoodYJ", fnum.format(kgoodYJ));
-			json.put("kliuliangYJ", fnum.format(kliuliangYJ));
-		}
-		try {
-			ServletActionContext.getResponse().getWriter().print(json);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public void loadUserInfo(){
 		json.put("success", false);
@@ -384,12 +341,12 @@ public class UserAction extends BaseAction {
 	
 	public String gotoPersonalCenter(){
 		userVo = getSessionUser();
-		Users user = userService.findById(1820);
-		userVo = new UserVo();
-		userVo.setUser(user);
-		Usery usery = useryService.findbyJifenUser(user);
-		userVo.setUsery(usery);
-		session.setAttribute("loginUser", userVo);
+//		Users user = userService.findById(1820);
+//		userVo = new UserVo();
+//		userVo.setUser(user);
+//		Usery usery = useryService.findbyJifenUser(user);
+//		userVo.setUsery(usery);
+//		session.setAttribute("loginUser", userVo);
 //		if(user==null){
 //			return "timeOut";
 //		}
@@ -1823,13 +1780,6 @@ public class UserAction extends BaseAction {
 		this.userService = userService;
 	}
 
-	public FhrecordService getFhrecordService() {
-		return fhrecordService;
-	}
-
-	public void setFhrecordService(FhrecordService fhrecordService) {
-		this.fhrecordService = fhrecordService;
-	}
 
 	public OrderJinHuoService getOrderService() {
 		return orderService;
@@ -1847,13 +1797,6 @@ public class UserAction extends BaseAction {
 		this.orderAddressService = orderAddressService;
 	}
 
-	public JiFenRecordService getJfrecordService() {
-		return jfrecordService;
-	}
-
-	public void setJfrecordService(JiFenRecordService jfrecordService) {
-		this.jfrecordService = jfrecordService;
-	}
 
 	public String getSex() {
 		return sex;

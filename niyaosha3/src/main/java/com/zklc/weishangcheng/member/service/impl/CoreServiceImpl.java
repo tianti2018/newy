@@ -10,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
-import com.zklc.weishangcheng.member.hibernate.persistent.JiFenRecord;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.service.CoreService;
-import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 import com.zklc.weixin.messageS.TextMessage;
@@ -25,13 +22,9 @@ import com.zklc.weixin.util.UserInfoUtil;
 @Service
 public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements CoreService {
 	@Autowired
-	private UserService jifenUserService;
-	@Autowired
 	private UseryService useryService;
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
-	@Autowired
-	private JiFenRecordService jiFenRecordService;
 	
 	@Override
 	public String processRequest(HttpServletRequest request) {
@@ -162,10 +155,6 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 						mess += "【"+usery.getId()+" ： "+usery.getUserName()+"】 ,已成功关注！\n";
 						if(parentUsery !=null&&parentUsery.getWxOpenid()!=null)
 							autosendmsgService.sendMsg(parentUsery.getWxOpenid(),mess);
-	    	  		}else{
-	    	  			System.out.println("没有找到推荐人");
-			    		autosendmsgService.sendMsg(fromUserName, "您的推荐人没有找到,请取消关注重新操作!");
-			    		return "";
 	    	  		}
 					if(jifenUser!=null){
 						usery.setUserId(jifenUser.getUserId());

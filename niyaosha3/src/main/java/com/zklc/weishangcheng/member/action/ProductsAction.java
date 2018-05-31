@@ -11,7 +11,6 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
 import com.zklc.weishangcheng.member.service.CommentService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;

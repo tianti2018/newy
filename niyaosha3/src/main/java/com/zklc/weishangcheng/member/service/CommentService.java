@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductComment;
-import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
 
 public interface CommentService extends IBaseService<ProductComment, Integer> {
 	/*

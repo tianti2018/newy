@@ -94,9 +94,9 @@
 					var prodId=$("#checkProdId").val();
 					var xhq_count=$("#diyongcount").val();
 					xhq_count=xhq_count==""?"0":xhq_count;
-					var addressId = ${userVo.orderAddress.id};
-					if(addressId==null){
-						alert("请选择收货地址或点击刷新页面!");
+					var addressId = "${userVo.orderAddress.id}";
+					if(addressId==null||addressId==""){
+						alert("请选择收货地址!");
 						return;
 					}
 					
@@ -296,16 +296,18 @@
 				</c:if>
 				<c:if test="${null==userVo.orderAddress}">
 					<div align="center">
-						<a
-							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?productId=${prod.productsId}"
-							class="btn green" onclick="go();">选择一条收货地址</a>
+						<div align="center">
+						<a id="orderAdress" href="#loginline" class="btn green" onclick="addressList();">选择一条收货地址</a>
+					</div>
 					</div>
 				</c:if>
 				<br/>
 				<a href="#" id="lijibuy" onclick="javascript:orderBuy()"
-							class="btn green" style="width: 45%;margin-left: 5px">立即购买</a>
+							class="btn red" style="width: 90%;margin-left: 5px">立即购买</a>
+				<br/>
+				<br/>
 				<a href="#" id="lijibuy1" onclick="javascript:shuaxin()"
-							class="btn green" style="width: 45%;margin-left: 2px">刷新页面</a>
+							class="btn green" style="width: 90%;margin-left: 5px">刷新页面</a>
 			</div>
 		</div>
 	</div>
@@ -335,7 +337,6 @@
 		</div>
 		<div id="pingjia" class="shangpintu">
 			<div id="em_all" class="assess">
-					<a id="liuyan" href="#inline" class="btnn" onclick="viewDialog();">发表评论</a>
 				<ul id="appendUl">
 					<c:forEach var="c" items="${commentlist}" varStatus="comstatus">
 						<li>
@@ -357,29 +358,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel panel-primary" id="inline"
-		style="display: none; width: 300px; height: 320px;">
-		<div class="panel-heading">
-			<h3 class="panel-title">评论</h3>
-		</div>
-		<div class="panel-body">
-			<div>
-				<div class="form-group">
-					评论内容:
-					<textarea class="form-control" rows="8" id="textMessage"
-						style="height: 175px; width: 240px;"></textarea>
-				</div>
-			</div>
-			<div>
-				<input type="hidden" value="" id="wxOpenid" /> <a
-					class="button button-pill button-primary" href="#" role="button"
-					onclick="sendMessage();">发送</a> <a
-					class="button button-pill button-primary" href="#" role="button"
-					onclick="closefancybox();">关闭</a>
-			</div>
-
-		</div>
-	</div>
+	<%@ include file="/WEB-INF/jsp/userLogin/login.jsp"%>
 	<script type="text/javascript"
 		src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<script type="text/javascript">

@@ -21,7 +21,12 @@ public interface UseryService extends IBaseService<Usery, Integer> {
 	List<Usery> findChildsPagerByLevelAndSort(String viewLevel, Integer id, Integer pageNum, Integer pageSize);
 
 	Long findChildNum(Integer useryId);
+	
+	Long findChildNumByLevel(Integer useryId,Integer level);
 
 	Usery findByDianpuId(Integer dianpuId);
 	
+	void jianceUserLevel(Integer useryId,Integer userId);
+	
+	void jianceUserLevel(Usery usery,Users user);
 }

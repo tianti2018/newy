@@ -3,15 +3,11 @@ package com.zklc.weishangcheng.member.service.impl;
 import java.math.BigInteger;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
-import com.zklc.weishangcheng.member.hibernate.persistent.HongbaoDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductComment;
-import com.zklc.weishangcheng.member.hibernate.persistent.XingHuoQuanRecord;
 import com.zklc.weishangcheng.member.service.CommentService;
-import com.zklc.weishangcheng.member.service.UserService;
 
 @Service
 public class CommentServiceImpl extends BaseServiceImp<ProductComment, Integer> implements CommentService{

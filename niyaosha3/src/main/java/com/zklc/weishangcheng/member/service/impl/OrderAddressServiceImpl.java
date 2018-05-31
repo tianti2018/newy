@@ -89,7 +89,7 @@ public class OrderAddressServiceImpl extends BaseServiceImp<OrderAddress, Intege
 	}
 
 	@Override
-	public OrderAddress findByUserVo(UserVo userVo) {
+	public OrderAddress findDefaultAddressByUserVo(UserVo userVo) {
 		String hql = ""; 
 		List<OrderAddress> list = null;
 		if(userVo.getUser()!=null){

@@ -5,16 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -35,32 +28,19 @@ import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.util.ERCodeUtil;
 import com.zklc.framework.service.impl.BaseServiceImp;
-import com.zklc.weishangcheng.member.dao.FhRecordDao;
 import com.zklc.weishangcheng.member.dao.UserDao;
-import com.zklc.weishangcheng.member.hibernate.persistent.ChengFaUser;
-import com.zklc.weishangcheng.member.hibernate.persistent.FhRecord;
-import com.zklc.weishangcheng.member.hibernate.persistent.Hongbao;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
-import com.zklc.weishangcheng.member.service.ChengFaUserService;
-import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.JiFenRecordService;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
-import com.zklc.weishangcheng.member.util.HongBaoUtil;
 import com.zklc.weixin.util.UserInfoUtil;
 
 import net.sf.json.JSONObject;
@@ -70,24 +50,13 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 	@Autowired
 	private UserDao userDao;
 	@Autowired
-	private JiFenRecordService jfrecordService;
-	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
 	
-	@Autowired
-	private FhrecordService fhrecordService;
-	
-	@Autowired
-	private FhRecordDao fhRecordDao;
-	@Autowired
-	private ChengFaUserService chengfaService;
 	
 	@Autowired
 	private UseryService useryService;
 	@Autowired
 	private OrderJinHuoService orderService;
-	@Autowired
-	private XingHuoQuanRecordService xingHuoQuanRecordService;
 	
 	@Override
 	public Users findUserByLoginName(String loginName) {
@@ -613,135 +582,7 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 		return null;
 	}
 
-	public String fahongbao(String wxOpenId,Integer userId,Integer fromUserId,Integer level,Integer amount,Integer flagCount) {
-		String message = "";
-		
-		//查找orderId并且为已经支付的订单
-		
-		
-		//更新状态
-		FhRecord fhRecord = fhRecordDao.findFhRecordBytoUserId(userId,fromUserId,amount*1.0,"1",null);
-		if (null!=fhRecord) {
-			String hql = "from ChengFaUser cf where cf.userId = "+userId+" and money = "+amount*1.0+" and status = 0";
-			List<ChengFaUser> chengfas = chengfaService.findByHql(hql, null);
-			ChengFaUser chengfa = null;
-			if(chengfas.size()>0){
-				chengfa = chengfas.get(0);
-			}else{
-				//发送红包
-				message =fahongbaozhu(wxOpenId,userId,amount*100,fhRecord);
-			}
-			
-			if ("发放成功".equals(message)||chengfa!=null) {
-				fhRecord.setFlag("2");
-				fhRecord.setUpdaDate(new Date());
-				fhRecordDao.update(fhRecord);
-				
-				Users jifenUser = this.findById(fromUserId); //记录卡的发放个数
-				switch (flagCount.intValue()) {
-				}
-				
-				//激活对应级别的用户
-				switch (level.intValue()) {
-				}
-				this.update(jifenUser);
-				if(chengfa!=null){
-					chengfa.setStatus(1);//更改惩罚为已惩罚
-					chengfaService.update(chengfa);
-					message = "由于:"+chengfa.getMemo()+",本红包被系统收回!";
-				}
-			}
-		}
-		else {
-			message = "您已发货或者您正在进行重复提交，请等待服务器的反应...";
-		}
-		return message;
-	}
-
 	
-	public String fahongbaozhu(String wxOpenId,Integer userId,int amount, FhRecord fhRecord) {
-		String message="";
-		String billNo = HongBaoUtil.createBillNo();
-		SortedMap<String, String> map = HongBaoUtil.createMap(billNo, wxOpenId, String.valueOf(userId),amount);  
-		HongBaoUtil.sign(map);  
-		String requestXML = HongBaoUtil.getRequestXml(map);  
-		try {
-			String path="/yunwei8/caoyuan.p12";
-			if(System.getProperty("os.name").toLowerCase().contains("windows")) {
-				path="c:/yifei.p12";
-			}
-			 FileInputStream instream = new FileInputStream(new File(path));
-			 String responseXML = HongBaoUtil.post(requestXML,instream);
-			 
-			 Document document;
-			 document = DocumentHelper.parseText(responseXML);
-			 Element root = document.getRootElement();
-			 List<Element> elements = root.elements();
-			 
-			 Hongbao hongbao = new Hongbao();
-			 hongbao.setAddTime(new Date());
-			 hongbao.setOpenid(wxOpenId);
-			 hongbao.setAmount(amount/100);
-			 hongbao.setBillNo(billNo);
-			 hongbao.setRemark(responseXML);
-			 hongbao.setFhrecordId(fhRecord.getFhId());
-			 hongbao.setUserId(fhRecord.getUserId());
-			 hongbao.setFromUserId(fhRecord.getFromUserId());
-			 String return_msg = "";
-			 String return_code = "";
-			 String result_code = "";
-			 String send_listid = "";
-			 for(Element el:elements){
-				 if(el.getName().trim().equals("return_code")){
-					 return_code = el.getTextTrim();
-				 }
-				 if(el.getName().trim().equals("return_msg")){
-					 return_msg = el.getTextTrim();
-					 message=return_msg;
-				 }
-				 if(el.getName().trim().equals("result_code")){
-					 result_code = el.getTextTrim();
-				 }
-				 if(el.getName().trim().equals("send_listid")){
-					 send_listid = el.getTextTrim();
-					 hongbao.setWxBillNo(send_listid);
-				 }
-			 }
-			 if (send_listid!="") {
-				 hongbao.setResult(1);
-				 message="发放成功";
-			 }else if(responseXML.contains("请求已受理")){
-				 hongbao.setResult(1);
-				 message="发放成功";
-			 }else{
-				hongbao.setResult(0);
-			 }
-//			 hongBaoDao.save(hongbao);
-		} 
-		catch (KeyManagementException e) {
-			e.printStackTrace();
-		} 
-		catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
-		} 
-		catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} 
-		catch (CertificateException e) {
-			e.printStackTrace();
-		} 
-		catch (KeyStoreException e) {
-			e.printStackTrace();
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		} 
-		catch (DocumentException e) {
-			e.printStackTrace();
-		}
-		
-		return message;
-	}
 	
 	
 	private String createBillNO(String ordersBH, int amount) {
@@ -890,6 +731,13 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 		if(users!=null&&users.size()>0){
 			return users.get(0);
 		}
+		return null;
+	}
+
+	@Override
+	public String fahongbao(String wxOpenId, Integer userId, Integer fromUserId, Integer level, Integer amount,
+			Integer flagCount) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

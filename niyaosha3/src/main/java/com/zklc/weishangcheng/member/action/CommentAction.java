@@ -5,14 +5,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Date;
 import java.util.Map;
 
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -21,19 +18,16 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
+import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductComment;
-import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.ProductCommentVo;
 import com.zklc.weishangcheng.member.service.CommentService;
-import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
-import com.zklc.weixin.util.WeixinUtil;
+
+import net.sf.json.JSONObject;
 
 @SuppressWarnings("serial")
 @ParentPackage("json")

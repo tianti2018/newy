@@ -193,15 +193,18 @@ function listCards(){
 
 	$(document).ready(function() { 
 		if("${userVo.usery!=null}"=="true"){
+			if("${userVo.usery.dianPuId!=null}"=="true"){
+				loadTdAndChjl();//加载团队和成交量
+				//loadUserMoneyWL();//加载
+				loadUserMoneyAll();//加载收益
+				//loadUserJifen();加载用户积分
+			}
+			
 			if(ifValidate()){
 				loadUserInfo();
 				
 			}
-			loadTdAndChjl();//加载团队和成交量
-			//loadUserMoneyWL();//加载
-			loadUserMoneyAll();//加载收益
 			
-			//loadUserJifen();加载用户积分
 		}
 	}); 
 	

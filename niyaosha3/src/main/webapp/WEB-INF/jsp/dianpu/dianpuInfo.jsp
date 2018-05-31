@@ -65,7 +65,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	        <a href="javascript:showProducts(1);"><span >&nbsp;</span><span >已上架</span></a>
 	        <a href="javascript:showProducts(0);"><span >&nbsp;</span><span >未上架</span></a>
         </c:if>
-        <a href="#inline" onclick="viewDialog();" id="dianpuxinxi"><span >&nbsp;</span><span >店铺信息</span></a>
+        <a href="#inline" onclick="viewDialog();" id="dianpuxinxi"><span >&nbsp;</span><span >修改店铺信息</span></a>
     </div>
 	<!-- wrapper start -->
 	<div style="width: 100%">

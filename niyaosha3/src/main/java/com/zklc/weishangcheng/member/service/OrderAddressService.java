@@ -24,5 +24,6 @@ public List<OrderAddress> listAllAddress(UserVo userVo);
 
 public UserVo defaultAddr(Integer id, UserVo userVo);
 
-public OrderAddress findByUserVo(UserVo userVo);
+public OrderAddress findDefaultAddressByUserVo(UserVo userVo);
+
 }  

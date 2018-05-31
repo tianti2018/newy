@@ -4,18 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.servlet.ServletInputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -30,36 +27,26 @@ import com.utils.RequestHandler;
 import com.utils.Sha1Util;
 import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
 import com.zklc.weishangcheng.member.hibernate.persistent.DianpuForUser;
-import com.zklc.weishangcheng.member.hibernate.persistent.LiuCode;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
 import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
-import com.zklc.weishangcheng.member.hibernate.persistent.Product;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductsForDianpu;
 import com.zklc.weishangcheng.member.hibernate.persistent.ShouYiForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.service.CommentService;
 import com.zklc.weishangcheng.member.service.DianpuForUserService;
-import com.zklc.weishangcheng.member.service.GoodYongJinService;
-import com.zklc.weishangcheng.member.service.JiFenRecordService;
-import com.zklc.weishangcheng.member.service.LiuCodeService;
-import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.ProductService;
+import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.ProductsForDianpuService;
 import com.zklc.weishangcheng.member.service.ProductsService;
 import com.zklc.weishangcheng.member.service.ShouYiForUserService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.service.XingHuoQuanRecordService;
 import com.zklc.weishangcheng.member.util.PublicUtil;
 import com.zklc.weixin.util.SystemMessage;
-import com.zklc.weixin.util.sign;
 
 import net.sf.json.JSONObject;
 
@@ -89,28 +76,16 @@ public class PayGoodAction extends BaseAction {
 	@Autowired
 	private OrdersService orderService;
 	@Autowired
-	private GoodYongJinService yongJinService;
-	@Autowired
 	private OrderAddressService orderAddressService;
 	@Autowired
 	private WeixinAutosendmsgService autosendmsgService;
-	@Autowired
-	private ProductService productService;
 	@Autowired
 	private ProductsService productsService;
 	@Autowired
 	private ProductsForDianpuService productsForDianpuService;
 	@Autowired
-	private JiFenRecordService jiFenRecordService;
-	@Autowired
 	private ShouYiForUserService shouyiService;
-	@Autowired
-	private XingHuoQuanRecordService xingHuoQuanRecordService;
-	@Autowired
-	private CommentService commentservice;
 	
-	@Autowired
-	private LiuCodeService liuCodeService;
 	@Autowired
 	private DianpuForUserService dianpuForUserService;
 	
@@ -456,7 +431,7 @@ public class PayGoodAction extends BaseAction {
 					parentShouyi = getShouyi(dianzhuPrice-parentPice);
 					
 					//状态 0未获得  1已获得  2 支出  
-					OrderAddress orderAddress = orderAddressService.findByUserVo(userVo);
+					OrderAddress orderAddress = orderAddressService.findDefaultAddressByUserVo(userVo);
 					if(orderAddress!=null){
 						// 订单编号
 						ordersBH = "dp" + PublicUtil.getOrderNo();
@@ -601,7 +576,7 @@ public class PayGoodAction extends BaseAction {
 						}
 						return;
 					}
-					OrderAddress orderAddress = orderAddressService.findByUserVo(userVo);
+					OrderAddress orderAddress = orderAddressService.findDefaultAddressByUserVo(userVo);
 					if(orderAddress!=null){
 						// 订单编号
 						ordersBH = "dp" + PublicUtil.getOrderNo();
@@ -742,7 +717,7 @@ public class PayGoodAction extends BaseAction {
 					parentShouyi = getShouyi(dianzhuPrice-parentPice);
 					
 					//状态 0未获得  1已获得  2 支出  
-					OrderAddress orderAddress = orderAddressService.findByUserVo(userVo);
+					OrderAddress orderAddress = orderAddressService.findDefaultAddressByUserVo(userVo);
 					if(orderAddress!=null){
 						// 订单编号
 						ordersBH = "dp" + PublicUtil.getOrderNo();
@@ -872,7 +847,7 @@ public class PayGoodAction extends BaseAction {
 					}
 					gukePrice = getPrice(gukeLevel, prod,null);
 					
-					OrderAddress orderAddress = orderAddressService.findByUserVo(userVo);
+					OrderAddress orderAddress = orderAddressService.findDefaultAddressByUserVo(userVo);
 					if(orderAddress!=null){
 						// 订单编号
 						ordersBH = "dp" + PublicUtil.getOrderNo();
@@ -941,178 +916,7 @@ public class PayGoodAction extends BaseAction {
 		}
 	}
 
-	public String toJifenBuy(){
-		userVo = getSessionUser();
-		user = userVo.getUser();
-		if(user==null){
-			return "timeOut";
-		}
-		List othJifen = jiFenRecordService.countUserJifen(user.getUserId(), 2);
-		List newuserJIfen = jiFenRecordService.countNewUserJifen(user.getUserId(), 2);
-		OrderAddress address = orderAddressService.findOrderAddressByUserId(user.getUserId());
-		LiuCode code = liuCodeService.findById(26);
-		if(code != null){
-			if(code.getBusPerson().contains(prodId.toString())){//是否需要推荐用户积分
-				request.setAttribute("newUserPro", true);
-			}else{
-				request.setAttribute("newUserPro", false);
-			}
-			
-			if(code.getLiuMoney().contains(prodId.toString())){//是否需要身份证
-				if(address != null && StringUtils.isNotBlank(address.getIdCard())){
-					//判断身份证号是否存在，存在是否使用兑换过积分产品
-					Integer countid = orderService.countUserIdCardProduct(user.getUserId(),prodId,address.getIdCard());
-					if(countid == 0){
-						request.setAttribute("isCardProd", true);
-					}else{
-						request.setAttribute("isCardProd", false);
-					}
-				}else{
-					request.setAttribute("isCardProd", false);
-				}
-			}
-			
-		}
-		if(othJifen.size() >0){
-			//查询用其他类型可用积分
-			request.setAttribute("useJifen", Integer.parseInt(othJifen.get(0).toString()));
-		}else{
-			request.setAttribute("useJifen", 0);
-		}
-
-		//查询新增用户可用积分
-		if(newuserJIfen.size()>0){
-			request.setAttribute("newUserJIfen",Integer.parseInt(newuserJIfen.get(0).toString()));
-		}else{
-			request.setAttribute("newUserJIfen",0);
-		}
-		
-		Product prod=productService.findById(prodId);
-		List<Product> prodList=productService.findByProperty("prodType", prod.getProdType());
-		request.setAttribute("prod", prod);
-		request.setAttribute("typelist", prodList);
-		request.setAttribute("typeqty", prodList.size());
-		request.setAttribute("orderAddress", address);
-		
-		return "toJifenBuy";
-	}
 	
-	public void saveJifenOrder(){
-		JSONObject json = new JSONObject();
-		response = ServletActionContext.getResponse();
-		response.setCharacterEncoding("utf-8");	
-		userVo = getSessionUser();
-		user = userVo.getUser();
-		Product prod=productService.findById(prodId);
-		Integer size =1;
-		
-		//购买数量不能大于限购数量
-//		if(size>prod.getLimitNum())
-//		{
-//			json.put("success", false);
-//			json.put("overbuy", true);
-//		}
-//		else if(size>prod.getStock())
-//		{
-//			json.put("success", false);
-//			json.put("stockless", true);
-//		}
-		if(user == null){
-			json.put("success", false);
-			json.put("timeOut", true);
-		}else {
-			user = userService.findById(user.getUserId());
-			
-			}
-		List jilist = null;
-		LiuCode code = liuCodeService.findById(26);
-		Integer xiaohaoType = 0;//0：其他积分支付  1：推荐用户积分支付
-		if(code != null && code.getBusPerson().contains(prodId.toString())){
-				//可使用积分是否足够
-				jilist = jiFenRecordService.countNewUserJifen(user.getUserId(), 2);
-				if(jilist.size() >0){
-					if(Integer.parseInt(jilist.get(0).toString()) >=  prod.getScore().intValue()){
-						xiaohaoType=1;
-					}
-				}
-				//推荐用户积分不足
-				if(xiaohaoType == 0){
-					jilist = jiFenRecordService.countUserJifen(user.getUserId(), 2);
-				}
-				//jilist = jiFenRecordService.countUserJifen(user.getUserId(), 2);
-		}else{
-			//可使用积分是否足够
-			jilist = jiFenRecordService.countUserJifen(user.getUserId(), 2);
-		}
-		
-		
-		if(jilist.size() >0){
-			Integer dataji = Integer.parseInt(jilist.get(0).toString());
-			if(dataji >= prod.getScore().intValue()){
-				// 订单编号
-				ordersBH = "jf" + PublicUtil.getOrderNo();
-				// 创建订单
-				if (order == null)
-				{
-					order = new Orders();
-				}
-				
-				OrderAddress orderAddress = orderAddressService.findById(orderAddRessId);
-				order.setMoney(prod.getPrice()*size+prod.getTransFee());
-				order.setOrdersBH(ordersBH);
-				order.setPname(prod.getProdName()+"("+prod.getProdCode()+prod.getProdColor()+prod.getProdSize()+")");
-				order.setToUserName(orderAddress.getUserName());
-				order.setMobile(orderAddress.getMobile());
-				order.setZipcode(orderAddress.getZipcode());
-				order.setCreateDate(new Date());
-				order.setUserId(user.getUserId());
-				order.setType(prod.getManufacturer());
-				order.setAddress(orderAddress.getAddress());
-				order.setProductId(prodId); 
-//					order.setLevelValue(levelValue);
-				
-				Boolean boolean1 = false;
-				if(code.getLiuMoney().contains(prodId.toString())){//是否需要身份证
-					if(orderAddress != null && StringUtils.isNotBlank(orderAddress.getIdCard())){
-						//判断身份证号是否存在，存在是否使用兑换过积分产品
-						Integer countid = orderService.countUserIdCardProduct(user.getUserId(),prodId,orderAddress.getIdCard());
-						if(countid == 0){
-							order.setTel(orderAddress.getIdCard());
-							boolean1=orderService.saveJifenOrder(order,user,prod,xiaohaoType);
-						}
-					}
-				}else{
-					boolean1=orderService.saveJifenOrder(order,user,prod,xiaohaoType);
-				}
-				/*if(boolean1 == true){
-					JiFenRecord jf = new JiFenRecord();
-					jf.setStatus(3);//待支付 兑换商品
-					jf.setCreateDate(new Date());
-					jf.setJifen(prod.getScore().intValue());
-					jf.setMemo("用户"+user.getUserId()+":"+user.getUserName()+" 兑换商品 id"+prod.getProdId()+" 花费"+jf.getJifen()+"积分");
-					jf.setOrderId(order.getOrdersId());
-					jf.setUserId(user.getUserId());
-					jiFenRecordService.save(jf);
-				}*/
-				
-				json.put("success", boolean1);
-				if(boolean1)
-					json.put("ordersBh", ordersBH);
-		}else{
-			json.put("success", false);
-		}
-		
-			}else{
-				json.put("success", false);
-				json.put("message", "积分不足");
-			}
-			try {
-				response.getWriter().print(json.toString());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	
-	}
 
 	public String toMiaoShaHou(){
 		userVo = getSessionUser();
@@ -1124,30 +928,6 @@ public class PayGoodAction extends BaseAction {
 		}
 		request.setAttribute("orderAddress", orderAddressService.findOrderAddressByUserId(user.getUserId()));
 		return "toMiaoShaHou";
-	}
-	
-	public void listDianpuYJ(){
-		userVo = getSessionUser();
-		user = userVo.getUser();
-		JSONObject json = new JSONObject();
-		json.put("success", false);
-		if(user==null){
-			json.put("timeOut", true);
-		}else{
-			DecimalFormat   fnum   =   new   DecimalFormat("##0.00"); //四舍五入，保留两位小数 
-			Double ytxGoodYJ = yongJinService.findAllMoneyBuyUserIdAndType(user.getUserId(),2);
-			Double ktxGoodYJ = yongJinService.findAllMoneyBuyUserIdAndType(user.getUserId(),1);
-			Double totalGoodYJ = ytxGoodYJ+ktxGoodYJ;
-			json.put("ytxGoodYJ", fnum.format(ytxGoodYJ));
-			json.put("ktxGoodYJ", fnum.format(ktxGoodYJ));
-			json.put("totalGoodYJ", fnum.format(totalGoodYJ));
-			json.put("success", true);
-		}
-		try {
-			ServletActionContext.getResponse().getWriter().print(json.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public String toGoodBuy(){
@@ -1167,55 +947,6 @@ public class PayGoodAction extends BaseAction {
 		return "toGoodBuy";
 	}
 	//面膜
-	public String toMianMoBuy(){
-		userVo = getSessionUser();
-		user = userVo.getUser();
-     	//user = userService.findById(3480);
-		if(user==null){
-			return "timeOut";
-		}
-		user = userService.findById(user.getUserId());
-		request.getSession().setAttribute("loginUser",user);
-		if(user == null){
-			return "timeOut";
-		}
-		Integer userId = user.getUserId();
-		Product prod=productService.findById(prodId);
-		List<Product> prodList=productService.findByProperty("prodType", prod.getProdType());
-		BigInteger count=commentservice.commentCount(prodId);
-		List<Integer> status=commentservice.getstatus(userId, prodId);
-		int statu=0;
-		for(int i=0;i<status.size();i++){
-			int a = status.get(i);
-			if(a==1||a==2){
-				statu=1;
-			}
-		}
-		request.setAttribute("prod", prod);
-		request.setAttribute("typelist", prodList);
-		request.setAttribute("typeqty", prodList.size());
-		request.setAttribute("count", count);
-		request.setAttribute("statu", statu);
-		request.setAttribute("orderAddress", orderAddressService.findOrderAddressByUserId(user.getUserId()));
-		AccessToken accessToken = autosendmsgService.processAccessToken();
-		String nonce_str = sign.create_nonce_str();
-        String timestamp = sign.create_timestamp();
-        String url = SystemMessage.getString("YUMING")+"/pay/payGoodAction!toMianMoBuy.action?prodId="+prodId;
-        request.setAttribute("appId", SystemMessage.getString("APPID"));
-        request.setAttribute("nonce_str", nonce_str);
-        request.setAttribute("timestamp", timestamp);
-        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
-        request.setAttribute("url", 
-        		"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
-        				url+"&response_type=code&scope=snsapi_userinfo&state="+userVo.getUsery().getUnionid()+"#wechat_redirect"
-        		
-//        		WeixinUtil.getShorUrl(accessToken.getToken(), 
-//        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
-//        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
-//        				)
-        			);
-		return "toMianMoBuy";
-	}
 	
 	public void saveHouMS(){
 
@@ -1272,83 +1003,6 @@ public class PayGoodAction extends BaseAction {
 			e.printStackTrace();
 		}
 		
-	}
-	//保存面膜订单
-	public void saveMianMoOrder()
-	{
-		JSONObject json = new JSONObject();
-		response = ServletActionContext.getResponse();
-		response.setCharacterEncoding("utf-8");	
-		userVo = getSessionUser();
-		user = userVo.getUser();
-//		user = userService.findById(1820);
-		Product prod=productService.findById(prodId);
-		Integer size =MyUtils.isNumber(qty_item_1)?Integer.parseInt(qty_item_1):1;
-		
-		//购买数量不能大于限购数量
-		if(size>prod.getLimitNum())
-		{
-			json.put("success", false);
-			json.put("overbuy", true);
-		}
-		else if(size>prod.getStock())
-		{
-			json.put("success", false);
-			json.put("stockless", true);
-		}
-		if(user == null){
-			json.put("success", false);
-			json.put("timeOut", true);
-		}else {
-			user = userService.findById(user.getUserId());
-			// 订单编号
-				ordersBH = "go" + PublicUtil.getOrderNo();
-				// 创建订单
-				if (order == null)
-				{
-					order = new Orders();
-				}
-				//状态 0未获得  1已获得  2 支出  
-			Integer inQty=xingHuoQuanRecordService.findAllMoneyByUserIdAndStatus(user.getUserId(), 1);
-			Integer outQty=xingHuoQuanRecordService.findAllMoneyByUserIdAndStatus(user.getUserId(), 2); 
-			Integer resultQty=inQty-outQty;//星火券余额
-			//如果用户提交的星火券数量和计算的不一样则不能提交订单
-			if((xhq_count!=0&&xhq_count>resultQty))
-			{
-				json.put("success", false);
-				json.put("xhq_nok", true);
-			}
-			else if(xhq_count>0 && orderService.checkXingHuoQuanOrder(user)>1)
-			{
-				json.put("success", false);
-				json.put("xhq_overbuy", true);
-			}
-			else
-			{
-				OrderAddress orderAddress = orderAddressService.findById(orderAddRessId);
-				order.setMoney(prod.getPrice()*size+prod.getTransFee());
-				order.setOrdersBH(ordersBH);
-				order.setPname(prod.getProdName()+"("+prod.getProdCode()+prod.getProdColor()+prod.getProdSize()+")");
-				order.setToUserName(orderAddress.getUserName());
-				order.setMobile(orderAddress.getMobile());
-				order.setZipcode(orderAddress.getZipcode());
-				order.setCreateDate(new Date());
-				order.setUserId(user.getUserId());
-				order.setType(prod.getManufacturer());
-				order.setAddress(orderAddress.getAddress());
-				order.setProductId(prodId);
-//					order.setLevelValue(levelValue);
-				orderService.saveMianMoOrder(order,user,prod);
-				json.put("success", true);
-				json.put("need_pay", xhq_count/2<order.getMoney()?true:false);
-				json.put("ordersBh", ordersBH);
-			}
-		}
-		try {
-			response.getWriter().print(json.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	

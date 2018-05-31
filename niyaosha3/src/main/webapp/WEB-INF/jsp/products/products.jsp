@@ -13,6 +13,7 @@
     <meta http-equiv="x-dns-prefetch-control" content="on">   
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <!--S 线上样式-->
+    <link href="<%=request.getContextPath()%>/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/base.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/mod_nav_foot.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/wx_bar_v2.s.min.css" rel="stylesheet" />
@@ -20,7 +21,9 @@
     <link href="<%=request.getContextPath()%>/css/wallet_v2.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/wallet_v2_guide.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/footer.css" rel="stylesheet" />
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/liuliang/jquery.1.9.1.min.js"></script>
+    
+	<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <!--E 线上样式-->
 
@@ -61,7 +64,6 @@
 
 	<!-- 幻灯片s -->
 
-	<link href="<%=request.getContextPath()%>/css/flexslider.css" rel="stylesheet" />
 	<div style="height: 45px;"></div>
 
 	<div class="banner">
@@ -75,7 +77,6 @@
 	</div>
 
 
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.flexslider-min.js"></script>
 <!-- zhang_wanqiang 城市定位-->
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cVZOceoa2o3Vl3LOxAYKsKNPU1avOE4w"></script>
 <div id="bdMapBox" style="display:none;"></div>
@@ -368,7 +369,7 @@ function shwoCity(){
 			style="bottom: 60px;">返回顶部</a>
 
 
-
+		<%@ include file="/WEB-INF/jsp/userLogin/login.jsp"%>
 		<!-- 底部s -->
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 		<!-- 底部e -->

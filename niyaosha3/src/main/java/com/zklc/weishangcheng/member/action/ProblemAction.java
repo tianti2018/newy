@@ -1,25 +1,8 @@
 package com.zklc.weishangcheng.member.action;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -27,29 +10,12 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.utils.GetWxOrderno;
-import com.utils.RequestHandler;
-import com.utils.Sha1Util;
-import com.utils.TenpayUtil;
 import com.zklc.framework.action.BaseAction;
-import com.zklc.weishangcheng.member.hibernate.persistent.FhRecordDian;
-import com.zklc.weishangcheng.member.hibernate.persistent.Users;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderAddress;
-import com.zklc.weishangcheng.member.hibernate.persistent.OrderDian;
 import com.zklc.weishangcheng.member.hibernate.persistent.Problem;
-import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.PriceForDianZhuLevel;
-import com.zklc.weishangcheng.member.service.FhRecordDianService;
-import com.zklc.weishangcheng.member.service.FhrecordService;
-import com.zklc.weishangcheng.member.service.UserService;
-import com.zklc.weishangcheng.member.service.OrderAddressService;
-import com.zklc.weishangcheng.member.service.OrderDianService;
+import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.service.ProblemService;
+import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
-import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.util.PublicUtil;
-import com.zklc.weixin.util.SystemMessage;
-import com.zklc.weixin.util.WeixinUtil;
 
 @SuppressWarnings("serial")
 @ParentPackage("json")

@@ -1,5 +1,4 @@
 package com.zklc.weishangcheng.member.service.impl;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,18 +11,14 @@ import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrdersVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
-import com.zklc.weishangcheng.member.service.FhrecordService;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 @Service
 public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer> implements OrderJinHuoService {
 	
-	@Autowired
-	private FhrecordService fhrecordService;
 	@Autowired
 	private OrdersService ordersService;
 	
@@ -35,104 +30,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 		return findUniqueByProperty("ordersId", ordersId);
 	}
 	
-	@Override
-	public OrderJinHuo findByUserId(Integer userId) {
-		OrderJinHuo returnOrder=null;
-		StringBuffer hql = new StringBuffer("from Order t where 1=1 ");
-		if(userId!=null&&!"".equals(userId)){
-			hql.append(" and t.userId="+userId);
-			hql.append(" order by t.createDate desc");
-			List list=super.findByHql(hql.toString(), null);
-			if(list!=null&&list.size()>0)
-				returnOrder=(OrderJinHuo) list.get(0);
-		}else{
-			return null;
-		}
-		return returnOrder;
-	}
-
-
-	@Override
-	public OrderJinHuo findByOrderBH(String orderBH) {
-		OrderJinHuo returnOrder=null;
-		StringBuffer hql = new StringBuffer("from Order t where 1=1 ");
-		if(orderBH!=null&&!"".equals(orderBH)){
-			hql.append(" and t.ordersBH='"+orderBH+"'");
-			List list=super.findByHql(hql.toString(), null);
-			if(list!=null&&list.size()>0)
-				returnOrder=(OrderJinHuo) list.get(0);
-		}else{
-			return null;
-		}
-		return returnOrder;
-	}
-
-
-	@Override
-	public OrderVo findByOrderVoBH(String orderBH) {
-		OrderVo returnOrder=null;
-		StringBuffer hql = new StringBuffer("select * from ordery t where 1=1 ");
-		if(orderBH!=null&&!"".equals(orderBH)){
-			hql.append(" and t.ordersBH='"+orderBH+"'");
-			System.out.println("查询订单sql是:"+hql);
-			List list=super.findBySql(OrderVo.class,hql.toString(), null);
-			if(list!=null&&list.size()>0)
-				returnOrder=(OrderVo) list.get(0);
-		}else{
-			return null;
-		}
-		return returnOrder;
-	}
-
-	@Override
-	public List findPerOrder(Integer userId, String orderNo) {
-		String sql = "SELECT o.ordersId,o.toUserName,o.mobile,o.address,date_format(o.createDate,'%Y-%m-%d %H:%i:%s') createDate,if(o.order_status=1,'下单已购买','下单未购买'),o.pname FROM ordery o where o.userId = "+userId+" and o.order_status = "+orderNo;
-		List list=super.findBySql(sql, null);
-		return list;
-	}
-
-	
-
-	@Override
-	public List findLevelPeoOrder(Integer userId, String orderType,
-			String orderLevel) {
-		List list = null;
-		StringBuffer sql = new StringBuffer();
-		if(orderLevel.equals("all")){
-			sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o.userId) wxopenid,o.money,o.kuaidiName,o.kuaidiNo from ordery o where o.userId in (");
-			sql.append("select t2.userId from users t1, users t2 where t1.userId=t2.referrerId and (t1.userId= "+userId+" )  and t2.wxOpenid is NOT NULL) and o.order_status in("+orderType+")");
-		    sql.append("  UNION ALL  ");
-		    sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o1.userId) wxopenid,o1.money,o1.kuaidiName,o1.kuaidiNo from ordery o1 where o1.userId in (");
-		    sql.append("select t2.userId from users t1, users t2 where t1.userId=t2.referrerId and (t1.referrerId= "+userId+" )  and t2.wxOpenid is NOT NULL) and o1.order_status in("+orderType+")");
-		    sql.append("  UNION ALL  ");
-		    sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o2.userId) wxopenid,o2.money,o2.kuaidiName,o2.kuaidiNo from ordery o2 where o2.userId in (");
-		    sql.append("select t3.userId from users t3 where t3.referrerId in(select t2.userId from users t1, users t2 where t1.userId=t2.referrerId ");
-		    sql.append("and (t1.referrerId= "+userId+" )) and t3.wxOpenid is NOT NULL ) and o2.order_status in("+orderType+")");
-		    
-		    list=super.findBySql(sql.toString(), null);
-		    
-		}else if(orderLevel.equals("1")){
-			sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o.userId) wxopenid,o.money,o.kuaidiName,o.kuaidiNo from ordery o where o.userId in (");
-			sql.append("select t2.userId from users t1, users t2 where t1.userId=t2.referrerId and (t1.userId= "+userId+" )  and t2.wxOpenid is NOT NULL) and o.order_status in("+orderType+")");
-			
-			list=super.findBySql(sql.toString(), null);
-			
-		}else if(orderLevel.equals("2")){
-			sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o1.userId) wxopenid,o1.money,o1.kuaidiName,o1.kuaidiNo from ordery o1 where o1.userId in (");
-			sql.append("select t2.userId from users t1, users t2 where t1.userId=t2.referrerId and (t1.referrerId= "+userId+" )  and t2.wxOpenid is NOT NULL) and o1.order_status in("+orderType+")");
-			
-			list=super.findBySql(sql.toString(), null);
-			
-		}else if(orderLevel.equals("3")){
-			sql.append("select ordersId,userId,toUserName,mobile,address,order_status, date_format(createDate,'%Y-%m-%d %H:%i:%s') datatime,pname,(select u.wxOpenid from users u where u.userId = o2.userId) wxopenid,o2.money,o2.kuaidiName,o2.kuaidiNo from ordery o2 where o2.userId in (");
-		    sql.append("select t3.userId from users t3 where t3.referrerId in(select t2.userId from users t1, users t2 where t1.userId=t2.referrerId ");
-		    sql.append("and (t1.referrerId= "+userId+" )) and t3.wxOpenid is NOT NULL ) and o2.order_status in("+orderType+")");
-		    
-		    list=super.findBySql(sql.toString(), null);
-		}
-		return list;
-	}
-
 
 	@Override
 	public List findMyOrderList(UserVo userVo, String type,String date1,String date2,Integer pageNum) {
@@ -182,19 +79,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 		return null;
 	}
 
-
-	@Override
-	public boolean updateOrdersMsg(Integer orderId) { 
-		boolean result = false;
-		OrderJinHuo order = super.findById(orderId);
-		if(null != order && !"".equals(order)){
-//			order.setOrderStatus(6);
-			super.update(order);
-			result = true;
-		}
-		
-		return result;
-	}
 
 	@Override
 	public void timerUpdateOrderStatus() {
@@ -270,23 +154,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 //		System.out.println("over");
 	}
 
-	@Override
-	public List findCurrUserAllOrder(Integer userId) {
-		List list = null;
-		    return list;
-	}
-
-	@Override
-	public List findLevelUserOrderMoney(Integer userId, String orderType,
-			String orderLevel) {
-		List list = null;
-		
-		return  list;
-	}
-
-	
-	
-	
 	
 	public int moneyPay(OrderJinHuo order, String openid,Users user) {	return 0;
 	}
@@ -305,21 +172,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 		}
 		
 		return list;
-	}
-
-	@Override
-	public Integer findOrderCountByUserId(Integer userId) {
-		Number returnNum=0;
-		StringBuffer hql = new StringBuffer("select count(ordersId) from Order t where 1=1 ");
-		if(userId!=null){
-				hql.append(" and t.orderStatus=1");
-				hql.append(" and t.userId="+userId+"");
-				List lit =super.findByHql(hql.toString(), null);
-				if (null!=lit) {
-					returnNum = (null==lit.get(0))?0:(Number)lit.get(0);
-				}
-		}
-		return returnNum.intValue();
 	}
 
 	@Override
@@ -343,52 +195,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 				}
 		}
 		return returnNum.intValue();
-	}
-
-
-	/**
-	 * 查询用户消费的总金额
-	 */
-	@Override
-	public Integer findTotalMoneyByUserId(Integer userId) {
-		double money11=0.0;
-		double money12=0.0;
-		double money13=0.0;
-		double money14=0.0;
-		String sql1="select sum(money) from miaosha_order where order_status in(1,2,4)";
-		String sql2="select sum(money) from orders where order_status in(1,2,4)";
-		String sql3="select sum(money) from ordersyliu where order_status in(1,2,4)";
-		String sql4="select sum(money) from ordery where order_status in(1,2,4)";
-		if(userId!=null){
-			sql1+=" and userId="+userId+"";
-			sql2+=" and userId="+userId+"";
-			sql3+=" and userId="+userId+"";
-			sql4+=" and userId="+userId+"";
-		}
-		System.out.println(sql1);
-		System.out.println(sql2);
-		System.out.println(sql3);
-		System.out.println(sql4);
-		List<Double> money1=(List<Double>) super.findBySql(sql1, null);
-		List<Double> money2=(List<Double>) super.findBySql(sql2, null);
-		List<Double> money3=(List<Double>) super.findBySql(sql3, null);
-		List<Double> money4=(List<Double>) super.findBySql(sql4, null);
-		if (null!=money1) {
-			 money11=(null==money1.get(0)?0:money1.get(0));
-		}
-		if (null!=money2) {
-			 money12=(null==money2.get(0)?0:money2.get(0));
-		}
-		if (null!=money3) {
-			 money13=(null==money3.get(0)?0:money3.get(0));
-		}
-		if (null!=money4) {
-			 money14=(null==money4.get(0)?0:money4.get(0));
-		}
-		DecimalFormat df=new DecimalFormat("0");
-		Integer totalMoney=Integer.parseInt(df.format(money11+money12+money13+money14));
-		System.out.println(totalMoney);
-		return totalMoney;
 	}
 
 

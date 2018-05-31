@@ -24,7 +24,6 @@ import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
 import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
-import com.zklc.weishangcheng.member.service.YongjinService;
 
 @SuppressWarnings("serial")
 @ParentPackage("json")
@@ -39,8 +38,6 @@ public class PayAction extends BaseAction {
 	private WeixinAutosendmsgService autosendmsgService;
 	@Autowired
 	private UseryService useryService;
-	@Autowired
-	private YongjinService yongjinService;
 	
 	private Users user;
 	private OrderJinHuo order;

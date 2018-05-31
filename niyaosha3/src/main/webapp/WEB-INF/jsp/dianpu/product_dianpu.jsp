@@ -80,6 +80,7 @@
 					$("#total_prod_m").text($(obj).attr("price"));
 					showAmt2(qty,total_item_amt,yunfei,guige);
 					$("#checkProdId").val($(obj).attr("prodId"));
+					$("#checkPdId").val($(obj).attr("pdId"));
 					$("#productKC").val($(obj).attr("stock"));
 				}
 				function showAmt2(qty,total_item_amt,transFee,guige)
@@ -275,7 +276,7 @@
 						if(pageNum==0)
 							insertcode();
 					});
-					function viewDialog() {
+					/* function viewDialog() {
 						 $("#liuyan").fancybox({
 						        'hideOnContentClick': true
 						 });
@@ -283,7 +284,7 @@
 					function closefancybox() {
 						jQuery.fancybox.close();
 						$('#textMessage').val("");
-					}
+					} */
 					function sendMessage() {
 						var textMessage = $('#textMessage').val();
 						var prodId = ${prod.productId};
@@ -406,7 +407,7 @@
 							<c:if test="${typeqty>0}">
 								<c:forEach var="p" items="${typelist}" varStatus="vstatus">
 									<a id="xuanze_${p.products.productsId}" class="xuanze button" name="product" guige="${p.products.guige}" stock="${p.products.stock}"
-											transFee="${p.products.transFee}" prodId="${p.products.productsId}" price="${p.price}" onclick="checkProd(this)">
+											transFee="${p.products.transFee}" pdId="${ p.id}" prodId="${p.products.productsId}" price="${p.price}" onclick="checkProd(this)">
 										<c:out	value="${p.products.guige}" />
 										<c:if test="${p.products.stock<500 }">
 											库存：<c:out value="${p.products.stock }" />件
@@ -416,7 +417,7 @@
 							</c:if>
 							<c:if test="${typeqty==0}">
 								<a id="xuanze_${prod.products.productsId}" class="xuanze button" name="product" guige="${prod.products.guige}" stock="${prod.products.stock}"
-											transFee="${prod.products.transFee}" prodId="${prod.products.productsId}" price="${prod.products.price}" onclick="checkProd(this)">
+											transFee="${prod.products.transFee}" pdId="${p.id}" prodId="${prod.products.productsId}" price="${prod.products.price}" onclick="checkProd(this)">
 										<c:out	value="${prod.products.guige}" />
 										<c:if test="${prod.products.stock<500 }">
 											库存：<c:out value="${prod.products.stock }" />件
@@ -488,9 +489,7 @@
 				</c:if>
 				<c:if test="${null==userVo.orderAddress}">
 					<div align="center">
-						<a
-							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?pdId=${prod.id}"
-							class="btn green" onclick="go();">选择一条收货地址</a>
+						<a id="orderAdress" href="#loginline" class="btn green" onclick="addressList();">选择一条收货地址</a>
 					</div>
 				</c:if>
 				<br/>
@@ -505,7 +504,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="tab-wrap">
 		<div class="tab">
 			<ul class="tuwen">
@@ -531,7 +530,7 @@
 		</div>
 		<div id="pingjia" class="shangpintu">
 			<div id="em_all" class="assess">
-					<a id="liuyan" href="#inline" class="btnn" onclick="viewDialog();">发表评论</a>
+					<!-- <a id="liuyan" href="#inline" class="btnn" onclick="viewDialog();">发表评论</a> -->
 				<ul id="appendUl">
 					<c:forEach var="c" items="${commentlist}" varStatus="comstatus">
 						<li>
@@ -553,29 +552,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="panel panel-primary" id="inline"
-		style="display: none; width: 300px; height: 320px;">
-		<div class="panel-heading">
-			<h3 class="panel-title">评论</h3>
-		</div>
-		<div class="panel-body">
-			<div>
-				<div class="form-group">
-					评论内容:
-					<textarea class="form-control" rows="8" id="textMessage"
-						style="height: 175px; width: 240px;"></textarea>
-				</div>
-			</div>
-			<div>
-				<input type="hidden" value="" id="wxOpenid" /> <a
-					class="button button-pill button-primary" href="#" role="button"
-					onclick="sendMessage();">发送</a> <a
-					class="button button-pill button-primary" href="#" role="button"
-					onclick="closefancybox();">关闭</a>
-			</div>
-
-		</div>
-	</div>
+	<%@ include file="/WEB-INF/jsp/userLogin/login.jsp"%>
+	
 	<script type="text/javascript"
 		src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<script type="text/javascript">
@@ -702,31 +680,33 @@
 			var prodId=$("#checkPdId").val();
 			var xhq_count=$("#diyongcount").val();
 			xhq_count=xhq_count==""?"0":xhq_count;
-			var addressId = ${userVo.orderAddress.id};
-			if(addressId==null){
+			var addressId = "${userVo.orderAddress.id}";
+			if(addressId==null||addressId==""){
 				alert("请选择收货地址或点击刷新页面!");
 				return;
 			}
 			
 			var inputamt = parseInt(parseInt(xhq_count) / 2);
 			var totalamt = parseFloat($("#total_amt").val());
-			if(num <=0){
-				alert("数量不能为0!");
-				$("#lijibuy").attr("onclick","orderBuy()");
-				return false;
+			
+			if(prodId=="")
+			{
+			  alert("请选择商品");
+			  $("#lijibuy").attr("onclick","orderBuy()");
+			  return false;
 			}
+			
 			else if(parseInt(num)>parseInt(stock))
 				{
 				  alert("库存不够");
 				  $("#lijibuy").attr("onclick","orderBuy()");
 				  return false;
 				}
-			else if(prodId=="")
-				{
-				  alert("请选择商品");
-				  $("#lijibuy").attr("onclick","orderBuy()");
-				  return false;
-				}
+			else if(num <=0){
+				alert("数量不能为0!");
+				$("#lijibuy").attr("onclick","orderBuy()");
+				return false;
+			}
 			
 			
 			if(confirm("确定购买"+num+"吗?")){
@@ -848,10 +828,6 @@
 
    	 	}
 	
-		go = function () {
-			self.location.href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action";
-		}
-		
 		
 		$(function(){
 			// 判断是否有sub-menu

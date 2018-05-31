@@ -130,7 +130,7 @@ public class WeixinAutosendmsgServiceImpl extends BaseServiceImp<WeixinAutosendm
 				}
 				userInfo.setSubscribe(jsonObject.getString("subscribe"));
 				userInfo.setOpenid(jsonObject.getString("openid"));
-				userInfo.setUnionid(jsonObject.getString("unionid"));
+//				userInfo.setUnionid(jsonObject.getString("unionid"));
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
