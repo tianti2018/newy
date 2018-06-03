@@ -1,6 +1,6 @@
 /*top*/
 .top{
-	background:  #1c7bcc;
+	background:  #00aa3a;
 	position: relative;
 	overflow: hidden;
 }
@@ -9,7 +9,7 @@
 	margin:20px auto;
 	overflow: hidden;
 }
-.face{
+/* .face{
 	float:left;
 	display: inline;
 	width:  80px;
@@ -17,7 +17,7 @@
 }
 .face img{
 	width: 100%;
-}
+} */
 .msg{
 	overflow: hidden;
 	padding-left: 10px;
@@ -34,7 +34,7 @@
 .money,.mumber{
 	width: 100%;
 	padding:5px 0;
-	background: #0bb5e8;	
+	background: #33dd66;	
 	overflow: hidden;		
 }
 .money span{
@@ -77,7 +77,7 @@
 	margin:10px 0;
 }
 .search_text{
-	border:1px solid #0bb5e8;
+	border:1px solid #33dd66;
 	line-height:25px;
 	width:40%;
 	color:#aaa;
@@ -85,7 +85,7 @@
 .search_btn{
 	font-size:1.4rem;
 	font-weight:bold;
-	color:#0bb5e8;
+	color:#33dd66;
 	margin-left:15px;
 	background:none;
 	border:none;
@@ -117,7 +117,7 @@
 	position: absolute;
 	right: 6px;
 	top: 6px;
-	background: #0bb5e8;
+	background: #33dd66;
 	color: #fff;
 	font-size: 1rem;
 	font-weight: normal;
@@ -167,13 +167,13 @@
 	color:#fff;
 }
 .sub-menu li a{
-	/* display: block; */
+	display: block;
 	color: #333;
 	font-size: 1.3rem;
 	font-weight: bold;
 	line-height: 26px;
 	padding:0 25px;
-/* 	background: url(../images/square.png) no-repeat 10px; */
+	background: url(../images/square.png) no-repeat 10px;
 	background-size: 5px;
 	position: relative;
 }
@@ -192,7 +192,7 @@
 }
 .mumber_list li{
 	padding:10px 0 10px 10px;
-	border-bottom:1px solid #0bb5e8;
+	border-bottom:1px solid #33dd66;
 	overflow:hidden;
 }
 .mumber_list span,.mumber_list img{

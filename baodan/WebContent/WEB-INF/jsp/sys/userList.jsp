@@ -169,6 +169,17 @@ $(function(){
 		$("#parentId").val(parentId);
 		loadSearch();
 	}
+	function orderList(userId){
+		var $form = $("<form method='post' action='orders!tuanduiCaiwu.action'></form>");
+		 try{
+		    	$form.append("<input type='text' name='userId' value='" + userId + "' />");
+		        $("body").append($form);
+		        $form.submit();
+		    } finally{
+		        if ($form)
+		            $form.remove();
+		    }
+	}
 </script>
 </head>
 <body onload="body_onload();">
@@ -206,16 +217,19 @@ $(function(){
 						</em></li>
 						<li>操作：<em>
 							<c:if test="${adminUser}">
-							<c:if test="${item.block=='1'}">
-								<input type="button" value="解锁" onclick="releaseUser('${item.userId}');" />| 
-							</c:if>
-							<c:if test="${item.block=='0'}">
-								<input type="button" value="锁定" onclick="blockUser('${item.userId}');" /> |
-							</c:if>
+								<c:if test="${item.block=='1'}">
+									<input type="button" value="解锁" onclick="releaseUser('${item.userId}');" />| 
+								</c:if>
+								<c:if test="${item.block=='0'}">
+									<input type="button" value="锁定" onclick="blockUser('${item.userId}');" /> |
+								</c:if>
 							 
-							<input type="button" value="删除" onclick="deleteUser('${item.userId}');" />|
-							<input type="button" value="领导" onclick="lingdao('${item.parentId}');" />|
-							<input type="button" value="手下" onclick="shouxia('${item.userId}');" />
+								<input type="button" value="删除" onclick="deleteUser('${item.userId}');" />|
+								<input type="button" value="领导" onclick="lingdao('${item.parentId}');" />|
+								<input type="button" value="手下" onclick="shouxia('${item.userId}');" />
+							</c:if>
+							<c:if test="${adminUser==false}">
+								<input type="button" value="查看订单" onclick="orderList('${item.userId}');" />
 							</c:if>
 						
 						</em></li>
@@ -295,6 +309,9 @@ $(function(){
 						<input type="button" value="删除" onclick="deleteUser('${item.userId}');" />					|
 						<input type="button" value="领导" onclick="lingdao('${item.parentId}');" />|
 						<input type="button" value="手下" onclick="shouxia('${item.userId}');" />
+					</c:if>
+					<c:if test="${adminUser==false}">
+						<input type="button" value="查看订单" onclick="orderList('${item.userId}');" />
 					</c:if>
 				</td>
 				<%-- <td class="pn-lopt"><a href="user!initModifyUser.action?userId=${item.userId}&&currentPage=<s:property value="pager.currentPage"/>" class="pn-loperator">修改</a></td>

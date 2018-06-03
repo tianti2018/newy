@@ -138,7 +138,9 @@
 	        		oUserName:$("#input_qoUserName").val(),
 	        		oPhone:$("#input_qoPhone").val(),
 	        		ordersBH:$("#input_qOrdersBH").val(),
-	        		
+	        		pname:$("#input_qPname").val(),
+	        		fromDate:$("#j_fromDate").val(),
+	        		endDate:$("#j_endDate").val(),
 	        		};
 	        for (var attr in data){
 	         
@@ -338,6 +340,9 @@
 								<c:if test="${item.order_status==1}">
 									<input type="button" name="cmdBtn" value="确认送货" style="cursor:pointer;width: 20%;" onclick="winSd('${item.ordersId}')" />
 								</c:if>
+								<c:if test="${item.order_status>1}">
+									<input type="button" name="cmdBtn" value="修改送货信息" style="cursor:pointer;width: 20%;" onclick="winSd('${item.ordersId}')" />
+								</c:if>
 								<input type="button" name="cmdBtn" value="订单重置" style="cursor:pointer;width: 20%;" onclick="winCHZH('${item.ordersId}')" />
 								<input type="button" name="cmdBtn" value="修改" style="cursor:pointer;width: 20%;" onclick="editOrder('${item.ordersId}')" />
 							</c:if>
@@ -458,6 +463,9 @@
 						</c:if>
 						<c:if test="${item.order_status=='1'}">
 							<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">确认送货</a>
+						</c:if>	
+						<c:if test="${item.order_status>1}">
+							<a href="javascript:void(0);" onclick="winSd('${item.ordersId}');" class="pn-loperator">修改送货信息</a>
 						</c:if>	
 					</c:if>
 					

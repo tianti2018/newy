@@ -72,7 +72,6 @@
 		<thead class="pn-lthead">
 		<tr>
 			<th width="32">序号</th>
-			<th width="100">商品Id</th>		
 			<th width="100">商品名称</th>
 			<th width="60">商品首图</th>
 			<th width="100">商品价格</th>
@@ -81,10 +80,17 @@
 			<th width="100">上传人</th>
 			<th width="100">商品样式</th>	
 			<!-- <th width="100">返利模式</th>	 -->
-			<th width="100">一级拨比</th>	
-			<th width="100">二级拨比</th>	
-			<th width="100">三级拨比</th>	
-			<th width="100">商品状态</th>
+			<th width="100">小二价格</th>	
+			<th width="100">掌柜价格</th>	
+			<th width="100">大掌柜价格</th>	
+			<th width="100">进货价价格</th>	
+			<th width="100">库存</th>
+			<th width="100">运费</th>	
+			<th width="100">规格</th>
+			<th width="100">限购数量</th>
+			<th width="100">排序值</th>
+			<th width="100">同款特征码</th>
+			<th width="100">状态</th>
 			<th width="150">操作</th>							
 		</tr>
 		</thead>
@@ -93,7 +99,6 @@
 			<c:forEach items="${litPager}" var="product" varStatus="status">
 			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);">
 				<td>${status.index+1}</td>
-				<td align="center">${product.productsId}</td>
 				<td align="center">
 					<a href="#" onclick="yulan(${product.productsId})" style="text-decoration:underline;color: blue;"/>${product.name}</a>
 				</td>
@@ -102,20 +107,22 @@
 				</td>
 				<td align="center">${product.price}</td>
 				<td align="center">${product.createDate}</td>
-				<%-- <td align="center">${product.userId}</td> --%>
 				<td align="center">${product.userName}</td>
 				<td align="center">
 					<c:if test="${product.type==0}">轮播图</c:if>
 					<c:if test="${product.type==1}">一行一款</c:if>
 					<c:if test="${product.type==2}">一行两款</c:if>
 				</td>
-				<%-- <td align="center">
-					<c:if test="${product.returntype==0}">百分比</c:if>
-					<c:if test="${product.returntype==1}">固定值</c:if>
-				</td> --%>
-				<td align="center">${fn:substringBefore(product.levelone*100,'.')}%</td>
-				<td align="center">${fn:substringBefore(product.leveltwo*100,'.')}%</td>
-				<td align="center">${fn:substringBefore(product.levelthr*100,'.')}%</td>
+				<td align="center">${product.levelone}</td>
+				<td align="center">${product.leveltwo}</td>
+				<td align="center">${product.levelthr}</td>
+				<td align="center">${product.levelfor}</td>
+				<td align="center">${product.stock}</td>
+				<td align="center">${product.transFee}</td>
+				<td align="center">${product.guige}</td>
+				<td align="center">${product.limitNum}</td>
+				<td align="center">${product.paixu}</td>
+				<td align="center">${product.prodType}</td>
 				<td align="center">
 					<c:if test="${product.status==0}">未上架</c:if>
 					<c:if test="${product.status==1}">已上架</c:if>

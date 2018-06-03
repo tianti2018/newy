@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@SuppressWarnings("serial")
-//@Entity
-//@Table(name="products") 
+@SuppressWarnings("serial")
+@Entity
+@Table(name="products") 
 public class Products extends AbstractSymBasePO {
 	
 	private Integer productsId;
@@ -23,14 +23,21 @@ public class Products extends AbstractSymBasePO {
 	private Double oldPrice;//原价
 	private Date createDate;//创建时间
 	private String productInfo;//界面详情  用来存储界面图文信息
-	private Double levelone;//等级
-	private Double leveltwo;
-	private Double levelthr;
-	private Integer levelfour;
+	private Double levelone;//小二价格
+	private Double leveltwo;//掌柜价格
+	private Double levelthr;//大掌柜价格
+	private Double levelfor;//进货价
 	private Integer type;//首页图显示类型 0轮播图 1一行一款2一行两款
-	private Integer returntype;//返利模式
 	private Integer status;//0取消上架1上架
-	
+	private String prodDescription;//商品描述卖点
+	private Double transFee;//运费
+	private Integer limitNum;//限购// 限购数量，默认值0 表示无限制，大于0，表示限制数量
+	private Integer stock;// 库存量
+	private String prodColor;//颜色
+	private String prodSize;//尺寸
+	private String guige;//规格
+	private Integer paixu;//排序,值越大越靠前
+	private Integer prodType;//特征码这个值相同则为同一款产品的属性
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "productsId", unique = true, nullable = false)
@@ -52,18 +59,11 @@ public class Products extends AbstractSymBasePO {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	@Column(name="userId")
 	public Integer getUserId() {
 		return userId;
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-	public Integer getLevelfour() {
-		return levelfour;
-	}
-	public void setLevelfour(Integer levelfour) {
-		this.levelfour = levelfour;
 	}
 	public Integer getType() {
 		return type;
@@ -95,6 +95,7 @@ public class Products extends AbstractSymBasePO {
 	public void setOldPrice(Double oldPrice) {
 		this.oldPrice = oldPrice;
 	}
+	@Column(length=5000)
 	public String getProductInfo() {
 		return productInfo;
 	}
@@ -119,17 +120,71 @@ public class Products extends AbstractSymBasePO {
 	public void setLevelthr(Double levelthr) {
 		this.levelthr = levelthr;
 	}
-	public Integer getReturntype() {
-		return returntype;
-	}
-	public void setReturntype(Integer returntype) {
-		this.returntype = returntype;
-	}
 	public Integer getStatus() {
 		return status;
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	public String getProdDescription() {
+		return prodDescription;
+	}
+	public void setProdDescription(String prodDescription) {
+		this.prodDescription = prodDescription;
+	}
+	public Double getTransFee() {
+		return transFee;
+	}
+	public void setTransFee(Double transFee) {
+		this.transFee = transFee;
+	}
+	public Integer getLimitNum() {
+		return limitNum;
+	}
+	public void setLimitNum(Integer limitNum) {
+		this.limitNum = limitNum;
+	}
+	public Integer getStock() {
+		return stock;
+	}
+	public void setStock(Integer stock) {
+		this.stock = stock;
+	}
+	public String getProdColor() {
+		return prodColor;
+	}
+	public void setProdColor(String prodColor) {
+		this.prodColor = prodColor;
+	}
+	public String getProdSize() {
+		return prodSize;
+	}
+	public void setProdSize(String prodSize) {
+		this.prodSize = prodSize;
+	}
+	public Double getLevelfor() {
+		return levelfor;
+	}
+	public void setLevelfor(Double levelfor) {
+		this.levelfor = levelfor;
+	}
+	public String getGuige() {
+		return guige;
+	}
+	public void setGuige(String guige) {
+		this.guige = guige;
+	}
+	public Integer getPaixu() {
+		return paixu;
+	}
+	public void setPaixu(Integer paixu) {
+		this.paixu = paixu;
+	}
+	public Integer getProdType() {
+		return prodType;
+	}
+	public void setProdType(Integer prodType) {
+		this.prodType = prodType;
 	}
 	
 }

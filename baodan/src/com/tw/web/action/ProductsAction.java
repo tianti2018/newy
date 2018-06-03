@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONObject;
-
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -36,6 +34,8 @@ import com.tw.web.dao.ProductsDAO;
 import com.tw.web.hibernate.persistent.AdminUser;
 import com.tw.web.hibernate.persistent.Products;
 import com.tw.web.util.SystemConfigUtil;
+
+import net.sf.json.JSONObject;
 
 @SuppressWarnings("serial")
 @ParentPackage("app-default")
@@ -61,14 +61,16 @@ public class ProductsAction extends ExtJSONActionSuport {
 	
 	private Products product;
 	private Integer productId;
+	private String transFee;
 	
     public String product(){
-    	if(productId != null)
-    		product = (Products) productsDAO.findById(productId);
-    	if(product != null){
-    		return "product";
-    	}
-    	return "error";
+    	HttpServletRequest request = ServletActionContext.getRequest();
+    	Products product=(Products) productsDAO.findById(productId);
+		List<Products> prodList=productsDAO.findEntityByPropertiName("prodType", product.getProdType());
+		request.setAttribute("prod", product);
+		request.setAttribute("typelist", prodList);
+		request.setAttribute("typeqty", prodList.size());
+    	return "product";
     }
     
     public String shangJia(){
@@ -135,8 +137,10 @@ public class ProductsAction extends ExtJSONActionSuport {
 		ServletContext application = ServletActionContext.getServletContext();
 		HttpServletResponse response = ServletActionContext.getResponse();
     	//建根目录
-        String savePath = application.getRealPath("")+"/images/shopImgs/productsimgs/";// 保存路径
-        String saveUrl= SystemConfigUtil.getString("houtai")+ application.getContextPath()+"/images/shopImgs/productsimgs/";// 回显路径
+//        String savePath = application.getRealPath("")+"/images/shopImgs/productsimgs/";// 保存路径
+		String savePath =SystemConfigUtil.getString("prudoct_upload");
+//        String saveUrl= SystemConfigUtil.getString("houtai")+ application.getContextPath()+"/images/shopImgs/productsimgs/";// 回显路径
+		String saveUrl=SystemConfigUtil.getString("houtai");
         File dir = new File(savePath);
         if(!dir.exists()){
             dir.mkdirs();
@@ -183,10 +187,12 @@ public class ProductsAction extends ExtJSONActionSuport {
         PrintWriter out = response.getWriter();
 //        PrintWriter out = response.getWriter();
         //文件保存目录路径
-        String savePath = application.getRealPath("")+"/images/shopImgs/productsimgs/";
+//        String savePath = application.getRealPath("")+"/images/shopImgs/productsimgs/";
+        String savePath =SystemConfigUtil.getString("prudoct_upload");
 //        String savePath ="C:/";
         //文件保存目录URL
-        String saveUrl=SystemConfigUtil.getString("houtai")+ application.getContextPath()+"/images/shopImgs/productsimgs/";// 回显路径
+//        String saveUrl=SystemConfigUtil.getString("houtai")+ application.getContextPath()+"/images/shopImgs/productsimgs/";// 回显路径
+        String saveUrl=SystemConfigUtil.getString("houtai");
         File dir = new File(savePath);
         if(!dir.exists()){
             dir.mkdirs();
@@ -296,6 +302,7 @@ public class ProductsAction extends ExtJSONActionSuport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		AdminUser loginUser = (AdminUser)session.getAttribute("user");
+		Date date = new Date();
 		if(product!=null){
 			if(product.getUserId()==null){
 				product.setUserId(loginUser.getUserId());
@@ -304,7 +311,7 @@ public class ProductsAction extends ExtJSONActionSuport {
 				product.setUserName(loginUser.getUserName());
 			}
 			if(product.getCreateDate()==null){
-				product.setCreateDate(new Date());
+				product.setCreateDate(date);
 			}
 			if(product.getStatus()==null){
 				product.setStatus(0);
@@ -312,21 +319,30 @@ public class ProductsAction extends ExtJSONActionSuport {
 			if(product.getLevelone() == null||product.getLevelone().equals("")){
 				product.setLevelone(0.0);
 			}else {
-				product.setLevelone(product.getLevelone()/100);
+				product.setLevelone(product.getLevelone());
 			}
 			if(product.getLeveltwo() == null||product.getLeveltwo().equals("")){
 				product.setLeveltwo(0.0);
 			}else {
-				product.setLeveltwo(product.getLeveltwo()/100);
+				product.setLeveltwo(product.getLeveltwo());
 			}
 			if(product.getLevelthr() == null||product.getLevelthr().equals("")){
 				product.setLevelthr(0.0);
 			}else {
-				product.setLevelthr(product.getLevelthr()/100);
+				product.setLevelthr(product.getLevelthr());
+			}if(product.getLevelfor() == null||product.getLevelfor().equals("")){
+				product.setLevelfor(0.0);
+			}else {
+				product.setLevelfor(product.getLevelthr());
+			}
+			if(product.getProdType()==null||product.getProdType().equals("")){
+				SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss");
+				Integer prodtype = Integer.parseInt(format.format(date));
+				product.setProdType(prodtype);
 			}
 			product.setUserId(loginUser.getUserId());
 			product.setUserName(loginUser.getUserName());
-			
+			product.setTransFee(Double.valueOf(transFee));
 			productsDAO.saveOrUpdate(product);
 		}else {
 			return "listAll";
@@ -390,6 +406,14 @@ public class ProductsAction extends ExtJSONActionSuport {
 
 	public void setProductId(Integer productId) {
 		this.productId = productId;
+	}
+
+	public String getTransFee() {
+		return transFee;
+	}
+
+	public void setTransFee(String transFee) {
+		this.transFee = transFee;
 	}
 
 }

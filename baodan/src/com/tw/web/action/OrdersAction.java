@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -77,6 +78,8 @@ import sun.misc.BASE64Encoder;
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/productsList.jsp"),
 			@Result(name="listAllApplys", 			value="/WEB-INF/jsp/products/listAllApplys.jsp"),
 			@Result(name="ordersList", 			value="/WEB-INF/jsp/products/ordersList.jsp"),
+			@Result(name="tuanduiCaiwu", 			value="/WEB-INF/jsp/products/tuanduiCaiwuList.jsp"),
+			
 			@Result(name="caiwuList", 			value="/WEB-INF/jsp/products/caiwuList.jsp"),
 			@Result(name="listAll", 			value="/WEB-INF/jsp/products/allOrders.jsp"),
 			@Result(name="initkuaidi", 			value="/WEB-INF/jsp/products/addKuaidi.jsp"),
@@ -536,7 +539,6 @@ public class OrdersAction extends ExtJSONActionSuport {
 			compare.put("userId", 0);
 		}
 		
-		sort.put("createDate", false);
 		if (null!=toUserName &&! "".equals(toUserName.trim())) {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
@@ -702,6 +704,216 @@ public class OrdersAction extends ExtJSONActionSuport {
 		request.getSession().setAttribute("dateType", dateType);
 		request.setAttribute("totalMoney", totalMoney);
 		return "caiwuList";
+	}
+	
+	public String tuanduiCaiwu() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Object obj = request.getSession().getAttribute("user");
+		if(obj == null){
+			return "error";
+		}
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+			if(user.getBlock().equals("1")){
+				return "block";
+			}
+		}
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		if(paixu==null){
+			paixu = (Integer) request.getSession().getAttribute("paixu");
+			
+		}
+		if(paixu==null){
+			paixu = 0;
+		}
+		boolean desc = true;
+		if(paixu!=null){
+			request.getSession().setAttribute("paixu", paixu);
+			if(paixu == 1){
+				desc = false;
+			}
+		}
+		
+		String sql = "select sum(money) from orders where order_status in (1,2,3,4,6) ";
+		Integer[] os = {1,2,3,4,5,6};
+		conditionProperties.put("order_status", os);
+		compare.put("order_status", 4);
+		if (null!=userId &&! "".equals(userId)) {
+			conditionProperties.put("userId", userId);
+			compare.put("userId", 0);
+			sql+=" and userId ="+userId;
+		}else{
+			return "block";
+		}
+		
+		if (null!=toUserName &&! "".equals(toUserName.trim())) {
+			conditionProperties.put("toUserName", toUserName.trim());
+			compare.put("toUserName", 2);
+			sql += " and toUserName like '%"+toUserName.trim()+"%'";
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
+			sql += " and pname like '%"+pname.trim()+"%'";
+		}
+		if (null!=oUserName &&! "".equals(oUserName.trim())) {
+			conditionProperties.put("oUserName", oUserName.trim());
+			compare.put("oUserName", 2);
+			sql += " and oUserName like '%"+oUserName.trim()+"%'";
+		}
+		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
+			conditionProperties.put("fromUserName", fromUserName.trim());
+			compare.put("fromUserName", 2);
+			sql += " and fromUserName like '%"+fromUserName.trim()+"%'";
+		}
+		if (null!=tel &&! "".equals(tel.trim())) {
+			conditionProperties.put("tel", tel.trim());
+			compare.put("tel", 2);
+			sql += " and tel like '%"+tel.trim()+"%'";
+		}
+		if (null!=oPhone &&! "".equals(oPhone.trim())) {
+			conditionProperties.put("oPhone", oPhone.trim());
+			compare.put("oPhone", 2);
+			sql += " and oPhone like '%"+oPhone.trim()+"%'";
+		}
+		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
+			conditionProperties.put("ordersBH", ordersBH.trim());
+			compare.put("ordersBH", 2);
+			sql += " and ordersBH like '%"+ordersBH.trim()+"%'";
+		}
+		if(null!=mobile &&! "".equals(mobile.trim())){
+			conditionProperties.put("mobile", mobile.trim());
+			compare.put("mobile", 2);
+			sql += " and mobile like '%"+mobile.trim()+"%'";
+		}
+		String selectDate = "";
+		if(dateType==null){
+			dateType = (String) request.getSession().getAttribute("dateType");
+		}
+		if(dateType!=null&&!"".equals(dateType)){
+			if(dateType.equals("1")){
+				selectDate = "createDate";
+			}else if(dateType.equals("3")){
+				selectDate = "fahuoDate";
+			}else if(dateType.equals("5")){
+				selectDate = "tuihuoDate";
+			}else if(dateType.equals("6")){
+				selectDate = "shouhuoDate";
+			}
+		}
+		if(selectDate.equals("")){
+			selectDate = "createDate";
+		}
+		sort.put(selectDate, desc);
+		String dateSql = "";
+		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+			System.out.println("---------------------------------------"+fromDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 8);
+			dateSql = " and "+selectDate+" >= '"+fromDate+"'";
+		}
+		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+			System.out.println("+++++++++++++++++++++++++"+endDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 9);
+			dateSql = " and "+selectDate+" < '"+endDate+"'";
+		}
+		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
+			System.out.println("=========================");
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date date2=null;
+			try
+			{
+				date2=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+			dateSql = " and "+selectDate+" between '"+fromDate+"' and '"+endDate+"'";
+		}
+
+		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd");
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+			Date date=calendar.getTime();
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			Date date2=calendar.getTime();
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+			
+			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
+		}
+		sql = sql+dateSql;
+		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
+		List sumList=ordersDAO.findBySql(sql);
+		totalMoney = "0";
+		if(sumList!=null&&sumList.size()>0){
+			java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+			// 不使用千分位，即展示为11672283.234，而不是11,672,283.234
+			nf.setGroupingUsed(false);
+			// 设置数的小数部分所允许的最小位数
+			nf.setMinimumFractionDigits(0);
+			// 设置数的小数部分所允许的最大位数
+			nf.setMaximumFractionDigits(5);
+			if(sumList.get(0)!=null){
+				totalMoney = nf.format(sumList.get(0));
+			}
+			
+		}
+		// 修改的时候保存当前页
+		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
+			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
+			
+			this.setPagerMethod("next");
+		}
+		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
+		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
+		
+		List<Orders> litPager = ordersDAO.findAllPagerList(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
+		request.setAttribute("litPager", litPager);
+		request.getSession().setAttribute("dateType", dateType);
+		request.setAttribute("totalMoney", totalMoney);
+		return "tuanduiCaiwu";
 	}
 	
 	
@@ -1236,10 +1448,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-        XSSFWorkbook hssfWorkbook=null;
+        HSSFWorkbook hssfWorkbook=null;
 		try {
-			hssfWorkbook = new XSSFWorkbook(is);
-		} catch (IOException e) {
+			hssfWorkbook = new HSSFWorkbook(is);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -1248,35 +1460,38 @@ public class OrdersAction extends ExtJSONActionSuport {
 		List<Orders> orders = ordersDAO.findbyHql(hql);
         // 循环工作表Sheet
         for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
-            XSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
+            HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
             if (hssfSheet == null) {
                 continue;
             }
             // 循环行Row
             for (int rowNum = 2; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
             	
-                XSSFRow hssfRow = hssfSheet.getRow(rowNum);
+                HSSFRow hssfRow = hssfSheet.getRow(rowNum);
                 if (hssfRow == null) {
                     continue;
                 }
                 	//	获取第一列
-                	XSSFCell bh=hssfRow.getCell(29);
+                	HSSFCell bh=hssfRow.getCell(29);
                 	if(bh==null){
                 		continue;
                 	}
                 	String ddbh=getValue(bh);       //订单编号
                     //获取第二列
-                	XSSFCell sj=hssfRow.getCell(30);
+                	HSSFCell sj=hssfRow.getCell(30);
                 	if(sj==null){
                 		continue;
                 	}
                 	String kdgs=getValue(sj);			//快递名称
                     //获取第三列
-                	XSSFCell pn=hssfRow.getCell(31);
+                	HSSFCell pn=hssfRow.getCell(31);
 					if(pn==null){
 						continue;
 					}
 					String kddh=getValue(pn);		//快递单号
+					if(StringUtils.isBlank(kddh)){
+						continue;
+					}
 					int i=3;
 					
 					if(orders.size()>0){
@@ -1309,7 +1524,197 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 }
 	
-	public String exportToExcel(){
+	public void exportToExcel(){
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Object obj = request.getSession().getAttribute("user");
+		AdminUser adminUser = null;
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+		}
+		if(obj instanceof AdminUser){
+			adminUser = (AdminUser) obj;
+		}
+		//excel模板路径
+		String path = ServletActionContext.getServletContext().getRealPath("")+"/resource/kuaidi.xls";
+		File fi=new File(path);
+		POIFSFileSystem fs = null;
+		HSSFWorkbook wb = null;
+		try {
+			fs = new POIFSFileSystem(new FileInputStream(fi));
+			//读取excel模板
+			wb = new HSSFWorkbook(fs);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} 
+		if(wb!=null){
+			
+		
+		//读取了模板内所有sheet内容
+		HSSFSheet sheet = wb.getSheetAt(0);
+		
+		//如果这行没有了，整个公式都不会有自动计算的效果的
+		sheet.setForceFormulaRecalculation(true);
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		if(orderType!=null&&!"".equals(orderType.trim())){
+			conditionProperties.put("order_status", Integer.valueOf(orderType));
+			compare.put("order_status", 0);
+		}else{
+			Integer[] os = {0,1,2,3,4,5,6};
+			conditionProperties.put("order_status", os);
+			compare.put("order_status", 4);
+		}
+		sort.put("createDate", false);
+		
+		
+		if (null!=toUserName &&! "".equals(toUserName.trim())) {
+			conditionProperties.put("toUserName", toUserName.trim());
+			compare.put("toUserName", 2);
+		}
+		if (null!=pname &&! "".equals(pname.trim())) {
+			conditionProperties.put("pname", pname.trim());
+			compare.put("pname", 2);
+		}
+		if (null!=oUserName &&! "".equals(oUserName.trim())) {
+			conditionProperties.put("oUserName", oUserName.trim());
+			compare.put("oUserName", 2);
+		}
+		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
+			conditionProperties.put("fromUserName", fromUserName.trim());
+			compare.put("fromUserName", 2);
+		}
+		if (null!=tel &&! "".equals(tel.trim())) {
+			conditionProperties.put("tel", tel.trim());
+			compare.put("tel", 2);
+		}
+		if (null!=oPhone &&! "".equals(oPhone.trim())) {
+			conditionProperties.put("oPhone", oPhone.trim());
+			compare.put("oPhone", 2);
+		}
+		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
+			conditionProperties.put("ordersBH", ordersBH.trim());
+			compare.put("ordersBH", 2);
+		}
+		if(null!=mobile &&! "".equals(mobile.trim())){
+			conditionProperties.put("mobile", mobile.trim());
+			compare.put("mobile", 2);
+		}
+		String selectDate = "";
+		
+		if(dateType!=null&&!"".equals(dateType)){
+			if(dateType.equals("1")){
+				selectDate = "createDate";
+			}else if(dateType.equals("3")){
+				selectDate = "fahuoDate";
+			}else if(dateType.equals("5")){
+				selectDate = "tuihuoDate";
+			}else if(dateType.equals("6")){
+				selectDate = "shouhuoDate";
+			}
+		}
+		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+			System.out.println("---------------------------------------"+fromDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 8);
+		}
+		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+			System.out.println("+++++++++++++++++++++++++"+endDate);
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				
+				e.printStackTrace();
+			}
+			conditionProperties.put(selectDate, date);
+			compare.put(selectDate, 9);
+		}
+		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
+			System.out.println("=========================");
+			Date date=null;
+			SimpleDateFormat   formatter   = 
+					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+			try
+			{
+				date=formatter.parse(fromDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date date2=null;
+			try
+			{
+				date2=formatter.parse(endDate);
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
+			Date[] dates = {date,date2};
+			conditionProperties.put(selectDate, dates);
+			compare.put(selectDate, 10);
+		}
+		
+		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
+		if(list!=null){
+			HSSFRow row = null;
+			for (int i = 0; i < list.size(); i++) {  
+				row=sheet.createRow(i+2);
+				row.createCell(0).setCellValue("山人物语");
+				row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
+				row.createCell(6).setCellValue(list.get(i).getChengshi().substring(0, list.get(i).getChengshi().length()-1));//到达城市  注意:不带"市"字
+				row.createCell(7).setCellValue("现结");
+				row.createCell(8).setCellValue(list.get(i).getToUserName());
+				row.createCell(10).setCellValue(list.get(i).getSheng()+list.get(i).getChengshi()+list.get(i).getDiqu()+list.get(i).getAddress());
+				row.createCell(12).setCellValue(list.get(i).getMobile());
+				row.createCell(14).setCellValue(list.get(i).getPname());
+				row.createCell(15).setCellValue("1");
+				row.createCell(25).setCellValue("全运村");
+				row.createCell(28).setCellValue(list.get(i).getFromUserName());
+				row.createCell(29).setCellValue(list.get(i).getOrdersBH());
+	        }
+		}
+		 try  
+	        {  
+	        	HttpServletResponse response = ServletActionContext.getResponse();
+	        	String filename = "已支付订单列表";
+	        	filename += new String((new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())).getBytes());
+	        	filename += ".xls";
+	        	filename = encodeFilename(request.getHeader("user-agent"),filename);
+	        	response.setHeader("Content-disposition","attachment; filename=" +filename);
+	        	OutputStream outputStream = response.getOutputStream();
+	            wb.write(outputStream);
+	            outputStream.flush();
+	            outputStream.close();  
+	        }  
+	        catch (Exception e)  
+	        {  
+	            e.printStackTrace();  
+	        } 
+		}
+		
+	
+	}
+	
+	/*public String exportToExcel(){
 		// 第一步，创建一个webbook，对应一个Excel文件  
         HSSFWorkbook wb = new HSSFWorkbook();  
         // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
@@ -1466,7 +1871,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+		if(null!=fromDate&&!"".equals(fromDate) &&endDate==null&&"".equals(endDate)){
 			System.out.println("---------------------------------------"+fromDate);
 			Date date=null;
 			SimpleDateFormat   formatter   = 
@@ -1482,7 +1887,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 			conditionProperties.put(selectDate, date);
 			compare.put(selectDate, 8);
 		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+		if(null!=endDate &&!"".equals(endDate)&&fromDate==null&&"".equals(fromDate)){
 			System.out.println("+++++++++++++++++++++++++"+endDate);
 			Date date=null;
 			SimpleDateFormat   formatter   = 
@@ -1604,7 +2009,7 @@ public class OrdersAction extends ExtJSONActionSuport {
             e.printStackTrace();  
         } 
 		return null;
-	}
+	}*/
 	
 	
 	@SuppressWarnings({ "static-access"})
@@ -1628,14 +2033,18 @@ public class OrdersAction extends ExtJSONActionSuport {
      *            Excel中的每一个格子
      * @return Excel中每一个格子中的值
      */
-    @SuppressWarnings({ "static-access", "unused" })
+    @SuppressWarnings({ "static-access" })
     private String getValue(HSSFCell hssfCell) {
+    	NumberFormat nf = NumberFormat.getInstance();
+    	nf.setGroupingUsed(false);
+		// 设置数的小数部分所允许的最小位数
+		nf.setMinimumFractionDigits(0);
         if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
             // 返回布尔类型的值
             return String.valueOf(hssfCell.getBooleanCellValue());
         } else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
             // 返回数值类型的值
-            return String.valueOf(hssfCell.getNumericCellValue());
+            return String.valueOf(nf.format(hssfCell.getNumericCellValue()));
         } else {
             // 返回字符串类型的值
             return String.valueOf(hssfCell.getStringCellValue());
@@ -2125,6 +2534,14 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 	public void setPaixu(Integer paixu) {
 		this.paixu = paixu;
+	}
+
+	public File getImportFile() {
+		return importFile;
+	}
+
+	public void setImportFile(File importFile) {
+		this.importFile = importFile;
 	}
 	
 	

@@ -74,55 +74,101 @@
 						<td><label><b style="color: #f00;">*</b>&nbsp;商品价格：</label></td>
 
 						<td><input type="text"
-							onchange="tyJg(this.value)" id="input_tyjk" name="product.price" value="${product.price}"  datatype="n1-10" nullMsg="请填写价格" errorMsg="请填入1~10位数字" class="normalinput" />(元)<font
+							onchange="tyJg(this)" name="product.price" value="${product.price}"  datatype="/^\d+(\.\d+)?$/" nullMsg="请填写价格" errorMsg="请填入1~10位数字" class="normalinput" />(元)<font
 							class="Validform_checktip">请输入商品价格</font>&nbsp;<span id="span_fanli" style="color:red;font-size:16px;display:none"></span></td>
 					</tr>
-					
-					<%-- <tr>
-						<td><label><b style="color: #f00;">*</b>&nbsp;选择模式：</label></td>
-						<td>
-						<select id="returntype" onchange="changeModelType(this.value);" datatype="*" name="product.returntype" nullMsg="请选择返利模式">
-								<option value="0">百分比</option>
-								<option value="1">固定值</option>
-						</select>
-						</td>
-					</tr> --%>
 					
 					<tr>
 						<td><label><b style="color: #f00;">*</b>&nbsp;首页显示样式：</label></td>
 						<td>
 						<select id="type" datatype="*" name="product.type" nullMsg="请选择首页显示样式">
 								<option value="0">轮播图</option>
-								<option value="1">一行一款</option>
-								<option value="2">一行两款</option>
+								<option value="1">单款显示</option>
+								<option value="2">散列显示</option>
 								
 						</select>
 						</td>
 					</tr>
 					
-					<tr id="fenrunBili1">
-						<td><label><b style="color: #f00;">*</b>&nbsp;分润比例：</label></td>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;小二价格：</label></td>
 
 						<td><input type="text" name="product.levelone"
-							onchange="tyJs(this)" class="normalinput" value="${fn:replace(((product.levelone==0||product.levelone==null)?0.01:product.levelone)*100,'.0','')}" 
-							datatype="n1-5" nullMsg="请填写数字" errorMsg="请填入1~5位数字"/>
-							%<font class="Validform_checktip">请输入分润比例一</font></td>
+							onchange="tyJg(this)" class="normalinput" value="${product.levelone}<%-- ${fn:replace(((product.levelone==0||product.levelone==null)?0.01:product.levelone)*100,'.0','')} --%>" 
+							datatype="/^\d+(\.\d+)?$/" nullMsg="请填写数字" errorMsg="请填入数字"/>
+							<font class="Validform_checktip">请输入小二拿货价格</font></td>
 					</tr>
 					
-					<tr id="fenrunBili2">
-						<td><label><b style="color: #f00;">*</b>&nbsp;分润比例：</label></td>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;掌柜价格：</label></td>
 						<td><input type="text" name="product.leveltwo"
-							onchange="tyJs(this)" class="normalinput" value="${fn:replace(((product.leveltwo==0||product.leveltwo==null)?0.01:product.leveltwo)*100,'.0','')}"
-							datatype="n1-5" nullMsg="请填写数字" errorMsg="请填入1~5位数字"/>
-							%<font class="Validform_checktip">请输入分润比例二</font></td>
+							onchange="tyJg(this)" class="normalinput" value="${product.leveltwo}<%-- ${fn:replace(((product.leveltwo==0||product.leveltwo==null)?0.01:product.leveltwo)*100,'.0','')} --%>"
+							datatype="/^\d+(\.\d+)?$/" nullMsg="请填写数字" errorMsg="请填入数字"/>
+							<font class="Validform_checktip">请输入掌柜拿货价格</font></td>
 					</tr>
 					
-					<tr id="fenrunBili3">
-						<td><label><b style="color: #f00;">*</b>&nbsp;分润比例：</label></td>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;大掌柜价格：</label></td>
 						<td><input type="text" name="product.levelthr"
-							onchange="tyJs(this)" class="normalinput" value="${fn:replace(((product.levelthr==0||product.levelthr==null)?0.01:product.levelthr)*100,'.0','')}"
-							datatype="n1-5" nullMsg="请填写数字" errorMsg="请填入1~5位数字" />
-							%<font class="Validform_checktip">请输入分润比例三</font></td>
+							onchange="tyJg(this)" class="normalinput" value="${product.levelthr}<%-- ${fn:replace(((product.levelthr==0||product.levelthr==null)?0.01:product.levelthr)*100,'.0','')} --%>"
+							datatype="/^\d+(\.\d+)?$/" nullMsg="请填写数字" errorMsg="请填入数字" />
+							<font class="Validform_checktip">请输入大掌柜拿货价</font></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;进货价格：</label></td>
+						<td><input type="text" name="product.levelfor"
+							onchange="tyJg(this)" class="normalinput" value="${product.levelfor}"
+							datatype="/^\d+(\.\d+)?$/" nullMsg="请填写数字" errorMsg="请填入数字" />
+							<font class="Validform_checktip">请输入进货价格</font></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;商品库存：</label></td>
+
+						<td><input type="text"
+							onchange="tyJs(this)"  name="product.stock" value="${product.stock}"  datatype="n1-10" nullMsg="请填写库存" errorMsg="请填入1~10位数字" class="normalinput" /><font
+							class="Validform_checktip">请输入库存</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;商品运费：</label></td>
+
+						<td><input type="text"
+							onchange="bujiance0(this)" name="transFee" value="${product.transFee}"  datatype="/^\d+(\.\d+)?$/" nullMsg="请填写运费" errorMsg="请填入数字" class="normalinput" /><font
+							class="Validform_checktip">请输入运费</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr>
+					<%-- <tr>
+						<td><label><b style="color: #f00;"></b>&nbsp;商品颜色：</label></td>
+
+						<td><input type="text"
+							name="product.prodColor" value="${product.prodColor}" type="text" class="text"/><font
+							class="Validform_checktip">请输入颜色</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr> --%>
+					<tr>
+						<td><label><b style="color: #f00;"></b>&nbsp;规格：</label></td>
+
+						<td><input type="text"
+							name="product.guige" value="${product.guige}" type="text" class="text"/><font
+							class="Validform_checktip">请输入规格</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;"></b>&nbsp;商品限购：</label></td>
+
+						<td><input type="text"
+							name="product.limitNum" value="${product.limitNum==null?0:product.limitNum}"  datatype="n1-10" nullMsg="请填写限购数量" errorMsg="请填入1~10位数字" class="normalinput" /><font
+							class="Validform_checktip">请输入限购数量</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;"></b>&nbsp;排序：</label></td>
+
+						<td><input type="text"
+							name="product.paixu" value="${product.paixu==null?0:product.paixu}"  datatype="n1-10" nullMsg="请填写排序值" errorMsg="请填入1~10位数字" class="normalinput" /><font
+							class="Validform_checktip">值越大越靠前,值相同则按时间倒序</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
+					</tr>
+					<tr>
+						<td><label><b style="color: #f00;"></b>&nbsp;同款特征码：</label></td>
+
+						<td><input type="text"
+							name="product.prodType" value="${product.prodType}"  datatype="n0-10" errorMsg="请填入1~10位数字" class="normalinput" /><font
+							class="Validform_checktip">同款产品特征码相同,相同特征码的产品会在属性里面显示</font>&nbsp;<span style="color:red;font-size:16px;display:none"></span></td>
 					</tr>
 
 				</table>
@@ -255,16 +301,34 @@
 
 		}
 		//统一价格
-		function tyJg(value) {
-
+		function tyJg(inputz) {
+			var value = inputz.value;
 			var reg = /^[+-]?(?!0\d)\d+(\.\d{1,2})?$/;
 			if (value == "") {
+				return;
+			}
+			if (value == 0) {
+	 			alert("不能为0!");
+	 			inputz.value=1;
 				return;
 			}
 			if(!reg.test(value)){
 				return;
 			}
 		}
+		function bujiance0(inputz) {
+			var value = inputz.value;
+			var reg = /^[+-]?(?!0\d)\d+(\.\d{1,2})?$/;
+			if (value == "") {
+				return;
+			}
+			
+			if(!reg.test(value)){
+				return;
+			}
+		}
+		
+		
 		
 	   function changeModelType(type){
 	   		if(type==0){
@@ -280,13 +344,6 @@
 		   if("${product.headUrl }"==""||"${product.headUrl }"==null){
 			   $("#div_style_pic").hide();
 		   }
-		   /* if("${product.returntype }"==0){
-			   	$(".bfh").show();
-	   			$("#returntype  option[value='0'] ").attr("selected",true);
-	   		}else if("${product.returntype }"==1){
-	   			$(".bfh").hide();
-	   			$("#returntype  option[value='1'] ").attr("selected",true);
-	   		} */
 		   if("${product.type }"!=null&&"${product.type }"!=""){
 	   			$("#type  option[value='${product.type }'] ").attr("selected",true);
 	   		}

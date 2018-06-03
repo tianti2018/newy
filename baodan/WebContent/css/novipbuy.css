@@ -1,6 +1,3 @@
-img{
-	width: 100%;
-}
 .bottom-fixed{
 	position: fixed;
 	bottom:0;
@@ -8,7 +5,7 @@ img{
 	left: 0;
 	padding:6px 3%;
 	overflow: hidden;
-	background: #ea6834;
+	background: #33dd66;
 }
 .bottom-fixed img{
 	float: left;
@@ -56,7 +53,7 @@ img{
 	overflow:hidden;
 	/*height:55px;*/
 	padding-bottom:10px;
-	border-bottom:1px solid #ea6834;
+	border-bottom:1px solid #33dd66;
 }
 .price{
 	padding-top:15px;
@@ -84,7 +81,7 @@ img{
 .reduce_add .text{
 	width:25px;
 	line-height:17px;
-	border:1px solid #ea6834;
+	border:1px solid #33dd66;
 	text-align:center;
 }
 .total{
@@ -97,7 +94,7 @@ img{
 	padding-left:20px;
 }
 .total-font{
-	color:#ea6834;
+	color:#33dd66;
 }
 .message{
 	margin-top:15px;
@@ -111,24 +108,24 @@ img{
     font-size:1.5rem;
 }
 .message li span.required{
-	color:#ea6834;
+	color:#33dd66;
 }
 .message input{ 
-    border:1px solid #ea6834;
+    border:1px solid #33dd66;
     line-height:25px;
     width:70%;
 }
 .message textarea.address,.message textarea.remark{
 	height:70px;
 	width:70%;
-	border:1px solid #ea6834;
+	border:1px solid #33dd66;
 }
 .message input.buy_btn{
 	line-height:40px;
 	text-align:center;
-	background:#fdce81;
+	background:#00aa3a;
 	font-size:1.6rem;
 	font-weight:bold;
-	color:#ea6834;
+	color:#33dd66;
 	margin:25px auto;
 }
