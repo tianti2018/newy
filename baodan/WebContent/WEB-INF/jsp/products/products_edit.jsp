@@ -63,6 +63,13 @@
 							class="Validform_checktip">请输入2~128位名称</font>
 						</td>
 					</tr>
+					
+					<tr>
+						<td><label><b style="color: #f00;">*</b>&nbsp;商品卖点：</label></td>
+						<td><textarea name="product.prodDescription"
+								rows="3" cols="50">${product.prodDescription}
+						</textarea></td>
+					</tr>
 
 					<tr>
 						<td><label><b style="color: #f00;">*</b>&nbsp;商品详情：</label></td>

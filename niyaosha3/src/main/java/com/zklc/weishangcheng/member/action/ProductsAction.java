@@ -11,10 +11,13 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
+import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
 import com.zklc.weishangcheng.member.service.CommentService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.ProductsService;
+import com.zklc.weixin.util.SystemMessage;
+import com.zklc.weixin.util.sign;
 
 @ParentPackage("json")
 @Namespace("/products")
@@ -41,6 +44,21 @@ public class ProductsAction extends BaseAction {
 		request.setAttribute("products_lunbo", products_lunbo);
 		request.setAttribute("products_dankuan", products_dankuan);
 		request.setAttribute("products_sanlie", products_sanlie);
+		AccessToken accessToken = autosendmsgService.processAccessToken();
+		String nonce_str = sign.create_nonce_str();
+        String timestamp = sign.create_timestamp();
+        String url = SystemMessage.getString("YUMING")+"/products/productsAction!products.action";
+        request.setAttribute("appId", SystemMessage.getString("APPID"));
+        request.setAttribute("nonce_str", nonce_str);
+        request.setAttribute("timestamp", timestamp);
+        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+        request.setAttribute("url", url
+        		
+//        		WeixinUtil.getShorUrl(accessToken.getToken(), 
+//        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
+//        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
+//        				)
+        			);
 		return "products";
 	}
 	
@@ -56,6 +74,21 @@ public class ProductsAction extends BaseAction {
 		if(userVo!=null&&userVo.getUser()!=null){
 			request.setAttribute("orderAddress", orderAddressService.findOrderAddressByUserId(userVo.getUser().getUserId()));
 		}
+		AccessToken accessToken = autosendmsgService.processAccessToken();
+		String nonce_str = sign.create_nonce_str();
+        String timestamp = sign.create_timestamp();
+        String url = SystemMessage.getString("YUMING")+"/products/productsAction!product.action?prodId="+prodId;
+        request.setAttribute("appId", SystemMessage.getString("APPID"));
+        request.setAttribute("nonce_str", nonce_str);
+        request.setAttribute("timestamp", timestamp);
+        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+        request.setAttribute("url", url
+        		
+//        		WeixinUtil.getShorUrl(accessToken.getToken(), 
+//        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
+//        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
+//        				)
+        			);
 		return "product";
 	}
 

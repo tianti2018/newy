@@ -1,0 +1,277 @@
+@charset "UTF-8";
+* {
+	-webkit-tap-highlight-color: transparent;
+	outline: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline
+}
+
+img {
+	border: 0 none;
+	vertical-align: top
+}
+
+i,
+em {
+	font-style: normal
+}
+
+ol,
+ul {
+	list-style: none
+}
+
+input,
+select,
+button,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 100%;
+	font-family: inherit;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+a,
+a:visited {
+	text-decoration: none;
+	color: #333;
+}
+
+body {
+	margin: 0 auto;
+	min-width: 320px;
+	max-width: 640px;
+	background: #f2f1f1;
+	font-size: 14px;
+	font-family: Helvetica, STHeiti STXihei, Microsoft JhengHei, Microsoft YaHei, Arial;
+	color: #222;
+	-webkit-text-size-adjust: 100% !important;
+}
+
+#bodyy {
+	margin: 0 auto;
+	min-width: 320px;
+	max-width: 640px;
+	background: #f2f1f1;
+	font-size: 14px;
+	font-family: Helvetica, STHeiti STXihei, Microsoft JhengHei, Microsoft YaHei, Arial;
+	color: #222;
+	-webkit-text-size-adjust: 100% !important;
+}
+/*   ↑页面重置↑   */
+
+.wrap {
+	min-width: 320px;
+}
+.det-middle {
+	background-color: #fff;
+	width: 96%;
+	padding: 0 2% 8px;
+	margin-bottom: 10px;
+	overflow: hidden;
+	box-shadow: 1px 1px 1px #999999;
+}
+.det-pro-name {
+	width: 100%;
+	padding: 10px 0 5px;
+	border-bottom: 1px dashed #999;
+}
+.det-pro-name span {
+	display: inline-block;
+	text-indent: 1em;
+}
+.det-pro-num {
+	overflow: hidden;
+}
+.det-pro-price,
+.det-pro-buy,
+.det-pro-zj {
+	overflow: hidden;
+	margin: 5px 0;
+	display: block;
+}
+.det-pro-price {
+	border-bottom: 1px solid #eee;
+	padding: 5px 0;
+}
+.det-pro-price > span{
+	float: left;
+	padding-left: 10px;
+	padding-right: 20px;
+	color: #eb3b3b;
+}
+.size-wrap {
+	display: block;
+}
+.pro-size-m {
+	float: right;
+	font-size: 13px;
+	padding-right: 13px;
+}
+.pro-size-m span {
+	color: #eb3b3b;
+}
+.pro-size-con {
+	display: block;
+	padding-left: 13px; 
+	overflow: hidden;
+	height: auto;
+}
+.pro-color,
+.pro-size {
+	margin-bottom: 5px;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 3px;
+}
+.pro-color h2,
+.pro-size h2 {
+	font-size: 14px;
+	font-weight: normal;
+}
+.pro-color a {
+	display: block;
+	background-color: #eee;
+	padding: 3px 15px;
+	border-radius: 15px !important;
+	font-size: 12px;
+	margin: 5px 5px 5px 0;
+	text-align: center;
+}
+.pro-color a.pro-sel {
+	background: #eb3b3b;
+	color: #fff;
+}
+.det-pro-buy {
+	height: 25px;
+	line-height: 25px;
+	overflow: hidden;
+}
+.det-pro-sl {
+	padding-left: 13px;
+}
+.det-pro-sl span {
+	margin-right: 5px;
+	display: inline-block;
+}
+.det-pro-sl a:nth-of-type(1) em img {
+	padding-top: 9px;
+}
+.det-pro-sl a:nth-of-type(2) em img {
+	padding-top: 4px
+}
+.det-pro-sl input {
+	border: none;
+	border: 1px solid #999;
+	color: #eb3b3b;
+	text-align: center;
+	vertical-align: middle;
+	height: 18px;
+}
+.det-pro-zj span:nth-of-type(1) {
+	padding-left: 13px;
+}
+.det-pro-zj span:nth-of-type(2) em {
+	color: #eb3b3b;
+}
+/*   Tab    */
+.tab-wrap {
+	width: 100%;
+	margin: 10px 0 5px;
+	box-shadow: 1px 1px 1px #999999;
+}
+.tab ul {
+	overflow: hidden;
+	background-color: #fff;
+}
+.tab li {
+	display: inline-block;
+	float: left;
+	width: 33%;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px dashed #999;
+}
+.tab li:nth-last-of-type(2) {
+	border-left: 1px dashed #999;
+	border-right: 1px dashed #999;
+}
+.shangpintu img{
+	background-color: #fff;
+	width: 96%;
+	padding: 10px 2%;
+}
+.assess ul li {
+	border-bottom: 1px solid #eee;
+	padding: 10px 0;
+}
+.assess-name {
+	overflow: hidden;
+}
+.assess-name span:nth-of-type(1) {
+	float: left;
+	padding-left: 13px;
+}
+.assess-name span:nth-of-type(1) em {
+	color: #ffde00;
+	padding-left: 5px;
+}
+.assess-name span:nth-of-type(2) {
+	float: right;
+	padding-right: 10px;
+	font-size: 12px;
+	line-height: 20px;
+}
+.assess-con {
+	margin-top: 10px;
+	font-size: 13px;
+	padding-left: 13px;
+}
+.btnn{ display:block; margin-left:280px; height:30px; line-height:36px; font-size:14px; background:#1b9af7; color:#fff; text-align:center; border-radius:2px; border:none; cursor:pointer; }
+
+.assess-btn {
+	border: none;
+	background: none;
+	width: 100%;
+	margin-top: 10px;
+}
+.assess-btn img {
+	width: 24px;
+}
+

@@ -101,6 +101,21 @@ public class DianpuAction extends BaseAction {
 				if(userVo!=null){
 					request.setAttribute("orderAddress", orderAddressService.findDefaultAddressByUserVo(userVo));
 				}
+				AccessToken accessToken = autosendmsgService.processAccessToken();
+				String nonce_str = sign.create_nonce_str();
+		        String timestamp = sign.create_timestamp();
+		        String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!dianPuProduct.action?pdId="+pdId;
+		        request.setAttribute("appId", SystemMessage.getString("APPID"));
+		        request.setAttribute("nonce_str", nonce_str);
+		        request.setAttribute("timestamp", timestamp);
+		        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+		        request.setAttribute("url", url
+		        		
+//		        		WeixinUtil.getShorUrl(accessToken.getToken(), 
+//		        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
+//		        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
+//		        				)
+		        			);
 			}
 			
 		}
@@ -115,8 +130,25 @@ public class DianpuAction extends BaseAction {
 			lunbos = productsForDianpuService.findPagerByPropertyAndSort(0,0,0,dianpuId);
 			dankuans = productsForDianpuService.findPagerByPropertyAndSort(1,0,0,dianpuId);
 			sanlies = productsForDianpuService.findPagerByPropertyAndSort(2,1,pageSize,dianpuId);
+			AccessToken accessToken = autosendmsgService.processAccessToken();
+			String nonce_str = sign.create_nonce_str();
+	        String timestamp = sign.create_timestamp();
+	        String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!gotoDianPu.action";
+	        request.setAttribute("appId", SystemMessage.getString("APPID"));
+	        request.setAttribute("nonce_str", nonce_str);
+	        request.setAttribute("timestamp", timestamp);
+	        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+	        request.setAttribute("url", url
+	        		
+//	        		WeixinUtil.getShorUrl(accessToken.getToken(), 
+//	        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
+//	        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
+//	        				)
+	        			);
 		}
+		
 		return "gotoDianpu";
+		
 	}
 	
 	public void yishangAjax(){

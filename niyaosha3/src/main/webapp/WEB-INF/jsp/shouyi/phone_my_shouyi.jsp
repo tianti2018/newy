@@ -13,7 +13,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
-	<title>我的积分</title>
+	<title>我的收益</title>
 	<link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/base.css" />
 	<link rel="stylesheet"

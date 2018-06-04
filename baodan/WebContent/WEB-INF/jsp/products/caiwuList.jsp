@@ -193,6 +193,7 @@
 		</td></tr> 
 		<tr><td align="center">日期类型：</td><td align="center">
 			<select id="st_qDateType" name ="dateType"> 
+				<option value="0">下单日期</option>
 				<option value="1">支付日期</option>
 				<option value="3">发货日期</option>
 				<option value="5">退货日期</option>
@@ -231,7 +232,8 @@
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
 						<li>收货地址：<em>${item.sheng }${item.chengshi }${item.diqu }${item.address }，邮编: ${item.zipcode }</em></li>
-						<li>报单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
+						<li>下单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
+						<li>支付日期：<em><fmt:formatDate value="${item.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
 							<li>发货人：<em>${item.fromUserName}</em></li>
 							<li>发货人电话：<em>${item.tel}</em></li>
 							<li>发货时间：<em>${item.fahuoDate}</em></li>
@@ -295,6 +297,7 @@
 			<th width="5%">快递编号</th>
 			<th width="5%">报单人姓名</th>
 			<th width="5%">报单人电话</th>
+			<th width="5%">下单日期</th>
 			<th width="5%">支付日期</th>
 			<th width="5%">发货时间</th>	
 			<th width="5%">收货日期</th>	
@@ -327,7 +330,8 @@
 				<td align="center">	${item.oUserName}</td>
 				<td align="center">	${item.oPhone}</td>
 				<td align="center"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td align="center">	${item.fahuoDate}</td>
+				<td align="center"><fmt:formatDate value="${item.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td align="center"><fmt:formatDate value="${item.fahuoDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td align="center"><fmt:formatDate value="${item.shouhuoDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>
 			

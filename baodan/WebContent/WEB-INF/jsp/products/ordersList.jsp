@@ -127,25 +127,34 @@
 		bid = window.showModalDialog("orders!beizhu.action" + param, datetime,winSettings);
 		window.open("orders!ordersList.action?currentPage="+<s:property value="pager.currentPage"/>,"rightFrame");
 	}
-	function exportToExcel(){
+	function exportToExcel(orderIds){
 		var $form = $("<form method='post' action='orders!exportToExcel.action'></form>");
 	     
 	    try{
-	        var data = {
-	        		orderType:$("#st_qOrderType").val(),
-	        		toUserName:$("#input_qtoUserName").val(),
-	        		mobile:$("#input_qMobile").val(),
-	        		oUserName:$("#input_qoUserName").val(),
-	        		oPhone:$("#input_qoPhone").val(),
-	        		ordersBH:$("#input_qOrdersBH").val(),
-	        		pname:$("#input_qPname").val(),
-	        		fromDate:$("#j_fromDate").val(),
-	        		endDate:$("#j_endDate").val(),
-	        		};
-	        for (var attr in data){
-	         
-	                $form.append("<input type='text' name='" + attr + "' value='" + data[attr] + "' />");
-	        }
+	    	if(orderIds==null||orderIds.length==0){
+	    		var data = {
+		        		orderType:$("#st_qOrderType").val(),
+		        		toUserName:$("#input_qtoUserName").val(),
+		        		mobile:$("#input_qMobile").val(),
+		        		oUserName:$("#input_qoUserName").val(),
+		        		oPhone:$("#input_qoPhone").val(),
+		        		ordersBH:$("#input_qOrdersBH").val(),
+		        		pname:$("#input_qPname").val(),
+		        		fromDate:$("#j_fromDate").val(),
+		        		endDate:$("#j_endDate").val(),
+		        		dateType:$("#st_qDateType").val(),
+		        		};
+		        for (var attr in data){
+		         
+		                $form.append("<input type='text' name='" + attr + "' value='" + data[attr] + "' />");
+		        }
+	    	}else{
+	    		for(var i in orderIds){
+		    		$form.append("<input type='text' name='orderIds' value='" + orderIds[i] + "' />");
+		    	}
+	    	}
+	        
+	        
 	        $("body").append($form);
 	        $form.submit();
 	    } finally{
@@ -264,6 +273,7 @@
 		</td></tr> 
 		<tr><td align="center">日期类型：</td><td align="center">
 			<select id="st_qDateType" name ="dateType"> 
+				<option value="0">下单日期</option>
 				<option value="1">支付日期</option>
 				<option value="3">发货日期</option>
 				<option value="5">退货日期</option>
@@ -286,7 +296,7 @@
 		</td></tr> 
 		<tr><td align="center">
 			<c:if test="${adminUser}">
-				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportToExcel();" value="导出到EXCEL" style="cursor:pointer" />
+				<input type="button" id="cmdBtn2" name="cmdBtn2" onclick="exportToExcel(getOrderIds());" value="导出到EXCEL" style="cursor:pointer" />
 				<input type="button" id="cmdBtn5" name="cmdBtn5" onclick="exportKudiExcel();" value="导出快递单" style="cursor:pointer" />
 				<input type="button" id="cmdBtn4" name="cmdBtn4" onclick="importExcel();" value="导入快递单" style="cursor:pointer" />
 			</c:if>
@@ -318,7 +328,8 @@
 						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
 						<li>订单金额：<em>${item.money}</em></li>
 						<li>收货地址：<em>${item.sheng }${item.chengshi }${item.diqu }${item.address }，邮编: ${item.zipcode }</em></li>
-						<li>报单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
+						<li>下单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
+						<li>支付日期：<em><fmt:formatDate value="${item.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
 						<c:if test="${orderType>1}">
 							<li>发货人：<em>${item.fromUserName}</em></li>
 							<li>发货人电话：<em>${item.tel}</em></li>
@@ -412,6 +423,7 @@
 			<th width="5%">购买数量</th>
 			<th width="5%">订单金额</th>
 			<th width="5%">报单日期</th>
+			<th width="5%">支付日期</th>
 				<th width="5%">发货人</th>
 				<th width="5%">发货人电话</th>
 				<th width="5%">发货时间</th>
@@ -446,6 +458,7 @@
 				<td align="center">${item.shuliang}${item.size}</td>
 				<td align="center">${item.money}</td>
 				<td align="center"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td align="center"><fmt:formatDate value="${item.payTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 					<td align="center">	${item.fromUserName}</td>
 					<td align="center">	${item.tel}</td>
 					<td align="center">	${item.fahuoDate}</td>

@@ -340,9 +340,12 @@ public class ProductsAction extends ExtJSONActionSuport {
 				Integer prodtype = Integer.parseInt(format.format(date));
 				product.setProdType(prodtype);
 			}
+			if(product.getProdDescription()!=null){
+				product.setProdDescription(product.getProdDescription().trim());
+			}
 			product.setUserId(loginUser.getUserId());
 			product.setUserName(loginUser.getUserName());
-			product.setTransFee(Double.valueOf(transFee));
+			product.setTransFee(Double.valueOf(transFee)==null?0.0:Double.valueOf(transFee));
 			productsDAO.saveOrUpdate(product);
 		}else {
 			return "listAll";

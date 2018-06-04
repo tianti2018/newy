@@ -29,9 +29,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.Namespace;
 import org.apache.struts2.config.ParentPackage;
@@ -167,6 +164,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 	public String zhifuOrder(){
 		Orders orders = (Orders) ordersDAO.findById(ordersId);
 		orders.setOrder_status(1);
+		orders.setPayTime(new Date());
 		ordersDAO.update(orders);
 		return "goBackList1";
 	}
@@ -312,106 +310,89 @@ public class OrdersAction extends ExtJSONActionSuport {
 		return "listYichang";
 	}
 	
-	public String ordersList() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		
-		Object obj = request.getSession().getAttribute("user");
-		if(obj == null){
-			return "error";
-		}
-		User user = null;
-		if (obj instanceof User) {
-			user = (User) obj;
-			if(user.getBlock().equals("1")){
-				return "block";
-			}
-		}
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		
-		if(user !=null){
-			userId = user.getUserId();
-		}
+	public void addChaXunTiaoJian(Map<String, Object> conditionProperties,Map<String, Integer> compare,Map<String, Boolean> sort,String sql,
+			Integer userId,String orderType,Integer paixu,String toUserName,String pname,String oUserName,String fromUserName,
+			String tel,String oPhone,String ordersBH,String mobile,String dateType,String fromDate,String endDate){
 		if (null!=userId &&! "".equals(userId)) {
 			conditionProperties.put("userId", userId);
 			compare.put("userId", 0);
+			if(sql!=null)
+				sql+=" and userId ="+userId;
 		}
-		if (null==orderType) {
-			orderType = (String) request.getSession().getAttribute("order_status");
-			
-		}
-		if(orderType==null){
-			orderType = "-1";
-		}
-		if(orderType!=null){
-			request.getSession().setAttribute("order_status", orderType);
-		}
-		if(!"-1".equals(orderType)){
+		if(StringUtils.isNotBlank(orderType)&&!"-1".equals(orderType)){
 			conditionProperties.put("order_status", Integer.valueOf(orderType));
 			compare.put("order_status", 0);
+			if(sql!=null)
+				sql+=" and order_status ="+Integer.valueOf(orderType);
 		}else{
 			Integer[] os = {0,1,2,3,4,5,6};
 			conditionProperties.put("order_status", os);
 			compare.put("order_status", 4);
-		}
-		if(paixu==null){
-			paixu = (Integer) request.getSession().getAttribute("paixu");
-			
-		}
-		if(paixu==null){
-			paixu = 0;
+			if(sql!=null){
+				sql+=" and order_status in (1,2,3,4,6)";
+			}
 		}
 		boolean desc = true;
 		if(paixu!=null){
-			request.getSession().setAttribute("paixu", paixu);
 			if(paixu == 1){
 				desc = false;
 			}
 		}
 		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
+		if (StringUtils.isNotBlank(toUserName)) {
 			conditionProperties.put("toUserName", toUserName.trim());
 			compare.put("toUserName", 2);
+			if(sql!=null)
+				sql += " and toUserName like '%"+toUserName.trim()+"%'";
 		}
-		if (null!=pname &&! "".equals(pname.trim())) {
+		if (StringUtils.isNotBlank(pname)) {
 			conditionProperties.put("pname", pname.trim());
 			compare.put("pname", 2);
+			if(sql!=null)
+				sql += " and pname like '%"+pname.trim()+"%'";
 		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
+		if (StringUtils.isNotBlank(oUserName)) {
 			conditionProperties.put("oUserName", oUserName.trim());
 			compare.put("oUserName", 2);
+			if(sql!=null)
+				sql += " and oUserName like '%"+oUserName.trim()+"%'";
 		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
+		if (StringUtils.isNotBlank(fromUserName)) {
 			conditionProperties.put("fromUserName", fromUserName.trim());
 			compare.put("fromUserName", 2);
+			if(sql!=null)
+				sql += " and fromUserName like '%"+fromUserName.trim()+"%'";
 		}
-		if (null!=tel &&! "".equals(tel.trim())) {
+		if (StringUtils.isNotBlank(tel)) {
 			conditionProperties.put("tel", tel.trim());
 			compare.put("tel", 2);
+			if(sql!=null)
+				sql += " and tel like '%"+tel.trim()+"%'";
 		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
+		if (StringUtils.isNotBlank(oPhone)) {
 			conditionProperties.put("oPhone", oPhone.trim());
 			compare.put("oPhone", 2);
+			if(sql!=null)
+				sql += " and oPhone like '%"+oPhone.trim()+"%'";
 		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
+		if (StringUtils.isNotBlank(ordersBH)) {
 			conditionProperties.put("ordersBH", ordersBH.trim());
 			compare.put("ordersBH", 2);
+			if(sql!=null)
+				sql += " and ordersBH like '%"+ordersBH.trim()+"%'";
 		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
+		if(StringUtils.isNotBlank(mobile)){
 			conditionProperties.put("mobile", mobile.trim());
 			compare.put("mobile", 2);
+			if(sql!=null)
+				sql += " and mobile like '%"+mobile.trim()+"%'";
 		}
-		String selectDate = "";
-		if(dateType==null){
-			dateType = (String) request.getSession().getAttribute("dateType");
-		}
-		if(dateType==null){
-			dateType = "1";
-		}
-		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
+		String selectDate = "createDate";
+		if(StringUtils.isNotBlank(dateType)){
+			if(dateType.equals("0")){
 				selectDate = "createDate";
+			}else if(dateType.equals("1")){
+				selectDate = "payTime";
 			}else if(dateType.equals("3")){
 				selectDate = "fahuoDate";
 			}else if(dateType.equals("5")){
@@ -421,7 +402,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 			}
 		}
 		sort.put(selectDate, desc);
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
+		String dateSql = "";
+		if(StringUtils.isNotBlank(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
 			System.out.println("---------------------------------------"+fromDate);
 			Date date=null;
 			SimpleDateFormat   formatter   = 
@@ -436,8 +418,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 			}
 			conditionProperties.put(selectDate, date);
 			compare.put(selectDate, 8);
+			dateSql = " and "+selectDate+" >= '"+fromDate+"'";
 		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
+		if(StringUtils.isNotBlank(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
 			System.out.println("+++++++++++++++++++++++++"+endDate);
 			Date date=null;
 			SimpleDateFormat   formatter   = 
@@ -452,8 +435,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 			}
 			conditionProperties.put(selectDate, date);
 			compare.put(selectDate, 9);
+			dateSql = " and "+selectDate+" < '"+endDate+"'";
 		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
+		if(StringUtils.isNotBlank(fromDate)&&StringUtils.isNotBlank(endDate)){
 			System.out.println("=========================");
 			Date date=null;
 			SimpleDateFormat   formatter   = 
@@ -476,7 +460,65 @@ public class OrdersAction extends ExtJSONActionSuport {
 			Date[] dates = {date,date2};
 			conditionProperties.put(selectDate, dates);
 			compare.put(selectDate, 10);
+			dateSql = " and "+selectDate+" between '"+fromDate+"' and '"+endDate+"'";
 		}
+		if(sql!=null){
+			sql+=dateSql;
+		}
+	}
+	
+	public String ordersList() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		
+		Object obj = request.getSession().getAttribute("user");
+		if(obj == null){
+			return "error";
+		}
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+			if(user.getBlock().equals("1")){
+				return "block";
+			}
+		}
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		
+		if(user !=null){
+			userId = user.getUserId();
+		}
+		
+		if (null==orderType) {
+			orderType = (String) request.getSession().getAttribute("order_status");
+			
+		}
+		if(orderType==null){
+			orderType = "-1";
+		}
+		if(orderType!=null){
+			request.getSession().setAttribute("order_status", orderType);
+		}
+		
+		if(paixu==null){
+			paixu = (Integer) request.getSession().getAttribute("paixu");
+			
+		}
+		if(paixu==null){
+			paixu = 0;
+		}
+		if(paixu!=null){
+			request.getSession().setAttribute("paixu", paixu);
+		}
+		
+		if(dateType==null){
+			dateType = (String) request.getSession().getAttribute("dateType");
+		}
+		if(dateType==null){
+			dateType = "1";
+		}
+		addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
+				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		// 修改的时候保存当前页
 		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
@@ -518,74 +560,24 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(paixu==null){
 			paixu = 0;
 		}
-		boolean desc = true;
 		if(paixu!=null){
 			request.getSession().setAttribute("paixu", paixu);
-			if(paixu == 1){
-				desc = false;
-			}
 		}
 		
-		String sql = "select sum(money) from orders where order_status in (1,2,3,4,6) ";
-		Integer[] os = {1,2,3,4,5,6};
-		conditionProperties.put("order_status", os);
-		compare.put("order_status", 4);
+		String sql = "select sum(money) from orders where 1=1 ";
 		if(user !=null){
 			userId = user.getUserId();
-			sql+=" and userId ="+userId;
-		}
-		if (null!=userId &&! "".equals(userId)) {
-			conditionProperties.put("userId", userId);
-			compare.put("userId", 0);
 		}
 		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
-			conditionProperties.put("toUserName", toUserName.trim());
-			compare.put("toUserName", 2);
-			sql += " and toUserName like '%"+toUserName.trim()+"%'";
-		}
-		if (null!=pname &&! "".equals(pname.trim())) {
-			conditionProperties.put("pname", pname.trim());
-			compare.put("pname", 2);
-			sql += " and pname like '%"+pname.trim()+"%'";
-		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
-			conditionProperties.put("oUserName", oUserName.trim());
-			compare.put("oUserName", 2);
-			sql += " and oUserName like '%"+oUserName.trim()+"%'";
-		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
-			conditionProperties.put("fromUserName", fromUserName.trim());
-			compare.put("fromUserName", 2);
-			sql += " and fromUserName like '%"+fromUserName.trim()+"%'";
-		}
-		if (null!=tel &&! "".equals(tel.trim())) {
-			conditionProperties.put("tel", tel.trim());
-			compare.put("tel", 2);
-			sql += " and tel like '%"+tel.trim()+"%'";
-		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
-			conditionProperties.put("oPhone", oPhone.trim());
-			compare.put("oPhone", 2);
-			sql += " and oPhone like '%"+oPhone.trim()+"%'";
-		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
-			conditionProperties.put("ordersBH", ordersBH.trim());
-			compare.put("ordersBH", 2);
-			sql += " and ordersBH like '%"+ordersBH.trim()+"%'";
-		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
-			conditionProperties.put("mobile", mobile.trim());
-			compare.put("mobile", 2);
-			sql += " and mobile like '%"+mobile.trim()+"%'";
-		}
-		String selectDate = "";
+		String selectDate = "createDate";
 		if(dateType==null){
 			dateType = (String) request.getSession().getAttribute("dateType");
 		}
 		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
+			if(dateType.equals("0")){
 				selectDate = "createDate";
+			}else if(dateType.equals("1")){
+				selectDate = "payTime";
 			}else if(dateType.equals("3")){
 				selectDate = "fahuoDate";
 			}else if(dateType.equals("5")){
@@ -594,71 +586,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
-		if(selectDate.equals("")){
-			selectDate = "createDate";
-		}
-		sort.put(selectDate, desc);
-		String dateSql = "";
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
-			System.out.println("---------------------------------------"+fromDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 8);
-			dateSql = " and "+selectDate+" >= '"+fromDate+"'";
-		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
-			System.out.println("+++++++++++++++++++++++++"+endDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 9);
-			dateSql = " and "+selectDate+" < '"+endDate+"'";
-		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
-			System.out.println("=========================");
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date date2=null;
-			try
-			{
-				date2=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date[] dates = {date,date2};
-			conditionProperties.put(selectDate, dates);
-			compare.put(selectDate, 10);
-			dateSql = " and "+selectDate+" between '"+fromDate+"' and '"+endDate+"'";
-		}
-
+		addChaXunTiaoJian(conditionProperties, compare, sort, sql, userId, orderType, paixu, toUserName, 
+				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
 			SimpleDateFormat   formatter   = 
 					new   SimpleDateFormat( "yyyy-MM-dd");
@@ -671,9 +600,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 			conditionProperties.put(selectDate, dates);
 			compare.put(selectDate, 10);
 			
-			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
+			sql += " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
 		}
-		sql = sql+dateSql;
 		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
@@ -732,70 +660,23 @@ public class OrdersAction extends ExtJSONActionSuport {
 		boolean desc = true;
 		if(paixu!=null){
 			request.getSession().setAttribute("paixu", paixu);
-			if(paixu == 1){
-				desc = false;
-			}
 		}
 		
-		String sql = "select sum(money) from orders where order_status in (1,2,3,4,6) ";
-		Integer[] os = {1,2,3,4,5,6};
-		conditionProperties.put("order_status", os);
-		compare.put("order_status", 4);
+		String sql = "select sum(money) from orders where 1=1 ";
 		if (null!=userId &&! "".equals(userId)) {
-			conditionProperties.put("userId", userId);
-			compare.put("userId", 0);
-			sql+=" and userId ="+userId;
 		}else{
 			return "block";
 		}
 		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
-			conditionProperties.put("toUserName", toUserName.trim());
-			compare.put("toUserName", 2);
-			sql += " and toUserName like '%"+toUserName.trim()+"%'";
-		}
-		if (null!=pname &&! "".equals(pname.trim())) {
-			conditionProperties.put("pname", pname.trim());
-			compare.put("pname", 2);
-			sql += " and pname like '%"+pname.trim()+"%'";
-		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
-			conditionProperties.put("oUserName", oUserName.trim());
-			compare.put("oUserName", 2);
-			sql += " and oUserName like '%"+oUserName.trim()+"%'";
-		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
-			conditionProperties.put("fromUserName", fromUserName.trim());
-			compare.put("fromUserName", 2);
-			sql += " and fromUserName like '%"+fromUserName.trim()+"%'";
-		}
-		if (null!=tel &&! "".equals(tel.trim())) {
-			conditionProperties.put("tel", tel.trim());
-			compare.put("tel", 2);
-			sql += " and tel like '%"+tel.trim()+"%'";
-		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
-			conditionProperties.put("oPhone", oPhone.trim());
-			compare.put("oPhone", 2);
-			sql += " and oPhone like '%"+oPhone.trim()+"%'";
-		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
-			conditionProperties.put("ordersBH", ordersBH.trim());
-			compare.put("ordersBH", 2);
-			sql += " and ordersBH like '%"+ordersBH.trim()+"%'";
-		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
-			conditionProperties.put("mobile", mobile.trim());
-			compare.put("mobile", 2);
-			sql += " and mobile like '%"+mobile.trim()+"%'";
-		}
-		String selectDate = "";
+		String selectDate = "createDate";
 		if(dateType==null){
 			dateType = (String) request.getSession().getAttribute("dateType");
 		}
 		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
+			if(dateType.equals("0")){
 				selectDate = "createDate";
+			}else if(dateType.equals("1")){
+				selectDate = "payTime";
 			}else if(dateType.equals("3")){
 				selectDate = "fahuoDate";
 			}else if(dateType.equals("5")){
@@ -804,71 +685,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
-		if(selectDate.equals("")){
-			selectDate = "createDate";
-		}
-		sort.put(selectDate, desc);
-		String dateSql = "";
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
-			System.out.println("---------------------------------------"+fromDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 8);
-			dateSql = " and "+selectDate+" >= '"+fromDate+"'";
-		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
-			System.out.println("+++++++++++++++++++++++++"+endDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 9);
-			dateSql = " and "+selectDate+" < '"+endDate+"'";
-		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
-			System.out.println("=========================");
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date date2=null;
-			try
-			{
-				date2=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date[] dates = {date,date2};
-			conditionProperties.put(selectDate, dates);
-			compare.put(selectDate, 10);
-			dateSql = " and "+selectDate+" between '"+fromDate+"' and '"+endDate+"'";
-		}
-
+		addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
+				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
 			SimpleDateFormat   formatter   = 
 					new   SimpleDateFormat( "yyyy-MM-dd");
@@ -881,9 +699,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 			conditionProperties.put(selectDate, dates);
 			compare.put(selectDate, 10);
 			
-			dateSql = " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
+			sql+= " and "+selectDate+" between '"+formatter.format(date)+"  00:00:00' and '"+formatter.format(date2)+" 00:00:00'";
 		}
-		sql = sql+dateSql;
 		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		List sumList=ordersDAO.findBySql(sql);
 		totalMoney = "0";
@@ -967,191 +784,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 	}
 	
 	
-	public String getFromDate()
-	{
-		return fromDate;
-	}
-
-	public void setFromDate(String fromDate)
-	{
-		this.fromDate = fromDate;
-	}
-
-	public String getEndDate()
-	{
-		return endDate;
-	}
-
-	public void setEndDate(String endDate)
-	{
-		this.endDate = endDate;
-	}
-
-	public String getTotalMoney()
-	{
-		return totalMoney;
-	}
-
-	public void setTotalMoney(String totalMoney)
-	{
-		this.totalMoney = totalMoney;
-	}
-
-	public String getOrderType() {
-		return orderType;
-	}
-
-	public void setOrderType(String orderType) {
-		this.orderType = orderType;
-	}
-
-	public String getKuaidiName() {
-		return kuaidiName;
-	}
-
-	public void setKuaidiName(String kuaidiName) {
-		this.kuaidiName = kuaidiName;
-	}
-
-	public String getKuaidiNo() {
-		return kuaidiNo;
-	}
-
-	public void setKuaidiNo(String kuaidiNo) {
-		this.kuaidiNo = kuaidiNo;
-	}
-
-	public String getLoginName() {
-		return loginName;
-	}
-
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
-
-	public UserOrderDAO getUserOrderDAO() {
-		return userOrderDAO;
-	}
 	
-	public TAreaDao gettAreaDao() {
-		return tAreaDao;
-	}
-	@Autowired
-	public void settAreaDao(TAreaDao tAreaDao) {
-		this.tAreaDao = tAreaDao;
-	}
-
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
-	@Autowired
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
-	@Autowired
-	public void setUserOrderDAO(UserOrderDAO userOrderDAO) {
-		this.userOrderDAO = userOrderDAO;
-	}
-	public LoginService getLoginService() {
-		return loginService;
-	}
-	@Autowired
-	public void setLoginService(LoginService loginService) {
-		this.loginService = loginService;
-	}
-	public ProductsDAO getProductsDAO() {
-		return productsDAO;
-	}
-	@Autowired
-	public void setProductsDAO(ProductsDAO productsDAO) {
-		this.productsDAO = productsDAO;
-	}
-	public ApplyReturnPurchaseDao getApplyReturnPurchaseDao() {
-		return applyReturnPurchaseDao;
-	}
-	@Autowired
-	public void setApplyReturnPurchaseDao(
-			ApplyReturnPurchaseDao applyReturnPurchaseDao) {
-		this.applyReturnPurchaseDao = applyReturnPurchaseDao;
-	}
-
-	public Integer getOrdersId() {
-		return ordersId;
-	}
-	public void setOrdersId(Integer ordersId) {
-		this.ordersId = ordersId;
-	}
-	public String getToUserName() {
-		return toUserName;
-	}
-	public void setToUserName(String toUserName) {
-		this.toUserName = toUserName;
-	}
-	
-	public String getMobile() {
-		return mobile;
-	}
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	public String getZipcode() {
-		return zipcode;
-	}
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-	public String getPname() {
-		return pname;
-	}
-	public void setPname(String pname) {
-		this.pname = pname;
-	}
-	public OrdersDAO getOrdersDAO() {
-		return ordersDAO;
-	}
-	
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getOrdersBH() {
-		return ordersBH;
-	}
-
-	public void setOrdersBH(String ordersBH) {
-		this.ordersBH = ordersBH;
-	}
-
-	@Autowired
-	public void setOrdersDAO(OrdersDAO ordersDAO) {
-		this.ordersDAO = ordersDAO;
-	}
-	public OrdersProductsDAO getOrdersProductsDAO() {
-		return ordersProductsDAO;
-	}
-	@Autowired
-	public void setOrdersProductsDAO(OrdersProductsDAO ordersProductsDAO) {
-		this.ordersProductsDAO = ordersProductsDAO;
-	}
-	public String getApplyNum() {
-		return applyNum;
-	}
-
-	public void setApplyNum(String applyNum) {
-		this.applyNum = applyNum;
-	}
 
 	public String initkuaidi () {
 		Orders orders = (Orders)ordersDAO.findById(ordersId);
@@ -1273,116 +906,17 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		conditionProperties.put("order_status", 1);
-		compare.put("order_status", 0);
-		sort.put("createDate", false);
+		
 		if(null!=orderIds&&orderIds.length>0){
 			conditionProperties.put("ordersId", orderIds);
 			compare.put("ordersId", 4);
+		}else{
+			addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
+					pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		}
 		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
-			conditionProperties.put("toUserName", toUserName.trim());
-			compare.put("toUserName", 2);
-		}
-		if (null!=pname &&! "".equals(pname.trim())) {
-			conditionProperties.put("pname", pname.trim());
-			compare.put("pname", 2);
-		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
-			conditionProperties.put("oUserName", oUserName.trim());
-			compare.put("oUserName", 2);
-		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
-			conditionProperties.put("fromUserName", fromUserName.trim());
-			compare.put("fromUserName", 2);
-		}
-		if (null!=tel &&! "".equals(tel.trim())) {
-			conditionProperties.put("tel", tel.trim());
-			compare.put("tel", 2);
-		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
-			conditionProperties.put("oPhone", oPhone.trim());
-			compare.put("oPhone", 2);
-		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
-			conditionProperties.put("ordersBH", ordersBH.trim());
-			compare.put("ordersBH", 2);
-		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
-			conditionProperties.put("mobile", mobile.trim());
-			compare.put("mobile", 2);
-		}
-		String selectDate = "";
-		
-		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
-				selectDate = "createDate";
-			}else if(dateType.equals("3")){
-				selectDate = "fahuoDate";
-			}else if(dateType.equals("5")){
-				selectDate = "tuihuoDate";
-			}else if(dateType.equals("6")){
-				selectDate = "shouhuoDate";
-			}
-		}
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
-			System.out.println("---------------------------------------"+fromDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 8);
-		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
-			System.out.println("+++++++++++++++++++++++++"+endDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 9);
-		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
-			System.out.println("=========================");
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date date2=null;
-			try
-			{
-				date2=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date[] dates = {date,date2};
-			conditionProperties.put(selectDate, dates);
-			compare.put(selectDate, 10);
-		}
-		
+		conditionProperties.put("order_status", 1);
+		compare.put("order_status", 0);
 		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
 		if(list!=null){
 			HSSFRow row = null;
@@ -1526,195 +1060,10 @@ public class OrdersAction extends ExtJSONActionSuport {
 	
 	public void exportToExcel(){
 
+		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		Object obj = request.getSession().getAttribute("user");
-		AdminUser adminUser = null;
-		User user = null;
-		if (obj instanceof User) {
-			user = (User) obj;
-		}
-		if(obj instanceof AdminUser){
-			adminUser = (AdminUser) obj;
-		}
 		//excel模板路径
-		String path = ServletActionContext.getServletContext().getRealPath("")+"/resource/kuaidi.xls";
-		File fi=new File(path);
-		POIFSFileSystem fs = null;
-		HSSFWorkbook wb = null;
-		try {
-			fs = new POIFSFileSystem(new FileInputStream(fi));
-			//读取excel模板
-			wb = new HSSFWorkbook(fs);
-		} catch (Exception e) {
-			e.printStackTrace();
-			
-		} 
-		if(wb!=null){
-			
-		
-		//读取了模板内所有sheet内容
-		HSSFSheet sheet = wb.getSheetAt(0);
-		
-		//如果这行没有了，整个公式都不会有自动计算的效果的
-		sheet.setForceFormulaRecalculation(true);
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		if(orderType!=null&&!"".equals(orderType.trim())){
-			conditionProperties.put("order_status", Integer.valueOf(orderType));
-			compare.put("order_status", 0);
-		}else{
-			Integer[] os = {0,1,2,3,4,5,6};
-			conditionProperties.put("order_status", os);
-			compare.put("order_status", 4);
-		}
-		sort.put("createDate", false);
-		
-		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
-			conditionProperties.put("toUserName", toUserName.trim());
-			compare.put("toUserName", 2);
-		}
-		if (null!=pname &&! "".equals(pname.trim())) {
-			conditionProperties.put("pname", pname.trim());
-			compare.put("pname", 2);
-		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
-			conditionProperties.put("oUserName", oUserName.trim());
-			compare.put("oUserName", 2);
-		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
-			conditionProperties.put("fromUserName", fromUserName.trim());
-			compare.put("fromUserName", 2);
-		}
-		if (null!=tel &&! "".equals(tel.trim())) {
-			conditionProperties.put("tel", tel.trim());
-			compare.put("tel", 2);
-		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
-			conditionProperties.put("oPhone", oPhone.trim());
-			compare.put("oPhone", 2);
-		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
-			conditionProperties.put("ordersBH", ordersBH.trim());
-			compare.put("ordersBH", 2);
-		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
-			conditionProperties.put("mobile", mobile.trim());
-			compare.put("mobile", 2);
-		}
-		String selectDate = "";
-		
-		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
-				selectDate = "createDate";
-			}else if(dateType.equals("3")){
-				selectDate = "fahuoDate";
-			}else if(dateType.equals("5")){
-				selectDate = "tuihuoDate";
-			}else if(dateType.equals("6")){
-				selectDate = "shouhuoDate";
-			}
-		}
-		if(null!=fromDate&&!"".equals(fromDate)/* &&endDate==null&&"".equals(endDate)*/){
-			System.out.println("---------------------------------------"+fromDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 8);
-		}
-		if(null!=endDate &&!"".equals(endDate)/*&&fromDate==null&&"".equals(fromDate)*/){
-			System.out.println("+++++++++++++++++++++++++"+endDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 9);
-		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
-			System.out.println("=========================");
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date date2=null;
-			try
-			{
-				date2=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date[] dates = {date,date2};
-			conditionProperties.put(selectDate, dates);
-			compare.put(selectDate, 10);
-		}
-		
-		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
-		if(list!=null){
-			HSSFRow row = null;
-			for (int i = 0; i < list.size(); i++) {  
-				row=sheet.createRow(i+2);
-				row.createCell(0).setCellValue("山人物语");
-				row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
-				row.createCell(6).setCellValue(list.get(i).getChengshi().substring(0, list.get(i).getChengshi().length()-1));//到达城市  注意:不带"市"字
-				row.createCell(7).setCellValue("现结");
-				row.createCell(8).setCellValue(list.get(i).getToUserName());
-				row.createCell(10).setCellValue(list.get(i).getSheng()+list.get(i).getChengshi()+list.get(i).getDiqu()+list.get(i).getAddress());
-				row.createCell(12).setCellValue(list.get(i).getMobile());
-				row.createCell(14).setCellValue(list.get(i).getPname());
-				row.createCell(15).setCellValue("1");
-				row.createCell(25).setCellValue("全运村");
-				row.createCell(28).setCellValue(list.get(i).getFromUserName());
-				row.createCell(29).setCellValue(list.get(i).getOrdersBH());
-	        }
-		}
-		 try  
-	        {  
-	        	HttpServletResponse response = ServletActionContext.getResponse();
-	        	String filename = "已支付订单列表";
-	        	filename += new String((new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())).getBytes());
-	        	filename += ".xls";
-	        	filename = encodeFilename(request.getHeader("user-agent"),filename);
-	        	response.setHeader("Content-disposition","attachment; filename=" +filename);
-	        	OutputStream outputStream = response.getOutputStream();
-	            wb.write(outputStream);
-	            outputStream.flush();
-	            outputStream.close();  
-	        }  
-	        catch (Exception e)  
-	        {  
-	            e.printStackTrace();  
-	        } 
-		}
-		
-	
-	}
-	
-	/*public String exportToExcel(){
 		// 第一步，创建一个webbook，对应一个Excel文件  
         HSSFWorkbook wb = new HSSFWorkbook();  
         // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
@@ -1795,148 +1144,40 @@ public class OrdersAction extends ExtJSONActionSuport {
         
         cell = row.createCell(16);
         cell.setCellStyle(style);
-        cell.setCellValue("水果名称");
+        cell.setCellValue("产品名称");
         
-        Map<String, Object> conditionProperties = new HashMap<String, Object>();
+        cell = row.createCell(17);
+        cell.setCellStyle(style);
+        cell.setCellValue("支付时间");
+        
+        cell = row.createCell(18);
+        cell.setCellStyle(style);
+        cell.setCellValue("发货时间");
+        
+        cell = row.createCell(19);
+        cell.setCellStyle(style);
+        cell.setCellValue("收货时间");
+        
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		if(orderType!=null&&!"".equals(orderType.trim())){
-			conditionProperties.put("order_status", Integer.valueOf(orderType));
-			compare.put("order_status", 0);
+		if(null!=orderIds&&orderIds.length>0){
+			conditionProperties.put("ordersId", orderIds);
+			compare.put("ordersId", 4);
 		}else{
-			Integer[] os = {0,1,2,3,4,5,6};
-			conditionProperties.put("order_status", os);
-			compare.put("order_status", 4);
-			orderType = "-1";
+			addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
+					pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		}
 		
-		if(orderType.equals("0")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("1")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("2")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("3")){
-			sort.put("fahuoDate", false);
-		}else if(orderType.equals("4")){
-			sort.put("createDate", false);
-		}else if(orderType.equals("5")){
-			sort.put("tuihuoDate", false);
-		}else if(orderType.equals("6")){
-			sort.put("shouhuoDate", false);
-		}
-		
-		if (null!=toUserName &&! "".equals(toUserName.trim())) {
-			conditionProperties.put("toUserName", toUserName.trim());
-			compare.put("toUserName", 2);
-		}
-		if (null!=pname &&! "".equals(pname.trim())) {
-			conditionProperties.put("pname", pname.trim());
-			compare.put("pname", 2);
-		}
-		if (null!=oUserName &&! "".equals(oUserName.trim())) {
-			conditionProperties.put("oUserName", oUserName.trim());
-			compare.put("oUserName", 2);
-		}
-		if (null!=fromUserName &&! "".equals(fromUserName.trim())) {
-			conditionProperties.put("fromUserName", fromUserName.trim());
-			compare.put("fromUserName", 2);
-		}
-		if (null!=tel &&! "".equals(tel.trim())) {
-			conditionProperties.put("tel", tel.trim());
-			compare.put("tel", 2);
-		}
-		if (null!=oPhone &&! "".equals(oPhone.trim())) {
-			conditionProperties.put("oPhone", oPhone.trim());
-			compare.put("oPhone", 2);
-		}
-		if (null!=ordersBH &&! "".equals(ordersBH.trim())) {
-			conditionProperties.put("ordersBH", ordersBH.trim());
-			compare.put("ordersBH", 2);
-		}
-		if(null!=mobile &&! "".equals(mobile.trim())){
-			conditionProperties.put("mobile", mobile.trim());
-			compare.put("mobile", 2);
-		}
-		String selectDate = "";
-		
-		if(dateType!=null&&!"".equals(dateType)){
-			if(dateType.equals("1")){
-				selectDate = "createDate";
-			}else if(dateType.equals("3")){
-				selectDate = "fahuoDate";
-			}else if(dateType.equals("5")){
-				selectDate = "tuihuoDate";
-			}else if(dateType.equals("6")){
-				selectDate = "shouhuoDate";
-			}
-		}
-		if(null!=fromDate&&!"".equals(fromDate) &&endDate==null&&"".equals(endDate)){
-			System.out.println("---------------------------------------"+fromDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 8);
-		}
-		if(null!=endDate &&!"".equals(endDate)&&fromDate==null&&"".equals(fromDate)){
-			System.out.println("+++++++++++++++++++++++++"+endDate);
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				
-				e.printStackTrace();
-			}
-			conditionProperties.put(selectDate, date);
-			compare.put(selectDate, 9);
-		}
-		if(fromDate!=null &&! "".equals(fromDate)&&null!=endDate &&! "".equals(endDate)){
-			System.out.println("=========================");
-			Date date=null;
-			SimpleDateFormat   formatter   = 
-					new   SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
-			try
-			{
-				date=formatter.parse(fromDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date date2=null;
-			try
-			{
-				date2=formatter.parse(endDate);
-			} catch (ParseException e)
-			{
-				e.printStackTrace();
-			}
-			Date[] dates = {date,date2};
-			conditionProperties.put(selectDate, dates);
-			compare.put(selectDate, 10);
-		}
-		
-		List<Orders> list = ordersDAO.findAllPagerList_new1(conditionProperties, compare, sort, 0, 0, "all");
-  
-        for (int i = 0; i < list.size(); i++)  
+		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		for (int i = 0; i < list.size(); i++)  
         {  
             row = sheet.createRow(i + 1);
             Orders order = list.get(i);
             // 第四步，创建单元格，并设置值  
             row.createCell(0).setCellValue(order.getOrdersBH());//订单编号
-            row.createCell(1).setCellValue(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getCreateDate())); //下单时间
+            row.createCell(1).setCellValue(format.format(order.getCreateDate())); //下单时间
 			row.createCell(2).setCellValue(order.getoUserName());
 			row.createCell(3).setCellValue(order.getoPhone());
 			row.createCell(4).setCellValue(order.getUserId());
@@ -1969,32 +1210,24 @@ public class OrdersAction extends ExtJSONActionSuport {
 	        row.createCell(14).setCellValue(order.getKuaidiName()==null?"":order.getKuaidiName());//快递名称
             row.createCell(15).setCellValue(order.getKuaidiNo()==null?"":order.getKuaidiNo());//快递编号
             row.createCell(16).setCellValue(order.getPname()==null?"":order.getPname());//水果种类
+            String zhifuDate = "";
+            String fahuodate = "";
+            String shouhuoDate = "";
+            if(order.getPayTime()!=null)
+            	zhifuDate = format.format(order.getPayTime());
+            if(order.getFahuoDate()!=null)
+            	fahuodate = format.format(order.getFahuoDate());
+            if(order.getShouhuoDate()!=null)
+            	shouhuoDate = format.format(order.getShouhuoDate());
+            row.createCell(17).setCellValue(zhifuDate);
+            row.createCell(18).setCellValue(fahuodate);
+            row.createCell(19).setCellValue(shouhuoDate);
         }
         // 第六步，将文件存到指定位置  
         try  
         {  
         	HttpServletResponse response = ServletActionContext.getResponse();
-        	HttpServletRequest request = ServletActionContext.getRequest();
-        	String filename = null;
-        	if (null!=orderType &&! "".equals(orderType)) {
-    			if(orderType.equals("0")){
-    				filename = "未支付订单列表";
-    			}else if(orderType.equals("1")){
-    				filename = "已支付订单列表";
-    			}else if(orderType.equals("2")){
-    				filename = "申请退货订单列表";
-    			}else if(orderType.equals("3")){
-    				filename = "已发货订单列表";
-    			}else if(orderType.equals("4")){
-    				filename = "已完成订单列表";
-    			}else if(orderType.equals("5")){
-    				filename = "已退货订单列表";
-    			}else if(orderType.equals("6")){
-    				filename = "已收货订单列表";
-    			}
-    		}else {
-    			filename = "已支付订单列表";
-    		}
+        	String filename = "订单列表";
         	filename += new String((new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date())).getBytes());
         	filename += ".xls";
         	filename = encodeFilename(request.getHeader("user-agent"),filename);
@@ -2008,8 +1241,10 @@ public class OrdersAction extends ExtJSONActionSuport {
         {  
             e.printStackTrace();  
         } 
-		return null;
-	}*/
+		
+	
+	}
+	
 	
 	
 	@SuppressWarnings({ "static-access"})
@@ -2300,12 +1535,12 @@ public class OrdersAction extends ExtJSONActionSuport {
 			orders.setOrder_status(3);
 			orders.setKuaidiName(kuaidiName);
 			orders.setKuaidiNo(kuaidiNo);
-			orders.setFahuoDate(new Date());
+			if(orders.getFahuoDate()==null)
+				orders.setFahuoDate(new Date());
 			if(adminUser!=null){
 				orders.setFromUserName(adminUser.getUserName());
 				orders.setTel(adminUser.getPhone());
 			}
-			orders.setFahuoDate(new Date());
 			ordersDAO.update(orders);
 			ServletActionContext.getRequest().setAttribute("message", "发货成功");
 //			user = orders.getUser();
@@ -2542,6 +1777,190 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 	public void setImportFile(File importFile) {
 		this.importFile = importFile;
+	}public String getFromDate()
+	{
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate)
+	{
+		this.fromDate = fromDate;
+	}
+
+	public String getEndDate()
+	{
+		return endDate;
+	}
+
+	public void setEndDate(String endDate)
+	{
+		this.endDate = endDate;
+	}
+
+	public String getTotalMoney()
+	{
+		return totalMoney;
+	}
+
+	public void setTotalMoney(String totalMoney)
+	{
+		this.totalMoney = totalMoney;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+
+	public String getKuaidiName() {
+		return kuaidiName;
+	}
+
+	public void setKuaidiName(String kuaidiName) {
+		this.kuaidiName = kuaidiName;
+	}
+
+	public String getKuaidiNo() {
+		return kuaidiNo;
+	}
+
+	public void setKuaidiNo(String kuaidiNo) {
+		this.kuaidiNo = kuaidiNo;
+	}
+
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public UserOrderDAO getUserOrderDAO() {
+		return userOrderDAO;
+	}
+	
+	public TAreaDao gettAreaDao() {
+		return tAreaDao;
+	}
+	@Autowired
+	public void settAreaDao(TAreaDao tAreaDao) {
+		this.tAreaDao = tAreaDao;
+	}
+
+	public UserDAO getUserDAO() {
+		return userDAO;
+	}
+	@Autowired
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	@Autowired
+	public void setUserOrderDAO(UserOrderDAO userOrderDAO) {
+		this.userOrderDAO = userOrderDAO;
+	}
+	public LoginService getLoginService() {
+		return loginService;
+	}
+	@Autowired
+	public void setLoginService(LoginService loginService) {
+		this.loginService = loginService;
+	}
+	public ProductsDAO getProductsDAO() {
+		return productsDAO;
+	}
+	@Autowired
+	public void setProductsDAO(ProductsDAO productsDAO) {
+		this.productsDAO = productsDAO;
+	}
+	public ApplyReturnPurchaseDao getApplyReturnPurchaseDao() {
+		return applyReturnPurchaseDao;
+	}
+	@Autowired
+	public void setApplyReturnPurchaseDao(
+			ApplyReturnPurchaseDao applyReturnPurchaseDao) {
+		this.applyReturnPurchaseDao = applyReturnPurchaseDao;
+	}
+
+	public Integer getOrdersId() {
+		return ordersId;
+	}
+	public void setOrdersId(Integer ordersId) {
+		this.ordersId = ordersId;
+	}
+	public String getToUserName() {
+		return toUserName;
+	}
+	public void setToUserName(String toUserName) {
+		this.toUserName = toUserName;
+	}
+	
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	public OrdersDAO getOrdersDAO() {
+		return ordersDAO;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getOrdersBH() {
+		return ordersBH;
+	}
+
+	public void setOrdersBH(String ordersBH) {
+		this.ordersBH = ordersBH;
+	}
+
+	@Autowired
+	public void setOrdersDAO(OrdersDAO ordersDAO) {
+		this.ordersDAO = ordersDAO;
+	}
+	public OrdersProductsDAO getOrdersProductsDAO() {
+		return ordersProductsDAO;
+	}
+	@Autowired
+	public void setOrdersProductsDAO(OrdersProductsDAO ordersProductsDAO) {
+		this.ordersProductsDAO = ordersProductsDAO;
+	}
+	public String getApplyNum() {
+		return applyNum;
+	}
+
+	public void setApplyNum(String applyNum) {
+		this.applyNum = applyNum;
 	}
 	
 	

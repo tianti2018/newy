@@ -35,6 +35,7 @@ public class Orders extends AbstractSymBasePO {
 	private Integer userId;//订单提交人id
 	private String pname;//水果品种
 	private Date createDate;//订单创建日期
+	private Date payTime;			//用户实际的支付时间
 	private Date fahuoDate;//发货日期
 	private Date tuihuoDate;//退货日期
 	private Date shouhuoDate;//收货日期
@@ -249,6 +250,12 @@ public class Orders extends AbstractSymBasePO {
 	}
 	public void setDealDate(Date dealDate) {
 		this.dealDate = dealDate;
+	}
+	public Date getPayTime() {
+		return payTime;
+	}
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
 	}
 	
 }
