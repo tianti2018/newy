@@ -85,7 +85,9 @@ function insertcode(){
 	    			child+=('<li>订单金额：<em>'+children[i].money+'</em></li>');
 	    			child+=('<li>订单状态：<em>');
 	    			var fahuo = false;
-	    			if(children[i].orderStatus==1){
+	    			if(children[i].orderStatus==0){
+	    				child+=('待付款');
+	    			}else if(children[i].orderStatus==1){
 	    				child+=('待发货');
 	    			}else if(children[i].orderStatus==2){
 	    				child+=('售后服务中');
@@ -123,7 +125,7 @@ function insertcode(){
 	    		
 	    	}else{
 	    		continuesearch = 1;
-	    		alert("已经加载完毕!");
+	    		/* alert("已经加载完毕!"); */
 	    	}
 	    }
 	});

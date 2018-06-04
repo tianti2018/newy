@@ -302,7 +302,7 @@ overflow: hidden;
 		    		ul.append(child);
 		    		
 		    	}else{
-		    		alert("已经加载完毕!");
+		    		/* alert("已经加载完毕!"); */
 		    	}
 		    }
 		});

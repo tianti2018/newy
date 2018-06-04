@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zklc.framework.service.impl.BaseServiceImp;
@@ -14,20 +13,18 @@ import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrdersVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
-import com.zklc.weishangcheng.member.service.OrdersService;
-import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
 @Service
 public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer> implements OrderJinHuoService {
 	
-	@Autowired
-	private OrdersService ordersService;
-	
-	@Autowired
-	private WeixinAutosendmsgService autosendmsgService;
-	
 	@Override
 	public OrderJinHuo findbyOrdersId(Integer ordersId) {
-		return findUniqueByProperty("ordersId", ordersId);
+		String hql = "from OrderJinHuo where ordersId ="+ordersId;
+		List<OrderJinHuo> jinHuos = findByHql(hql, null);
+		if(jinHuos!=null&&jinHuos.size()>0){
+			return jinHuos.get(0);
+		}
+		
+		return null;
 	}
 	
 
@@ -72,11 +69,6 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
         System.out.println(sql);
         List<Orders> orders= findBySql(Orders.class, sql, null);
 		return orders;
-	}
-
-	private String str_to_date(String string, String string2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 
@@ -306,7 +298,7 @@ public class OrderJinHuoServiceImpl extends BaseServiceImp<OrderJinHuo, Integer>
 		List<OrderJinHuo> deleteOrders =new ArrayList<>();
 		if(deleteList.size()>0){
 			for(Orders order:deleteList){
-				OrderJinHuo jinHuo = findUniqueByProperty("ordersId", order.getOrdersId());
+				OrderJinHuo jinHuo = findbyOrdersId(order.getOrdersId());
 				if(jinHuo!=null){
 					deleteOrders.add(jinHuo);
 				}

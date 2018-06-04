@@ -20,35 +20,20 @@
 	<bean id="orderAction" class="com.zklc.weishangcheng.member.action.OrderAction"></bean>
 	<bean id="buildTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
 	  <property name="targetObject" ref="orderAction" />
-	  <property name="targetMethod" value="updateUserTrueJifen" />
+	  <property name="targetMethod" value="updateOrderStatusTimer" />
 	  <property name="concurrent" value="false" />
 	</bean> 
 	
 	<bean id="buildTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
 	  <property name="jobDetail" ref="buildTask" /> 
-	  <property name="cronExpression" value="10 02 02 * * ?" />
+	  <property name="cronExpression" value="0/10 * * * * ?" />
 	</bean> 
-	
-	
-	<bean id="orderAction1" class="com.zklc.weishangcheng.member.action.OrderAction"></bean>
-	<bean id="buildTask1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
-	  <property name="targetObject" ref="orderAction1" />
-	  <property name="targetMethod" value="updatePayOrderStatus" />
-	  <property name="concurrent" value="false" />
-	</bean> 
-	
-	<bean id="buildTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
-	  <property name="jobDetail" ref="buildTask1" /> 
-	  <property name="cronExpression" value="0 0/30 * * * ?" />
-	</bean> 
-	
-	
 	
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
 	  <property name="triggers"> 
 	   <list> 
 	    <!-- <ref bean="buildTrigger" />  -->
-	     <ref bean="buildTrigger1" /> 
+	     <ref bean="buildTrigger" /> 
 	   </list> 
 	  </property> 
 	</bean>

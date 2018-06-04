@@ -38,7 +38,9 @@
     </style>
 </head>
 <body>
-
+<div style="height:1px;overflow:hidden;">
+	    <img src="${userVo.usery.headUrl }" />
+	</div> 
 <!-- 头部s -->
 <c:if test="${dianpu ==null }">
 	<div style="width: 100%">
@@ -97,112 +99,6 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cVZOceoa2o3Vl3LOxAYKsKNPU1avOE4w"></script>
 <div id="bdMapBox" style="display:none;"></div>
 <script>
-wx.config({
-    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-    appId: "${appId}", // 必填，公众号的唯一标识
-    timestamp: '${timestamp}', // 必填，生成签名的时间戳
-    nonceStr: '${nonce_str}', // 必填，生成签名的随机串
-    signature: '${signature}',// 必填，签名，见附录1
-    jsApiList: ['menuItem:share:appMessage','onMenuShareAppMessage',
-                'menuItem:share:timeline','onMenuShareTimeline',
-                'menuItem:share:qq','onMenuShareQQ',
-                'menuItem:share:weiboApp','onMenuShareWeibo',
-                'menuItem:share:QZone','onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-});
-
-wx.ready(function(){
-    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
- /* wx.checkJsApi({
-	    jsApiList: ['menuItem:share:appMessage','onMenuShareAppMessage',
-	                'menuItem:share:timeline','onMenuShareTimeline',
-	                'menuItem:share:qq','onMenuShareQQ',
-	                'menuItem:share:weiboApp','onMenuShareWeibo',
-	                'menuItem:share:QZone','onMenuShareQZone'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-	    success: function(res) {
-	        // 以键值对的形式返回，可用的api值true，不可用为false
-	        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-	    }
-	});  */	
-  wx.onMenuShareTimeline({
-	    title: '星火草原首页商城', // 分享标题
-	    link: '${url}', // 分享链接
-	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-	    success: function () { 
-	        // 用户确认分享后执行的回调函数
-	    	alert("分享成功");
-	    },
-	    cancel: function () { 
-	        // 用户取消分享后执行的回调函数
-	    	alert("您取消了分享");
-	    }
-	});
- wx.onMenuShareAppMessage({
-	    title: '星火草原首页商城', // 分享标题
-	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
-	    link: '${url}', // 分享链接
-	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-	    //type: '', // 分享类型,music、video或link，不填默认为link
-	    //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-	    success: function () { 
-	        // 用户确认分享后执行的回调函数
-	        alert("分享成功");
-	    },
-	    cancel: function () { 
-	        // 用户取消分享后执行的回调函数
-	    	alert("您取消了分享");
-	    }
-	});
- wx.onMenuShareQQ({
-	    title: '星火草原首页商城', // 分享标题
-	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
-	    link: '${url}', // 分享链接
-	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-	    success: function () { 
-	       // 用户确认分享后执行的回调函数
-	    	alert("分享成功");
-	    },
-	    cancel: function () { 
-	       // 用户取消分享后执行的回调函数
-	    	alert("您取消了分享");
-	    }
-	});
- wx.onMenuShareWeibo({
-	    title: '星火草原首页商城', // 分享标题
-	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
-	    link: '${url}', // 分享链接
-	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-	    success: function () { 
-	       // 用户确认分享后执行的回调函数
-	    	alert("分享成功");
-	    },
-	    cancel: function () { 
-	        // 用户取消分享后执行的回调函数
-	    	alert("您取消了分享");
-	    }
-	});
- wx.onMenuShareQZone({
-	    title: '星火草原首页商城', // 分享标题
-	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
-	    link: '${url}', // 分享链接
-	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-	    success: function () { 
-	       // 用户确认分享后执行的回调函数
-	    	alert("分享成功");
-	    },
-	    cancel: function () { 
-	        // 用户取消分享后执行的回调函数
-	    	alert("您取消了分享");
-	    }
-	});
-});
-
-wx.error(function(res){
-    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-	
-    wx.hideOptionMenu();//被分享的页面无法再次分享
-});
-
-
 
 var msg="${requestScope.tipMessage}";
 if(msg!=""){
@@ -273,17 +169,17 @@ function shwoCity(){
 	<!-- 领券e -->
 	<div class="wet_space size_s top"></div>
         
-        <nav class="quick-entry-nav">
+        <%-- <nav class="quick-entry-nav">
         	<a class="quick-entry-link" href="<%=request.getContextPath()%>/user/userAction!gotoHuiyuanShop.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/4.png"><span>会员专区</span></a>
             <a class="quick-entry-link" href="<%=request.getContextPath()%>/user/userAction!gotoJifenShop.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/7.png"><span>微积分商城</span></a>
             <a class="quick-entry-link" href="javascript:chooseUrl(1,0);"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/1.png"><span>流量商城</span></a>
             <a class="quick-entry-link" href="<%=request.getContextPath()%>/companyInfo/companyInfoAction!editPage.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/2.png"><span>厂家入驻</span></a>
-            <%-- <a class="quick-entry-link" href="javascript:zanwu();"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/5.png"><span>电话卡主</span></a>
+            <a class="quick-entry-link" href="javascript:zanwu();"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/5.png"><span>电话卡主</span></a>
             <a class="quick-entry-link" href="<%=request.getContextPath()%>/user/userAction!buy.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/1.png"><span>VIP专区</span></a>
             <a class="quick-entry-link" href="javascript:zanwu();"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/3.png"><span>店铺专区</span></a>
-            <a class="quick-entry-link" href="javascript:zanwu();"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/6.png"><span>秒杀专区</span></a> --%>
-            <%-- <a class="quick-entry-link" href="<%=request.getContextPath()%>/user/ivmcAction!ivmCountryList.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/6.png"><span>我爱家乡</span></a> --%>
-        </nav>
+            <a class="quick-entry-link" href="javascript:zanwu();"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/6.png"><span>秒杀专区</span></a>
+            <a class="quick-entry-link" href="<%=request.getContextPath()%>/user/ivmcAction!ivmCountryList.action"><img width="45" height="45" src="<%=request.getContextPath()%>/images/nav/6.png"><span>我爱家乡</span></a>
+        </nav> --%>
         
         
         <div class="wet_space size_s top"></div>

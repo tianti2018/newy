@@ -7,7 +7,6 @@ import com.zklc.weishangcheng.member.hibernate.persistent.OrderJinHuo;
 import com.zklc.weishangcheng.member.hibernate.persistent.Orders;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
-import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrderVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.OrdersVo;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 

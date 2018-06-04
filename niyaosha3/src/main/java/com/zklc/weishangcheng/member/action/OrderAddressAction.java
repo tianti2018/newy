@@ -26,7 +26,8 @@ import com.zklc.weishangcheng.member.service.TareaService;
 	@Result(name = "editPage", location = "/WEB-INF/jsp/orderAddress_add.jsp"),
 	@Result(name = "timeOut", location = "/WEB-INF/jsp/denglu.jsp"),
 	@Result(name = "ajaxResult", type = "json", params = {"message","message"}),
-	@Result(name = "gobackList4", type = "redirect", location = "/orderAddress/orderAddressAction!orderAddress.action")
+	@Result(name = "gobackList4", params = {"productId","${productId}","pdId","${pdId}"}, type = "redirect",
+		location = "/orderAddress/orderAddressAction!orderAddress.action")
 
 })
 /**
@@ -116,6 +117,8 @@ public class OrderAddressAction extends BaseAction {
 	 */
 	public String editPage(){
 		request.setAttribute("litTArea_sheng", tareaService.findByProperty("parentCode", "0"));
+		request.setAttribute("productId", productId);
+		request.setAttribute("pdId", pdId);
 		return "editPage";
 	}
 	
@@ -163,7 +166,6 @@ public class OrderAddressAction extends BaseAction {
 					userVo.setOrderAddress(orderAddress);
 					session.setAttribute("loginUser", userVo);
 				}
-
 				//返回到商城首页
 				return "gobackList4";
 			}

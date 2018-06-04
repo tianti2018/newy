@@ -117,15 +117,13 @@ function insertcode(){
 	    				
 		    			child+=('<li>快递公司：<em>children[i].kuaidiName');
 		    			child+=('</em></li>');
-		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="  查看物流 " onclick="serch('+children[i].kuaidiNo+')"/></li>');
+		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="查看物流 " onclick="serch('+children[i].kuaidiNo+')"/></li>');
 		    			child+=('<li>发货日期：<em>'+(fahuoTime==null?null:fahuoTime)+'</em></li>');
 	    			}
 	    			child+=('<li>购买数量：<em>'+children[i].shuliang+'</em></li>');
 	    			child+=('<li>消耗收益：<em>'+children[i].xiaohaoShouyi+'</em></li>');
 	    			child+=('<li style="text-align:center">');
    					if(children[i].orderStatus==0){
-   	    				child+=('<em><input type="button" onclick="cancelOrder(this)" orderId="children[i].ordersId" value="取消订单"/></em>&nbsp;&nbsp;');
-   	    				child+=('<em><input type="button" onclick="quzhifu(this)" orderId="children[i].ordersId" value="去支付"/></em>');
    	    			}else if(children[i].orderStatus==1){
    	    				child+=('<em><input type="button" onclick="tuihuo(this)" orderId="children[i].ordersId" value="申请退货"/></em>');
    	    			}else if(children[i].orderStatus==3){
@@ -146,7 +144,7 @@ function insertcode(){
 	    		
 	    	}else{
 	    		continuesearch = 1;
-	    		alert("已经加载完毕!");
+	    		/* alert("已经加载完毕!"); */
 	    	}
 	    }
 	});

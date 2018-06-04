@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" import="java.util.ResourceBundle"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -80,7 +81,7 @@ function insertcode(){
 	    		
 	    	}else{
 	    		length = data.length;
-	    		alert("已经加载完毕!");
+	    		/* alert("已经加载完毕!"); */
 	    	}
 	    }
 	});
@@ -120,8 +121,8 @@ $(document).ready(function () {
 <div class="wrap">
   <div class="notHeader">
     <div class="not-hea-log"><img src="<%=request.getContextPath()%>/images/logo.png"></div>
-    <div class="not-hea-cn"><span>星火草原</span></div>
-	<div class="not-hea-en"><span>XINGHUOCAOYUAN</span></div>
+    <div class="not-hea-cn"><span>山人物语</span></div>
+	<div class="not-hea-en"><span>SHANRENWUYU</span></div>
   </div>
   <div class="not-list" id="appendUl">
 	<div class="not-h"><span></span><span>公 告</span><span></span></div>
@@ -161,17 +162,7 @@ $(document).ready(function () {
 		</script>
 	</div>
 <!-- 底部s -->
-<div id="footer">
-  <div class="foot_nav">
-    <div class="foot_nav_inner">
-	    <a href="<%=request.getContextPath()%>/user/userAction!phoneFamily.action"><span class="line"><i class="nav_f1"></i></span><span class="text">我的红包</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!jampshopIndex.action"><span class="line"><i class="nav_f2"></i></span><span class="text">商城首页</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action"><span class="line"><i class="nav_f3"></i></span><span class="text">二维码</span></a>
-	    <a href="javascript:zanwu();"><span class="line"><i class="nav_f4"></i></span><span class="text">购物车</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!gotoPersonalCenter.action" class="hover"><span class="line"><i class="nav_f5"></i></span><span class="text">个人中心</span></a>
-    </div>
-  </div>
-</div>
+<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 <!-- 底部e -->
 </body>
 </html>

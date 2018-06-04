@@ -85,7 +85,7 @@
 			<li class="dizhi"><span>微&nbsp;信&nbsp;号&nbsp;：</span><input id="wxhao" type="text" placeholder="微信号" value="${orderAddress.zipcode }"></li>
 			<li class="dizhi"><span>手&nbsp;机&nbsp;号&nbsp;：</span><input id="phone" type="text" placeholder="手机号" value="${orderAddress.mobile }"></li>
 			<li class="dizhi"><span>详细地址：</span><input id="dizhi" type="text" placeholder="详细地址" value="${orderAddress.address }"></li>
-			<li><input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《星火草原协议》</a></li>
+			<li><input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《山人物语协议》</a></li>
 			<input id="orderAddRessId" type="hidden" value="${orderAddress.id }"/>
 		</ul>
 	</div>

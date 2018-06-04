@@ -209,6 +209,7 @@ public class WeixinUtil {
                     }
                     /**把json字符串转换成json对象**/
                     jsonResult = JSONObject.fromObject(str);
+                    System.out.println(str);
                 } catch (Exception e) {
                    e.printStackTrace();
                 }
@@ -241,7 +242,7 @@ public class WeixinUtil {
                 String strResult = EntityUtils.toString(response.getEntity(),"UTF-8");
                 /**把json字符串转换成json对象**/
                 jsonResult = JSONObject.fromObject(strResult);
-                
+                System.out.println(strResult);
             } 
         } catch (IOException e) {
             e.printStackTrace();
@@ -395,7 +396,7 @@ public class WeixinUtil {
         String requestUrl = code2tokenurl.replace("APPID", appId).replace("SECRET", appSecret).replace("CODE", code);
 //        System.out.println(requestUrl);
         JSONObject jsonObject = httpRequest(requestUrl, "GET", null);
-//        System.out.println(jsonObject.toString());
+        System.out.println(jsonObject.toString());
         if(jsonObject!=null)
         	if (!StringUtils.contains(jsonObject.toString(), "40029")) {
         		return jsonObject.getString("openid");
@@ -453,7 +454,13 @@ public class WeixinUtil {
          				userInfoUtil.setCity(jsonObject.getString("city"));
          				userInfoUtil.setCountry(jsonObject.getString("country"));
          				userInfoUtil.setHeadimgurl(jsonObject.getString("headimgurl"));
-         				userInfoUtil.setUnionid(jsonObject.getString("unionid"));
+         				String uninoid = null;
+         				try {
+         					uninoid =jsonObject.getString("unionid");
+						} catch (Exception e) {
+							System.out.println("uninoid 为空");
+						}
+         				userInfoUtil.setUnionid(uninoid);
          				return userInfoUtil;
          			}
          		}

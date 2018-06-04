@@ -76,7 +76,10 @@ function insertcode(){
 	    		var child = '';
 	    		for(var i=0;i<children.length;i++){
 	    			var time= new Date(children[i].createDate.time).Format("yyyy-MM-dd hh:mm:ss");
-	    			var passTime = new Date(children[i].passDate.time).Format("yyyy-MM-dd hh:mm:ss");
+	    			var passTime = null;
+	    			if(children[i].passDate!=null){
+	    				passTime = new Date(children[i].passDate.time).Format("yyyy-MM-dd hh:mm:ss");
+	    			}
 	    			child+=('<div class="my_account" >');
 	    			child+=('<div class="item" onclick="zhankai('+children[i].id+')">');
 	    			child+=('<div class="item_t">');
@@ -105,7 +108,7 @@ function insertcode(){
 	    		
 	    	}else{
 	    		wanbi=data.length;
-	    		alert("已经加载完毕!");
+	    		/* alert("已经加载完毕!"); */
 	    		
 	    	}
 	    }

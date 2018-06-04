@@ -102,8 +102,7 @@ public class NoticeAction extends BaseAction {
 	public String noticeList(){
 		//获取用户信息
 		userVo = getSessionUser();
-		user = userVo.getUser();
-		if(user==null){
+		if(userVo==null){
 			return "timeOut";
 		}
 		List<Notice> notices=noticeService.getAll(pageNum);
@@ -116,8 +115,7 @@ public class NoticeAction extends BaseAction {
 	public String ajaxNoticeList(){
 		//获取用户信息
 		userVo = getSessionUser();
-		user = userVo.getUser();
-		if(user==null){
+		if(userVo==null){
 			return "timeOut";
 		}
 		Map<String,Object> jsonMap=new HashMap<String,Object>();
@@ -147,8 +145,7 @@ public class NoticeAction extends BaseAction {
 	public String findLastNotice(){
 		//获取用户信息
 		userVo = getSessionUser();
-		user = userVo.getUser();
-		if(user==null){
+		if(userVo==null){
 			return "timeOut";
 		}
 		Map<String,Object> jsonMap=new HashMap<String,Object>();

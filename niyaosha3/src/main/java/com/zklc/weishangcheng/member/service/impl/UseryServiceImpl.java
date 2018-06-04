@@ -95,7 +95,12 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 
 	@Override
 	public Usery findByDianpuId(Integer dianpuId) {
-		return findUniqueByProperty("dianPuId", dianpuId);
+		String hql = "from Usery where dianPuId="+dianpuId;
+		List<Usery> userys = findByHql(hql, null);
+		if(userys!=null&&userys.size()>0){
+			return userys.get(0);
+		}
+		return null;
 	}
 
 	@Override

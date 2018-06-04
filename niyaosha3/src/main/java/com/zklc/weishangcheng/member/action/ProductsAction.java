@@ -37,7 +37,7 @@ public class ProductsAction extends BaseAction {
 	public String products(){
 		List<Products> products_lunbo = productsService.findPagerByPropertyAndSort(0, 0, 0);
 		List<Products> products_dankuan=productsService.findPagerByPropertyAndSort(1, 0, 0);
-		List<Products> products_sanlie=productsService.findPagerByPropertyAndSort(null, 1, 10);
+		List<Products> products_sanlie=productsService.findPagerByPropertyAndSort(2, 1, 10);
 		request.setAttribute("products_lunbo", products_lunbo);
 		request.setAttribute("products_dankuan", products_dankuan);
 		request.setAttribute("products_sanlie", products_sanlie);

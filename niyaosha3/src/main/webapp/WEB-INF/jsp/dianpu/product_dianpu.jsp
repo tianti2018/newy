@@ -19,7 +19,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta http-equiv="x-dns-prefetch-control" content="on">
 <meta http-equiv="x-dns-prefetch-control" content="on">
-<title>产品详情</title>
+<title>${prod.name}</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/base.css">
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/buttons.css">
@@ -377,7 +377,7 @@
 											ul.append(child);
 										} else {
 											length = data.length;
-											alert("已经加载完毕!");
+											/* alert("已经加载完毕!"); */
 										}
 									}
 								});
@@ -487,17 +487,28 @@
 					</ul>
 
 				</c:if>
-				<c:if test="${null==userVo.orderAddress}">
+				<c:if test="${null!=userVo}">
+					<c:if test="${null==userVo.orderAddress}">
+						<div align="center">
+							<a id="orderAdress" 
+							href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action?pdId=${prod.id}" 
+							class="btn green">选择一条收货地址</a>
+						</div>
+					</c:if>
+				</c:if>
+				<c:if test="${null==userVo}">
 					<div align="center">
-						<a id="orderAdress" href="#loginline" class="btn green" onclick="addressList();">选择一条收货地址</a>
+						<a id="orderAdress" 
+						href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2ForderAddress%2ForderAddressAction!orderAddress.action?pdId=${prod.id}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect" 
+						class="btn green">选择一条收货地址</a>
 					</div>
 				</c:if>
 				<br/>
 				<div align="center">
 					<a href="#" id="lijibuy" onclick="javascript:orderBuy()"
-							class="btn green" style="width: 20%;margin-left: 1px">进货</a>
+							class="btn green" style="width: 20%;margin-left: 1px">立即购买</a>
 					<a href="#" id="lijibuy1" onclick="javascript:orderBuy()"
-							class="btn green" style="width: 20%;margin-left: 1px">代客下单</a>
+							class="btn green" style="width: 20%;margin-left: 1px">立即购买</a>
 					<a href="#" id="lijibuy2" onclick="javascript:shuaxin()"
 							class="btn green" style="width: 20%;margin-left: 1px">刷新页面</a>
 				</div>
@@ -557,108 +568,6 @@
 	<script type="text/javascript"
 		src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 	<script type="text/javascript">
-			 wx.config({
-				    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-				    appId: "${appId}", // 必填，公众号的唯一标识
-				    timestamp: '${timestamp}', // 必填，生成签名的时间戳
-				    nonceStr: '${nonce_str}', // 必填，生成签名的随机串
-				    signature: '${signature}',// 必填，签名，见附录1
-				    jsApiList: ['menuItem:share:appMessage','onMenuShareAppMessage',
-				                'menuItem:share:timeline','onMenuShareTimeline',
-				                'menuItem:share:qq','onMenuShareQQ',
-				                'menuItem:share:weiboApp','onMenuShareWeibo',
-				                'menuItem:share:QZone','onMenuShareQZone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-				});
-			 
-			  wx.ready(function(){
-				    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-				 /* wx.checkJsApi({
-					    jsApiList: ['menuItem:share:appMessage','onMenuShareAppMessage',
-					                'menuItem:share:timeline','onMenuShareTimeline',
-					                'menuItem:share:qq','onMenuShareQQ',
-					                'menuItem:share:weiboApp','onMenuShareWeibo',
-					                'menuItem:share:QZone','onMenuShareQZone'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-					    success: function(res) {
-					        // 以键值对的形式返回，可用的api值true，不可用为false
-					        // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
-					    }
-					});  */	
-				  wx.onMenuShareTimeline({
-					    title: '${prod.name}', // 分享标题
-					    link: '${url}', // 分享链接
-					    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-					    success: function () { 
-					        // 用户确认分享后执行的回调函数
-					    	alert("分享成功");
-					    },
-					    cancel: function () { 
-					        // 用户取消分享后执行的回调函数
-					    	alert("您取消了分享");
-					    }
-					});
-				 wx.onMenuShareAppMessage({
-					    title: '${prod.name}', // 分享标题
-					    link: '${url}', // 分享链接
-					    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-					    //type: '', // 分享类型,music、video或link，不填默认为link
-					    //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-					    success: function () { 
-					        // 用户确认分享后执行的回调函数
-					        alert("分享成功");
-					    },
-					    cancel: function () { 
-					        // 用户取消分享后执行的回调函数
-					    	alert("您取消了分享");
-					    }
-					});
-				 wx.onMenuShareQQ({
-					    title: '${prod.name}', // 分享标题
-					    link: '${url}', // 分享链接
-					    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-					    success: function () { 
-					       // 用户确认分享后执行的回调函数
-					    	alert("分享成功");
-					    },
-					    cancel: function () { 
-					       // 用户取消分享后执行的回调函数
-					    	alert("您取消了分享");
-					    }
-					});
-				 wx.onMenuShareWeibo({
-					    title: '${prod.name}', // 分享标题
-					    link: '${url}', // 分享链接
-					    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-					    success: function () { 
-					       // 用户确认分享后执行的回调函数
-					    	alert("分享成功");
-					    },
-					    cancel: function () { 
-					        // 用户取消分享后执行的回调函数
-					    	alert("您取消了分享");
-					    }
-					});
-				 wx.onMenuShareQZone({
-					    title: '${prod.name}', // 分享标题
-					    link: '${url}', // 分享链接
-					    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
-					    success: function () { 
-					       // 用户确认分享后执行的回调函数
-					    	alert("分享成功");
-					    },
-					    cancel: function () { 
-					        // 用户取消分享后执行的回调函数
-					    	alert("您取消了分享");
-					    }
-					});
-			 });
-			  
-			wx.error(function(res){
-				    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-					
-				    wx.hideOptionMenu();//被分享的页面无法再次分享
-			});
-			  
-			
 	
 		function orderBuy(){
 			$("#lijibuy").removeAttr("onclick");
@@ -735,23 +644,10 @@
 					       	 	}else{
 					       	 		if(data.timeOut){
 					       	 			alert("用户已超时,请关闭网页重新进入!");
+					       	 		}else{
+					       	 			alert(data.message);
 					       	 		}
-					       	 		if(data.error){
-					       	 			alert("参数错误!请重试");
-					       	 		}
-					       	 		if(data.stockless)
-					       	 			{
-					       	 		$("#lijibuy").attr("onclick","orderBuy()");
-					       	 			  alert("库存不够");
-					       	 			}
-					       	 		else if(data.xhq_nok)
-					       	 			{
-					       	 			  alert("星火券数量异常，请关闭网页重新进入");
-					       	 			}
-					       	 		else if(data.xhq_overbuy)
-					       	 			{
-					       	 			   alert("现在处于测试阶段, 一天只能用星火券购买两次");
-					       	 			}
+					       	 		
 						       	 	$("#btn_submit").html("立即购买");
 				       	 			$("#btn_submit").removeAttr('disabled');
 					       	 		

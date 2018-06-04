@@ -34,7 +34,7 @@
        <li><div class="m" onclick="clickDian(9)"><input type="radio" id="zige-9" name="zige" class="regular-radio" /><label for="zige-9"><img src="<%=request.getContextPath()%>/images/shenqing/9.png" /><span>星火总店</span><i>¥300</i></label></div></li>
        <div class="clear"></div>
      </ul>
-     <input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《星火草原协议》</a>
+     <input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《山人物语协议》</a>
    </div>
    <input type="hidden" id="xx-shu" name="levelValue" class="xx-shu" value="0">
    <input type="hidden" id="jiage" />

@@ -1,5 +1,6 @@
 package com.zklc.framework.action;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
+import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
+import com.zklc.weixin.util.UserInfoUtil;
 import com.zklc.weixin.util.WeixinUtil;
 
 import net.sf.json.JSONArray;
@@ -42,6 +45,8 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
     protected UserService userService;
     @Autowired
     protected UseryService useryService;
+    @Autowired
+    protected WeixinAutosendmsgService autosendmsgService;
     protected HttpServletRequest request;
     @SuppressWarnings("rawtypes")
     protected SessionMap sessionMap;
@@ -96,6 +101,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 	}
 	
 	public UserVo getSessionUser(){
+		UserInfoUtil userInfo = null;
 		userVo = (UserVo) session.getAttribute("loginUser");
 		if(userVo ==null){
 			if(StringUtils.isEmpty(code)){
@@ -111,7 +117,8 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 			if(StringUtils.isNotEmpty(code)){
 				if(StringUtils.isEmpty(wxOpenid)){
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> code333------ "+code);
-					wxOpenid = WeixinUtil.code2openid(code);
+					userInfo = WeixinUtil.getUserInfoByCode(code);
+					wxOpenid = userInfo.getOpenid();
 					request.getSession().setAttribute("wxOpenid",wxOpenid);
 				}
 			}
@@ -126,6 +133,22 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 							userVo.setUser(user);
 						}
 					}
+					session.setAttribute("loginUser", userVo);
+					return userVo;
+				}else if(userInfo!=null){
+					System.out.println("走到else if了 userinfo!=null");
+					usery = new Usery();
+					usery.setSubscribe(0);
+					usery.setUnionid(userInfo.getUnionid());
+					usery.setWxOpenid(wxOpenid);
+					usery.setAppDate(new Date());
+					usery.setUserName(userInfo.getNickname().trim());
+					usery.setHeadUrl(userInfo.getHeadimgurl());
+					usery.setUnionid(userInfo.getUnionid());
+					usery.setLevel(0);
+					useryService.save(usery);
+					userVo = new UserVo();
+					userVo.setUsery(usery);
 					session.setAttribute("loginUser", userVo);
 					return userVo;
 				}

@@ -14,7 +14,7 @@ public class ProductsForDianpuServiceImpl extends BaseServiceImp<ProductsForDian
 
 	@Override
 	public List<ProductsForDianpu> findPagerByPropertyAndSort(Integer type, Integer pageNum, Integer pageSize,Integer dianpuId) {
-		String sql = "select * from products_dianpu  where 1=1 ";
+		String sql = "select * from products_dianpu  where dianpuId= "+dianpuId;
 		if(type!=null){
 			sql+=" and type= "+type;
 		}

@@ -290,5 +290,4 @@ public interface IBaseService<T, PK> {
    * @param property
    * @return
    */
-  public T findUniqueByProperty(String propertyName, Object property);
 }

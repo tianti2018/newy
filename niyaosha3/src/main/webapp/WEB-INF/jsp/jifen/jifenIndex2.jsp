@@ -36,7 +36,7 @@
 				<li class="logo">
 					<img src="<%=request.getContextPath()%>/images/huiyuanzhuanqu/img/logo.png"/>
 					<p class="logoWord">
-						<span>星火草原</span>xinghuocaoyuan
+						<span>山人物语</span>
 					</p>
 				</li>
 				<li class="vipT"><a href="#">积分专区</a></li>
@@ -236,7 +236,7 @@
 			<a href="#">更多好礼 ➤➤➤</a>
 		</div> -->
 		<div class="bottomWord">
-			<p>温馨提示：星火草原微信商城拥有众多的商品积分好礼和积分活动，星火草原商城为您提供各种优质的积分商品，让您的积分购物体验、轻松愉快。积分购物商城，首选星火草原微信商城。</div>
+			<p>温馨提示：山人物语微信商城拥有众多的商品积分好礼和积分活动，山人物语商城为您提供各种优质的积分商品，让您的积分购物体验、轻松愉快。积分购物商城，首选山人物语微信商城。</div>
 		</div>
 	</div>
 </div>

@@ -39,4 +39,6 @@ public interface ShouYiForUserService extends IBaseService<ShouYiForUser, Intege
 
 	void updateShouyiStatusByOrders(List<Orders> shouyiOrders);
 
+	ShouYiForUser findbyOrdersId(Integer ordersId);
+
 }

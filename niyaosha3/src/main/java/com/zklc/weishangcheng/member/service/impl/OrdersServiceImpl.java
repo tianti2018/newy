@@ -67,26 +67,32 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		Date now = new Date();
 		if(weizhifulist!=null&&weizhifulist.size() > 0){
 			for(Orders order:weizhifulist){
-				if(now.getTime()-order.getCreateDate().getTime()>1000*60*60*24*3){
+				if(now.getTime()-order.getCreateDate().getTime()>1000*60*60){
 					deleteList.add(order);
 				}
 			}
 		}
-		hql = " from Order o where o.orderStatus = 3";
+		hql = " from Orders o where o.orderStatus = 3";
 		List<Orders> yifahuoList = findByHql(hql, null);
 		if(yifahuoList!=null&&yifahuoList.size()>0){
 			for(Orders order:yifahuoList){
-				if(now.getTime()-order.getFahuoDate().getTime()>1000*60*60*24*7){
-					order.setOrderStatus(6);
-					updateList.add(order);
+				if(order.getFahuoDate()!=null){
+					if(now.getTime()-order.getFahuoDate().getTime()>1000*60*60*24*7){
+						order.setOrderStatus(6);
+						updateList.add(order);
+					}
 				}
+				
 			}
 		}
-		hql = " from Order o where o.orderStatus = 6";
+		hql = " from Orders o where o.orderStatus = 6";
 		List<Orders> yishouhuoList = findByHql(hql, null);
 		if(yishouhuoList!=null&&yishouhuoList.size()>0){
 			for(Orders order:yishouhuoList){
-				if(now.getTime()-order.getShouhuoDate().getTime()>1000*3600*24*7){
+				if(order.getShouhuoDate()==null){
+					order.setOrderStatus(4);
+					updateList.add(order);
+				}else if(now.getTime()-order.getShouhuoDate().getTime()>1000*3600*24*7){
 					order.setOrderStatus(4);
 					updateList.add(order);
 				}
@@ -100,7 +106,7 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		}
 		//最后还需要更新收益列表里面的状态
 		//这里还没有确定是哪一个状态才修改,如果定了就去添加list更新状态吧
-		shouyiService.updateShouyiStatusByOrders(shouyiOrders);
+		shouyiService.updateShouyiStatusByOrders(yifahuoList);
 		shouyiService.deleteShouyiByOrders(deleteList);
 //		updateUserMsg();
 	}
@@ -224,13 +230,13 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		order.setOrderStatus(1);
 		order.setPayTime(new Date());
 		update(order);
-		ShouYiForUser dianzhuShouyi = shouyiService.findUniqueByProperty("ordersId", order.getOrdersId());
+		ShouYiForUser dianzhuShouyi = shouyiService.findbyOrdersId(order.getOrdersId());
 		if(dianzhuShouyi!=null){
 			dianzhuShouyi.setStatus(1);
 			shouyiService.update(dianzhuShouyi);
 		}
 		if(orderJinHuo!=null){
-			ShouYiForUser jinhuoDianzhuShouyi = shouyiService.findUniqueByProperty("ordersId", orderJinHuo.getId());
+			ShouYiForUser jinhuoDianzhuShouyi = shouyiService.findbyOrdersId(orderJinHuo.getId());
 			if(jinhuoDianzhuShouyi!=null){
 				jinhuoDianzhuShouyi.setStatus(1);
 				shouyiService.update(jinhuoDianzhuShouyi);
@@ -238,7 +244,7 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		}
 		Products product = productsService.findById(order.getProductId());
 		if(product.getStock()!=null&&product.getStock()!=999){
-			product.setStock(product.getStock()-1);
+			product.setStock(product.getStock()-order.getShuliang());
 			productsService.update(product);
 		}
 	}

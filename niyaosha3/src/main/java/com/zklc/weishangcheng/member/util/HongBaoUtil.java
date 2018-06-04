@@ -51,15 +51,15 @@ import com.zklc.weixin.util.SystemMessage;
 public class HongBaoUtil {
 	public static final String MCH_ID = SystemMessage.getString("MCH_ID");      //商户号
 	public static final String WXAPPID = SystemMessage.getString("APPID");     //公众账号appid
-	public static final String NICK_NAME = "星火草原";   //提供方名称
+	public static final String NICK_NAME = "山人物语";   //提供方名称
 	public static final String SEND_NAME = "软航科技垫付";   //商户名称
 	public static final int MIN_VALUE = 1000;       //红包最小金额 单位:分
 	public static final int MAX_VALUE = 5000;       //红包最大金额 单位:分
 	public static final int TOTAL_NUM = 1;         //红包发放人数
-	public static final String WISHING = "星火草原垫付红包";     //红包祝福语
+	public static final String WISHING = "山人物语垫付红包";     //红包祝福语
 	public static final String CLIENT_IP = "192.168.2.117";   //调用接口的机器IP
-	public static final String ACT_NAME = "星火草原";    //活动名称
-	public static final String REMARK = "星火草原垫付红包";      //备注
+	public static final String ACT_NAME = "山人物语";    //活动名称
+	public static final String REMARK = "山人物语垫付红包";      //备注
 	public static final String KEY = SystemMessage.getString("PARTNERKEY");         //秘钥
 	
 	public static final int FAIL = 0;              //领取失败

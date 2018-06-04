@@ -14,7 +14,6 @@ import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
 import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.ShouYiForUserService;
-import com.zklc.weishangcheng.member.util.PublicUtil;
 @Service
 public class ShouYiForUserServiceImpl extends BaseServiceImp<ShouYiForUser, Integer> implements ShouYiForUserService {
 
@@ -129,14 +128,14 @@ public class ShouYiForUserServiceImpl extends BaseServiceImp<ShouYiForUser, Inte
 		List<ShouYiForUser> shouYiForUsers = new ArrayList<>();
 		if(deleteList.size()>0){
 			for(Orders order:deleteList){
-				ShouYiForUser shouyi1 = findUniqueByProperty("ordersId", order.getOrdersId());
+				ShouYiForUser shouyi1 = findbyOrdersId(order.getOrdersId());
 				if(shouyi1!=null){
 					shouYiForUsers.add(shouyi1);
 				}
-				OrderJinHuo jinHuo = orderJinHuoService.findUniqueByProperty("ordersId", order.getOrdersId());
+				OrderJinHuo jinHuo = orderJinHuoService.findbyOrdersId(order.getOrdersId());
 				if(jinHuo!=null){
 					orderJinHuos.add(jinHuo);
-					ShouYiForUser shouyi2 = findUniqueByProperty("ordersId", jinHuo.getId());
+					ShouYiForUser shouyi2 = findbyOrdersId(jinHuo.getId());
 					if(shouyi2!=null){
 						shouYiForUsers.add(shouyi2);
 					}
@@ -153,15 +152,15 @@ public class ShouYiForUserServiceImpl extends BaseServiceImp<ShouYiForUser, Inte
 		List<ShouYiForUser> shouYiForUsers = new ArrayList<>();
 		if(updateOrders.size()>0){
 			for(Orders order:updateOrders){
-				ShouYiForUser shouyi1 = findUniqueByProperty("ordersId", order.getOrdersId());
+				ShouYiForUser shouyi1 = findbyOrdersId(order.getOrdersId());
 				if(shouyi1!=null){
 					shouyi1.setStatus(2);
 					shouYiForUsers.add(shouyi1);
 				}
-				OrderJinHuo jinHuo = orderJinHuoService.findUniqueByProperty("ordersId", order.getOrdersId());
+				OrderJinHuo jinHuo = orderJinHuoService.findbyOrdersId(order.getOrdersId());
 				if(jinHuo!=null){
 					orderJinHuos.add(jinHuo);
-					ShouYiForUser shouyi2 = findUniqueByProperty("ordersId", jinHuo.getId());
+					ShouYiForUser shouyi2 = findbyOrdersId(jinHuo.getId());
 					if(shouyi2!=null){
 						shouyi2.setStatus(2);
 						shouYiForUsers.add(shouyi2);
@@ -170,6 +169,16 @@ public class ShouYiForUserServiceImpl extends BaseServiceImp<ShouYiForUser, Inte
 			}
 		}
 		saveOrUpdateAll(shouYiForUsers);
+	}
+
+	@Override
+	public ShouYiForUser findbyOrdersId( Integer ordersId) {
+		String hql = "from ShouYiForUser where ordersId =" + ordersId;
+		List<ShouYiForUser> shouyis = findByHql(hql, null);
+		if(shouyis!=null&&shouyis.size()>0){
+			return shouyis.get(0);
+		}
+		return null;
 	}
 
 }

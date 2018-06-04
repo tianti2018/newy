@@ -79,6 +79,8 @@
          <s:hidden name="orderAddress.userId"></s:hidden>
          <s:hidden name="orderAddress.useryId"></s:hidden>
          <s:hidden name="orderAddress.isFirst"></s:hidden>
+         <input type="hidden" id="productId" name="productId" value="${productId }"/>
+         <input type="hidden" id="pdId" name="pdId" value="${pdId }"/>
       </div>
  	 </form>
       <div class="ui-field-contain">

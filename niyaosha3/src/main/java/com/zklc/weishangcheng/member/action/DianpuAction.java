@@ -12,6 +12,7 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zklc.framework.action.BaseAction;
+import com.zklc.weishangcheng.member.hibernate.persistent.AccessToken;
 import com.zklc.weishangcheng.member.hibernate.persistent.DianpuForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductsForDianpu;
@@ -21,6 +22,9 @@ import com.zklc.weishangcheng.member.service.DianpuForUserService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
 import com.zklc.weishangcheng.member.service.ProductsForDianpuService;
 import com.zklc.weishangcheng.member.service.ProductsService;
+import com.zklc.weishangcheng.member.service.WeixinAutosendmsgService;
+import com.zklc.weixin.util.SystemMessage;
+import com.zklc.weixin.util.sign;
 
 @SuppressWarnings("serial")
 @ParentPackage("json")
@@ -62,6 +66,9 @@ public class DianpuAction extends BaseAction {
 	private DianpuForUserService dianpuForUserService;
 	@Autowired
 	private ProductsForDianpuService productsForDianpuService;
+	@Autowired
+	private WeixinAutosendmsgService autosendmsgService;
+	
 	
 	private DianpuForUser dianpu;
 	private List<ProductsForDianpu> lunbos;
@@ -91,11 +98,14 @@ public class DianpuAction extends BaseAction {
 				request.setAttribute("typelist", prodList);
 				request.setAttribute("typeqty", prodList.size());
 				userVo = getSessionUser();
-				if(userVo!=null&&userVo.getUser()!=null){
-					request.setAttribute("orderAddress", orderAddressService.findOrderAddressByUserId(userVo.getUser().getUserId()));
+				if(userVo!=null){
+					request.setAttribute("orderAddress", orderAddressService.findDefaultAddressByUserVo(userVo));
 				}
 			}
+			
 		}
+		
+		
 		return "dianPuProduct";
 	}
 	
@@ -104,7 +114,7 @@ public class DianpuAction extends BaseAction {
 		if(dianpu!=null){
 			lunbos = productsForDianpuService.findPagerByPropertyAndSort(0,0,0,dianpuId);
 			dankuans = productsForDianpuService.findPagerByPropertyAndSort(1,0,0,dianpuId);
-			sanlies = productsForDianpuService.findPagerByPropertyAndSort(null,1,pageSize,dianpuId);
+			sanlies = productsForDianpuService.findPagerByPropertyAndSort(2,1,pageSize,dianpuId);
 		}
 		return "gotoDianpu";
 	}
@@ -175,6 +185,12 @@ public class DianpuAction extends BaseAction {
 					productsForDianpu.setProdType(products.getProdType());
 					productsForDianpuService.save(productsForDianpu);
 					json.put("success", true);
+					try {
+						jsonOut(json);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return;
 					
 				}
 				json.put("message", "商品已经被下架!");

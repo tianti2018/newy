@@ -13,7 +13,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no">
-	<title>收货地址-星火草原</title>
+	<title>收货地址-山人物语</title>
 	<link rel="stylesheet"	href="<%=request.getContextPath()%>/css/base.css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/family.css" />
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/base.s.min.css" /> 
@@ -66,21 +66,11 @@
 				</li>
 			</ul>
 			</c:forEach>
-			<div class="newAddress"><a href="<%=request.getContextPath() %>/orderAddress/orderAddressAction!editPage.action?orderType=${orderType}">新增收货地址</a></div>
+			<div class="newAddress"><a href="<%=request.getContextPath() %>/orderAddress/orderAddressAction!editPage.action?pdId=${pdId}&productId=${productId}">新增收货地址</a></div>
 		</div>
 	   </div>
 	<!-- footer start -->
-	<div id="footer">
-	  <div class="foot_nav">
-	    <div class="foot_nav_inner">
-	    <a href="<%=request.getContextPath()%>/user/userAction!phoneFamily.action"><span class="line"><i class="nav_f1"></i></span><span class="text">我的红包</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!jampshopIndex.action"><span class="line"><i class="nav_f2"></i></span><span class="text">商城首页</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action"><span class="line"><i class="nav_f3"></i></span><span class="text">二维码</span></a>
-	    <a href="javascript:zanwu();"><span class="line"><i class="nav_f4"></i></span><span class="text">购物车</span></a>
-	    <a href="<%=request.getContextPath()%>/user/userAction!gotoPersonalCenter.action" class="hover"><span class="line"><i class="nav_f5"></i></span><span class="text">个人中心</span></a>
-	    </div>
-	  </div>
-	</div>
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	<script type="text/javascript">
 	function defaultAddr(aid){
 	    var radios = document.getElementsByName("defaultAdd");

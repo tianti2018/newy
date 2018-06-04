@@ -53,7 +53,7 @@
 			<input type="hidden" id="xx-shu" class="xx-shu" value="0">
 			<%-- <li>数量：<span id="xx-shu" class="xx-shu">0</span></li> --%>
 			<div class="message">
-			<div style="text-align: center;font-size: 20px"><input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《星火草原协议》</a></div>
+			<div style="text-align: center;font-size: 20px"><input type="checkbox" id="tongyixieyi" onclick="tongyi()" style="width:50px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="<%=request.getContextPath()%>/xieyi.html" style="text-decoration: underline;">同意《山人物语协议》</a></div>
 			<c:if test="${null!=orderAddress}">
 				
 				 <ul class="menu-list">
@@ -220,7 +220,7 @@
 			});
 		function goumai() {
 			if(document.getElementById('tongyixieyi').checked==false){
-				alert("请阅读并勾选<<星火草原购买协议>>");
+				alert("请阅读并勾选<<山人物语购买协议>>");
 				return false;
 			}
 			/* alert("系统维护中！"); */

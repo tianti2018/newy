@@ -917,8 +917,7 @@
 			    /*加载内容*/
 				$.ajax({
 					type: "POST",
-					url:"<%=request.getContextPath()%>
-		/comment/commentAction!ajaxcommentList.action",
+					url:"<%=request.getContextPath()%>/comment/commentAction!ajaxcommentList.action",
 						data : {
 							"prodId" : '${prod.prodId}',
 							"pageNum" : pageNum
@@ -949,7 +948,7 @@
 								ul.append(child);
 							} else {
 								length = data.length;
-								alert("已经加载完毕!");
+								/* alert("已经加载完毕!"); */
 							}
 						}
 					});

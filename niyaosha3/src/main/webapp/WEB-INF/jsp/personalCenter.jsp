@@ -18,6 +18,11 @@
     <link href="<%=request.getContextPath()%>/css/footer.css" rel="stylesheet" />
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.11.1.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/commenObject/massageCode.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.flexslider-min.js"></script>
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/css/flexslider.css" />
+	<link	href="<%=request.getContextPath()%>/bootstrap-3.3.5/css/bootstrap.min.css"	rel="stylesheet">
+	<link rel="stylesheet" type="text/css" 	href="<%=request.getContextPath()%>/css/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	<script type="text/javascript" 	src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
     <!--E 线上样式-->
 
 </head>
@@ -28,7 +33,7 @@
         <%@ include file="/WEB-INF/jsp/order_head.jsp"%>
 		
         <!--我的团队-->
-        <c:if test="${userVo.usery!=null }">
+        <c:if test="${userVo.usery.dianPuId!=null }">
 	        <div class="my_header_links">
 	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action"><span id="tuandui">0</span><span>我的团队</span></a>
 	            <a href=""><span id="richengjiaoliang">0</span><span>日成交量</span></a>
@@ -45,7 +50,7 @@
                 <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=0" class="item_1" id="payItem"><span>待付款</span></a></li> 
                 <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=1" class="item_2" id="payItem"><span>待收货</span></a></li>
                 <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=2" class="item_3" id="payItem"><span>待评价</span></a></li>
-                <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=3" class="item_4" id="payItem"><span>退换货</span></a></li> 
+                <%-- <li><a href="<%=request.getContextPath()%>/order/orderAction!myOrderList.action?orderType=3" class="item_4" id="payItem"><span>退换货</span></a></li> --%> 
             </ul>
         </section>
 		<c:if test="${userVo.usery.dianPuId!=null }">
@@ -67,14 +72,13 @@
         <section class="my_section" id="myActivity">
             <a href="javascript:void(0);" class="head head_act" data-tag="activity" ptag="" data-wxtag="7155.1.20" data-sqtag="7155.2.20">其他功能<span id="navigat"></span></a>
             <ul class="list list_act">
-            	<c:if test="${userVo.usery!=null }">
-                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action">店铺管理</a></li>
-				<li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}">进入店铺</a></li>
-				<li><a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action">我的二维码</a></li>
+            	<c:if test="${userVo.usery.dianPuId!=null }">
+	                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action">店铺管理</a></li>
+					<li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}">进入店铺</a></li>
+					<%-- <li><a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action">我的二维码</a></li> --%>
 				</c:if>
-				
+				<li><a id="orderAdress" href="#loginline" onclick="viewLogin()">关联登录</a></li>
                 <li><a href="javascript:zanwu();">平台规则</a></li>
-                
                 <li><a href="javascript:zanwu();">注意事项</a></li>
                 <li><a href="<%=request.getContextPath() %>/notice/noticeAction!noticeList.action" id="change">公告</a></li>
                 <li id="last"></li>
@@ -114,6 +118,7 @@
 
 
 <!-- 底部s -->
+<%@ include file="/WEB-INF/jsp/userLogin/login.jsp"%>
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
 <!-- 底部e -->
 
@@ -200,10 +205,10 @@ function listCards(){
 				//loadUserJifen();加载用户积分
 			}
 			
-			if(ifValidate()){
+			/* if(ifValidate()){
 				loadUserInfo();
 				
-			}
+			} */
 			
 		}
 	}); 

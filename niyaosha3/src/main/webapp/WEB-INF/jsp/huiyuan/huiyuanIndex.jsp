@@ -31,7 +31,7 @@
 				<li class="logo">
 					<img src="<%=request.getContextPath()%>/images/huiyuanzhuanqu/img/logo.png"/>
 					<p class="logoWord">
-						<span>星火草原</span>xinghuocaoyuan
+						<span>山人物语</span>
 					</p>
 				</li>
 				<li class="vipT"><a href="#">会员专区</a></li>
@@ -213,7 +213,7 @@
 			<a href="#">更多好礼 ➤➤➤</a>
 		</div> -->
 		<div class="bottomWord">
-			<p>温馨提示：本产品将会累计消费记录，当您累计消费到达一定额度以后，将会成为我们商城的VIP，并且享受一切VIP特权。商城购物，首选星火草原微信商城。</div>
+			<p>温馨提示：本产品将会累计消费记录，当您累计消费到达一定额度以后，将会成为我们商城的VIP，并且享受一切VIP特权。商城购物，首选山人物语微信商城。</div>
 		</div>
 	</div>
 </div>

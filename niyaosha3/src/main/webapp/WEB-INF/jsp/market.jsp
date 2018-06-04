@@ -6,7 +6,7 @@
 <html lang="zh-CN"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>星火草原商城</title>
+    <title>山人物语商城</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
@@ -113,7 +113,7 @@ wx.ready(function(){
 	    }
 	});  */	
   wx.onMenuShareTimeline({
-	    title: '星火草原首页商城', // 分享标题
+	    title: '山人物语首页商城', // 分享标题
 	    link: '${url}', // 分享链接
 	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
 	    success: function () { 
@@ -126,7 +126,7 @@ wx.ready(function(){
 	    }
 	});
  wx.onMenuShareAppMessage({
-	    title: '星火草原首页商城', // 分享标题
+	    title: '山人物语首页商城', // 分享标题
 	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
 	    link: '${url}', // 分享链接
 	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
@@ -142,7 +142,7 @@ wx.ready(function(){
 	    }
 	});
  wx.onMenuShareQQ({
-	    title: '星火草原首页商城', // 分享标题
+	    title: '山人物语首页商城', // 分享标题
 	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
 	    link: '${url}', // 分享链接
 	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
@@ -156,7 +156,7 @@ wx.ready(function(){
 	    }
 	});
  wx.onMenuShareWeibo({
-	    title: '星火草原首页商城', // 分享标题
+	    title: '山人物语首页商城', // 分享标题
 	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
 	    link: '${url}', // 分享链接
 	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标
@@ -170,7 +170,7 @@ wx.ready(function(){
 	    }
 	});
  wx.onMenuShareQZone({
-	    title: '星火草原首页商城', // 分享标题
+	    title: '山人物语首页商城', // 分享标题
 	    desc: '大众创业,万众创新,一切颠覆尽在其中', // 分享描述
 	    link: '${url}', // 分享链接
 	    imgUrl: 'https://mmbiz.qlogo.cn/mmbiz/pKWIGyfSjUm56IyFxsNI5shwgexlbGhiaEOwrTI87P4ic8DE6xq2jVJYMmfO0ViaAla2PyveBsTxeNOvBCaueZibyg/0?wx_fmt=jpeg', // 分享图标

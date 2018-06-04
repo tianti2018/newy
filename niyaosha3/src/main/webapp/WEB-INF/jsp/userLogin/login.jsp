@@ -49,7 +49,7 @@
 </div>
 <script type="text/javascript">
 function addressList() {
-		if("<%=session.getAttribute("loginUser")%>"=="null"){
+		if("${userVo==null}"=="true"){
 			viewLogin();
 		}else{
 			self.location.href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action";

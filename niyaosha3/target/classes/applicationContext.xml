@@ -27,7 +27,7 @@
 	<!-- ehcache缓存设置-->
 	<!-- <import resource="applicationContext-ehcache.xml" /> -->
 	<!-- 定时用于定时刷新缓存 -->
-	<!-- <import resource="applicationContext-timer.xml" /> -->
+	<import resource="applicationContext-timer.xml" />
 	<!-- 线程池 -->
 	<import resource="applicationContext-treadPool.xml" /> 
 </beans>

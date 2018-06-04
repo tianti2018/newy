@@ -1441,30 +1441,30 @@ public class UserAction extends BaseAction {
 	 * 
 	 * @return
 	 */
-//	public String qrcodePage() {
-//		user = getSessionUser();
-////		user = userService.findById(7291);
-//		if(user == null){
-//			return "timeOut";
+	public String qrcodePage() {
+		userVo = getSessionUser();
+//		user = userService.findById(7291);
+		if(userVo == null){
+			return "timeOut";
+		}
+		String nginxUrl = SystemMessage.getString("imgUrl");
+		Usery usery = useryService.findbyUserId(userVo.getUsery().getId());
+//		if(user.getLevel()!=null&& user.getLevel()>0){
+			Date date = new Date();
+			if(null == usery.getQrCode() || "".equals(usery.getQrCode()) || null == usery.getTicket() || "".equals(usery.getTicket())){
+				try {
+					request.setAttribute("qrCode", nginxUrl+userService.createQrCode(userVo.getUser()));
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else {
+				request.setAttribute("qrCode", nginxUrl+usery.getQrCode());
+			}
 //		}
-//		String nginxUrl = SystemMessage.getString("imgUrl");
-//		Usery usery = useryService.findbyUserId(user.getUserId());
-////		if(user.getLevel()!=null&& user.getLevel()>0){
-//			Date date = new Date();
-//			if(null == usery.getQrCode() || "".equals(usery.getQrCode()) || null == usery.getTicket() || "".equals(usery.getTicket())||(usery.getQrCodeDate()!=null&&date.after(usery.getQrCodeDate()))){
-//				try {
-//					request.setAttribute("qrCode", nginxUrl+userService.createQrCode(user));
-//				} 
-//				catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}else {
-//				request.setAttribute("qrCode", nginxUrl+usery.getQrCode());
-//			}
-////		}
-//		return "qrcodePage";
-//
-//	}
+		return "qrcodePage";
+
+	}
 	
 	public Integer getLevel() {
 		return level;

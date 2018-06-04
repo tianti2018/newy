@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletInputStream;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -186,8 +187,17 @@ public class PayGoodAction extends BaseAction {
 		Usery usery = null;
 		if (orderNo != null) {
 			order=orderService.findOrderByOrderBH(orderNo);
-			user = userService.findById(order.getUserId());
-			usery = useryService.findbyUserId(order.getUseryId());
+			if(order.getUserId()!=null){
+				user = userService.findById(order.getUserId());
+			}
+			if(order.getUseryId()==null){
+				if(user!=null&&user.getUseryId()!=null){
+					usery = useryService.findById(user.getUseryId());
+				}
+			}else{
+				usery = useryService.findById(order.getUseryId());
+			}
+			
 			System.out.println("进来了"+orderNo);
 		} else {
 			message = "error";
@@ -196,11 +206,12 @@ public class PayGoodAction extends BaseAction {
 		total_fee = (int)(order.getMoney()*100)+"";
 		String useryIds = SystemMessage.getString("useryIds");
 		String[] ids = useryIds.split(",");
-		for(String id:ids){
-			if(id.equals(usery.getId()+"")){
-				total_fee="1";
+		if(usery!=null)
+			for(String id:ids){
+				if(id.equals(usery.getId()+"")){
+					total_fee="1";
+				}
 			}
-		}
 			
 		// 商户相关资料
 		String appid = SystemMessage.getString("APPID");
@@ -246,7 +257,7 @@ public class PayGoodAction extends BaseAction {
 		// String goods_tag = "";
 
 		// 这里notify_url是 支付完成后微信发给该链接信息，可以判断会员是否支付成功，改变订单状态等。
-		String notify_url = SystemMessage.getString("ZHIFU_YUMING")+"/pay/payGoodAction!.action";
+		String notify_url = SystemMessage.getString("ZHIFU_YUMING")+"/pay/payGoodAction!execute.action";
 
 		String trade_type = "JSAPI";
 		// 非必输
@@ -346,7 +357,7 @@ public class PayGoodAction extends BaseAction {
 			ProductsForDianpu productsForDianpu=productsForDianpuService.findById(prodId);
 			Products prod = null;
 			if(productsForDianpu!=null){
-				prod = productsService.findById(productsForDianpu.getId());
+				prod = productsService.findById(productsForDianpu.getProductId());
 			}
 			Integer size =MyUtils.isNumber(qty_item_1)?Integer.parseInt(qty_item_1):1;
 			if(prod!=null){
@@ -393,7 +404,7 @@ public class PayGoodAction extends BaseAction {
 					Double dianzhuShouyi = 0.0;//店主收益
 					Double parentShouyi = 0.0;//进货点收益
 					if(usery!=null){
-						if(usery.getDianPuId().equals(productsForDianpu.getDianpuId())){
+						if(usery.getDianPuId()!=null&&usery.getDianPuId().equals(productsForDianpu.getDianpuId())){
 							gukePrice = getPrice(usery.getLevel(), prod, null);
 						}
 					}
@@ -437,7 +448,11 @@ public class PayGoodAction extends BaseAction {
 						ordersBH = "dp" + PublicUtil.getOrderNo();
 						// 创建订单
 						order = new Orders();
-						order.setPname(prod.getName()+"("+prod.getGuige()+")");
+						String pname = prod.getName();
+						if(StringUtils.isNotEmpty(prod.getGuige())){
+							pname+="("+prod.getGuige()+")";
+						}
+						order.setPname(pname);
 						order.setPictureUrl(prod.getHeadUrl());
 						order.setProductId(prod.getProductsId());
 						order.setPdId(productsForDianpu.getId());						
@@ -454,7 +469,7 @@ public class PayGoodAction extends BaseAction {
 						order.setChengshiCode(orderAddress.getChengshiCode());
 						order.setDiquCode(orderAddress.getDiquCode());
 						order.setAddress(orderAddress.getAddress());
-						
+						order.setShuliang(size);
 						order.setOrderStatus(1);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
@@ -463,16 +478,16 @@ public class PayGoodAction extends BaseAction {
 						if(usery!=null){
 							order.setUseryId(usery.getId());
 						}
-						order.setShouyi(dianzhuShouyi);
+						order.setShouyi(dianzhuShouyi*size);
 						order.setMoney(0.0);
-						order.setXiaohaoShouyi(gukePrice+prod.getPrice());
+						order.setXiaohaoShouyi(gukePrice*size+prod.getTransFee());
 						order.setType(0);
 						//这里记录收益的消耗记录
 						ShouYiForUser xiaohaoRecord = new ShouYiForUser();
 						xiaohaoRecord.setCreateDate(new Date());
 						xiaohaoRecord.setOrdersBh(ordersBH);
 						xiaohaoRecord.setDianpuId(usery.getDianPuId());
-						xiaohaoRecord.setShouyi(-(gukePrice+prod.getPrice()));
+						xiaohaoRecord.setShouyi(-(gukePrice*size+prod.getTransFee()));
 						xiaohaoRecord.setOrderType(0);
 						xiaohaoRecord.setStatus(2);
 						xiaohaoRecord.setBeizhu("购物消费");
@@ -483,7 +498,7 @@ public class PayGoodAction extends BaseAction {
 							dianzhuShouyiRecord.setOrdersBh(ordersBH);
 							dianzhuShouyiRecord.setDianpuId(dianzhuDianpu.getId());
 							dianzhuShouyiRecord.setOrderType(0);
-							dianzhuShouyiRecord.setShouyi(dianzhuShouyi);
+							dianzhuShouyiRecord.setShouyi(dianzhuShouyi*size);
 							dianzhuShouyiRecord.setStatus(1);
 							dianzhuShouyiRecord.setBeizhu("收益");
 						}
@@ -493,9 +508,9 @@ public class PayGoodAction extends BaseAction {
 							orderJinHuo.setOrdersBH("jh"+ordersBH.substring(2));
 							orderJinHuo.setDianpuId(parent.getDianPuId());
 							orderJinHuo.setFromDianpuId(dianzhu.getDianPuId());
-							orderJinHuo.setMoney(dianzhuPrice);
+							orderJinHuo.setMoney(dianzhuPrice*size);
 							orderJinHuo.setCreateDate(new Date());
-							orderJinHuo.setShouyi(parentShouyi);
+							orderJinHuo.setShouyi(parentShouyi*size);
 							//为0是否能看到记录
 							jinhuodianShouyiRecord = new ShouYiForUser();
 							jinhuodianShouyiRecord.setCreateDate(new Date());
@@ -503,7 +518,7 @@ public class PayGoodAction extends BaseAction {
 							jinhuodianShouyiRecord.setOrdersBh(orderJinHuo.getOrdersBH());
 							jinhuodianShouyiRecord.setOrderType(1);
 							jinhuodianShouyiRecord.setStatus(1);
-							jinhuodianShouyiRecord.setShouyi(parentShouyi);
+							jinhuodianShouyiRecord.setShouyi(parentShouyi*size);
 							jinhuodianShouyiRecord.setBeizhu("收益");
 						}
 						orderService.createOrder(order,orderJinHuo,dianzhuShouyiRecord,jinhuodianShouyiRecord,xiaohaoRecord);
@@ -582,7 +597,11 @@ public class PayGoodAction extends BaseAction {
 						ordersBH = "dp" + PublicUtil.getOrderNo();
 						// 创建订单
 						order = new Orders();
-						order.setPname(prod.getName()+"("+prod.getGuige()+")");
+						String pname = prod.getName();
+						if(StringUtils.isNotEmpty(prod.getGuige())){
+							pname+="("+prod.getGuige()+")";
+						}
+						order.setPname(pname);
 						order.setPictureUrl(prod.getHeadUrl());
 						order.setProductId(prod.getProductsId());
 						order.setYunfei(prod.getTransFee());
@@ -596,7 +615,7 @@ public class PayGoodAction extends BaseAction {
 						order.setChengshiCode(orderAddress.getChengshiCode());
 						order.setDiquCode(orderAddress.getDiquCode());
 						order.setAddress(orderAddress.getAddress());
-						
+						order.setShuliang(size);
 						order.setOrderStatus(0);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
@@ -607,14 +626,14 @@ public class PayGoodAction extends BaseAction {
 						}
 						order.setShouyi(0.0);
 						order.setMoney(0.0);
-						order.setXiaohaoShouyi(gukePrice+prod.getTransFee());
+						order.setXiaohaoShouyi(gukePrice*size+prod.getTransFee());
 						order.setType(0);
 						//生成消耗收益记录
 						ShouYiForUser xiaohaoRecord = new ShouYiForUser();
 						xiaohaoRecord.setCreateDate(new Date());
 						xiaohaoRecord.setOrdersBh(ordersBH);
 						xiaohaoRecord.setDianpuId(usery.getDianPuId());
-						xiaohaoRecord.setShouyi(-(gukePrice+prod.getPrice()));
+						xiaohaoRecord.setShouyi(-(gukePrice*size+prod.getPrice()));
 						xiaohaoRecord.setOrderType(0);
 						xiaohaoRecord.setStatus(2);
 						xiaohaoRecord.setBeizhu("购物消费");
@@ -646,7 +665,7 @@ public class PayGoodAction extends BaseAction {
 			ProductsForDianpu productsForDianpu=productsForDianpuService.findById(prodId);
 			Products prod = null;
 			if(productsForDianpu!=null){
-				prod = productsService.findById(productsForDianpu.getId());
+				prod = productsService.findById(productsForDianpu.getProductId());
 			}
 			Integer size =MyUtils.isNumber(qty_item_1)?Integer.parseInt(qty_item_1):1;
 			if(prod!=null){
@@ -688,7 +707,7 @@ public class PayGoodAction extends BaseAction {
 					Double dianzhuShouyi = 0.0;//店主收益
 					Double parentShouyi = 0.0;//进货点收益
 					if(usery!=null){
-						if(usery.getDianPuId().equals(productsForDianpu.getDianpuId())){
+						if(usery.getDianPuId()!=null&&usery.getDianPuId().equals(productsForDianpu.getDianpuId())){
 							gukePrice = getPrice(usery.getLevel(), prod, null);
 						}
 					}
@@ -723,7 +742,11 @@ public class PayGoodAction extends BaseAction {
 						ordersBH = "dp" + PublicUtil.getOrderNo();
 						// 创建订单
 						order = new Orders();
-						order.setPname(prod.getName()+"("+prod.getGuige()+")");
+						String pname = prod.getName();
+						if(StringUtils.isNotEmpty(prod.getGuige())){
+							pname+="("+prod.getGuige()+")";
+						}
+						order.setPname(pname);
 						order.setPictureUrl(prod.getHeadUrl());
 						order.setProductId(prod.getProductsId());
 						order.setPdId(productsForDianpu.getId());						
@@ -740,7 +763,7 @@ public class PayGoodAction extends BaseAction {
 						order.setChengshiCode(orderAddress.getChengshiCode());
 						order.setDiquCode(orderAddress.getDiquCode());
 						order.setAddress(orderAddress.getAddress());
-						
+						order.setShuliang(size);
 						order.setOrderStatus(0);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
@@ -750,7 +773,7 @@ public class PayGoodAction extends BaseAction {
 							order.setUseryId(usery.getId());
 						}
 						order.setShouyi(dianzhuShouyi);
-						order.setMoney(gukePrice+prod.getTransFee());
+						order.setMoney(gukePrice*size+prod.getTransFee());
 						order.setXiaohaoShouyi(0.0);
 						order.setType(0);
 						
@@ -761,7 +784,7 @@ public class PayGoodAction extends BaseAction {
 							dianzhuShouyiRecord.setOrdersBh(ordersBH);
 							dianzhuShouyiRecord.setDianpuId(dianzhuDianpu.getId());
 							dianzhuShouyiRecord.setOrderType(0);
-							dianzhuShouyiRecord.setShouyi(dianzhuShouyi);
+							dianzhuShouyiRecord.setShouyi(dianzhuShouyi*size);
 							dianzhuShouyiRecord.setStatus(0);
 							dianzhuShouyiRecord.setBeizhu("收益");
 						}
@@ -771,9 +794,9 @@ public class PayGoodAction extends BaseAction {
 							orderJinHuo.setOrdersBH("jh"+ordersBH.substring(2));
 							orderJinHuo.setDianpuId(parent.getDianPuId());
 							orderJinHuo.setFromDianpuId(dianzhu.getDianPuId());
-							orderJinHuo.setMoney(dianzhuPrice);
+							orderJinHuo.setMoney(dianzhuPrice*size);
 							orderJinHuo.setCreateDate(new Date());
-							orderJinHuo.setShouyi(parentShouyi);
+							orderJinHuo.setShouyi(parentShouyi*size);
 							//为0是否能看到记录
 							jinhuodianShouyiRecord = new ShouYiForUser();
 							jinhuodianShouyiRecord.setCreateDate(new Date());
@@ -781,7 +804,7 @@ public class PayGoodAction extends BaseAction {
 							jinhuodianShouyiRecord.setOrdersBh(orderJinHuo.getOrdersBH());
 							jinhuodianShouyiRecord.setOrderType(1);
 							jinhuodianShouyiRecord.setStatus(0);
-							jinhuodianShouyiRecord.setShouyi(parentShouyi);
+							jinhuodianShouyiRecord.setShouyi(parentShouyi*size);
 							jinhuodianShouyiRecord.setBeizhu("收益");
 						}
 						
@@ -789,6 +812,7 @@ public class PayGoodAction extends BaseAction {
 						
 						json.put("success", true);
 						json.put("ordersBh", ordersBH);
+						json.put("need_pay", true);
 				}
 			}else{
 				json.put("message", "产品已经下架!");
@@ -853,7 +877,11 @@ public class PayGoodAction extends BaseAction {
 						ordersBH = "dp" + PublicUtil.getOrderNo();
 						// 创建订单
 						order = new Orders();
-						order.setPname(prod.getName()+"("+prod.getGuige()+")");
+						String pname = prod.getName();
+						if(StringUtils.isNotEmpty(prod.getGuige())){
+							pname+="("+prod.getGuige()+")";
+						}
+						order.setPname(pname);
 						order.setPictureUrl(prod.getHeadUrl());
 						order.setProductId(prod.getProductsId());
 						order.setYunfei(prod.getTransFee());
@@ -867,7 +895,7 @@ public class PayGoodAction extends BaseAction {
 						order.setChengshiCode(orderAddress.getChengshiCode());
 						order.setDiquCode(orderAddress.getDiquCode());
 						order.setAddress(orderAddress.getAddress());
-						
+						order.setShuliang(size);
 						order.setOrderStatus(0);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
@@ -877,12 +905,13 @@ public class PayGoodAction extends BaseAction {
 							order.setUseryId(usery.getId());
 						}
 						order.setShouyi(0.0);
-						order.setMoney(gukePrice+prod.getTransFee());
+						order.setMoney(gukePrice*size+prod.getTransFee());
 						order.setXiaohaoShouyi(0.0);
 						order.setType(0);
-						orderService.createOrder(order,null,null,null,null);
+ 						orderService.createOrder(order,null,null,null,null);
 						
 						json.put("success", true);
+						json.put("need_pay", true);
 						json.put("ordersBh", ordersBH);
 				}
 			}else{

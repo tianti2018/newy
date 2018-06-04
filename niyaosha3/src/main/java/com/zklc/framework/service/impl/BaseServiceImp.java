@@ -211,14 +211,6 @@ public List findBySql(String sql, List params) {
 	return  entityDao.findBySql(sql, params);
 }
 
-@Override
-public T findUniqueByProperty(String propertyName, Object property) {
-	List<T> list = entityDao.findByProperty(propertyName, property);
-	if(list.size()>0){
-		return list.get(0);
-	}
-	return null;
-}
 
 @Override
 public void saveOrUpdate(T entity) {

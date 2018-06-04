@@ -48,7 +48,7 @@
 			<img width="100%" src="${qrCode}"/> 
 		</c:if>
 		<c:if test="${qrCode==null||qrCode=='' }">
-			您还不是星火草原卡主,请<a href="<%=request.getContextPath()%>/user/userAction!buy.action">立即购买</a>成为代理!
+			您还不是山人物语卡主,请<a href="<%=request.getContextPath()%>/user/userAction!buy.action">立即购买</a>成为代理!
 			<%-- <img width="100%" src="<%=request.getContextPath()%>/images/qrcodeImgs/normal.png"/> --%> 
 		</c:if>
   	</div>

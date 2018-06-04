@@ -308,7 +308,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		    		}
 		    		ul.append(child);
 		    	}else{
-		    		alert("已经加载完毕!");
+		    		/* alert("已经加载完毕!"); */
 		    	}
 		    }
 		});
