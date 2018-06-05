@@ -18,7 +18,10 @@
 			 <mapping class="com.tw.web.hibernate.persistent.Relation" />
 	    	<mapping class="com.tw.web.hibernate.persistent.Repeat" />	
 	    	<mapping class="com.tw.web.hibernate.persistent.User" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Usery" />
 	    	<mapping class="com.tw.web.hibernate.persistent.Record" />
+	    	<mapping class="com.tw.web.hibernate.persistent.DianpuForUser" />
+	    	<mapping class="com.tw.web.hibernate.persistent.ProductsForDianpu" />
 	    	
 	    	<mapping class="com.tw.web.hibernate.persistent.FhRecord" />
 	    	<mapping class="com.tw.web.hibernate.persistent.Tixian" />

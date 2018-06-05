@@ -31,8 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ActionChainResult;
 import com.tw.web.dao.ProductsDAO;
+import com.tw.web.dao.ProductsForDianpuDao;
 import com.tw.web.hibernate.persistent.AdminUser;
 import com.tw.web.hibernate.persistent.Products;
+import com.tw.web.hibernate.persistent.ProductsForDianpu;
 import com.tw.web.util.SystemConfigUtil;
 
 import net.sf.json.JSONObject;
@@ -54,6 +56,8 @@ public class ProductsAction extends ExtJSONActionSuport {
 	
 	@Autowired
 	private ProductsDAO productsDAO;
+	@Autowired
+	private ProductsForDianpuDao productsForDianpuDao;
 	
 	private List<File> headFile;
 	
@@ -94,8 +98,7 @@ public class ProductsAction extends ExtJSONActionSuport {
     	if(product == null){
     		request.setAttribute("message", "此商品不存在");
     	}else {
-			product.setStatus(0);
-			productsDAO.saveOrUpdate(product);
+			productsDAO.xiajia(product);
 			request.setAttribute("message", "下架成功");
 		}
     	return "goBackList";

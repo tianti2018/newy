@@ -130,7 +130,7 @@
 				<td align="center">
 					<c:if test="${product.status==0}">
 						<a href="products!initModify.action?productId=${product.productsId}&&currentPage=<s:property value="pager.currentPage"/>" class="pn-loperator">修改</a>
-						<a href="javascript:void(0);" onclick="deleteProduct('${product.productsId}');" class="pn-loperator">删除</a>
+						<%-- <a href="javascript:void(0);" onclick="deleteProduct('${product.productsId}');" class="pn-loperator">删除</a> --%>
 						<a href="products!shangJia.action?productId=${product.productsId}&&currentPage=<s:property value="pager.currentPage"/>" class="pn-loperator">上架</a>
 					</c:if>
 					<c:if test="${product.status==1}">

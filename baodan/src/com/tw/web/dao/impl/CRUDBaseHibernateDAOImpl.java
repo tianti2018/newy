@@ -22,13 +22,22 @@ import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -36,6 +45,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.Type;
 import org.springframework.dao.DataAccessException;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.tw.web.dao.ICRUDBaseDAO;
@@ -76,6 +86,27 @@ public abstract class CRUDBaseHibernateDAOImpl extends TwHibernateDaoSupport
 		getHibernateTemplate().update(entity);
 		return 0;
 	}
+	
+	public void update(final String hql, final Object... params) {
+	    getHibernateTemplate().execute(new HibernateCallback() {
+	        public Object doInHibernate(Session session)
+	          throws HibernateException, SQLException {
+	          Query query = session.createQuery(hql);
+	          if(params!=null){
+	        	  for (int i = 0; i < params.length; i++) {
+	                  query.setParameter(i, params[i]);
+	                }
+	          }
+	          
+	          try {
+	        	  query.executeUpdate();
+	          }catch(DataAccessException localDataAccessException){
+	        	 localDataAccessException.printStackTrace();
+	          }
+	          return null;
+	        }
+	      });
+	  }
 
 	public int saveOrUpdate(Serializable entity) {
 		getHibernateTemplate().saveOrUpdate(entity);

@@ -219,8 +219,6 @@ public class UserAction extends ExtJSONActionSuport {
 				Double yijie = 0.0;
 				Double weijie = 0.0;
 				String sql = "select o.ordersId from orders o where o.order_status = 4 and o.userId in (select userId from users where FIND_IN_SET(referrerId, getChildLst("+u.getUserId()+")))";
-				uvo.setUserId(u.getUserId());
-				uvo.setUserName(u.getUserName());
 				DecimalFormat   fnum   =   new   DecimalFormat("##0.00"); //四舍五入，保留两位小数 
 				List ordersList = userDAO.findBySql(sql);
 				if(ordersList.size()>0){
@@ -229,9 +227,6 @@ public class UserAction extends ExtJSONActionSuport {
 							zongxiao+=o.getMoney();
 					}
 				}
-				uvo.setChild1(fnum.format(zongxiao));
-				uvo.setChild2(fnum.format(yijie));
-				uvo.setChild3(fnum.format(weijie));
 				list.add(uvo);
 			}
 		}

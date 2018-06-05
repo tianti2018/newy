@@ -182,7 +182,6 @@
 				<div style="height:30px"></div>
 				<input type="hidden" name="product.productsId" id="hid"	value='${product.productsId }' /> 
 				<input type="hidden" name="product.userId" id="huserid"	value='${product.userId }' /> 
-				<input type="hidden" name="product.createDate" value='${product.createDate }' /> 
 				<div align="center">
 					<input id="btn_submit" type="button" class="btn" value=" 保 存 " />
 				</div>

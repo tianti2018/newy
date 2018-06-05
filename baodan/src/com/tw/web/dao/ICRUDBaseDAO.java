@@ -51,6 +51,7 @@ public interface ICRUDBaseDAO {
 	 */
 	public int update(Serializable entity);
 
+	public void update(final String hql, final Object... params);
 	/**
 	 * @param entity
 	 */

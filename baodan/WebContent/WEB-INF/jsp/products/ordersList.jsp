@@ -669,7 +669,7 @@ if(orderType != "null")
 	
 var st_qDateType = '<%=session.getAttribute("dateType")%>';
 if(st_qDateType == "null")
-	$("#st_qDateType  option[value='1'] ").attr("selected",true);
+	$("#st_qDateType  option[value='0'] ").attr("selected",true);
 else
 	$("#st_qDateType  option[value='"+st_qDateType+"'] ").attr("selected",true);
 </script>

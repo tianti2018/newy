@@ -1,7 +1,6 @@
 package com.tw.web.action;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,31 +16,38 @@ import org.apache.struts2.config.Namespace;
 import org.apache.struts2.config.ParentPackage;
 import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alipay.util.httpClient.HttpResponse;
 import com.opensymphony.xwork2.ActionChainResult;
-import com.tw.web.dao.CardDAO;
-import com.tw.web.dao.FhRecordDAO;
+import com.tw.web.dao.DianpuForUserDao;
 import com.tw.web.dao.OrdersDAO;
-import com.tw.web.dao.RepeatDAO;
+import com.tw.web.dao.ProductsForDianpuDao;
 import com.tw.web.dao.TAreaDao;
 import com.tw.web.dao.UserDAO;
-import com.tw.web.dao.UserOrderDAO;
+import com.tw.web.dao.UseryDao;
+import com.tw.web.hibernate.UserVO;
+import com.tw.web.hibernate.UseryVo;
 import com.tw.web.hibernate.persistent.AdminUser;
 import com.tw.web.hibernate.persistent.FhRecord;
-import com.tw.web.hibernate.persistent.Repeat;
 import com.tw.web.hibernate.persistent.TArea;
 import com.tw.web.hibernate.persistent.User;
-import com.tw.web.hibernate.persistent.UserOrder;
+import com.tw.web.hibernate.persistent.Usery;
 import com.tw.web.service.LoginService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @SuppressWarnings("serial")
 @ParentPackage("app-default")
 @Namespace("")
 @Results(
 		{
+			
+			@Result(name="listAllMembers", 		value="/WEB-INF/jsp/member/listAllMembers.jsp"),
+			@Result(name="quBangDing", 		value="/WEB-INF/jsp/member/quBangDing.jsp"),
+			
+			
 			@Result(name="loadMember", 		value="/WEB-INF/jsp/member/membertree.jsp"),
 			@Result(name="listAllFhRecord", 		value="/WEB-INF/jsp/member/fhRecordList.jsp"),
 			@Result(name="listAlljifenByOrder", 		value="/WEB-INF/jsp/member/memberFhRecordList.jsp"),
@@ -64,22 +70,23 @@ import com.tw.web.service.LoginService;
 public class MemberAction extends ExtJSONActionSuport {
 	
 	private LoginService loginService;
-	private FhRecordDAO fhRecordDAO;
 	private UserDAO userDAO;
-	private RepeatDAO repeatDAO;
-	@Autowired
+	private UseryDao useryDao;
 	private TAreaDao tAreaDao;
+	private OrdersDAO ordersDAO;
+	private DianpuForUserDao dianpuForUserDao;
+	private ProductsForDianpuDao productsForDianpuDao;
+	
 	private String loginName;
 	private String password;
 	private String random;
-	private CardDAO cardDAO;
-	private OrdersDAO ordersDAO;
+	private String userName;
 	
 	private Integer uoId;
 	
-	private UserOrderDAO userOrderDAO;
-	
 	private Integer userId;
+	private Integer useryId;
+	private Integer parentId;
 	private String areaType;
 	private Integer areaId;
 	private String cardNo;
@@ -89,144 +96,129 @@ public class MemberAction extends ExtJSONActionSuport {
 	private Integer areaId2;
 	private Integer areaId3;
 	
-	public Integer getAreaId1() {
-		return areaId1;
-	}
-	public void setAreaId1(Integer areaId1) {
-		this.areaId1 = areaId1;
-	}
-	public Integer getAreaId2() {
-		return areaId2;
-	}
-	public void setAreaId2(Integer areaId2) {
-		this.areaId2 = areaId2;
-	}
-	public Integer getAreaId3() {
-		return areaId3;
-	}
-	public void setAreaId3(Integer areaId3) {
-		this.areaId3 = areaId3;
-	}
-	public OrdersDAO getOrdersDAO() {
-		return ordersDAO;
-	}
-	@Autowired
-	public void setOrdersDAO(OrdersDAO ordersDAO) {
-		this.ordersDAO = ordersDAO;
-	}
-	public String getCardNo() {
-		return cardNo;
-	}
-	public void setCardNo(String cardNo) {
-		this.cardNo = cardNo;
-	}
-	public String getCardPassword() {
-		return cardPassword;
-	}
-	public void setCardPassword(String cardPassword) {
-		this.cardPassword = cardPassword;
-	}
-	public CardDAO getCardDAO() {
-		return cardDAO;
-	}
-	@Autowired
-	public void setCardDAO(CardDAO cardDAO) {
-		this.cardDAO = cardDAO;
-	}
-	public Integer getAreaId() {
-		return areaId;
-	}
-	public void setAreaId(Integer areaId) {
-		this.areaId = areaId;
-	}
-	public String getAreaType() {
-		return areaType;
-	}
-	public void setAreaType(String areaType) {
-		this.areaType = areaType;
-	}
-	public RepeatDAO getRepeatDAO() {
-		return repeatDAO;
-	}
-	@Autowired
-	public void setRepeatDAO(RepeatDAO repeatDAO) {
-		this.repeatDAO = repeatDAO;
-	}
-
-	public String getLoginName() {
-		return loginName;
-	}
-
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
-	
-	public Integer getUoId() {
-		return uoId;
-	}
-	public void setUoId(Integer uoId) {
-		this.uoId = uoId;
-	}
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRandom() {
-		return random;
-	}
-
-	public void setRandom(String random) {
-		this.random = random;
-	}
-
-	public LoginService getLoginService() {
-		return loginService;
-	}
-	
-	public UserOrderDAO getUserOrderDAO() {
-		return userOrderDAO;
-	}
-	@Autowired
-	public void setUserOrderDAO(UserOrderDAO userOrderDAO) {
-		this.userOrderDAO = userOrderDAO;
-	}
-	@Autowired
-	public void setLoginService(LoginService loginService) {
-		this.loginService = loginService;
-	}
-	
-	public UserDAO getUserDAO() {
-		return userDAO;
-	}
-	@Autowired
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-	
-	public String intAddMember() throws Exception {
+	public void bangding(){
+		HttpServletResponse response = ServletActionContext.getResponse();
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", false);
+		Usery usery = (Usery) useryDao.findById(useryId);
+		if(usery!=null&&usery.getParentId()==null){
+			usery.setParentId(parentId);
+			useryDao.saveOrUpdate(usery);
+			jsonObject.put("success", true);
+		}
 		
-		return "addmember";
+		try {
+			response.getWriter().println(jsonObject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	
-	public FhRecordDAO getFhRecordDAO() {
-		return fhRecordDAO;
+	public void searchMember(){
+		HttpServletResponse response = ServletActionContext.getResponse();
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		sort.put("appDate", false);
+		if (null!=useryId &&! "".equals(useryId)) {
+			conditionProperties.put("id", useryId);
+			compare.put("id", 0);
+		}
+		if (StringUtils.isNotBlank(userName)) {
+			conditionProperties.put("userName", userName.trim());
+			compare.put("userName", 2);
+		}
+		List<Usery> useries = useryDao.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
+		List<UseryVo> useryVos = new ArrayList<UseryVo>();
+		if(useries!=null&&useries.size()>0){
+			for(Usery usery:useries){
+				UseryVo useryVo = new UseryVo();
+				useryVo.setDianPuId(usery.getDianPuId());
+				useryVo.setHeadUrl(usery.getHeadUrl());
+				useryVo.setId(usery.getId());
+				useryVo.setLevel(usery.getLevel());
+				useryVo.setUseryname(usery.getUserName());
+				useryVo.setParentId(usery.getParentId());
+				useryVo.setSubscribe(usery.getSubscribe());
+				if(usery.getUserId()!=null){
+					User user = (User) userDAO.findById(usery.getUserId());
+					useryVo.setLoginName(user.getLoginName());
+					useryVo.setPhone(user.getPhone());
+					useryVo.setUserName(user.getUserName());
+				}
+				useryVos.add(useryVo);
+			}
+		}
+		JSONArray jsonObject = JSONArray.fromObject(useryVos);
+		try {
+			response.setCharacterEncoding("utf-8");
+			response.getWriter().println(jsonObject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	@Autowired
-	public void setFhRecordDAO(FhRecordDAO fhRecordDAO) {
-		this.fhRecordDAO = fhRecordDAO;
+	
+	public String quBangDing(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setAttribute("useryId", useryId);
+		return "quBangDing";
+	}
+	
+	public void kaitongDianpu(){
+		HttpServletResponse response = ServletActionContext.getResponse();
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("success", dianpuForUserDao.kaitongDianpu(useryId));
+		
+		try {
+			response.getWriter().println(jsonObject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public String listAllMembers(){
+		HttpServletRequest request = ServletActionContext.getRequest();
+		Object loginUser = request.getSession().getAttribute("user");
+		if(loginUser==null){
+			return "timeOut";
+		}
+		Map<String, Object> conditionProperties = new HashMap<String, Object>();
+		Map<String, Integer> compare = new HashMap<String, Integer>();
+		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		sort.put("appDate", false);
+		if (null!=userId &&! "".equals(userId)) {
+			conditionProperties.put("id", userId);
+			compare.put("id", 0);
+		}
+		if (StringUtils.isNotBlank(userName)) {
+			conditionProperties.put("userName", userName.trim());
+			compare.put("userName", 2);
+		}
+		int count_size =useryDao.cout_size(conditionProperties, compare);
+		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
+			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
+			this.setPagerMethod("next");
+		}
+		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
+		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
+		
+		List<Usery> useries = useryDao.findAllPagerList(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
+		List<UserVO> list = new ArrayList<UserVO>();
+		if(useries!=null&&useries.size()>0){
+			for(Usery usery:useries){
+				UserVO userVO = new UserVO();
+				userVO.setUsery(usery);
+				if(usery.getUserId()!=null){
+					User user = (User) userDAO.findById(usery.getUserId());
+					userVO.setUser(user);
+					
+				}
+				list.add(userVO);
+			}
+		}
+		request.setAttribute("litPager", list);
+		return "listAllMembers";
 	}
 	
 	//我得粉丝
@@ -259,183 +251,12 @@ public class MemberAction extends ExtJSONActionSuport {
 	}
 	
 	//根据会员参与的序号罗列出所有得到的积分
-	public String listAlljifen() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		Object loginUser = null;
-		loginUser = request.getSession().getAttribute("user");
-		
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		//conditionProperties.put("userId", (loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		conditionProperties.put("userId", (loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		compare.put("userId", 0);
-		
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
-		
-		int count_size =fhRecordDAO.cout_size(conditionProperties, compare);
-		// 修改的时候保存当前页
-		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
-			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
-			this.setPagerMethod("next");
-		}
-		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
-		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
-		
-		List<FhRecord> litPager = fhRecordDAO.findAllPagerList_new(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
-		request.setAttribute("litPager", litPager);
-		
-		//剩余积分
-		Double totalMoney = fhRecordDAO.findAllJiangjing((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		request.setAttribute("totalMoney", totalMoney);
-		
-		//总积分
-		Double totalTJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"3","4","5","9","10","11","13","14"});
-		ServletActionContext.getRequest().setAttribute("totalTJiFen", totalTJiFen);
-		
-		//品牌建设分红
-		Double jiansheJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"3"});
-		ServletActionContext.getRequest().setAttribute("jiansheJiFen", jiansheJiFen);
-		
-		//服务分红
-		Double fuwuJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"4"});
-		ServletActionContext.getRequest().setAttribute("fuwuJiFen", fuwuJiFen);
-		
-		//分享分红
-		Double fenxiangJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"5"});
-		ServletActionContext.getRequest().setAttribute("fenxiangJiFen", fenxiangJiFen);
-		
-		//购买卡密
-		Double goumaiKMJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"7"});
-		ServletActionContext.getRequest().setAttribute("goumaiKMJiFen", goumaiKMJiFen);
-		
-		//提现扣除
-		Double tixianJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"6"});
-		ServletActionContext.getRequest().setAttribute("tixianJiFen", tixianJiFen);
-		
-		//抽奖所得积分
-		Double coujianJifen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"10"});
-		ServletActionContext.getRequest().setAttribute("coujianJifen", coujianJifen);
-		
-		//转出积分
-		Double zcJifen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"8"});
-		ServletActionContext.getRequest().setAttribute("zcJifen", zcJifen);
-		
-		//转入积分
-		Double zrJifen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"9"});
-		ServletActionContext.getRequest().setAttribute("zrJifen", zrJifen);
-		//复购积分
-		Double fugouJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"11"});
-		ServletActionContext.getRequest().setAttribute("fugouJiFen", fugouJiFen);	
-		
-		//招商奖
-		Double zhaoshangJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"13"});
-		ServletActionContext.getRequest().setAttribute("zhaoshangJiFen", zhaoshangJiFen);	
-		
-		//收益奖
-		Double shouyiJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"14"});
-		ServletActionContext.getRequest().setAttribute("shouyiJiFen", shouyiJiFen);	
-		
-		//管理津贴
-		Double guanliJiFen = fhRecordDAO.findTotalJiFenOneByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId(),new String[]{"15"});
-		ServletActionContext.getRequest().setAttribute("guanliJiFen", guanliJiFen);	
-		
-		return "listAlljifen";
-	}
 	
 	//根据用户ID罗列出这个会员参与的序号
-	public String listAllUserOrder() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		User loginUser = (User)request.getSession().getAttribute("user");
-		
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		conditionProperties.put("userId", loginUser.getUserId());
-		
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		compare.put("userId", 0);
-		
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", true);
-		
-		int count_size =userOrderDAO.cout_size(conditionProperties, compare);
-		// 修改的时候保存当前页
-		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
-			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
-			this.setPagerMethod("next");
-		}
-		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
-		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
-		
-		List<UserOrder> litPager = userOrderDAO.findAllPagerList_new(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
-		request.setAttribute("litPager", litPager);
-		
-		return "listAllUserOrder";
-	}
 	
 	//根据会员参与的序号罗列出所有得到的积分
-	public String listAlljifenByOrder() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		User loginUser = (User)request.getSession().getAttribute("user");
-		
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		conditionProperties.put("uoId", uoId);
-		
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		compare.put("uoId", 0);
-		
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
-		
-		int count_size =fhRecordDAO.cout_size(conditionProperties, compare);
-		// 修改的时候保存当前页
-		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
-			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
-			this.setPagerMethod("next");
-		}
-		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
-		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
-		
-		List<FhRecord> litPager = fhRecordDAO.findAllPagerList_new(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
-		request.setAttribute("litPager", litPager);
-		
-		fhRecordDAO.findTotalJiFenByOrders(uoId);
-		
-		Double totalMoney = fhRecordDAO.findAllJiangjing(loginUser.getUserId());
-		request.setAttribute("totalMoney", totalMoney);
-		
-		return "listAlljifenByOrder";
-	}
 	
 	
-	public String listAllRepeat() {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		User loginUser = (User)request.getSession().getAttribute("user");
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		conditionProperties.put("userId", loginUser.getUserId());
-		
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		compare.put("userId", 0);
-		
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
-		
-		int count_size =repeatDAO.cout_size(conditionProperties, compare);
-				
-		// 修改的时候保存当前页
-		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
-			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
-			this.setPagerMethod("next");
-		}
-		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
-		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
-		
-		List<Repeat> litPager = repeatDAO.findAllPagerList_new(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
-		Double repeatMoney = repeatDAO.findTotalMoney(loginUser.getUserId());
-		request.setAttribute("repeatMoney", repeatMoney);
-		request.setAttribute("litPager", litPager);
-		
-		return "listAllRepeat";
-	}
 	
 	public String initAppCenter () { //报单中心申请
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -504,45 +325,6 @@ public class MemberAction extends ExtJSONActionSuport {
 	}
 	
 	
-	public String ListAllFhRecordByUserId () throws Exception {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		
-		Object loginUser = null;
-		
-		loginUser = request.getSession().getAttribute("user");
-		
-		Map<String, Object> conditionProperties = new HashMap<String, Object>();
-		conditionProperties.put("userId", (loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		
-		Map<String, Integer> compare = new HashMap<String, Integer>();
-		compare.put("userId", 0);
-		
-		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		sort.put("createDate", false);
-		
-		int count_size =fhRecordDAO.cout_size(conditionProperties, compare);
-				
-		// 修改的时候保存当前页
-		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
-			this.setCurrentPage((Integer.parseInt(this.getCurrentPage())-1)+"");
-			
-			this.setPagerMethod("next");
-		}
-		this.setPager(getPagerService().getPager(this.getCurrentPage(), this.getPagerMethod(), count_size));
-		this.setCurrentPage(String.valueOf(this.getPager().getCurrentPage()));
-		
-		
-		List<FhRecord> litPager = loginService.findAllFhRecordByUserId(conditionProperties, compare, sort, this.getPager().getStartRow(), this.getPager().getPageSize(), "page");
-		Double totalMoney = fhRecordDAO.findTotalMoneyByUserId((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		//Double todayMoney = fhRecordDAO.findTotalMoneyByUserIdAndData((loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		request.setAttribute("litPager", litPager);
-		
-		request.setAttribute("totalMoney", totalMoney);
-		//request.setAttribute("todayMoney", todayMoney);
-		
-		request.setAttribute("userId", (loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId());
-		return "ListAllFhRecordByUserId";
-	}
 	
 	public String listAllFhRecord () throws Exception {
 		
@@ -568,16 +350,6 @@ public class MemberAction extends ExtJSONActionSuport {
 		
 	}
 	
-	public String listAllFhRecordCount () {
-		HttpServletRequest request = ServletActionContext.getRequest();
-		Object loginUser = null;
-		loginUser = request.getSession().getAttribute("user");
-		Integer userIdOne = (loginUser instanceof AdminUser)?userId:((User)loginUser).getUserId();
-		List list = fhRecordDAO.findTotalMoneyByFhType(userIdOne);
-		request.setAttribute("list", list);
-		
-		return "listAllFhRecordCount";
-	}
 	
 	public String loadMember() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -619,41 +391,6 @@ public class MemberAction extends ExtJSONActionSuport {
 		return "loadMember";
 	}
 	
-	public void countDanshu(User user,String flag) throws ParseException {
-		if (null != user) {
-			HttpServletRequest request = ServletActionContext.getRequest();
-			List childList1 = null;
-			List childList2 = null;
-			Map<Integer,Integer[]> map = userDAO.findAllUserVOS();
-			List<Integer> listLeft = getLeftOrRightUser(user.getUserId(),map,childList1,"L");
-			double leftCount = loginService.findAllUser(listLeft);
-			List<Integer> listRight = getLeftOrRightUser(user.getUserId(),map,childList2,"R");
-			double rightCount = loginService.findAllUser(listRight);
-			for (int i=0;i<listRight.size();i++) {
-				listLeft.add(listRight.get(i));
-			}
-			double todayCount = userDAO.findAllUserByNowDate(listLeft);
-			double totalCount = leftCount+rightCount;
-			double oldCount = totalCount-todayCount;
-			request.setAttribute("leftCount"+flag, leftCount);
-			request.setAttribute("rightCount"+flag, rightCount);
-			request.setAttribute("todayCount"+flag, todayCount);
-			request.setAttribute("oldCount"+flag, oldCount);
-			request.setAttribute("totalCount"+flag, totalCount);
-			
-			
-			double leftAlreadNode = fhRecordDAO.findleveData(user.getUserId(), "L");
-			double leftCountL = leftCount - leftAlreadNode;
-			
-			double rightAlreadNode = fhRecordDAO.findleveData(user.getUserId(), "R");
-			double rightCountL = rightCount - rightAlreadNode;
-			
-			request.setAttribute("leftCountL"+flag, leftCountL);
-			request.setAttribute("rightCountL"+flag, rightCountL);
-			
-		}
-		
-	}
 	
 	
 	
@@ -815,5 +552,171 @@ public class MemberAction extends ExtJSONActionSuport {
 			System.out.println(">>>>>>>>>>>> "+list1.get(i));
 		}
 	}
-			
+	
+	public Integer getAreaId1() {
+		return areaId1;
+	}
+	public void setAreaId1(Integer areaId1) {
+		this.areaId1 = areaId1;
+	}
+	public Integer getAreaId2() {
+		return areaId2;
+	}
+	public void setAreaId2(Integer areaId2) {
+		this.areaId2 = areaId2;
+	}
+	public Integer getAreaId3() {
+		return areaId3;
+	}
+	public void setAreaId3(Integer areaId3) {
+		this.areaId3 = areaId3;
+	}
+	public OrdersDAO getOrdersDAO() {
+		return ordersDAO;
+	}
+	@Autowired
+	public void setOrdersDAO(OrdersDAO ordersDAO) {
+		this.ordersDAO = ordersDAO;
+	}
+	public String getCardNo() {
+		return cardNo;
+	}
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
+	public String getCardPassword() {
+		return cardPassword;
+	}
+	public void setCardPassword(String cardPassword) {
+		this.cardPassword = cardPassword;
+	}
+	public Integer getAreaId() {
+		return areaId;
+	}
+	public void setAreaId(Integer areaId) {
+		this.areaId = areaId;
+	}
+	public String getAreaType() {
+		return areaType;
+	}
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+	
+	public Integer getUoId() {
+		return uoId;
+	}
+	public void setUoId(Integer uoId) {
+		this.uoId = uoId;
+	}
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRandom() {
+		return random;
+	}
+
+	public void setRandom(String random) {
+		this.random = random;
+	}
+
+	public LoginService getLoginService() {
+		return loginService;
+	}
+	
+	@Autowired
+	public void setLoginService(LoginService loginService) {
+		this.loginService = loginService;
+	}
+	
+	public UserDAO getUserDAO() {
+		return userDAO;
+	}
+	@Autowired
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	
+	public String intAddMember() throws Exception {
+		
+		return "addmember";
+	}
+	
+	
+	public UseryDao getUseryDao() {
+		return useryDao;
+	}
+	@Autowired
+	public void setUseryDao(UseryDao useryDao) {
+		this.useryDao = useryDao;
+	}
+	
+	public TAreaDao gettAreaDao() {
+		return tAreaDao;
+	}
+	@Autowired
+	public void settAreaDao(TAreaDao tAreaDao) {
+		this.tAreaDao = tAreaDao;
+	}
+
+	public Integer getUseryId() {
+		return useryId;
+	}
+
+	public void setUseryId(Integer useryId) {
+		this.useryId = useryId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	public DianpuForUserDao getDianpuForUserDao() {
+		return dianpuForUserDao;
+	}
+	@Autowired
+	public void setDianpuForUserDao(DianpuForUserDao dianpuForUserDao) {
+		this.dianpuForUserDao = dianpuForUserDao;
+	}
+
+	public ProductsForDianpuDao getProductsForDianpuDao() {
+		return productsForDianpuDao;
+	}
+	@Autowired
+	public void setProductsForDianpuDao(ProductsForDianpuDao productsForDianpuDao) {
+		this.productsForDianpuDao = productsForDianpuDao;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }
