@@ -253,38 +253,8 @@
 
 						}
 					}
-					$("#shouhouB").click(function() {
-						t=false;
-						$("#shouhou").show();
-						$("#pingjia,#miaoshu").hide();
-						$(".tuwen li").removeClass("dangqian");
-						$("#shouhouB").addClass("dangqian");
-					});
-					$("#miaoshuB").click(function() {
-						t=false;
-						$("#miaoshu").show();
-						$("#pingjia,#shouhou").hide();
-						$(".tuwen li").removeClass("dangqian");
-						$("#miaoshuB").addClass("dangqian");
-					});
-					$("#pinglunB").click(function() {
-						t=true;
-						$("#pingjia").show();
-						$("#miaoshu,#shouhou").hide();
-						$(".tuwen li").removeClass("dangqian");
-						$("#pinglunB").addClass("dangqian");
-						if(pageNum==0)
-							insertcode();
-					});
-					/* function viewDialog() {
-						 $("#liuyan").fancybox({
-						        'hideOnContentClick': true
-						 });
-					}
-					function closefancybox() {
-						jQuery.fancybox.close();
-						$('#textMessage').val("");
-					} */
+					
+					
 					function sendMessage() {
 						var textMessage = $('#textMessage').val();
 						var prodId = ${prod.productId};
@@ -409,8 +379,13 @@
 									<a id="xuanze_${p.products.productsId}" class="xuanze button" name="product" guige="${p.products.guige}" stock="${p.products.stock}"
 											transFee="${p.products.transFee}" pdId="${ p.id}" prodId="${p.products.productsId}" price="${p.price}" onclick="checkProd(this)">
 										<c:out	value="${p.products.guige}" />
-										<c:if test="${p.products.stock<500 }">
-											库存：<c:out value="${p.products.stock }" />件
+										<c:if test="${prod.kaiguan==1 }">
+										售罄
+										</c:if>
+										<c:if test="${prod.kaiguan!=1 }">
+											<c:if test="${prod.products.stock<500 }">
+												库存：<c:out value="${prod.products.stock }" />件
+											</c:if>
 										</c:if>
 									</a>
 								</c:forEach>
@@ -419,8 +394,13 @@
 								<a id="xuanze_${prod.products.productsId}" class="xuanze button" name="product" guige="${prod.products.guige}" stock="${prod.products.stock}"
 											transFee="${prod.products.transFee}" pdId="${p.id}" prodId="${prod.products.productsId}" price="${prod.products.price}" onclick="checkProd(this)">
 										<c:out	value="${prod.products.guige}" />
-										<c:if test="${prod.products.stock<500 }">
-											库存：<c:out value="${prod.products.stock }" />件
+										<c:if test="${prod.kaiguan==1 }">
+										售罄
+										</c:if>
+										<c:if test="${prod.kaiguan!=1 }">
+											<c:if test="${prod.products.stock<500 }">
+												库存：<c:out value="${prod.products.stock }" />件
+											</c:if>
 										</c:if>
 									</a>
 							</c:if>
@@ -506,11 +486,11 @@
 				<br/>
 				<div align="center">
 					<a href="#" id="lijibuy" onclick="javascript:orderBuy()"
-							class="btn green" style="width: 20%;margin-left: 1px">立即购买</a>
-					<a href="#" id="lijibuy1" onclick="javascript:orderBuy()"
-							class="btn green" style="width: 20%;margin-left: 1px">立即购买</a>
-					<a href="#" id="lijibuy2" onclick="javascript:shuaxin()"
-							class="btn green" style="width: 20%;margin-left: 1px">刷新页面</a>
+							class="btn red" style="width: 90%">立即购买</a>
+					<br/>
+					<br/>
+					<a href="#" id="lijibuy1" onclick="javascript:shuaxin()"
+							class="btn green" style="width: 90%">刷新页面</a>
 				</div>
 			</div>
 		</div>
@@ -519,9 +499,8 @@
 	<div class="tab-wrap">
 		<div class="tab">
 			<ul class="tuwen">
-				<li id="miaoshuB">图文详情</li>
-				<li id="shouhouB">售后服务</li>
-				<li id="pinglunB">商品评论(<span>${count}</span>)
+				<li id="miaoshuB" onclick="dianjiXiangqing(1)">图文详情</li>
+				<li id="pinglunB" onclick="dianjiXiangqing(2)">商品评论(<span>${count+0}</span>)
 				</li>
 			</ul>
 		</div>
@@ -530,14 +509,6 @@
 				${prod.products.productInfo }
 			</div>
 
-		</div>
-		<div id="shouhou" class="shangpintu">
-			<ul>
-				<li><h4 style="color: red">
-						厂家售后电话:010-57732808，微信号：jlj968
-						</h1></li>
-				<li><h4 style="color: red">工作时间:9:00--17:30</h4></li>
-			</ul>
 		</div>
 		<div id="pingjia" class="shangpintu">
 			<div id="em_all" class="assess">
@@ -857,7 +828,7 @@
 			directionNav: false,
 			touch: true
 		});
-		$("#shouhou,#pingjia").hide();
+		$("#pingjia").hide();
 		 var price=parseFloat($("#prodprice").val());
 	     var transFee=parseInt($("#total_yunfei").html());
 	     var qty=$("#qty_item_1").val().trim()==""?1:parseInt($("#qty_item_1").val().trim());
@@ -865,6 +836,24 @@
 		 showAmt(qty,total_item_amt,transFee);
 		
 	});
+		
+	function dianjiXiangqing(num){
+		if(num==1) {
+			$("#miaoshu").show();
+			$("#pingjia").hide();
+			$(".tuwen li").removeClass("dangqian");
+			$("#miaoshuB").addClass("dangqian");
+		}
+		if(num==2) {
+			$("#pingjia").show();
+			$("#miaoshu").hide();
+			$(".tuwen li").removeClass("dangqian");
+			$("#pinglunB").addClass("dangqian");
+			if(pageNum==0)
+				insertcode();
+		}
+	}
+	
 	
 	</script>
 </body>

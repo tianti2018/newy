@@ -180,6 +180,30 @@ public class UserAction extends BaseAction {
 	private String passWord;
 	private String phone;
 	
+	public void getChildNums(){
+		Long xiaoerNum = 0l;
+		Long zhangguiNum = 0l;
+		Long dazhangguinum = 0l;
+		Long zongshu = 0l;
+		Long zhundianxiaoerNum = 0l;
+		xiaoerNum = useryService.findChildNumByLevel(userId, 1);
+		zhangguiNum = useryService.findChildNumByLevel(userId, 2);
+		dazhangguinum = useryService.findChildNumByLevel(userId, 3);
+		zongshu = useryService.findChildNum(userId);
+		if(zongshu-zhangguiNum-xiaoerNum-dazhangguinum>0l){
+			zhundianxiaoerNum = zongshu-zhangguiNum-xiaoerNum-dazhangguinum;
+		}
+		json.put("success", true);
+		json.put("zhangguiNum", zhangguiNum);
+		json.put("xiaoerNum", xiaoerNum);
+		json.put("zhundianxiaoerNum", zhundianxiaoerNum);
+		try {
+			jsonOut(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void loadTdAndChjl(){
 		Long tuandui = 0L;
 		Long richengjiaoliang = 0l;
@@ -197,6 +221,11 @@ public class UserAction extends BaseAction {
 				zongchengjiaoliang +=orderService.findOrderNum(userVo.getUsery(),null,null);
 				jinrishouyi = shouyiService.findShouRu(userVo.getUsery(),
 						DateUtil.getLingDianDateStringByDays(0),DateUtil.getLingDianDateStringByDays(1));
+				Usery usery = useryService.jianceUserLevel(userVo.getUsery(), userVo.getUser());
+				if(usery!=null){
+					userVo.setUsery(usery);
+					session.setAttribute("loginUser", userVo);
+				}
 			}
 		}
 		json.put("tuandui", tuandui);

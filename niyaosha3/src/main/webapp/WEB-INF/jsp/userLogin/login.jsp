@@ -32,7 +32,7 @@
 	<div class="panel-body">
 		<div>
 			<div class="form-group">
-				昵称:<input style="width: 90%" class="form-control" id="userName" name="userName" 
+				姓名:<input style="width: 90%" class="form-control" id="userName" name="userName" 
 					value=""/>
 				手机号:<input style="width: 90%" class="form-control" id="loginPhone2" name="loginName" 
 					value=""/>
@@ -64,11 +64,11 @@ function zhuce(){
 	var password3 = $("#password3").val().trim();
 	var matchTel = /^[1][3,4,5,7,8][0-9]{9}$/ ;
 	if(loginName ==null||loginName==""){
-		alert("请填写登陆账号!");
+		alert("请填写登陆手机!");
 		return;
 	}
 	if(userName ==null||userName==""){
-		alert("请填写昵称!");
+		alert("请填写姓名!");
 		return;
 	}
 	if(!matchTel.test(loginName)){

@@ -654,6 +654,7 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 					usery.setSubscribe(1);
 				}
 			}
+			usery.setCreateDate(new Date());
 			useryService.update(usery);
 			userVo.setUsery(usery);
 			request.getSession().setAttribute("loginUser",userVo);

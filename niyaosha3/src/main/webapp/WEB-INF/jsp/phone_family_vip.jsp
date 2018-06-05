@@ -127,6 +127,7 @@ $(document).ready(function () {
 		}             
     });
 	insertcode();
+	getChildNums();
 });
 </script>
 	<!-- wrapper start -->
@@ -136,9 +137,9 @@ $(document).ready(function () {
 		<!-- 主要内容区域 -->
 		<div class="my_header_links">
 	            <%-- <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=3"><span id="dazhanggui"></span><span id="wodefensi">大掌柜</span></a> --%>
-	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=2"><span id="zhanggui"></span><span id="wodefensi">掌柜</span></a>
-	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=1"><span id="dianxiaoer"></span><span id="wodefensi">店小二</span></a>
-	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=0"><span id="zhundianxiaoer"></span><span id="wodefensi">准店小二</span></a>
+	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=2"><span id="zhanggui">0</span><span id="wodefensi">掌柜</span></a>
+	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=1"><span id="dianxiaoer">0</span><span id="wodefensi">店小二</span></a>
+	            <a href="<%=request.getContextPath()%>/user/userAction!viewPeoPage.action?viewLevel=0"><span id="zhundianxiaoer">0</span><span id="wodefensi">准店小二</span></a>
 	        </div>
 		<div >
 			<div class="my_member_sear">
@@ -253,6 +254,25 @@ $(document).ready(function () {
 		    		$('#textMessage').val("");
 		    		jQuery.fancybox.close();
 		    		
+		    	}
+		    }
+		});
+	}
+	
+	function getChildNums(){
+		var url ='<%=request.getContextPath()%>/user/userAction!getChildNums.action';
+		$.ajax({
+			type: "POST",
+			url:url,
+			data:"userId=${userVo.usery.id }",// 你的formid
+		    error: function(request) {
+		        alert("网络出现问题稍等再试!!!");
+		    },
+		    success: function(data) {
+		    	if (data.success) {
+		    		$("#zhanggui").html(data.zhangguiNum);
+		    		$("#dianxiaoer").html(data.xiaoerNum);
+		    		$("#zhundianxiaoer").html(data.zhundianxiaoerNum);
 		    	}
 		    }
 		});

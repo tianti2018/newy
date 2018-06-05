@@ -102,8 +102,11 @@ public class OrderAction extends BaseAction {
 	private String levelValue;
 	private Integer pageNum;
 	
-	public void updateOrderStatusTimer(){
-		ordersService.timerUpdateOrderStatus();
+	public void timerUpdateOrderStatus0and3(){
+		ordersService.timerUpdateOrderStatus0and3();
+	}
+	public void timerUpdateOrderStatus3and6(){
+		ordersService.timerUpdateOrderStatus0and3();
 	}
 	
 	public String dianpuOrders(){

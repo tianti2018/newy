@@ -138,10 +138,9 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 				}else if(userInfo!=null){
 					System.out.println("走到else if了 userinfo!=null");
 					usery = new Usery();
-					usery.setSubscribe(0);
+					usery.setSubscribe(1);
 					usery.setUnionid(userInfo.getUnionid());
 					usery.setWxOpenid(wxOpenid);
-					usery.setAppDate(new Date());
 					usery.setUserName(userInfo.getNickname().trim());
 					usery.setHeadUrl(userInfo.getHeadimgurl());
 					usery.setUnionid(userInfo.getUnionid());

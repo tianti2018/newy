@@ -197,20 +197,15 @@ function listCards(){
 }
 
 	$(document).ready(function() { 
-		if("${userVo.usery!=null}"=="true"){
-			if("${userVo.usery.dianPuId!=null}"=="true"){
-				loadTdAndChjl();//加载团队和成交量
-				//loadUserMoneyWL();//加载
-				loadUserMoneyAll();//加载收益
-				//loadUserJifen();加载用户积分
-			}
+		if(ifValidate()){
+			loadUserInfo();
+		}else if("${userVo.usery.dianPuId!=null}"=="true"){
+			loadTdAndChjl();//加载团队和成交量
+			//loadUserMoneyWL();//加载
+			loadUserMoneyAll();//加载收益
+			//loadUserJifen();加载用户积分
+		} 
 			
-			/* if(ifValidate()){
-				loadUserInfo();
-				
-			} */
-			
-		}
 	}); 
 	
 	function loadTdAndChjl(){
@@ -298,15 +293,16 @@ function listCards(){
 	function ifValidate(){
 		var myDate = new Date();
 		var nowDay=myDate.getDate();
-		var oldDay="${user.createDate}";
-		if(oldDay.indexOf(".")!=(-1)){
+		var oldDay=${userVo.usery.createDate.time};
+		/* if(oldDay.indexOf(".")!=(-1)){
 			oldDay = oldDay.substr(0,oldDay.indexOf("."));
 		}
 		//var str ='2012-08-12 23:13:15';
 		//str = str.replace(/-/g,"/");
 		//var date = new Date(str );
-		oldDay = oldDay.replace(/-/g,"/");
-		oldDay = new Date(oldDay).getDate();
+		oldDay = oldDay.replace(/-/g,"/"); */
+		oldDay = new Date(oldDay);
+		oldDay=oldDay.getDate();
 		if(nowDay!=oldDay){
 			return true;
 		}

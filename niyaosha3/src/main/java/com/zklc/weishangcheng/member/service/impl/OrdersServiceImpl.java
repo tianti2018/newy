@@ -58,21 +58,10 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 	private ProductsService productsService;
 	
 	@Override
-	public void timerUpdateOrderStatus() {
-		String hql = " from Orders o where o.orderStatus = 0";
+	public void timerUpdateOrderStatus3and6() {
 		List<Orders> updateList = new ArrayList<>();
-		List<Orders> deleteList = new ArrayList<>();
-		List<Orders> weizhifulist = super.findByHql(hql, null);
-		List<Orders> shouyiOrders = new ArrayList<>();
 		Date now = new Date();
-		if(weizhifulist!=null&&weizhifulist.size() > 0){
-			for(Orders order:weizhifulist){
-				if(now.getTime()-order.getCreateDate().getTime()>1000*60*60){
-					deleteList.add(order);
-				}
-			}
-		}
-		hql = " from Orders o where o.orderStatus = 3";
+		String hql = " from Orders o where o.orderStatus = 3";
 		List<Orders> yifahuoList = findByHql(hql, null);
 		if(yifahuoList!=null&&yifahuoList.size()>0){
 			for(Orders order:yifahuoList){
@@ -98,12 +87,31 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 				}
 			}
 		}
-		if(deleteList.size()>0){
-			deleteAll(deleteList);
-		}
 		if(updateList.size()>0){
 			saveOrUpdateAll(updateList);
 		}
+	}
+	
+	@Override
+	public void timerUpdateOrderStatus0and3() {
+		String hql = " from Orders o where o.orderStatus = 0";
+		List<Orders> updateList = new ArrayList<>();
+		List<Orders> deleteList = new ArrayList<>();
+		List<Orders> weizhifulist = findByHql(hql, null);
+		Date now = new Date();
+		if(weizhifulist!=null&&weizhifulist.size() > 0){
+			for(Orders order:weizhifulist){
+				if(now.getTime()-order.getCreateDate().getTime()>1000*60*60){
+					deleteList.add(order);
+				}
+			}
+		}
+		hql = " from Orders o where o.orderStatus = 3";
+		List<Orders> yifahuoList = findByHql(hql, null);
+		if(deleteList.size()>0){
+			deleteAll(deleteList);
+		}
+		
 		//最后还需要更新收益列表里面的状态
 		//这里还没有确定是哪一个状态才修改,如果定了就去添加list更新状态吧
 		shouyiService.updateShouyiStatusByOrders(yifahuoList);
@@ -247,6 +255,7 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 			product.setStock(product.getStock()-order.getShuliang());
 			productsService.update(product);
 		}
+		useryService.jianceUserLevel(usery, user);
 	}
 
 	
@@ -422,5 +431,7 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 }

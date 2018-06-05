@@ -5,6 +5,7 @@ import java.util.List;
 import com.zklc.framework.service.IBaseService;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 
 public interface UseryService extends IBaseService<Usery, Integer> {
 
@@ -26,7 +27,7 @@ public interface UseryService extends IBaseService<Usery, Integer> {
 
 	Usery findByDianpuId(Integer dianpuId);
 	
-	void jianceUserLevel(Integer useryId,Integer userId);
+	Usery jianceUserLevel(Integer useryId,Integer userId);
 	
-	void jianceUserLevel(Usery usery,Users user);
+	Usery jianceUserLevel(Usery usery,Users user);
 }

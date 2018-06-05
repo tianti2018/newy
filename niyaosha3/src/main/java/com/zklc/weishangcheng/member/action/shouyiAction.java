@@ -54,7 +54,7 @@ public class shouyiAction extends BaseAction {
 		if(json.get("code").equals("000000")){
 			Integer dianpuId = userVo.getUsery().getDianPuId(); 
 			Double yve = shouyiService.findYvE(dianpuId);
-			if(money%10==0.0&&money.compareTo(0.0)>0){
+			if(money%10==0.0&&money.compareTo(0.0)>0&&money.compareTo(200.0)<1){
 				if(money.compareTo(yve)<=0){
 					ShouYiForUser shouYiForUser = new ShouYiForUser();
 					shouYiForUser.setBeizhu("提现");

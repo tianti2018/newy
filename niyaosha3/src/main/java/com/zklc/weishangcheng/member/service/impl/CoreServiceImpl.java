@@ -181,6 +181,9 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 				}else {
 					usery.setUserName(userInfo.getNickname());
 					usery.setHeadUrl(userInfo.getHeadimgurl());
+					if(usery.getAppDate()==null){
+						usery.setAppDate(new Date());
+					}
 					usery.setSubscribe(0);
 					useryService.update(usery);
 //					autosendmsgService.sendMsg(fromUserName, "欢迎回来!");

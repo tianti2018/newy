@@ -9,6 +9,7 @@ import com.zklc.framework.service.impl.BaseServiceImp;
 import com.zklc.weishangcheng.member.hibernate.persistent.UserLevelConf;
 import com.zklc.weishangcheng.member.hibernate.persistent.Users;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.UserVo;
 import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.UserLevelConfService;
@@ -104,7 +105,7 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 	}
 
 	@Override
-	public void jianceUserLevel(Integer useryId,Integer userId) {
+	public Usery jianceUserLevel(Integer useryId,Integer userId) {
 		Usery usery = null;
 		Users user = null;
 		if(useryId!=null){
@@ -123,11 +124,12 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 			}
 		}
 		if(usery!=null)
-			jianceUserLevel(usery, user);
+			return jianceUserLevel(usery, user);
+		return null;
 	}
 
 	@Override
-	public void jianceUserLevel(Usery usery, Users user) {
+	public Usery jianceUserLevel(Usery usery, Users user) {
 		Long ordersNum = 0l;
 		Long xiaoerNum = 0l;
 		Long zhangguiNum = 0l;
@@ -143,13 +145,21 @@ public class UseryServiceImpl extends BaseServiceImp<Usery, Integer> implements
 			zhangguiNum = findChildNumByLevel(usery.getId(), 2);
 			dazhangguinum = findChildNumByLevel(usery.getId(), 3);
 			if(ordersNum>=levelConf.getOrderNum()&&xiaoerNum>=levelConf.getXiaoErNum()&&
-					zhangguiNum>=levelConf.getZhangGuiNum()&&dazhangguinum>=levelConf.getDaZhangGuiNum()){
+					(zhangguiNum+dazhangguinum)>=levelConf.getZhangGuiNum()){
 				usery.setLevel(level+1);
 				update(usery);
+				return usery;
+			}
+			if(usery.getLevel().equals(2)){
+				if(ordersNum>=levelConf.getOrderNum()||(xiaoerNum>=levelConf.getXiaoErNum()&&
+						(zhangguiNum+dazhangguinum)>=levelConf.getZhangGuiNum())){
+					usery.setLevel(level+1);
+					update(usery);
+					return usery;
+				}
 			}
 		}
-		
-		
+		return null;
 	}
 
 	@Override

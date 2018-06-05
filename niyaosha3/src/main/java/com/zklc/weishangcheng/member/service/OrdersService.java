@@ -38,6 +38,7 @@ public interface OrdersService extends IBaseService<Orders, Integer> {
 	void createOrder(Orders order, OrderJinHuo orderJinHuo, ShouYiForUser dianzhuShouyiRecord,
 			ShouYiForUser shangjiShouyiRecord, ShouYiForUser xiaohaoRecord);
 
-	void timerUpdateOrderStatus();
+	void timerUpdateOrderStatus0and3();
+	void timerUpdateOrderStatus3and6();
 	
 }

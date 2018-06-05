@@ -240,7 +240,7 @@ function tixian(){
 						<li><a href="javascript:yitongguo();"><span >已通过</span><i id="yitongguo">0</i></a></li>
 					</ul>
 					<div class="f">
-						<input type="text" id="money" name="money" class="input" placeholder="提现金额为10的整数倍">
+						<input type="text" id="money" name="money" class="input" placeholder="提现金额为10的整数倍且上限为200">
 						<input type="button" class="btn" value="提现" onclick="tixian();">
 					</div>
 				</div>
