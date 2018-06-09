@@ -346,6 +346,7 @@ public class ProductsAction extends ExtJSONActionSuport {
 			if(product.getProdDescription()!=null){
 				product.setProdDescription(product.getProdDescription().trim());
 			}
+			product.setProdDescription(product.getProdDescription().replaceAll("\r|\n", ""));
 			product.setUserId(loginUser.getUserId());
 			product.setUserName(loginUser.getUserName());
 			product.setTransFee(Double.valueOf(transFee)==null?0.0:Double.valueOf(transFee));

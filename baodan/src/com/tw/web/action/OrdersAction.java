@@ -310,7 +310,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		return "listYichang";
 	}
 	
-	public void addChaXunTiaoJian(Map<String, Object> conditionProperties,Map<String, Integer> compare,Map<String, Boolean> sort,String sql,
+	public String addChaXunTiaoJian(Map<String, Object> conditionProperties,Map<String, Integer> compare,Map<String, Boolean> sort,String sql,
 			Integer userId,String orderType,Integer paixu,String toUserName,String pname,String oUserName,String fromUserName,
 			String tel,String oPhone,String ordersBH,String mobile,String dateType,String fromDate,String endDate){
 		if (null!=userId &&! "".equals(userId)) {
@@ -464,7 +464,9 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 		if(sql!=null){
 			sql+=dateSql;
+			return sql;
 		}
+		return null;
 	}
 	
 	public String ordersList() {
@@ -586,7 +588,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
-		addChaXunTiaoJian(conditionProperties, compare, sort, sql, userId, orderType, paixu, toUserName, 
+		sql = addChaXunTiaoJian(conditionProperties, compare, sort, sql, userId, orderType, paixu, toUserName, 
 				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
 			SimpleDateFormat   formatter   = 
@@ -657,7 +659,6 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(paixu==null){
 			paixu = 0;
 		}
-		boolean desc = true;
 		if(paixu!=null){
 			request.getSession().setAttribute("paixu", paixu);
 		}
@@ -685,7 +686,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 				selectDate = "shouhuoDate";
 			}
 		}
-		addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
+		sql =addChaXunTiaoJian(conditionProperties, compare, sort, sql, userId, orderType, paixu, toUserName, 
 				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
 		if((fromDate==null|| "".equals(fromDate))&&(null==endDate || "".equals(endDate))){
 			SimpleDateFormat   formatter   = 

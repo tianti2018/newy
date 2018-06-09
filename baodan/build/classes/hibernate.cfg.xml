@@ -22,6 +22,8 @@
 	    	<mapping class="com.tw.web.hibernate.persistent.Record" />
 	    	<mapping class="com.tw.web.hibernate.persistent.DianpuForUser" />
 	    	<mapping class="com.tw.web.hibernate.persistent.ProductsForDianpu" />
+	    	<mapping class="com.tw.web.hibernate.persistent.Hongbaoy" />
+	    	<mapping class="com.tw.web.hibernate.persistent.ShouYiForUser" />
 	    	
 	    	<mapping class="com.tw.web.hibernate.persistent.FhRecord" />
 	    	<mapping class="com.tw.web.hibernate.persistent.Tixian" />

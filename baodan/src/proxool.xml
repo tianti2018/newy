@@ -18,8 +18,8 @@ jdbc:mysql://58.64.213.202:3306/beijingzh?useUnicode=true&amp;characterEncoding=
 -->
 
 <driver-url> 
-<!-- jdbc:mysql://127.0.0.1:4407/wdl?useUnicode=true&amp;characterEncoding=utf8 -->
-jdbc:mysql://www.yuewenanime.com:4407/wdl?useUnicode=true&amp;characterEncoding=utf8
+jdbc:mysql://127.0.0.1:4407/wdl?useUnicode=true&amp;characterEncoding=utf8
+<!-- jdbc:mysql://www.yuewenanime.com:4407/wdl?useUnicode=true&amp;characterEncoding=utf8 -->
 <!-- jdbc:mysql://127.0.0.1:4407/baodan?useUnicode=true&amp;characterEncoding=utf8 -->
 </driver-url>
 

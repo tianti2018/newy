@@ -32,8 +32,9 @@ public class DianpuForUserDaoImpl extends CRUDBaseHibernateDAOImpl implements Di
 		Usery usery = (Usery) useryDao.findById(useryId);
 		if(usery!=null){
 			DianpuForUser dianpu = new DianpuForUser();
-			dianpu.setName(usery.getUserName());
+			dianpu.setName(usery.getUserName()+"的店铺");
 			dianpu.setUseryId(useryId);
+			dianpu.setJianjie(usery.getUserName()+"的店铺");
 			saveOrUpdate(dianpu);
 			usery.setDianPuId(dianpu.getId());
 			useryDao.saveOrUpdate(usery);

@@ -86,6 +86,7 @@ public class MemberAction extends ExtJSONActionSuport {
 	
 	private Integer userId;
 	private Integer useryId;
+	private Integer dianpuId;
 	private Integer parentId;
 	private String areaType;
 	private Integer areaId;
@@ -127,6 +128,10 @@ public class MemberAction extends ExtJSONActionSuport {
 		if (StringUtils.isNotBlank(userName)) {
 			conditionProperties.put("userName", userName.trim());
 			compare.put("userName", 2);
+		}
+		if (dianpuId!=null&&!"".equals(dianpuId)) {
+			conditionProperties.put("dianPuId", dianpuId);
+			compare.put("dianPuId", 0);
 		}
 		List<Usery> useries = useryDao.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
 		List<UseryVo> useryVos = new ArrayList<UseryVo>();
@@ -718,5 +723,13 @@ public class MemberAction extends ExtJSONActionSuport {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public Integer getDianpuId() {
+		return dianpuId;
+	}
+
+	public void setDianpuId(Integer dianpuId) {
+		this.dianpuId = dianpuId;
 	}
 }

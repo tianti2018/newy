@@ -1,2 +1,12 @@
 /struts.properties
+/.gitignore
 /com/
+/displaytag.properties
+/displaytag_zh_CN.properties
+/hibernate.cfg.xml
+/jdbc.properties
+/log4j.properties
+/proxool.xml
+/struts.xml
+/system.properties
+/url.properties

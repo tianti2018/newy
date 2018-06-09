@@ -1,5 +1,6 @@
 package com.tw.web.util;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,6 +75,11 @@ public class CommUtils {
 		}
 		return false;
 		
+	}
+	
+	public static int getInt(double number){
+	    BigDecimal bd=new BigDecimal(number).setScale(0, BigDecimal.ROUND_HALF_UP);
+	    return Integer.parseInt(bd.toString()); 
 	}
 	
 	/**
