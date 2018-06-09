@@ -23,8 +23,14 @@
 	<link	href="<%=request.getContextPath()%>/bootstrap-3.3.5/css/bootstrap.min.css"	rel="stylesheet">
 	<link rel="stylesheet" type="text/css" 	href="<%=request.getContextPath()%>/css/source/jquery.fancybox.css?v=2.1.5" media="screen" />
 	<script type="text/javascript" 	src="<%=request.getContextPath()%>/css/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+	<script type="text/javascript"
+	src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <!--E 线上样式-->
-
+    <style>
+	qinglihuancun {
+		cursor:pointer;
+	}
+</style>
 </head>
 <body>
 <div class="wx_wrap">
@@ -41,7 +47,15 @@
 	            <a href=""><span id="jinrishouyi">0</span><span>今日收益</span></a>
 	        </div>
         </c:if>
-        
+        <c:if test="${userVo.usery.dianPuId!=null }">
+			<section  class="my_section" id="myWallet">
+                <ul class="list list_value list_value_center">
+	                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action">店铺管理</a></li>
+					<li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}">进入店铺</a></li>
+					<%-- <li><a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action">我的二维码</a></li> --%>
+				</ul>
+            </section>
+       </c:if>
 		
         <!--订单信息-->
         <section class="my_section"  id="gongneng">
@@ -72,12 +86,8 @@
         <section class="my_section" id="myActivity">
             <a href="javascript:void(0);" class="head head_act" data-tag="activity" ptag="" data-wxtag="7155.1.20" data-sqtag="7155.2.20">其他功能<span id="navigat"></span></a>
             <ul class="list list_act">
-            	<c:if test="${userVo.usery.dianPuId!=null }">
-	                <li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoMyDianpu.action">店铺管理</a></li>
-					<li><a href="<%=request.getContextPath()%>/dianpu/dianpuAction!gotoDianPu.action?dianpuId=${userVo.usery.dianPuId}">进入店铺</a></li>
-					<%-- <li><a href="<%=request.getContextPath()%>/user/userAction!qrcodePage.action">我的二维码</a></li> --%>
-				</c:if>
-				<li><a id="orderAdress" href="#loginline" onclick="viewLogin()">关联登录</a></li>
+				<li onclick="viewLogin()"><a id="orderAdress" href="#loginline" >关联登录</a></li>
+				<li ><a class="qinglihuancun" onclick="clearHuncun()">清理缓存</a></li>
                 <li><a href="javascript:zanwu();">平台规则</a></li>
                 <li><a href="javascript:zanwu();">注意事项</a></li>
                 <li><a href="<%=request.getContextPath() %>/notice/noticeAction!noticeList.action" id="change">公告</a></li>
@@ -106,8 +116,8 @@
         </section>-->
 
         <!--客服-->
-        <p align="center">服务热线:4000 693 777 </p>
-        <p align="center" style="color:red;">注:客服工作时间:早9点--晚6点</p>
+        <!-- <p align="center">服务热线:4000 693 777 </p>
+        <p align="center" style="color:red;">注:客服工作时间:早9点--晚6点</p> -->
         <!-- <div class="my_links">
             <a href="../huanxin.jsp" class="link_online" id="serviceItem" >在线客服</a>
         </div> -->
@@ -158,6 +168,10 @@ if (typeof WeixinJSBridge == "undefined") {
 
 function jampUrl(){
 	window.location.href="<%=request.getContextPath()%>/user/userAction!phoneFamily.action";
+}
+
+function clearHuncun(){
+	loadUserInfo();
 }
 
 function listCards(){
@@ -293,7 +307,7 @@ function listCards(){
 	function ifValidate(){
 		var myDate = new Date();
 		var nowDay=myDate.getDate();
-		var oldDay=${userVo.usery.createDate.time};
+		var oldDay='${userVo.usery.createDate.time}';
 		/* if(oldDay.indexOf(".")!=(-1)){
 			oldDay = oldDay.substr(0,oldDay.indexOf("."));
 		}
@@ -301,7 +315,10 @@ function listCards(){
 		//str = str.replace(/-/g,"/");
 		//var date = new Date(str );
 		oldDay = oldDay.replace(/-/g,"/"); */
-		oldDay = new Date(oldDay);
+		if(oldDay==''){
+			return false;
+		}
+		oldDay = new Date(Number(oldDay));
 		oldDay=oldDay.getDate();
 		if(nowDay!=oldDay){
 			return true;

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -30,16 +32,18 @@ import com.zklc.weishangcheng.member.service.OrderJinHuoService;
 import com.zklc.weishangcheng.member.service.OrdersService;
 import com.zklc.weishangcheng.member.service.UserService;
 import com.zklc.weishangcheng.member.service.UseryService;
+import com.zklc.weishangcheng.member.util.KdniaoTrackQueryAPI;
 import com.zklc.weishangcheng.member.util.PublicUtil;
 import com.zklc.weixin.util.SystemMessage;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @ParentPackage("json")
 @Namespace("/order")
 @Action(value = "orderAction")
 @Results({
-	//	@Result(name = "orderPerList", location = "/WEB-INF/jsp/phone_family_order.jsp"),
+		@Result(name = "chaxunWuliu", location = "/WEB-INF/jsp/order/wuliu.jsp"),
 		@Result(name = "myOrderList", location = "/WEB-INF/jsp/phone_my_order.jsp"),//我的订单
 		@Result(name = "product", location = "/WEB-INF/jsp/product.jsp"),
 		@Result(name = "products", location = "/WEB-INF/jsp/products/products.jsp"),
@@ -110,8 +114,35 @@ public class OrderAction extends BaseAction {
 	}
 	
 	public String dianpuOrders(){
-		
 		return "dianpuOrders";
+	}
+	
+	public boolean isContainNumber(String company) {
+
+        Pattern p = Pattern.compile("[0-9]");
+        Matcher m = p.matcher(company);
+        if (m.find()) {
+            return true;
+        }
+        return false;
+    }
+	public String chaxunWuliu(){
+		if(StringUtils.isNotBlank(orderNo)){
+			if(isContainNumber(orderNo)){
+				try {
+					String result = KdniaoTrackQueryAPI.getWLMessage(orderNo);
+					JSONObject jsonObject = JSONObject.fromObject(result);
+					if(jsonObject!=null){
+						JSONArray array = jsonObject.getJSONArray("Traces");
+						request.setAttribute("array", array);
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return "chaxunWuliu";
 	}
 	
 	public void ajaxDianppuOrders() {

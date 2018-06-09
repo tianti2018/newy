@@ -19,7 +19,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <html lang="zh-CN">
 <head>
-<%ResourceBundle res = ResourceBundle.getBundle("system"); %> 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"/> -->
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />

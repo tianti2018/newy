@@ -252,7 +252,7 @@ public class OrdersServiceImpl extends BaseServiceImp<Orders, Integer>
 		}
 		Products product = productsService.findById(order.getProductId());
 		if(product.getStock()!=null&&product.getStock()!=999){
-			product.setStock(product.getStock()-order.getShuliang());
+			product.setStock((product.getStock()-order.getShuliang()*10)<0?0:(product.getStock()-order.getShuliang()*10));
 			productsService.update(product);
 		}
 		useryService.jianceUserLevel(usery, user);

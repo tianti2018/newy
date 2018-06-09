@@ -370,6 +370,12 @@ public class UserAction extends BaseAction {
 	
 	public String gotoPersonalCenter(){
 		userVo = getSessionUser();
+		if(userVo!=null&&userVo.getUsery()!=null){
+			Usery usery = useryService.findById(userVo.getUsery().getId());
+			System.out.println(usery.getUserName());
+			userVo.setUsery(usery);
+			session.setAttribute("loginUser", userVo);
+		}
 //		Users user = userService.findById(1820);
 //		userVo = new UserVo();
 //		userVo.setUser(user);

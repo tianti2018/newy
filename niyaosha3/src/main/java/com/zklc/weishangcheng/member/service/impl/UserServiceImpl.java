@@ -647,9 +647,18 @@ public class UserServiceImpl extends BaseServiceImp<Users, Integer> implements U
 			if(usery!=null){
 				UserInfoUtil userInfo = autosendmsgService.processUserInfoObject(usery.getWxOpenid());
 				if (userInfo!=null) {
-					usery.setUserName(userInfo.getNickname());
-					usery.setHeadUrl(userInfo.getHeadimgurl());
-					usery.setSubscribe(0);
+					if(userInfo.getNickname()!=null&&!userInfo.getNickname().equals(""))
+						usery.setUserName(userInfo.getNickname());
+					if(userInfo.getHeadimgurl()!=null&&!userInfo.getHeadimgurl().equals(""))
+						usery.setHeadUrl(userInfo.getHeadimgurl());
+					if(userInfo.getSubscribe()!=null&&!userInfo.getSubscribe().equals("")){
+						if(userInfo.getSubscribe().equals("1"))
+							usery.setSubscribe(0);
+						else{
+							usery.setSubscribe(1);
+						}
+					}
+					
 				}else{
 					usery.setSubscribe(1);
 				}

@@ -55,7 +55,7 @@
 <div id="topsearchbar" class="wx_search wx_search_chanel_mode wx_search_nian wx_search_promote_ex">
 	  <input type="hidden" id="atCity">
       <div class="wx_search_inner">
-        <div class="wx_bar_cate"><a href="<%=request.getContextPath()%>/city/cityAction!cities.action" class="city_btn">
+        <div class="wx_bar_cate"><a href="#" class="city_btn">
          <c:choose>
           <c:when test="${not empty city.shortname}">
           	<span id="cityNames"></span>
@@ -66,9 +66,9 @@
          </c:choose>
        
         </a></div>
-        <form action="" method="get" class="wx_search_form" onsubmit="return false;">
+        <!-- <form action="" method="get" class="wx_search_form" onsubmit="return false;">
             <input name="key" class="wx_search_txt" placeholder="" type="search" id="topSearchTxt" autocomplete="off">
-        </form>
+        </form> -->
     </div>
 
 </div>
@@ -114,8 +114,11 @@ wx.config({
 
 var titlez = "${dianpu.name}";
 var linkz = "${url}";
-var imgUrlz ="";
+var imgUrlz ="http://wx.qlogo.cn/mmopen/ooynj70RTEA2ict4nxwt4yMaoghPWbJNkQotrXJSEns2OEGjtUGTfuSdCO0ArOQCAxq22IEtyasgkLZRN0ic04ARiclJkfZuHicN/64";
 var descz = "${dianpu.jianjie}";
+if(descz==""){
+	descz=titlez;
+}
 wx.ready(function(){
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
  /* wx.checkJsApi({
@@ -323,9 +326,9 @@ function shwoCity(){
 								<div class="img">
 									<img alt="" src="${product.headUrl }" loaded="117">
 								</div>
-							</a>
+							</a>`
 							<div class="info">
-								<div class="name" style="color: red;">${product.name}</div>
+								<div class="name" style="color: red;">${product.name}&nbsp;&nbsp;&nbsp;&nbsp;${product.guige}</div>
 								<div class="cost">
 									<span class="price">¥${product.price }</span>
 									<del>¥${product.jianyiPrice }</del>

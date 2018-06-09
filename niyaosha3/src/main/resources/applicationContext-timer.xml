@@ -29,8 +29,9 @@
 	  <property name="cronExpression" value="* 0/10 * * * ?" />
 	</bean> 
 	
+	<bean id="orderAction1" class="com.zklc.weishangcheng.member.action.OrderAction"></bean>
 	<bean id="buildTask1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
-	  <property name="targetObject" ref="orderAction" />
+	  <property name="targetObject" ref="orderAction1" />
 	  <property name="targetMethod" value="timerUpdateOrderStatus3and6" />
 	  <property name="concurrent" value="false" />
 	</bean> 

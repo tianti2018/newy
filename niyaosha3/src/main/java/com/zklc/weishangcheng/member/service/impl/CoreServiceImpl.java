@@ -162,8 +162,7 @@ public class CoreServiceImpl extends BaseServiceImp<Users, Integer> implements C
 					useryService.save(usery);
 			    	
 			    	StringBuilder sb = new StringBuilder();
-					sb.append("感谢您成为");
-					sb.append("我们的店小二，平台全体家人将会竭诚为您服务！！！");
+					sb.append("在大自然的所有生物都有属于自己的声音，感谢您的加入和我们共同传递生态自然的语言。");
 					sb.append("\n");
 //					sb.append("星火草原帮扶计划响应国家大众创业，万众创新的号召，充分发挥技术创新优势，商业模式创新优势。致力于打造最亲民，最平民化，最适合老百姓创业消费的平台，不管你是学生，还是在家务农，全职妈妈等家庭人员，这里都可以展现你的才能，为你搭建人生财富梦想的舞台。星火草原帮扶计划愿与您共同谱写2016年新的财富梦想！！");
 //					sb.append("\n");

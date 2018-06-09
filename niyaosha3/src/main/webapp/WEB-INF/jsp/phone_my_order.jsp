@@ -18,6 +18,7 @@
 	href="<%=request.getContextPath()%>/css/base.css" />
 	<link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/family.css" />
+	<link href="<%=request.getContextPath()%>/css/cart.css" rel="stylesheet" />
 	<link href="<%=request.getContextPath()%>/css/user.css" rel="stylesheet" />
 	<link href="<%=request.getContextPath()%>/css/base.s.min.css" rel="stylesheet" />
     <link href="<%=request.getContextPath()%>/css/my_v2.s.min.css" rel="stylesheet" />	
@@ -61,30 +62,22 @@ function insertcode(){
 	    	if (data.success==true) {
 	    		var children = data.children;
 	    		var child = '';
+	    		/* 
+                    </div>
+                  </div>
+                </div>
+              </div> */
 	    		for(var i=0;i<children.length;i++){
-	    			if(children[i].createDate!=null){
-	    			  var createTime= new Date(children[i].createDate.time).Format("yyyy-MM-dd hh:mm:ss");
-		    		}
-	    			if(children[i].fahuoDate!=null){
-	    			  var fahuoTime= new Date(children[i].fahuoDate.time).Format("yyyy-MM-dd hh:mm:ss");
-		    		}
-	    			child+=(' <div class="my_order">');
-	    			child+=('<div class="item" onclick="zhankai('+children[i].ordersId+')">');    
-	    			child+=('<div class="item_t">');
-	    			if(children[i].pname.length<10){
-	    			child+=('<em>'+children[i].pname+'</em></div>');
-	    			}else{
-	    			child+=('<em>'+children[i].pname.substring(0,10)+'...</em></div>');	
-	    			}
-	    			child+=('<div class="item_m" id="item_m'+children[i].ordersId+'"><ul>');
-	    			child+=('<li>订单编号：<em>'+children[i].ordersBH+'</em>');
-	    			child+=('</li>');
-	    			child+=('<li>订单时间：<em>'+createTime+'</em></li>');
-	    			child+=('<li>收货人：<em>'+children[i].toUserName+'</em></li>');
-	    			child+=('<li>收货地址：<em>'+children[i].sheng+children[i].chengshi+children[i].diqu+children[i].address+'</em></li>');
-	    			child+=('<li>收货电话：<em>'+children[i].mobile+'</em></li>');
-	    			child+=('<li>订单金额：<em>'+children[i].money+'</em></li>');
-	    			child+=('<li>订单状态：<em>');
+	    			child+=('<div class="section"  style="width: 100%;">');
+	    			child+=('<div class="item cart_goods">');
+	    			child+=('<div class="goods_wrap">');    
+	    			child+=('<div class="goods  selected">');
+	    			child+=('<img class="image" src="'+children[i].pictureUrl+'" width="100" height="100" alt="">');
+	    			child+=('<div class="content">');
+	    			child+=('<div class="name">'+children[i].pname+'</div>');
+	    			child+=('<p>'+children[i].ordersBH+'</p>');
+	    			child+=('<p class="price">价格：'+children[i].money+'</p>');
+	    			child+=('<p style="font-weight:bold;">');
 	    			var fahuo = false;
 	    			if(children[i].orderStatus==0){
 	    				child+=('待付款');
@@ -110,36 +103,18 @@ function insertcode(){
 	    				child+=('已收货');
 	    				fahuo = true;
 	    			}
-	    			child+=('</em></li>');
-	    			
-	    			
+	    			child+=('</p></div></div>');
+	    			child+=('<div style="width:80%;margin:0px auto;">'+children[i].sheng+children[i].chengshi+children[i].diqu+children[i].address+','
+	    					+children[i].toUserName+'收,'+children[i].mobile+'</div>');
 	    			if(fahuo){
-	    				
-		    			child+=('<li>快递公司：<em>children[i].kuaidiName');
-		    			child+=('</em></li>');
-		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="查看物流 " onclick="serch('+children[i].kuaidiNo+')"/></li>');
-		    			child+=('<li>发货日期：<em>'+(fahuoTime==null?null:fahuoTime)+'</em></li>');
+		    			child+=('<div style="width:80%;margin:0px auto;">'+children[i].kuaidiName+':'+children[i].kuaidiNo+
+		    			' &nbsp;&nbsp;&nbsp;&nbsp; <span style="float:right;"><input type="button" value="查看物流 " onclick="serch(\''+children[i].kuaidiNo+'\',\''+
+		    			children[i].kuaidiName+'\')"/></span></div>');
+		    			/*  */
 	    			}
-	    			child+=('<li>购买数量：<em>'+children[i].shuliang+'</em></li>');
-	    			child+=('<li>消耗收益：<em>'+children[i].xiaohaoShouyi+'</em></li>');
-	    			child+=('<li style="text-align:center">');
-   					if(children[i].orderStatus==0){
-   	    			}else if(children[i].orderStatus==1){
-   	    				child+=('<em><input type="button" onclick="tuihuo(this)" orderId="children[i].ordersId" value="申请退货"/></em>');
-   	    			}else if(children[i].orderStatus==3){
-   	    				child+=('<em><input type="button" onclick="shouhuo(this)" orderId="children[i].ordersId" value="确认收货"/></em>');
-   	    			}else if(children[i].orderStatus==4){
-   	    				child+=('<em><input type="button" onclick="shouhou(this)" orderId="children[i].ordersId" value="申请售后"/></em>');
-   	    				if(children[i].pingjia==null||children[i].pingjia==0){
-   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="pingjia(this)" orderId="children[i].ordersId" value="去评价"/></em>');
-   	    				}else if(children[i].pingjia==1){
-   	    					child+=('&nbsp;&nbsp<em><input type="button" onclick="zhuiping(this)" orderId="children[i].ordersId" value="追评"/></em>');
-   	    				}
-   	    			}
-   					child+=('</li>');
-   					child+=('</ul></div></div></div>');
+   					child+=('</div></div></div>');
 	    		}
-	    		var ul = $("#appendUl");
+	    		var ul = $("#section");
 	    		ul.append(child);
 	    		
 	    	}else{
@@ -236,15 +211,21 @@ function cancelOrder(obj){
 	<!-- wrapper start -->
 	
 	<div class="wrapper" id="appendUl">
+		<form id="tjsForm" action="http://www.lntjs.cn/web_index/page07.aspx" method="post">
+			<input name="Txt_Code" type="hidden" id="Txt_Code">
+		</form>
 		<!-- 头部个人信息 start -->
 		<%@ include file="/WEB-INF/jsp/order_head.jsp"%>
-			<form method="post" action="orderAction!orderPerList.action?orderNo=0&requestType=mo & date1=document.getElementById('date1').value & date2=document.getElementById('date2').value">
             <div class="my_order_sear">
             <input type="date" class="input" id="date1" name="date1"><i>-</i><input type="date" class="input" id="date2" name="date2">
-            <input type="submit" class="btn" value="搜索"></div>
-			</form><br>
+            <input type="button" class="btn" value="搜索" onclick="insertcode()"></div>
+			<br>
 			<!-- 推荐 -->
-			
+            	<div id="section" id="list">
+            		
+						
+	                
+	             </div>
 	</div>
 	<br>
 	<br>
@@ -368,23 +349,12 @@ function cancelOrder(obj){
 			onBridgeReady();
 		}
 		
-		<%-- $(function(){
-			$('#search_btn').click(function(){
-				var selCom = "";
-				var num = "";
-				// var num = "550286779199";
-				var callbackurl = "http://localhost:8080/newz/order/orderAction!orderPerList.action?orderNo=0&requestType=mo";
-				window.location.href = 'http://m.kuaidi100.com/index_all.html?type='+selCom+'&postid='+num+'&callbackurl='+callbackurl;
-			});
-		}); --%>
-		
-		function serch(orderid){
-				var selCom = "";
-				var num = "";
-				//var num = orderid;
-				// var num = "550286779199";
-				var callbackurl = "http://localhost:8080/newz/order/orderAction!orderPerList.action?orderNo=0&requestType=mo";
-				window.location.href = 'http://m.kuaidi100.com/index_all.html?type='+selCom+'&postid='+num;
+		function serch(kdNum,kdName){
+			if(kdName=='特急送'){
+				window.location.href = "http://wljl.lntjs.cn/weixin/information.aspx?BillCode=" + kdNum.trim();
+				
+			}else
+				window.location.href = '<%=request.getContextPath()%>/order/orderAction!chaxunWuliu.action?orderNo='+kdNum;
 		}
 	</script>
 </body>

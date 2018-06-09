@@ -15,7 +15,7 @@
 	            <p>昵称：<span id="nicheng">${userVo.usery.userName }</span></p>            
 	            <p>ID：${userVo.usery.id }</p>
 	            <p>您的头衔：
-					<c:if test="${userVo.usery.level == 0|| userVo.usery.level == null}">准店小二</c:if>
+					<c:if test="${userVo.usery.level == 0|| userVo.usery.level == null}">客官</c:if>
 					<c:if test="${userVo.usery.level == 1}">店小二<!-- <img style="width: 15px" src="../images/s1.png"/> --></c:if>
 					<c:if test="${userVo.usery.level == 2}">掌柜<!-- <img style="width: 15px" src="../images/s2.png"/> --></c:if>
 					<c:if test="${userVo.usery.level == 3}">大掌柜<!-- <img style="width: 25px" src="../images/shenqing/4.png"/> --></c:if>

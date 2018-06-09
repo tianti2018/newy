@@ -117,12 +117,13 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 			if(StringUtils.isNotEmpty(code)){
 				if(StringUtils.isEmpty(wxOpenid)){
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> code333------ "+code);
-					userInfo = WeixinUtil.getUserInfoByCode(code);
-					wxOpenid = userInfo.getOpenid();
+//					userInfo = WeixinUtil.getUserInfoByCode(code);
+					wxOpenid = WeixinUtil.code2openid(code);
 					request.getSession().setAttribute("wxOpenid",wxOpenid);
 				}
 			}
 			if(StringUtils.isNotEmpty(wxOpenid)){
+				userInfo = autosendmsgService.processUserInfoObject(wxOpenid);
 				Usery usery = useryService.findbyWxOpenId(wxOpenid);
 				if(usery!=null){
 					userVo = new UserVo();

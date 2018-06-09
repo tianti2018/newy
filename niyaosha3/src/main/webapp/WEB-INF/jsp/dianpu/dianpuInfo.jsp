@@ -19,7 +19,6 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <html lang="zh-CN">
 <head>
-<%ResourceBundle res = ResourceBundle.getBundle("system"); %> 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- <meta content="width=device-width, initial-scale=1.0" name="viewport"/> -->
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -161,13 +160,14 @@ License: You must have a valid license purchased only from themeforest(the above
 	    }   */
 	}
 	
-	function shangjia(dianpuId,productId,ketiao){
+	function shangjia(dianpuId,productId,ketiao,lingshou){
 		 $("#shangjia").fancybox({
 		        'hideOnContentClick': true
 		 });
 		 $("#productId").val(productId);
 		 $("#dianpuId").val(dianpuId);
 		 $("#ketiao").val(ketiao);
+		 $("#dianpuPrice").val(lingshou);
 		 ketiaoJia = ketiao;
 	}
 	function querenShangjia(){
@@ -189,8 +189,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		    success: function(data) {
 		    	if(data.success){
 		    		closefancybox();
+		    		$("#dianpuPrice").val('');
+		    		$("#paixu").val('');
 		    		if(data.message!=null&&data.message!=""){
 		    			alert(data.message);
+		    			
 		    		}
 		    		$("#weishang_"+$("#productId").val()).remove();
 		    	}else{
@@ -263,7 +266,18 @@ License: You must have a valid license purchased only from themeforest(the above
 			    			child+='</div>';
 			    			child+='</a>';
 			    			child+='<div class="info">';
-			    			child+='<div class="name" style="color: red;">'+data[i].name+'<span style="color: blue;float:right">';
+			    			var zhuan = 0;
+			    			var caigou = 0;
+			    			var lingshou = data[i].price;
+			    			if('${userVo.usery.level>=2}'=='true'){
+			    				caigou = data[i].leveltwo;
+			    			}else if('${userVo.usery.level==1}'=='true'){
+			    				caigou = data[i].levelone;
+			    			}else {
+			    				caigou = data[i].price;
+			    			}
+			    			zhuan = lingshou - caigou;
+			    			child+='<div class="name" style="color: red;">'+data[i].name+'&nbsp;&nbsp;&nbsp;&nbsp;赚:¥'+zhuan+'<span style="color: blue;float:right">';
 			    			if(data[i].type==0){
 			    				child+='轮播展示';
 			    			}
@@ -275,8 +289,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			    			}
 			    			child+='</span></div>';
 			    			child+='<div class="cost">';
-			    			child+='<span class="price">¥'+data[i].price +'</span>';
-			    			child+='<del>¥'+data[i].jianyiPrice +'</del>';
+			    			child+='<span class="price">¥'+lingshou +'</span>';
+			    			child+='&nbsp;&nbsp;&nbsp;采购:<span>¥'+caigou +'</span>';
 			    			child+='<div onclick="javascript:xiajia('+data[i].id +');" class="btn_relate" >下架</div> ';
 			    			child+='</div></div></div>';
 			    		}
@@ -290,19 +304,24 @@ License: You must have a valid license purchased only from themeforest(the above
 			    			child+='</div>';
 			    			child+='</a>';
 			    			child+='<div class="info">';
-			    			child+='<div class="name" style="color: red;">'+data[i].name+'</div>';
+			    			
+			    			var zhuan = 0;
+			    			var caigou = 0;
+			    			var lingshou = data[i].price;
+			    			if('${userVo.usery.level>=2}'=='true'){
+			    				caigou = data[i].leveltwo;
+			    			}else if('${userVo.usery.level==1}'=='true'){
+			    				caigou = data[i].levelone;
+			    			}else {
+			    				caigou = data[i].price;
+			    			}
+			    			zhuan = lingshou - caigou;
+		    				child+='<div class="name" style="color: red;">'+data[i].name+'&nbsp;&nbsp;&nbsp;&nbsp;赚:¥'+zhuan+'</div>';
 			    			child+='<div class="cost">';
 			    			child+='<span class="price">¥';
-			    			if('${userVo.usery.level>=2}'=='true'){
-			    				child+=data[i].leveltwo +'</span>';
-			    				child+='<del>¥'+data[i].price +'</del>';
-			    			}else if('${userVo.usery.level==1}'=='true'){
-			    				child+=data[i].levelone +'</span>';
-			    				child+='<del>¥'+data[i].price +'</del>';
-			    			}else{
-			    				child+=data[i].price +'</span>';
-			    			}
-			    			child+='<div href="#inline_shangjia" id="shangjia" onclick="javascript:shangjia(${userVo.usery.dianPuId },'+data[i].productsId +','+data[i].ketiao+');" class="btn_relate" >上架</div> ';
+		    				child+=lingshou +'</span>';
+		    				child+=' 采购:<span>¥'+caigou +'</span>';
+			    			child+='<div href="#inline_shangjia" id="shangjia" onclick="javascript:shangjia(${userVo.usery.dianPuId },'+data[i].productsId +','+data[i].ketiao+','+lingshou+');" class="btn_relate" >上架</div> ';
 			    			child+='</div></div></div>';
 			    		}
 		    		}
@@ -349,6 +368,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		 $("#dianpuxinxi").fancybox({
 		        'hideOnContentClick': true
 		 });
+		 if('${dianpu.name!=null}'=='true'){
+			 $('#dianpuName').val('${dianpu.name}');
+		 }else{
+			 $('#dianpuName').val('${userVo.usery.userName }的店铺');
+		 }
 	}
 	
 	function saveOrUpdate() {
@@ -371,6 +395,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		    success: function(data) {
 		    	if (data.success) {
 		    		alert("保存成功");
+		    		window.location.reload(true);
 		    	}else{
 		    		alert("保存失败,请返回!")
 		    	}

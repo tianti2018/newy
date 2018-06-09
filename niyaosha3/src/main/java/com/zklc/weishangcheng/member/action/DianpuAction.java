@@ -17,6 +17,7 @@ import com.zklc.weishangcheng.member.hibernate.persistent.DianpuForUser;
 import com.zklc.weishangcheng.member.hibernate.persistent.Products;
 import com.zklc.weishangcheng.member.hibernate.persistent.ProductsForDianpu;
 import com.zklc.weishangcheng.member.hibernate.persistent.Usery;
+import com.zklc.weishangcheng.member.hibernate.persistent.vo.ProductVo;
 import com.zklc.weishangcheng.member.service.CommentService;
 import com.zklc.weishangcheng.member.service.DianpuForUserService;
 import com.zklc.weishangcheng.member.service.OrderAddressService;
@@ -71,9 +72,9 @@ public class DianpuAction extends BaseAction {
 	
 	
 	private DianpuForUser dianpu;
-	private List<ProductsForDianpu> lunbos;
-	private List<ProductsForDianpu> dankuans;
-	private List<ProductsForDianpu> sanlies;
+	private List<ProductVo> lunbos;
+	private List<ProductVo> dankuans;
+	private List<ProductVo> sanlies;
 	private Integer type;						//商品显示样式0轮播1单款2散列
 	private Integer pageNum;					//散列显示页数
 	private Integer pageSize;					//散列显示每页多少
@@ -101,21 +102,25 @@ public class DianpuAction extends BaseAction {
 				if(userVo!=null){
 					request.setAttribute("orderAddress", orderAddressService.findDefaultAddressByUserVo(userVo));
 				}
-				AccessToken accessToken = autosendmsgService.processAccessToken();
-				String nonce_str = sign.create_nonce_str();
-		        String timestamp = sign.create_timestamp();
-		        String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!dianPuProduct.action?pdId="+pdId;
-		        request.setAttribute("appId", SystemMessage.getString("APPID"));
-		        request.setAttribute("nonce_str", nonce_str);
-		        request.setAttribute("timestamp", timestamp);
-		        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
-		        request.setAttribute("url", url
-		        		
+				try {
+					AccessToken accessToken = autosendmsgService.processAccessToken();
+					String nonce_str = sign.create_nonce_str();
+					String timestamp = sign.create_timestamp();
+					String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!dianPuProduct.action?pdId="+pdId;
+					request.setAttribute("appId", SystemMessage.getString("APPID"));
+					request.setAttribute("nonce_str", nonce_str);
+					request.setAttribute("timestamp", timestamp);
+					request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+					request.setAttribute("url", url
+							
 //		        		WeixinUtil.getShorUrl(accessToken.getToken(), 
 //		        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
 //		        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
 //		        				)
-		        			);
+								);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			
 		}
@@ -129,22 +134,26 @@ public class DianpuAction extends BaseAction {
 		if(dianpu!=null){
 			lunbos = productsForDianpuService.findPagerByPropertyAndSort(0,0,0,dianpuId);
 			dankuans = productsForDianpuService.findPagerByPropertyAndSort(1,0,0,dianpuId);
-			sanlies = productsForDianpuService.findPagerByPropertyAndSort(2,1,pageSize,dianpuId);
-			AccessToken accessToken = autosendmsgService.processAccessToken();
-			String nonce_str = sign.create_nonce_str();
-	        String timestamp = sign.create_timestamp();
-	        String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!gotoDianPu.action";
-	        request.setAttribute("appId", SystemMessage.getString("APPID"));
-	        request.setAttribute("nonce_str", nonce_str);
-	        request.setAttribute("timestamp", timestamp);
-	        request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
-	        request.setAttribute("url", url
-	        		
+			sanlies = productsForDianpuService.findPagerByPropertyAndSort(2,0,0,dianpuId);
+			try {
+				AccessToken accessToken = autosendmsgService.processAccessToken();
+				String nonce_str = sign.create_nonce_str();
+				String timestamp = sign.create_timestamp();
+				String url = SystemMessage.getString("YUMING")+"/dianpu/dianpuAction!gotoDianPu.action?dianpuId="+dianpuId;
+				request.setAttribute("appId", SystemMessage.getString("APPID"));
+				request.setAttribute("nonce_str", nonce_str);
+				request.setAttribute("timestamp", timestamp);
+				request.setAttribute("signature", sign.getSignature(accessToken.getTicket(), url, nonce_str, timestamp));
+				request.setAttribute("url", url
+						
 //	        		WeixinUtil.getShorUrl(accessToken.getToken(), 
 //	        				"https://open.weixin.qq.com/connect/oauth2/authorize?appid="+SystemMessage.getString("APPID")+"&redirect_uri="+
 //	        				url+"&response_type=code&scope=snsapi_userinfo&state="+user.getUnionid()+"#wechat_redirect"
 //	        				)
-	        			);
+							);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return "gotoDianpu";
@@ -153,7 +162,7 @@ public class DianpuAction extends BaseAction {
 	
 	public void yishangAjax(){
 		
-		List<ProductsForDianpu> productsForDianpus = productsForDianpuService.findPagerByPropertyAndSort(null,pageNum,pageSize,dianpuId);
+		List<ProductVo> productsForDianpus = productsForDianpuService.findPagerByPropertyAndSort(null,pageNum,pageSize,dianpuId);
 		try {
 			jsonArrayOut(productsForDianpus);
 		} catch (Exception e) {
@@ -311,27 +320,28 @@ public class DianpuAction extends BaseAction {
 		this.dianpu = dianpu;
 	}
 
-	public List<ProductsForDianpu> getLunbos() {
+
+	public List<ProductVo> getLunbos() {
 		return lunbos;
 	}
 
-	public void setLunbos(List<ProductsForDianpu> lunbos) {
+	public void setLunbos(List<ProductVo> lunbos) {
 		this.lunbos = lunbos;
 	}
 
-	public List<ProductsForDianpu> getDankuans() {
+	public List<ProductVo> getDankuans() {
 		return dankuans;
 	}
 
-	public void setDankuans(List<ProductsForDianpu> dankuans) {
+	public void setDankuans(List<ProductVo> dankuans) {
 		this.dankuans = dankuans;
 	}
 
-	public List<ProductsForDianpu> getSanlies() {
+	public List<ProductVo> getSanlies() {
 		return sanlies;
 	}
 
-	public void setSanlies(List<ProductsForDianpu> sanlies) {
+	public void setSanlies(List<ProductVo> sanlies) {
 		this.sanlies = sanlies;
 	}
 

@@ -160,7 +160,7 @@ function getTarea(type){
 		
 	// 手机号码校验
 	function checkMobile(val){
-		var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+		var myreg = /^[1][3,4,5,7,8][0-9]{9}$/ ;
 	    if(!myreg.test(val)) 
 	    {
 	        return false; 

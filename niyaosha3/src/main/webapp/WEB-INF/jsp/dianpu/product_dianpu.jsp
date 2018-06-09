@@ -53,31 +53,33 @@
 </head>
 <body id="bodyy">
 	<div class="wrap">
-		<div class="banner">
-			<div class="flexslider">
-				<ul class="slides">
-
-						<a href="#" ontouchmove="shows(1)">
-							<li><img src="${prod.headUrl }"
-								style="width: 100%"></li>
-						</a>
-				</ul>
-			</div>
-		</div>
-		<script type="text/javascript"
-			src="<%=request.getContextPath()%>/js/jquery.flexslider-min.js"></script>
+			<img src="${prod.headUrl }"	style="width: 100%"/>
 		<script>
 				function checkProd(obj)
 				{
 					$(".xuanze").each(function(){
 						$(".xuanze").removeClass("pro-sel");		
 					});
+					var price = $(obj).attr("price");
 					$("#xuanze_"+$(obj).attr("prodId")).addClass("pro-sel");
+					if('${userVo.usery.dianPuId==prod.dianpuId}'=='true'){
+						if('${userVo.usery.level==1}'=='true'){
+							price = $(obj).attr("priceOne");
+							$("#prodprice").val(price);
+						}else if('${userVo.usery.level==2}'=='true'){
+							price = $(obj).attr("priceTwo");
+							$("#prodprice").val(price);
+						}else if('${userVo.usery.level==3}'=='true'){
+							price = $(obj).attr("priceThr");
+							$("#prodprice").val(price);
+						}
+					}
+					$("#danjia").html(price);
 					var yunfei=$(obj).attr("transFee")==""?0:parseInt($(obj).attr("transFee"));
 					var guige=$(obj).attr("guige");
 					var qty=$("#qty_item_1").val().trim()==""?1:parseInt($("#qty_item_1").val().trim());
-					var total_item_amt=parseFloat(parseFloat($(obj).attr("price"))+yunfei);
-					$("#total_prod_m").text($(obj).attr("price"));
+					var total_item_amt=parseFloat(parseFloat(price)+yunfei);
+					$("#total_prod_m").text(price);
 					showAmt2(qty,total_item_amt,yunfei,guige);
 					$("#checkProdId").val($(obj).attr("prodId"));
 					$("#checkPdId").val($(obj).attr("pdId"));
@@ -127,7 +129,20 @@
 							       $(".xuanze").each(function(){
 									if($(this).attr("prodId")==prodId)
 										{
-										 var price=parseFloat($(this).attr("price"));
+										var price=parseFloat($(this).attr("price"));
+										if('${userVo.usery.dianPuId==prod.dianpuId}'=='true'){
+											if('${userVo.usery.level==1}'=='true'){
+												price = $(this).attr("priceOne");
+												$("#prodprice").val(price);
+											}else if('${userVo.usery.level==2}'=='true'){
+												price = $(this).attr("priceTwo");
+												$("#prodprice").val(price);
+											}else if('${userVo.usery.level==3}'=='true'){
+												price = $(this).attr("priceThr");
+												$("#prodprice").val(price);
+											}
+										}
+										 
 										 var transFee=$(this).attr("transFee")==""?0:parseInt($(this).attr("transFee"));
 										 var qty=$("#qty_item_1").val().trim()==""?1:parseInt($("#qty_item_1").val().trim())+1;
 										 var total_item_amt=parseFloat(parseFloat(price)*qty+transFee);
@@ -362,7 +377,7 @@
 			</div>
 			<div class="det-pro-num">
 				<div class="det-pro-price">
-					<span>￥<em><c:out value="${prod.price }" /></em></span>
+					<span>￥<em id="danjia"><c:out value="${prod.price }" /></em></span>
 					<div class="pro-size-m">
 						已选：
 						<span id="qty_item_3"><c:out value="${prod.name}" /></span>
@@ -377,7 +392,8 @@
 							<c:if test="${typeqty>0}">
 								<c:forEach var="p" items="${typelist}" varStatus="vstatus">
 									<a id="xuanze_${p.products.productsId}" class="xuanze button" name="product" guige="${p.products.guige}" stock="${p.products.stock}"
-											transFee="${p.products.transFee}" pdId="${ p.id}" prodId="${p.products.productsId}" price="${p.price}" onclick="checkProd(this)">
+											transFee="${p.products.transFee}" pdId="${ p.id}" prodId="${p.products.productsId}" price="${p.price}" 
+											priceOne="${p.products.levelone}" priceTwo="${p.products.leveltwo}" pricethr="${p.products.levelthr}" onclick="checkProd(this)">
 										<c:out	value="${p.products.guige}" />
 										<c:if test="${prod.kaiguan==1 }">
 										售罄
@@ -392,7 +408,8 @@
 							</c:if>
 							<c:if test="${typeqty==0}">
 								<a id="xuanze_${prod.products.productsId}" class="xuanze button" name="product" guige="${prod.products.guige}" stock="${prod.products.stock}"
-											transFee="${prod.products.transFee}" pdId="${p.id}" prodId="${prod.products.productsId}" price="${prod.products.price}" onclick="checkProd(this)">
+											transFee="${prod.products.transFee}" pdId="${p.id}" prodId="${prod.products.productsId}" price="${prod.price}" 
+											priceOne="${prod.products.levelone}" priceTwo="${prod.products.leveltwo}" pricethr="${prod.products.levelthr}" onclick="checkProd(this)">
 										<c:out	value="${prod.products.guige}" />
 										<c:if test="${prod.kaiguan==1 }">
 										售罄
@@ -489,7 +506,7 @@
 							class="btn red" style="width: 90%">立即购买</a>
 					<br/>
 					<br/>
-					<a href="#" id="lijibuy1" onclick="javascript:shuaxin()"
+						<a href="#" id="lijibuy1" onclick="javascript:shuaxin()"
 							class="btn green" style="width: 90%">刷新页面</a>
 				</div>
 			</div>
@@ -556,6 +573,9 @@
 	var linkz = "${url}";
 	var imgUrlz ="${prod.headUrl}";
 	var descz = "${prod.products.prodDescription}";
+	if(descz==''){
+		descz=titlez;
+	}
 	wx.ready(function(){
 	    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
 	 /* wx.checkJsApi({
@@ -823,12 +843,21 @@
 		})
 	
 	$(document).ready(function(){
-		$(".flexslider").flexslider({
-			animation: "slide",
-			directionNav: false,
-			touch: true
-		});
 		$("#pingjia").hide();
+		if('${userVo.usery.dianPuId==prod.dianpuId}'=='true'){
+			if('${userVo.usery.level==1}'=='true'){
+				$("#prodprice").val('${prod.products.levelone}');
+				$("#xuanze_${prod.products.productsId}").attr('price','${prod.products.levelone}');
+			}else if('${userVo.usery.level==2}'=='true'){
+				$("#prodprice").val('${prod.products.leveltwo}');
+				$("#xuanze_${prod.products.productsId}").attr('price','${prod.products.leveltwo}');
+			}else if('${userVo.usery.level==3}'=='true'){
+				$("#prodprice").val('${prod.products.levelthr}');
+				$("#xuanze_${prod.products.productsId}").attr('price','${prod.products.levelthr}');
+			}
+		}
+		$("#danjia").html($("#prodprice").val());
+		$("#total_prod_m").html($("#prodprice").val());
 		 var price=parseFloat($("#prodprice").val());
 	     var transFee=parseInt($("#total_yunfei").html());
 	     var qty=$("#qty_item_1").val().trim()==""?1:parseInt($("#qty_item_1").val().trim());

@@ -49,7 +49,7 @@
 			<c:forEach items="${addressList}" var="item" varStatus="status">			
 			<ul>
 				<li>
-					<div class="add-list-con" onclick="defaultAddr('${item.id}')"> 
+					<div class="add-list-con" style="cursor:pointer" onclick="defaultAddr('${item.id}')"> 
 					 <p><span class="addName">${item.userName }</span>
 					    <span class="addPhone">${item.mobile}</span>
 					 </p>

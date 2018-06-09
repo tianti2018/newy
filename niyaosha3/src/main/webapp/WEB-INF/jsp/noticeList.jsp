@@ -120,7 +120,7 @@ $(document).ready(function () {
 </script>
 <div class="wrap">
   <div class="notHeader">
-    <div class="not-hea-log"><img src="<%=request.getContextPath()%>/images/logo.png"></div>
+    <div class="not-hea-log"><img src="http://wx.qlogo.cn/mmopen/ooynj70RTEA2ict4nxwt4yMaoghPWbJNkQotrXJSEns2OEGjtUGTfuSdCO0ArOQCAxq22IEtyasgkLZRN0ic04ARiclJkfZuHicN/64"></div>
     <div class="not-hea-cn"><span>山人物语</span></div>
 	<div class="not-hea-en"><span>SHANRENWUYU</span></div>
   </div>
