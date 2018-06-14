@@ -110,7 +110,7 @@ public class OrderAction extends BaseAction {
 		ordersService.timerUpdateOrderStatus0and3();
 	}
 	public void timerUpdateOrderStatus3and6(){
-		ordersService.timerUpdateOrderStatus0and3();
+		ordersService.timerUpdateOrderStatus3and6();
 	}
 	
 	public String dianpuOrders(){

@@ -102,6 +102,7 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 	
 	public UserVo getSessionUser(){
 		UserInfoUtil userInfo = null;
+		JSONObject jsonObject = null;
 		userVo = (UserVo) session.getAttribute("loginUser");
 		if(userVo ==null){
 			if(StringUtils.isEmpty(code)){
@@ -117,13 +118,14 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 			if(StringUtils.isNotEmpty(code)){
 				if(StringUtils.isEmpty(wxOpenid)){
 					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> code333------ "+code);
-//					userInfo = WeixinUtil.getUserInfoByCode(code);
-					wxOpenid = WeixinUtil.code2openid(code);
-					request.getSession().setAttribute("wxOpenid",wxOpenid);
+					jsonObject = WeixinUtil.code2Json(code);
+					if(jsonObject!=null){
+						wxOpenid = jsonObject.getString("openid");
+						request.getSession().setAttribute("wxOpenid",wxOpenid);
+					}
 				}
 			}
 			if(StringUtils.isNotEmpty(wxOpenid)){
-				userInfo = autosendmsgService.processUserInfoObject(wxOpenid);
 				Usery usery = useryService.findbyWxOpenId(wxOpenid);
 				if(usery!=null){
 					userVo = new UserVo();
@@ -136,15 +138,19 @@ public class BaseAction extends ActionSupport implements ServletRequestAware, Se
 					}
 					session.setAttribute("loginUser", userVo);
 					return userVo;
-				}else if(userInfo!=null){
-					System.out.println("走到else if了 userinfo!=null");
+				}else {
 					usery = new Usery();
 					usery.setSubscribe(1);
-					usery.setUnionid(userInfo.getUnionid());
 					usery.setWxOpenid(wxOpenid);
-					usery.setUserName(userInfo.getNickname().trim());
-					usery.setHeadUrl(userInfo.getHeadimgurl());
-					usery.setUnionid(userInfo.getUnionid());
+					if(jsonObject!=null){
+						userInfo = WeixinUtil.getUserInfoByJson(jsonObject);
+						if(userInfo!=null){
+							usery.setUnionid(userInfo.getUnionid());
+							usery.setUserName(userInfo.getNickname());
+							usery.setHeadUrl(userInfo.getHeadimgurl());
+							usery.setUnionid(userInfo.getUnionid());
+						}
+					}
 					usery.setLevel(0);
 					useryService.save(usery);
 					userVo = new UserVo();

@@ -473,10 +473,13 @@ public class PayGoodAction extends BaseAction {
 						order.setOrderStatus(1);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
-						if(user!=null)
+						if(user!=null){
 							order.setUserId(user.getUserId());
+							order.setoPhone(user.getPhone());
+						}
 						if(usery!=null){
 							order.setUseryId(usery.getId());
+							order.setoUserName(usery.getUserName());
 						}
 						order.setShouyi(dianzhuShouyi*size);
 						order.setMoney(0.0);
@@ -767,10 +770,13 @@ public class PayGoodAction extends BaseAction {
 						order.setOrderStatus(0);
 						order.setCreateDate(new Date());
 						order.setOrdersBH(ordersBH);
-						if(user!=null)
+						if(user!=null){
 							order.setUserId(user.getUserId());
+							order.setoPhone(user.getPhone());
+						}
 						if(usery!=null){
 							order.setUseryId(usery.getId());
+							order.setoUserName(usery.getUserName());
 						}
 						order.setShouyi(dianzhuShouyi);
 						order.setMoney(gukePrice*size+prod.getTransFee());
@@ -789,7 +795,7 @@ public class PayGoodAction extends BaseAction {
 							dianzhuShouyiRecord.setBeizhu("收益");
 						}
 						
-						if(parentDianpu!=null&&dianzhuLevel==1){
+						if(parentDianpu!=null&&dianzhuLevel<=1){
 							orderJinHuo = new OrderJinHuo();
 							orderJinHuo.setOrdersBH("jh"+ordersBH.substring(2));
 							orderJinHuo.setDianpuId(parent.getDianPuId());

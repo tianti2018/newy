@@ -404,6 +404,19 @@ public class WeixinUtil {
         return null;
     }
     
+    public static JSONObject code2Json(String code){
+    	System.out.println("时间："+new Date()+"请求微信API获取用户openid");
+        String requestUrl = code2tokenurl.replace("APPID", appId).replace("SECRET", appSecret).replace("CODE", code);
+//        System.out.println(requestUrl);
+        JSONObject jsonObject = httpRequest(requestUrl, "GET", null);
+        System.out.println(jsonObject.toString());
+        if(jsonObject!=null){
+        	if (!StringUtils.contains(jsonObject.toString(), "40029")) 
+        		return jsonObject;
+        }
+    	return null;
+    }
+    
     public static String jsapi_ticket_url="http://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN";
     
     public static String getJsapiTicket(String accessToken){
@@ -436,15 +449,17 @@ public class WeixinUtil {
     public static String userInfoTokenUrl= "https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
     
     public static UserInfoUtil getUserInfoByCode(String code){
+    	
     	 String requestUrl = code2tokenurl.replace("APPID", appId).replace("SECRET", appSecret).replace("CODE", code);
-//         System.out.println(requestUrl);
+         System.out.println(requestUrl);
          JSONObject jsonObject = httpRequest(requestUrl, "GET", null);
-//         System.out.println(jsonObject.toString());
+         System.out.println(jsonObject.toString());
          if(jsonObject!=null)
          	if (!StringUtils.contains(jsonObject.toString(), "40029")) {
          		requestUrl = userInfoTokenUrl.replace("ACCESS_TOKEN", jsonObject.getString("access_token")).
          				replace("OPENID", jsonObject.getString("openid"));
          		jsonObject = httpRequest(requestUrl, "GET", null);
+         		System.out.println(jsonObject);
          		if(jsonObject!=null){
          			if(!StringUtils.contains(jsonObject.toString(), "errcode")){
          				UserInfoUtil userInfoUtil = new UserInfoUtil();
@@ -468,9 +483,44 @@ public class WeixinUtil {
     	return null;
     }
     
+    public static UserInfoUtil getUserInfoByJson(JSONObject jsonObject){
+    	 if(jsonObject!=null)
+          	if (!StringUtils.contains(jsonObject.toString(), "40029")) {
+          		return getUserInfoByAcessTokenAndOpenid(jsonObject.getString("access_token"),jsonObject.getString("openid"));
+          	}
+    	 return null;
+    }
+    
+    public static UserInfoUtil getUserInfoByAcessTokenAndOpenid(String acessToken,String openid){
+ 		String requestUrl = userInfoTokenUrl.replace("ACCESS_TOKEN", acessToken).replace("OPENID", openid);
+ 		JSONObject jsonObject = httpRequest(requestUrl, "GET", null);
+ 		System.out.println(jsonObject);
+ 		if(jsonObject!=null){
+ 			if(!StringUtils.contains(jsonObject.toString(), "errcode")){
+ 				UserInfoUtil userInfoUtil = new UserInfoUtil();
+ 				userInfoUtil.setOpenid(jsonObject.getString("openid"));
+ 				userInfoUtil.setNickname(jsonObject.getString("nickname"));
+ 				userInfoUtil.setProvince(jsonObject.getString("province"));
+ 				userInfoUtil.setCity(jsonObject.getString("city"));
+ 				userInfoUtil.setCountry(jsonObject.getString("country"));
+ 				userInfoUtil.setHeadimgurl(jsonObject.getString("headimgurl"));
+ 				String uninoid = null;
+ 				try {
+ 					uninoid =jsonObject.getString("unionid");
+				} catch (Exception e) {
+					System.out.println("uninoid 为空");
+				}
+ 				userInfoUtil.setUnionid(uninoid);
+ 				return userInfoUtil;
+ 			}
+ 		}
+ 	
+    	return null;
+    }
+    
     public static void main(String[] args) {
-    	String requestUrl ="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1967ca0ef7d225c0&redirect_uri=http://css.starsgrassland.com/user/userAction!jampshopIndex.action&response_type=code&scope=snsapi_userinfo&state=asd#wechat_redirect";
-    	getShorUrl(getAccessToken(appId, appSecret).getToken(), requestUrl);
+    	String requestUrl = code2tokenurl.replace("APPID", appId).replace("SECRET", appSecret).replace("CODE", "ss");
+    	System.out.println(requestUrl);
     	
     }
 }

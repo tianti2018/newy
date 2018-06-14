@@ -20,7 +20,8 @@
 					<c:if test="${userVo.usery.level == 2}">掌柜<!-- <img style="width: 15px" src="../images/s2.png"/> --></c:if>
 					<c:if test="${userVo.usery.level == 3}">大掌柜<!-- <img style="width: 25px" src="../images/shenqing/4.png"/> --></c:if>
 				</p>
-				<p>关注时间：${userVo.usery.appDate }</p>
+				<c:if test="${userVo.usery.appDate !=null}"><p>关注时间：${userVo.usery.appDate }</p></c:if>
+				
 	            </div>
             </c:if>
            <div class="edit_btn"><a href="<%=request.getContextPath()%>/orderAddress/orderAddressAction!orderAddress.action">修改收货地址</a></div>

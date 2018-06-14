@@ -110,9 +110,10 @@ function insertcode(){
 	    			
 	    			if(fahuo){
 	    				
-		    			child+=('<li>快递公司：<em>children[i].kuaidiName');
+		    			child+=('<li>快递公司：<em>'+children[i].kuaidiName);
 		    			child+=('</em></li>');
-		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="  查看物流 " onclick="serch('+children[i].kuaidiNo+')"/></li>');
+		    			child+=('<li>快递单号：<em>'+children[i].kuaidiNo+'</em><input type="button" value="  查看物流 " onclick="serch(\''+children[i].kuaidiNo+'\',\''+
+				    			children[i].kuaidiName+'\')"/></li>');
 		    			child+=('<li>发货日期：<em>'+(fahuoTime==null?null:fahuoTime)+'</em></li>');
 	    			}
 	    			child+=('<li>购买数量：<em>'+children[i].shuliang+'</em></li>');
@@ -349,24 +350,12 @@ function cancelOrder(obj){
 			onBridgeReady();
 		}
 		
-		<%-- $(function(){
-			$('#search_btn').click(function(){
-				var selCom = "";
-				var num = "";
-				// var num = "550286779199";
-				var callbackurl = "http://localhost:8080/newz/order/orderAction!orderPerList.action?orderNo=0&requestType=mo";
-				window.location.href = 'http://m.kuaidi100.com/index_all.html?type='+selCom+'&postid='+num+'&callbackurl='+callbackurl;
-			});
-		}); --%>
-		
-		//删除地址
-		function serch(orderid){
-				var selCom = "";
-				var num = "";
-				//var num = orderid;
-				// var num = "550286779199";
-				var callbackurl = "http://localhost:8080/newz/order/orderAction!orderPerList.action?orderNo=0&requestType=mo";
-				window.location.href = 'http://m.kuaidi100.com/index_all.html?type='+selCom+'&postid='+num;
+		function serch(kdNum,kdName){
+			if(kdName=='特急送'){
+				window.location.href = "http://wljl.lntjs.cn/weixin/information.aspx?BillCode=" + kdNum.trim();
+				
+			}else
+				window.location.href = '<%=request.getContextPath()%>/order/orderAction!chaxunWuliu.action?orderNo='+kdNum;
 		}
 	</script>
 </body>

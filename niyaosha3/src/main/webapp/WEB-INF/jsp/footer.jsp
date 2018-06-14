@@ -9,8 +9,8 @@
     <div class="foot_nav_inner">
     	<a href="<%=request.getContextPath() %>/notice/noticeAction!noticeList.action"><span class="line"><i class="nav_f3"></i></span><span class="text">公告</span></a>
 	    <c:if test="${null==userVo}">
-		    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2Forder%2ForderAction!myOrderList.action&response_type=code&scope=snsapi_base&state=123#wechat_redirect"><span class="line"><i class="nav_f2"></i></span><span class="text">我的订单</span></a>
-		    <a id="orderAdress" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2Fuser%2FuserAction!gotoPersonalCenter.action&response_type=code&scope=snsapi_base&state=123#wechat_redirect" ><span class="line"><i class="nav_f5"></i></span><span class="text">个人中心</span></a>
+		    <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2Forder%2ForderAction!myOrderList.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect"><span class="line"><i class="nav_f2"></i></span><span class="text">我的订单</span></a>
+		    <a id="orderAdress" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2Fuser%2FuserAction!gotoPersonalCenter.action&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect" ><span class="line"><i class="nav_f5"></i></span><span class="text">个人中心</span></a>
 	    	
 	    </c:if>
 	    

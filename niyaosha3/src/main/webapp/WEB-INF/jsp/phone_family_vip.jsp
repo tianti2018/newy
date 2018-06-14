@@ -74,7 +74,11 @@ function insertcode() {
 	    		var children = data.children;
 	    		var child = '';
 	    		for(var i=0;i<children.length;i++){
-	    			var time= new Date(children[i].appDate).Format("yyyy-MM-dd hh:mm:ss");		    			
+	    			var time="";
+	    			if(children[i].appDate!=null){
+	    				time= new Date(children[i].appDate.time).Format("yyyy-MM-dd hh:mm:ss");
+	    			}
+	    					    			
 	    			child+=('<div class="item">');
 	    			child+=('<div class="item_t">');
 	    			child+=('<img src="'+children[i].headUrl+'" alt="" class="img">');
@@ -91,7 +95,7 @@ function insertcode() {
 	    				child+=('<p>头衔：大掌柜<img style="width: 25px" src="../images/shenqing/4.png"/></p>');
 	    			}
 	    			child+=('</div><div class="item_m">');
-	    			child+=('<p>关注时间'+time+'</p>');
+	    			child+=('<p>关注时间：'+time+'</p>');
 	    			child+=('</ul></div></div>');
 	    		}
 	    		var ul = $("#appendUl");

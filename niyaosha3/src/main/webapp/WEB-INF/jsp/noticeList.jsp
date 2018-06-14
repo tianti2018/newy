@@ -149,6 +149,21 @@ $(document).ready(function () {
  </c:forEach> 
  </div>
  		<script type="text/javascript">
+ 		function onBridgeReady() {
+ 			WeixinJSBridge.call('hideOptionMenu');
+ 		}
+
+ 		if (typeof WeixinJSBridge == "undefined") {
+ 			if (document.addEventListener) {
+ 				document.addEventListener('WeixinJSBridgeReady', onBridgeReady,
+ 						false);
+ 			} else if (document.attachEvent) {
+ 				document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+ 				document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+ 			}
+ 		} else {
+ 			onBridgeReady();
+ 		}
 			function showAndHide(tid,yuedu,shouqi){
 				var istrue = $("#"+tid).is(":hidden");
 				if(istrue == true){

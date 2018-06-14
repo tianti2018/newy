@@ -496,7 +496,7 @@
 				<c:if test="${null==userVo}">
 					<div align="center">
 						<a id="orderAdress" 
-						href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=<%=res.getString("yumingzhz")%>%2ForderAddress%2ForderAddressAction!orderAddress.action?pdId=${prod.id}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect" 
+						href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=<%=res.getString("APPID")%>&redirect_uri=http://localhost:8085/orderAddress/orderAddressAction!orderAddress.action?pdId=${prod.id}&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect" 
 						class="btn green">选择一条收货地址</a>
 					</div>
 				</c:if>
