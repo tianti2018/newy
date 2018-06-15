@@ -140,6 +140,7 @@ this.className=this.tmpClass;
 <input type="hidden" id="hinput_DateType" name="dateType" value='${dateType}'>
 <input type="hidden" id="hinput_block" name="block" value='${block}'>
 <input type="hidden" id="hinput_pname" name="pname" value='${pname}'>
+<input type="hidden" id="hinput_productsId" name="productsId" value='${productsId}'>
 <!-- 上传合同beagin -->
 <input type="hidden" name="key" value="${param.key}"/>
 <input type="hidden" name="categoryid" value="${param.categoryid}"/>

@@ -101,6 +101,7 @@
 		$("#st_qDateType").val("1")
 		$("#j_endDate").val("");
 		$("#input_qPname").val("");
+		$("#st_qProduct").val("-1");
 	}
 	loadSearch =function () {
 		$("#hOrdersBH").val($("#input_qOrdersBH").val());
@@ -113,6 +114,8 @@
 		$("#hinput_qoPhone").val($("#input_qoPhone").val());
 		$("#hinput_DateType").val($("#st_qDateType").val());
 		$("#hinput_pname").val($("#input_qPname").val());
+		$("#hinput_productsId").val($("#st_qProduct").val());
+		
 		$("#currentPage").val(1);
 		gotoPage();
 	}
@@ -143,6 +146,7 @@
 		        		fromDate:$("#j_fromDate").val(),
 		        		endDate:$("#j_endDate").val(),
 		        		dateType:$("#st_qDateType").val(),
+		        		productsId:$("#st_qProduct").val(),
 		        		};
 		        for (var attr in data){
 		         
@@ -169,11 +173,17 @@
 	    
 	    try{
 	        var data = {
+	        		orderType:$("#st_qOrderType").val(),
 	        		toUserName:$("#input_qtoUserName").val(),
 	        		mobile:$("#input_qMobile").val(),
 	        		oUserName:$("#input_qoUserName").val(),
 	        		oPhone:$("#input_qoPhone").val(),
 	        		ordersBH:$("#input_qOrdersBH").val(),
+	        		pname:$("#input_qPname").val(),
+	        		fromDate:$("#j_fromDate").val(),
+	        		endDate:$("#j_endDate").val(),
+	        		dateType:$("#st_qDateType").val(),
+	        		productsId:$("#st_qProduct").val(),
 	        		
 	        		};
 	        for (var attr in data){
@@ -271,6 +281,14 @@
 		    <input type="text" id="j_endDate" name="j_endDate" value="${endDate}" readonly="readonly"/> 
 		    <img onclick="WdatePicker({el:'j_endDate',startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" src="js/My97DatePicker/skin/datePicker.gif" width="16" height="22" align="absmiddle"/>
 		</td></tr> 
+		<tr><td align="center">选择产品：</td><td align="center">
+			<select id="st_qProduct" name ="productsName"> 
+				<option value="-1">请选择</option>
+				<c:forEach items="${pfrs }" var="pfr" varStatus="status">
+					<option value="${pfr.products.productsId }">${pfr.products.name }${pfr.products.guige }</option>
+				</c:forEach>
+			</select>
+		</td></tr>
 		<tr><td align="center">日期类型：</td><td align="center">
 			<select id="st_qDateType" name ="dateType"> 
 				<option value="0">下单日期</option>
@@ -312,7 +330,8 @@
 		<c:if test="${session.shebei=='mobile' }">
 		<c:forEach items="${litPager}" var="item" varStatus="status">
 			<ul class="menu-list">
-				<li><a href="javascript:;"><i class="arrows"></i><em>${item.ordersBH}</em></a>
+				<li><c:if test="${item.shuliang==1.0}"><a href="javascript:;"><i class="arrows"></i><em>${item.ordersBH}</em></a></c:if>
+					<c:if test="${item.shuliang!=1.0}"><a style="color: red;" href="javascript:;"><i class="arrows"></i><em>${item.ordersBH}</em></a></c:if>
 					<ul class="sub-menu" >
 						<li>收货人姓名：<em>${item.toUserName}</em></li>
 						<li>收货人电话：<em>${item.mobile}</em></li>
@@ -325,7 +344,8 @@
 						<c:if test="${item.order_status=='5'}"><li>订单状态：<em><font size="2">已退货</font></em></li></c:if>
 						<c:if test="${item.order_status=='6'}"><li>订单状态：<em><font size="2">已收货</font></em></li></c:if>
 						<c:if test="${item.order_status=='9'}"><li>订单状态：<em><font size="2">已删除</font></em></li></c:if>
-						<li>购买数量：<em>${item.shuliang}${item.size}</em></li>
+						<c:if test="${item.shuliang==1.0}"><li>购买数量：<em>${item.shuliang}${item.size}</em></li></c:if>
+						<c:if test="${item.shuliang!=1.0}"><li style="color: red;">购买数量：<em>${item.shuliang}${item.size}</em></li></c:if>
 						<li>订单金额：<em>${item.money}</em></li>
 						<li>收货地址：<em>${item.sheng }${item.chengshi }${item.diqu }${item.address }，邮编: ${item.zipcode }</em></li>
 						<li>下单日期：<em><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></em></li>
@@ -438,7 +458,14 @@
 		</thead>
 		<tbody class="pn-ltbody">
 			<c:forEach items="${litPager}" var="item" varStatus="status">
-			<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')" oncontextmenu = "javascript:showMenu(${item.ordersId});">
+			<c:choose>
+				<c:when test="${item.shuliang==1.0}">
+					<tr onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')" oncontextmenu = "javascript:showMenu(${item.ordersId});">
+				</c:when>
+				<c:otherwise>
+					<tr style="background-color: red;" onmouseover="Pn.LTable.lineOver(this);" onmouseout="Pn.LTable.lineOut(this);" onclick="showShouhuo('${status.index}')" oncontextmenu = "javascript:showMenu(${item.ordersId});">
+				</c:otherwise>
+			</c:choose>
 				<td align="center"><input name="checkbox" type="checkbox" value="${item.ordersId}"/></td>
 				<td align="center">${item.ordersBH}</td>
 				<td align="center">${item.toUserName}</td>
@@ -672,6 +699,11 @@ if(st_qDateType == "null")
 	$("#st_qDateType  option[value='0'] ").attr("selected",true);
 else
 	$("#st_qDateType  option[value='"+st_qDateType+"'] ").attr("selected",true);
+var productsId = '<%=session.getAttribute("productsId")%>';
+if(productsId == "null")
+	$("#st_qProduct  option[value=''] ").attr("selected",true);
+else
+	$("#st_qProduct  option[value='"+productsId+"'] ").attr("selected",true);
 </script>
 </body>
 </html>

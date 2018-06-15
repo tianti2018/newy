@@ -10,6 +10,8 @@ import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,11 +40,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.opensymphony.xwork2.ActionChainResult;
 import com.tw.web.dao.ApplyReturnPurchaseDao;
 import com.tw.web.dao.OrdersDAO;
 import com.tw.web.dao.OrdersProductsDAO;
 import com.tw.web.dao.ProductsDAO;
+import com.tw.web.dao.ProductsForRoleDao;
 import com.tw.web.dao.TAreaDao;
 import com.tw.web.dao.UserDAO;
 import com.tw.web.dao.UserOrderDAO;
@@ -50,6 +54,8 @@ import com.tw.web.hibernate.persistent.AdminUser;
 import com.tw.web.hibernate.persistent.ApplyReturnPurchase;
 import com.tw.web.hibernate.persistent.Orders;
 import com.tw.web.hibernate.persistent.Products;
+import com.tw.web.hibernate.persistent.ProductsForRole;
+import com.tw.web.hibernate.persistent.Role;
 import com.tw.web.hibernate.persistent.TArea;
 import com.tw.web.hibernate.persistent.User;
 import com.tw.web.hibernate.persistent.UserOrder;
@@ -99,6 +105,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private UserDAO userDAO;
 	private TAreaDao tAreaDao;
 	private ApplyReturnPurchaseDao applyReturnPurchaseDao;
+	@Autowired
+	private ProductsForRoleDao productsForRoleDao;
 	
 	private String toUserName;//收货人电话
 	private String money;//金额
@@ -137,6 +145,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 	private String comments;//信息
 	private Integer[] orderIds;
 	private Integer paixu;//0正序1倒序
+	private Integer[] producutIds;
+	private Integer productsId;
 	
 	public String chongzhiOrder(){
 		Orders orders = (Orders)ordersDAO.findById(ordersId);
@@ -477,10 +487,32 @@ public class OrdersAction extends ExtJSONActionSuport {
 			return "error";
 		}
 		User user = null;
+		AdminUser adminUser = null;
+		List<ProductsForRole> pfrs = new ArrayList<ProductsForRole>();
 		if (obj instanceof User) {
 			user = (User) obj;
 			if(user.getBlock().equals("1")){
 				return "block";
+			}
+		}
+		if (obj instanceof AdminUser) {
+			adminUser = (AdminUser) obj;
+			Role role = adminUser.getRole();
+			if(role!=null){
+				if(role.getRoleName().equals("超级管理员")){
+					List<Products> products = productsDAO.findAll();
+					if(products!=null&&products.size()>0){
+						for(Products p:products){
+							ProductsForRole pfr = new ProductsForRole();
+							pfr.setProducts(p);
+							pfr.setRole(role);
+							pfrs.add(pfr);
+						}
+					}
+				}else{
+					pfrs = productsForRoleDao.findEntityByPropertiName("roleId", role.getRoleId());
+					
+				}
 			}
 		}
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
@@ -490,6 +522,25 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if(user !=null){
 			userId = user.getUserId();
 		}
+		if(productsId==null){
+			productsId = (Integer) request.getSession().getAttribute("productsId");
+		}
+		if(productsId!=null&&productsId!=-1){
+			conditionProperties.put("productId", productsId);
+			compare.put("productId", 0);
+		}else{
+			if(!adminUser.getLoginName().equals("admin")){
+				List<Integer> pids = new ArrayList<Integer>();
+				for(ProductsForRole pfr:pfrs){
+					pids.add(pfr.getProducts().getProductsId());
+				}
+				producutIds = pids.toArray(new Integer[pids.size()]);
+				conditionProperties.put("productId", producutIds);
+				compare.put("productId", 4);
+			}
+			
+		}
+		
 		
 		if (null==orderType) {
 			orderType = (String) request.getSession().getAttribute("order_status");
@@ -521,6 +572,7 @@ public class OrdersAction extends ExtJSONActionSuport {
 		}
 		addChaXunTiaoJian(conditionProperties, compare, sort, null, userId, orderType, paixu, toUserName, 
 				pname, oUserName, fromUserName, tel, oPhone, ordersBH, mobile, dateType, fromDate, endDate);
+		sort.put("productId", false);
 		int count_size =ordersDAO.cout_size_Commen(conditionProperties, compare);
 		// 修改的时候保存当前页
 		if ((StringUtils.isNotEmpty(this.getCurrentPage())&&!"1".equals(this.getCurrentPage())) && StringUtils.isEmpty(this.getPagerMethod())) {
@@ -535,6 +587,8 @@ public class OrdersAction extends ExtJSONActionSuport {
 		request.setAttribute("litPager", litPager);
 		request.getSession().setAttribute("orderType", orderType);
 		request.getSession().setAttribute("dateType", dateType);
+		request.getSession().setAttribute("productsId", productsId);
+		request.setAttribute("pfrs", pfrs);
 		request.setAttribute("totalMoney", totalMoney);
 		return "ordersList";
 	}
@@ -880,8 +934,26 @@ public class OrdersAction extends ExtJSONActionSuport {
 		if (obj instanceof User) {
 			user = (User) obj;
 		}
-		if(obj instanceof AdminUser){
+		List<ProductsForRole> pfrs = new ArrayList<ProductsForRole>();
+		if (obj instanceof AdminUser) {
 			adminUser = (AdminUser) obj;
+			Role role = adminUser.getRole();
+			if(role!=null){
+				if(role.getRoleName().equals("超级管理员")){
+					List<Products> products = productsDAO.findAll();
+					if(products!=null&&products.size()>0){
+						for(Products p:products){
+							ProductsForRole pfr = new ProductsForRole();
+							pfr.setProducts(p);
+							pfr.setRole(role);
+							pfrs.add(pfr);
+						}
+					}
+				}else{
+					pfrs = productsForRoleDao.findEntityByPropertiName("roleId", role.getRoleId());
+					
+				}
+			}
 		}
 		//excel模板路径
 		String path = ServletActionContext.getServletContext().getRealPath("")+"/resource/kuaidi.xls";
@@ -907,7 +979,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
-		
+		sort.put("productId", false);
+		if(productsId!=null&&productsId!=-1){
+			conditionProperties.put("productId", productsId);
+			compare.put("productId", 0);
+		}else{
+			if(!adminUser.getLoginName().equals("admin")){
+				List<Integer> pids = new ArrayList<Integer>();
+				for(ProductsForRole pfr:pfrs){
+					pids.add(pfr.getProducts().getProductsId());
+				}
+				producutIds = pids.toArray(new Integer[pids.size()]);
+				conditionProperties.put("productId", producutIds);
+				compare.put("productId", 4);
+			}
+			
+		}
 		if(null!=orderIds&&orderIds.length>0){
 			conditionProperties.put("ordersId", orderIds);
 			compare.put("ordersId", 4);
@@ -921,21 +1008,44 @@ public class OrdersAction extends ExtJSONActionSuport {
 		List<Orders> list = ordersDAO.findAllPagerList(conditionProperties, compare, sort, 0, 0, "all");
 		if(list!=null){
 			HSSFRow row = null;
-			for (int i = 0; i < list.size(); i++) {  
-				row=sheet.createRow(i+2);
-				row.createCell(0).setCellValue("山人物语");
-				row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
-				row.createCell(6).setCellValue(list.get(i).getChengshi().substring(0, list.get(i).getChengshi().length()-1));//到达城市  注意:不带"市"字
-				row.createCell(7).setCellValue("现结");
-				row.createCell(8).setCellValue(list.get(i).getToUserName());
-				row.createCell(10).setCellValue(list.get(i).getSheng()+list.get(i).getChengshi()+list.get(i).getDiqu()+list.get(i).getAddress());
-				row.createCell(12).setCellValue(list.get(i).getMobile());
-				row.createCell(14).setCellValue(list.get(i).getPname());
-				row.createCell(15).setCellValue("1");
-				row.createCell(25).setCellValue("全运村");
-				row.createCell(28).setCellValue(list.get(i).getFromUserName());
-				row.createCell(29).setCellValue(list.get(i).getOrdersBH());
-	        }
+			int j = 2;
+			for(Orders order:list){
+				if(order.getShuliang().equals(1.0)){
+					row=sheet.createRow(j);
+					row.createCell(0).setCellValue("山人物语");
+					row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
+					row.createCell(6).setCellValue(order.getChengshi().substring(0, order.getChengshi().length()-1));//到达城市  注意:不带"市"字
+					row.createCell(7).setCellValue("现结");
+					row.createCell(8).setCellValue(order.getToUserName());
+					row.createCell(10).setCellValue(order.getSheng()+order.getChengshi()+order.getDiqu()+order.getAddress());
+					row.createCell(12).setCellValue(order.getMobile());
+					row.createCell(14).setCellValue(order.getPname());
+					row.createCell(15).setCellValue("1");
+					row.createCell(25).setCellValue("全运村");
+					row.createCell(28).setCellValue(order.getFromUserName());
+					row.createCell(29).setCellValue(order.getOrdersBH());
+					j++;
+				}else{
+					for(double a=0;a<order.getShuliang();a+=1.0){
+						row=sheet.createRow(j);
+						row.createCell(0).setCellValue("山人物语");
+						row.createCell(5).setCellValue(adminUser.getPhone());//发货人联系电话
+						row.createCell(6).setCellValue(order.getChengshi().substring(0, order.getChengshi().length()-1));//到达城市  注意:不带"市"字
+						row.createCell(7).setCellValue("现结");
+						row.createCell(8).setCellValue(order.getToUserName());
+						row.createCell(10).setCellValue(order.getSheng()+order.getChengshi()+order.getDiqu()+order.getAddress());
+						row.createCell(12).setCellValue(order.getMobile());
+						row.createCell(14).setCellValue(order.getPname());
+						row.createCell(15).setCellValue("1");
+						row.createCell(25).setCellValue("全运村");
+						row.createCell(28).setCellValue(order.getFromUserName());
+						row.createCell(29).setCellValue(order.getOrdersBH());
+						j++;
+					}
+				}
+				
+				
+			}
 		}
 		 try  
 	        {  
@@ -1064,6 +1174,32 @@ public class OrdersAction extends ExtJSONActionSuport {
 		
 		HttpServletRequest request = ServletActionContext.getRequest();
 		Object obj = request.getSession().getAttribute("user");
+		List<ProductsForRole> pfrs = new ArrayList<ProductsForRole>();
+		AdminUser adminUser = null;
+		User user = null;
+		if (obj instanceof User) {
+			user = (User) obj;
+		}
+		if (obj instanceof AdminUser) {
+			adminUser = (AdminUser) obj;
+			Role role = adminUser.getRole();
+			if(role!=null){
+				if(role.getRoleName().equals("超级管理员")){
+					List<Products> products = productsDAO.findAll();
+					if(products!=null&&products.size()>0){
+						for(Products p:products){
+							ProductsForRole pfr = new ProductsForRole();
+							pfr.setProducts(p);
+							pfr.setRole(role);
+							pfrs.add(pfr);
+						}
+					}
+				}else{
+					pfrs = productsForRoleDao.findEntityByPropertiName("roleId", role.getRoleId());
+					
+				}
+			}
+		}
 		//excel模板路径
 		// 第一步，创建一个webbook，对应一个Excel文件  
         HSSFWorkbook wb = new HSSFWorkbook();  
@@ -1159,9 +1295,29 @@ public class OrdersAction extends ExtJSONActionSuport {
         cell.setCellStyle(style);
         cell.setCellValue("收货时间");
         
+        cell = row.createCell(20);
+        cell.setCellStyle(style);
+        cell.setCellValue("支付金额");
+        
 		Map<String, Object> conditionProperties = new HashMap<String, Object>();
 		Map<String, Integer> compare = new HashMap<String, Integer>();
 		Map<String, Boolean> sort = new HashMap<String, Boolean>();
+		sort.put("productId", false);
+		if(productsId!=null&&productsId!=-1){
+			conditionProperties.put("productId", productsId);
+			compare.put("productId", 0);
+		}else{
+			if(!adminUser.getLoginName().equals("admin")){
+				List<Integer> pids = new ArrayList<Integer>();
+				for(ProductsForRole pfr:pfrs){
+					pids.add(pfr.getProducts().getProductsId());
+				}
+				producutIds = pids.toArray(new Integer[pids.size()]);
+				conditionProperties.put("productId", producutIds);
+				compare.put("productId", 4);
+			}
+			
+		}
 		if(null!=orderIds&&orderIds.length>0){
 			conditionProperties.put("ordersId", orderIds);
 			compare.put("ordersId", 4);
@@ -1181,7 +1337,7 @@ public class OrdersAction extends ExtJSONActionSuport {
             row.createCell(1).setCellValue(format.format(order.getCreateDate())); //下单时间
 			row.createCell(2).setCellValue(order.getoUserName());
 			row.createCell(3).setCellValue(order.getoPhone());
-			row.createCell(4).setCellValue(order.getUserId());
+			row.createCell(4).setCellValue(order.getUseryId()==null?"":order.getUseryId()+"");
 				
 			row.createCell(5).setCellValue(order.getToUserName()==null?"":order.getToUserName());//收货人姓名
             row.createCell(6).setCellValue(order.getMobile()==null?"":order.getMobile());//收货人电话
@@ -1223,6 +1379,7 @@ public class OrdersAction extends ExtJSONActionSuport {
             row.createCell(17).setCellValue(zhifuDate);
             row.createCell(18).setCellValue(fahuodate);
             row.createCell(19).setCellValue(shouhuoDate);
+            row.createCell(20).setCellValue(order.getMoney());
         }
         // 第六步，将文件存到指定位置  
         try  
@@ -1962,6 +2119,22 @@ public class OrdersAction extends ExtJSONActionSuport {
 
 	public void setApplyNum(String applyNum) {
 		this.applyNum = applyNum;
+	}
+
+	public Integer[] getProducutIds() {
+		return producutIds;
+	}
+
+	public void setProducutIds(Integer[] producutIds) {
+		this.producutIds = producutIds;
+	}
+
+	public Integer getProductsId() {
+		return productsId;
+	}
+
+	public void setProductsId(Integer productsId) {
+		this.productsId = productsId;
 	}
 	
 	

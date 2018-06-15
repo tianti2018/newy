@@ -196,6 +196,10 @@ public class MemberAction extends ExtJSONActionSuport {
 			conditionProperties.put("id", userId);
 			compare.put("id", 0);
 		}
+		if (null!=parentId &&! "".equals(parentId)) {
+			conditionProperties.put("parentId", parentId);
+			compare.put("parentId", 0);
+		}
 		if (StringUtils.isNotBlank(userName)) {
 			conditionProperties.put("userName", userName.trim());
 			compare.put("userName", 2);

@@ -38,6 +38,8 @@
 		    <mapping class="com.tw.web.hibernate.persistent.UserRole" />
 		    <mapping class="com.tw.web.hibernate.persistent.RoleFunction" />
 		    <mapping class="com.tw.web.hibernate.persistent.Function" />
+		    <mapping class="com.tw.web.hibernate.persistent.ProductsForRole" />
+		    
 		    
 		     <mapping class="com.tw.web.hibernate.persistent.AdminUser" />
 		     

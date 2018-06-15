@@ -182,11 +182,13 @@ $(function(){
 	     });
 	}
 	function lingdao(userId){
-		$("#userId").val(userId);
+		$("#input_qUserId").val(userId);
+		$("#parentId").val('');
 		loadSearch();
 	}
 	
 	function shouxia(parentId){
+		$("#input_qUserId").val('');
 		$("#parentId").val(parentId);
 		loadSearch();
 	}
@@ -235,24 +237,6 @@ $(function(){
 							<c:if test="${item.block=='0'}"><font size="2">未锁定</font></c:if>
 							<c:if test="${item.block=='1'}"><font size="2">已锁定</font></c:if>
 						</em></li>
-						<li>操作：<em>
-							<c:if test="${adminUser}">
-								<c:if test="${item.block=='1'}">
-									<input type="button" value="解锁" onclick="releaseUser('${item.userId}');" />| 
-								</c:if>
-								<c:if test="${item.block=='0'}">
-									<input type="button" value="锁定" onclick="blockUser('${item.userId}');" /> |
-								</c:if>
-							 
-								<input type="button" value="删除" onclick="deleteUser('${item.userId}');" />|
-								<input type="button" value="领导" onclick="lingdao('${item.parentId}');" />|
-								<input type="button" value="手下" onclick="shouxia('${item.userId}');" />
-							</c:if>
-							<c:if test="${adminUser==false}">
-								<input type="button" value="查看订单" onclick="orderList('${item.userId}');" />
-							</c:if>
-						
-						</em></li>
 					</ul>
 				</li>
 			</ul>
@@ -271,16 +255,10 @@ $(function(){
 				<c:if test="${adminUser}">
 					<a href="<%=request.getContextPath()%>/orders!listYichang.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_buy.png" alt=""></i><span>异常订单</span></a>
 				</c:if>
-				<c:if test="${adminUser==false}">
-					<a href="<%=request.getContextPath()%>/orders!initAdd.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_buy.png" alt=""></i><span>新增订单</span></a>
-				</c:if>
 				<a href="<%=request.getContextPath()%>/orders!ordersList.action" ><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_orders.png" alt=""></i><span>我的订单</span></a>
 				
 				<a href="<%=request.getContextPath()%>/user!listAllUser.action" class="nowpage"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>团队列表</span></a>
 				
-				<c:if test="${adminUser==false}">
-					<a href="<%=request.getContextPath()%>/user!initAddUser.action"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_family.png" alt=""></i><span>我的信息</span></a>
-				</c:if>
 				<c:if test="${adminUser}">
 					<a href="#"><i class="foot-icon"><img src="<%=request.getContextPath()%>/images/i_erweima.png" alt=""/></i><span>待开发</span></a>
 				</c:if>
